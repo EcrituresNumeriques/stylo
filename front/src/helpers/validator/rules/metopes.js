@@ -453,6 +453,126 @@ export function figureCreditsSpanOrDiv(_tree, markdown, diagnostics) {
 }
 
 /**
+ * `.credits` spans found in a text at any nesting depth, with their offsets.
+ * @param {string} text
+ * @param {number} [offset]
+ * @returns {Array<{ start: number, end: number }>}
+ */
+function nestedCreditsSpans(text, offset = 0) {
+  const found = []
+  for (const span of topLevelSpans(text)) {
+    if (parseClasses(span.attrs).includes('credits')) {
+      found.push({ start: offset + span.start, end: offset + span.end })
+    }
+    found.push(...nestedCreditsSpans(span.inner, offset + span.start + 1))
+  }
+  return found
+}
+
+/**
+ * `.credits` spans of a figure body line, telling where each one stands: in
+ * the légende (alt) of the image, nested in another span (e.g. the head), or
+ * directly in the figure.
+ * @param {string} line
+ * @returns {Array<{ start: number, end: number, placement: 'alt'|'nested'|'direct' }>}
+ */
+function figureLineCredits(line) {
+  const credits = []
+  for (const image of line.matchAll(FIGURE_IMAGE_RX)) {
+    const alt = image[0].slice(2, image[0].indexOf(']('))
+    for (const span of nestedCreditsSpans(alt, image.index + 2)) {
+      credits.push({ ...span, placement: 'alt' })
+    }
+  }
+  // Blank the images out, keeping the columns
+  const text = line.replace(FIGURE_IMAGE_RX, (m) => ' '.repeat(m.length))
+  for (const span of topLevelSpans(text)) {
+    if (parseClasses(span.attrs).includes('credits')) {
+      credits.push({ start: span.start, end: span.end, placement: 'direct' })
+    }
+    for (const nested of nestedCreditsSpans(span.inner, span.start + 1)) {
+      credits.push({ ...nested, placement: 'nested' })
+    }
+  }
+  return credits
+}
+
+/**
+ * Les crédits d'une figure ne peuvent apparaître qu'une fois. Le cas d'un span
+ * et d'un div de crédits est déjà signalé par figureCreditsSpanOrDiv.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function figureSingleCredits(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (figure) => {
+    if (figure.className !== 'figure') return
+    const divs = figure.children
+      .filter((c) => c.className === 'credits')
+      .map((c) => ({ line: c.startLine, column: 1, endColumn: 4 }))
+    const spans = []
+    eachDirectLine(figure, lines, (line, lineNum) => {
+      for (const span of figureLineCredits(line)) {
+        spans.push({
+          line: lineNum,
+          column: span.start + 1,
+          endColumn: span.end + 2,
+          inAlt: span.placement === 'alt',
+        })
+      }
+    })
+    const spanAndDivOnly =
+      divs.length === 1 && spans.length === 1 && !spans[0].inAlt
+    if (divs.length + spans.length < 2 || spanAndDivOnly) return
+    const credits = [...divs, ...spans].sort(
+      (a, b) => a.line - b.line || a.column - b.column
+    )
+    for (const { line, column, endColumn } of credits.slice(1)) {
+      diagnostics.push({
+        line,
+        column,
+        endLine: line,
+        endColumn,
+        severity: 'error',
+        messageKey: 'validation.rules.figureSingleCredits',
+        code: 'figure-single-credits',
+      })
+    }
+  })
+}
+
+/**
+ * Un span de crédits ne peut figurer que dans l'en-tête (head) ou dans la
+ * légende (alt) de l'image, pas directement dans la figure.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function figureCreditsSpanPlacement(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (figure) => {
+    if (figure.className !== 'figure') return
+    eachDirectLine(figure, lines, (line, lineNum) => {
+      for (const span of figureLineCredits(line)) {
+        if (span.placement !== 'direct') continue
+        diagnostics.push({
+          line: lineNum,
+          column: span.start + 1,
+          endLine: lineNum,
+          endColumn: span.end + 2,
+          severity: 'error',
+          messageKey: 'validation.rules.figureCreditsSpanPlacement',
+          code: 'figure-credits-span-placement',
+        })
+      }
+    })
+  })
+}
+
+/**
  * @param {import('unist').Node} tree
  * @param {string} _markdown
  * @param {Array} diagnostics
@@ -981,6 +1101,8 @@ export const metopesRules = [
   figureMustContainImage,
   figureContentRestricted,
   figureCreditsSpanOrDiv,
+  figureSingleCredits,
+  figureCreditsSpanPlacement,
   prenoteRequiresOrigin,
   liminaryContentRestricted,
   translationRequiresLang,

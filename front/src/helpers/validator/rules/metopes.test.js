@@ -7,7 +7,9 @@ import {
   epigraphSingleQuote,
   figureContentRestricted,
   figureCreditsSpanOrDiv,
+  figureCreditsSpanPlacement,
   figureMustContainImage,
+  figureSingleCredits,
   headingHierarchy,
   indexEntryRequiresIdref,
   liminaryContentRestricted,
@@ -483,6 +485,99 @@ Source : Eva Watson-Schütze, domaine public
 })
 
 // ─── prenoteRequiresOrigin ───────────────────────────────────────────────────
+
+describe('figureSingleCredits()', () => {
+  test('no diagnostic for a single credits span in the head', () => {
+    const md = `:::{.figure}
+[Titre [© Musée du Louvre]{.credits}]{.head}
+![légende](image.png)
+:::`
+    expect(run(figureSingleCredits, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for a single credits span in the légende (alt)', () => {
+    const md = `:::{.figure}
+![Vue [© Gallica / BnF]{.credits}](photos/bibliotheque.jpg)
+:::`
+    expect(run(figureSingleCredits, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for a span and a div, already reported', () => {
+    const md = `:::{.figure}
+![légende](image.png)
+[© BnF]{.credits}
+:::{.credits}
+© BnF
+:::
+:::`
+    expect(run(figureSingleCredits, md)).toHaveLength(0)
+  })
+
+  test('error for credits in both the head and the légende', () => {
+    const md = `:::{.figure}
+[Titre [© Louvre]{.credits}]{.head}
+![Vue [© BnF]{.credits}](image.png)
+:::`
+    const diagnostics = run(figureSingleCredits, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].severity).toBe('error')
+    expect(diagnostics[0].code).toBe('figure-single-credits')
+    expect(diagnostics[0].line).toBe(3)
+    expect(diagnostics[0].column).toBe(7)
+  })
+
+  test('error for credits in the légende and a credits div', () => {
+    const md = `:::{.figure}
+![Vue [© Gallica / BnF]{.credits}](image.png)
+:::{.credits}
+© Bibliothèque nationale de France
+:::
+:::`
+    const diagnostics = run(figureSingleCredits, md)
+    expect(diagnostics.map((d) => d.line)).toEqual([3])
+  })
+
+  test('error for two credits divs', () => {
+    const md = `:::{.figure}
+![légende](image.png)
+:::{.credits}
+© BnF
+:::
+:::{.credits}
+© Louvre
+:::
+:::`
+    expect(run(figureSingleCredits, md).map((d) => d.line)).toEqual([6])
+  })
+})
+
+describe('figureCreditsSpanPlacement()', () => {
+  test('no diagnostic for credits in the head or the légende', () => {
+    const md = `:::{.figure}
+[Titre [© Louvre]{.credits}]{.head}
+![Vue [© BnF]{.credits}](image.png)
+:::`
+    expect(run(figureCreditsSpanPlacement, md)).toHaveLength(0)
+  })
+
+  test('error for a credits span directly in the figure', () => {
+    const md = `:::{.figure}
+![légende](image.png)
+Source : [Eva Watson-Schütze]{.credits}
+:::`
+    const [d] = run(figureCreditsSpanPlacement, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('figure-credits-span-placement')
+    expect(d.line).toBe(3)
+    expect(d.column).toBe(10)
+    expect(d.endColumn).toBe(40)
+  })
+
+  test('no false positive outside a figure', () => {
+    const md = `[© BnF]{.credits}`
+    expect(run(figureCreditsSpanPlacement, md)).toHaveLength(0)
+  })
+})
 
 describe('prenoteRequiresOrigin()', () => {
   test('no diagnostic when origin is present', () => {
