@@ -59,6 +59,9 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     needs: [build-assets]
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     environment:
       name: production
       url: https://stylo.huma-num.fr
