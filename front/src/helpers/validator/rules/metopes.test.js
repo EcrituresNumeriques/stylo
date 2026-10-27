@@ -720,16 +720,22 @@ Un commentaire.
     })
   })
 
-  test('error for a second quotation', () => {
+  test('no diagnostic for block quotes separated by a blank line', () => {
     const md = `:::{.rich-quote}
-> Le texte cité
+> Premier paragraphe cité
 
-> Une autre citation
+> Second paragraphe cité
 :::`
-    const [d] = run(richQuoteContent, md)
-    expect(d.code).toBe('rich-quote-content-restricted')
-    expect(d.line).toBe(4)
-    expect(d.messageParams.element).toBe('validation.rules.elements.blockquote')
+    expect(run(richQuoteContent, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for references at the end of quoted paragraphs', () => {
+    const md = `:::{.rich-quote}
+> Premier paragraphe cité [@doe2020, p. 3].
+
+> Second paragraphe cité @smith.
+:::`
+    expect(run(richQuoteContent, md)).toHaveLength(0)
   })
 
   test('error for a custom class other than translation', () => {
@@ -753,11 +759,14 @@ citation
 > ## Un titre
 >
 > > Une citation imbriquée
+
+> ## Un autre titre
 :::`
     const diagnostics = run(richQuoteContent, md)
     expect(diagnostics.map((d) => [d.code, d.line])).toEqual([
       ['quoted-content-restricted', 2],
       ['quoted-content-restricted', 4],
+      ['quoted-content-restricted', 6],
     ])
   })
 })
@@ -773,6 +782,17 @@ describe('translationContent()', () => {
 > On two paragraphs.
 
 [@source]
+:::
+:::`
+    expect(run(translationContent, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for translations of a linguistic quote', () => {
+    const md = `:::{.linguistic}
+Exemple
+
+:::{.translation lang="en"}
+Example
 :::
 :::`
     expect(run(translationContent, md)).toHaveLength(0)

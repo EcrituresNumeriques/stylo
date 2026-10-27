@@ -624,9 +624,10 @@ function nodeRange({ position }) {
 
 /**
  * Checks the content of a quotation block (`.rich-quote` or `.translation`):
- * the quoted text is a single Markdown block quote without headings nor nested
- * quotations, accompanied only by bibliographic references (and index entries
- * when allowed) and by the allowed child blocks.
+ * the quoted text is made of Markdown block quotes (one per paragraph, if need
+ * be) without headings nor nested quotations, accompanied only by
+ * bibliographic references (and index entries when allowed) and by the allowed
+ * child blocks.
  * @param {import('../pandoc-divs.js').DivNode} div
  * @param {string[]} lines
  * @param {Array} diagnostics
@@ -650,10 +651,10 @@ function checkQuotationContent(div, lines, diagnostics, options) {
     })
   }
 
-  let quote = null
+  const quotes = []
   for (const node of parseDirectContent(div, lines).children) {
-    if (node.type === 'blockquote' && !quote) {
-      quote = node
+    if (node.type === 'blockquote') {
+      quotes.push(node)
       continue
     }
     if (node.type === 'html' && node.value.startsWith('<!--')) continue
@@ -673,7 +674,7 @@ function checkQuotationContent(div, lines, diagnostics, options) {
     })
   }
 
-  if (!quote) {
+  if (quotes.length === 0) {
     diagnostics.push({
       line: div.startLine,
       column: 1,
@@ -686,20 +687,22 @@ function checkQuotationContent(div, lines, diagnostics, options) {
     return
   }
 
-  visit(quote, (node) => {
-    if (node === quote) return
-    if (node.type !== 'heading' && node.type !== 'blockquote') return
-    diagnostics.push({
-      ...nodeRange(node),
-      severity: 'error',
-      messageKey: 'validation.rules.quotedContentRestricted',
-      messageParams: {
-        element: `validation.rules.elements.${QUOTE_ELEMENTS[node.type]}`,
-      },
-      code: 'quoted-content-restricted',
+  for (const quote of quotes) {
+    visit(quote, (node) => {
+      if (node === quote) return
+      if (node.type !== 'heading' && node.type !== 'blockquote') return
+      diagnostics.push({
+        ...nodeRange(node),
+        severity: 'error',
+        messageKey: 'validation.rules.quotedContentRestricted',
+        messageParams: {
+          element: `validation.rules.elements.${QUOTE_ELEMENTS[node.type]}`,
+        },
+        code: 'quoted-content-restricted',
+      })
+      return SKIP
     })
-    return SKIP
-  })
+  }
 }
 
 /**
@@ -727,6 +730,7 @@ export function richQuoteContent(_tree, markdown, diagnostics) {
 /**
  * Le contenu traduit d'un bloc translation est une citation Markdown (`>`). À
  * part ce contenu, seules des références bibliographiques sont autorisées.
+ * Les traductions des citations linguistiques ne sont pas vérifiées.
  *
  * @param {import('unist').Node} _tree
  * @param {string} markdown
@@ -734,16 +738,22 @@ export function richQuoteContent(_tree, markdown, diagnostics) {
  */
 export function translationContent(_tree, markdown, diagnostics) {
   const lines = markdown.split('\n')
-  walkDivs(parsePandocFencedDivs(markdown), (node) => {
-    if (node.className !== 'translation') return
-    checkQuotationContent(node, lines, diagnostics, {
-      prefix: 'translation',
-      allowIndex: false,
-      allowedClasses: new Set(),
-      // Already reported by translationNotNested
-      ignoredClasses: new Set(['translation']),
-    })
-  })
+  const walk = (nodes) => {
+    for (const node of nodes) {
+      if (node.className === 'linguistic') continue
+      if (node.className === 'translation') {
+        checkQuotationContent(node, lines, diagnostics, {
+          prefix: 'translation',
+          allowIndex: false,
+          allowedClasses: new Set(),
+          // Already reported by translationNotNested
+          ignoredClasses: new Set(['translation']),
+        })
+      }
+      walk(node.children)
+    }
+  }
+  walk(parsePandocFencedDivs(markdown))
 }
 
 /**
