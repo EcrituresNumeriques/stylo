@@ -186,6 +186,17 @@ Une autre citation
 > Une autre citation`
     expect(run(epigraphSingleQuote, md)).toHaveLength(0)
   })
+
+  test('warning for an epigraph without quotation', () => {
+    const md = `:::{.epigraph}
+Un texte qui n'est pas une citation.
+:::`
+    const [d] = run(epigraphSingleQuote, md)
+    expect(d.severity).toBe('warning')
+    expect(d.code).toBe('epigraph-missing-quote')
+    expect(d.messageKey).toBe('validation.rules.epigraphMissingQuote')
+    expect(d.line).toBe(1)
+  })
 })
 
 describe('questionAnswerTextOnly()', () => {

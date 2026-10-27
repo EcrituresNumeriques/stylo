@@ -92,6 +92,7 @@
         "nested": "a nested block",
         "default": "this element"
       },
+      "epigraphMissingQuote": "An epigraph should contain a quotation.",
       "epigraphSingleQuote": "An epigraph should contain only one quotation.",
       "figureContentRestrictedBlock": "A figure block may only contain the image, the head and the credits (block `.{{class}}` is not allowed).",
       "figureContentRestrictedText": "A figure block may only contain the image, the head and the credits (free text is not allowed).",

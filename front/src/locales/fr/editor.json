@@ -92,6 +92,7 @@
         "nested": "un bloc imbriqué",
         "default": "cet élément"
       },
+      "epigraphMissingQuote": "Un épigraphe devrait contenir une citation.",
       "epigraphSingleQuote": "Un épigraphe ne devrait contenir qu'une seule citation.",
       "figureContentRestrictedBlock": "Un bloc figure ne peut contenir que l'image, l'en-tête et les crédits (bloc `.{{class}}` non autorisé).",
       "figureContentRestrictedText": "Un bloc figure ne peut contenir que l'image, l'en-tête et les crédits (texte libre non autorisé).",
