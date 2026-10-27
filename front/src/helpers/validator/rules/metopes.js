@@ -107,7 +107,7 @@ function quoteStartLines(div, lines) {
 }
 
 /**
- * L'usage voudrait qu'un épigraphe ne contienne qu'une seule citation.
+ * L'usage voudrait qu'un épigraphe contienne une et une seule citation.
  *
  * @param {import('unist').Node} _tree
  * @param {string} markdown
@@ -117,7 +117,19 @@ export function epigraphSingleQuote(_tree, markdown, diagnostics) {
   const lines = markdown.split('\n')
   walkDivs(parsePandocFencedDivs(markdown), (node) => {
     if (node.className !== 'epigraph') return
-    for (const line of quoteStartLines(node, lines).slice(1)) {
+    const starts = quoteStartLines(node, lines)
+    if (starts.length === 0) {
+      diagnostics.push({
+        line: node.startLine,
+        column: 1,
+        endLine: node.startLine,
+        endColumn: 4,
+        severity: 'warning',
+        messageKey: 'validation.rules.epigraphMissingQuote',
+        code: 'epigraph-missing-quote',
+      })
+    }
+    for (const line of starts.slice(1)) {
       diagnostics.push({
         line,
         column: 1,
