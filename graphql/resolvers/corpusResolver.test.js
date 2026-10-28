@@ -2,6 +2,8 @@ const { Query, Corpus: CorpusMutation } = require('./corpusResolver')
 const Corpus = require('../models/corpus')
 const User = require('../models/user')
 const Article = require('../models/article')
+const Workspace = require('../models/workspace')
+const { NotAuthenticatedError, NotFoundError } = require('../helpers/errors')
 const { before, after, describe, test } = require('node:test')
 const assert = require('node:assert')
 const { setup, teardown } = require('../tests/harness')
@@ -167,5 +169,87 @@ describe('corpus resolver', () => {
       ]
     )
     assert.equal(firstCorpusFound.creator._id.toString(), thomas._id.toString())
+  })
+
+  test('list the personal corpuses of the authenticated user', async () => {
+    const alice = await User.create({ email: 'alice@huma-num.fr' })
+    const bob = await User.create({ email: 'bob@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace A',
+      color: '#bb69ff',
+      members: [{ user: alice.id }],
+      articles: [],
+      creator: alice.id,
+    })
+    await Corpus.create({ name: 'Personal', creator: alice.id })
+    await Corpus.create({
+      name: 'In workspace',
+      creator: alice.id,
+      workspace: workspace.id,
+    })
+    await Corpus.create({ name: 'Not mine', creator: bob.id })
+
+    const corpuses = await Query.corpuses(
+      {},
+      {},
+      { user: alice, userId: alice.id }
+    )
+    assert.deepEqual(
+      corpuses.map((c) => c.name),
+      ['Personal']
+    )
+  })
+
+  test('list the corpuses of a workspace', async () => {
+    const alice = await User.create({ email: 'alice.w@huma-num.fr' })
+    const bob = await User.create({ email: 'bob.w@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace B',
+      color: '#bb69ff',
+      members: [{ user: alice.id }, { user: bob.id }],
+      articles: [],
+      creator: alice.id,
+    })
+    await Corpus.create({
+      name: 'Shared',
+      creator: alice.id,
+      workspace: workspace.id,
+    })
+    await Corpus.create({ name: 'Personal', creator: bob.id })
+
+    const corpuses = await Query.corpuses(
+      {},
+      { filter: { workspaceId: workspace.id } },
+      { user: bob, userId: bob.id }
+    )
+    assert.deepEqual(
+      corpuses.map((c) => c.name),
+      ['Shared']
+    )
+  })
+
+  test('refuse to list the corpuses of a workspace the user is not a member of', async () => {
+    const alice = await User.create({ email: 'alice.x@huma-num.fr' })
+    const mallory = await User.create({ email: 'mallory@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace C',
+      color: '#bb69ff',
+      members: [{ user: alice.id }],
+      articles: [],
+      creator: alice.id,
+    })
+
+    await assert.rejects(
+      Query.corpuses(
+        {},
+        { filter: { workspaceId: workspace.id } },
+        { user: mallory, userId: mallory.id }
+      ),
+      NotFoundError
+    )
+  })
+
+  test('refuse to list personal corpuses when not authenticated', async () => {
+    await assert.rejects(Query.corpuses({}, {}, {}), NotAuthenticatedError)
   })
 })

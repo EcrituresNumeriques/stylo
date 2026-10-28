@@ -7,6 +7,12 @@ const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Corpus = require('../models/corpus')
 
+async function getWorkspaceCorpuses(workspace) {
+  return Corpus.find({ workspace: workspace._id })
+    .populate([{ path: 'creator' }])
+    .sort([['updatedAt', -1]])
+}
+
 /**
  * @param workspaceId
  * @param token
@@ -203,10 +209,13 @@ module.exports = {
       })
     },
 
+    /** @deprecated Use corpuses instead. */
     async corpus(workspace) {
-      return Corpus.find({ workspace: workspace._id })
-        .populate([{ path: 'creator' }])
-        .sort([['updatedAt', -1]])
+      return getWorkspaceCorpuses(workspace)
+    },
+
+    async corpuses(workspace) {
+      return getWorkspaceCorpuses(workspace)
     },
 
     async member(workspace, { userId }) {
