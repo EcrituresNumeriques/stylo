@@ -26,14 +26,14 @@ import CorpusMetadata from './CorpusMetadata.jsx'
 /**
  * @typedef Article
  * @type {object}
- * @property {string} _id
+ * @property {string} id
  * @property {string} title
  */
 
 /**
  * @typedef Corpus
  * @type {object}
- * @property {string} _id
+ * @property {string} id
  * @property {string} type
  * @property {string} name
  * @property {string} description
@@ -61,7 +61,7 @@ export default function CorpusItem({ corpus }) {
   const metadataCorpusModal = useModal()
 
   const { deleteCorpus } = useCorpusActions()
-  const corpusId = useMemo(() => corpus._id, [corpus])
+  const corpusId = useMemo(() => corpus.id, [corpus])
 
   const handleDeleteCorpus = useCallback(async () => {
     try {
@@ -83,12 +83,12 @@ export default function CorpusItem({ corpus }) {
   return (
     <article
       className={styles.corpus}
-      aria-labelledby={`corpus-${corpus._id}-title`}
+      aria-labelledby={`corpus-${corpus.id}-title`}
       role="listitem"
     >
       <header className={styles.header}>
         <div className={styles.heading}>
-          <h2 id={`corpus-${corpus._id}-title`} className={styles.title}>
+          <h2 id={`corpus-${corpus.id}-title`} className={styles.title}>
             {corpus.name}
           </h2>
           <Badge className={styles.badge} label={t(`types.${corpus.type}`)} />
@@ -99,7 +99,7 @@ export default function CorpusItem({ corpus }) {
             role="menuitem"
             target="_blank"
             className={buttonStyles.icon}
-            to={`/corpus/${corpus._id}/annotate`}
+            to={`/corpus/${corpus.id}/annotate`}
             title={t('actions.annotate.title')}
           >
             <MessageSquareShare aria-label={t('actions.annotate.button')} />
@@ -143,7 +143,7 @@ export default function CorpusItem({ corpus }) {
         </div>
       </header>
 
-      <div id={`corpus-${corpus._id}-chapters`} className={styles.details}>
+      <div id={`corpus-${corpus.id}-chapters`} className={styles.details}>
         <ObjectMetadataLabel
           className={styles.metadata}
           updatedAtDate={corpus.updatedAt}

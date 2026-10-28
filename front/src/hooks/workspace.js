@@ -43,7 +43,7 @@ export function useActiveWorkspace() {
   const workspaceId = useActiveWorkspaceId()
   const { workspaces, isLoading } = useWorkspaces()
 
-  return isLoading ? null : workspaces.find(({ _id }) => _id === workspaceId)
+  return isLoading ? null : workspaces.find(({ id }) => id === workspaceId)
 }
 
 export function useWorkspaceMembersActions(workspaceId) {
@@ -62,7 +62,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   const updateMembersCount = async (result) => {
     await workspacesMutate(async (data) => ({
       workspaces: data?.workspaces?.map((w) => {
-        if (w._id === workspaceId) {
+        if (w.id === workspaceId) {
           return {
             ...w,
             stats: {
@@ -78,7 +78,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   }
 
   const removeMember = async (user) => {
-    const { _id: userId } = user
+    const { id: userId } = user
     await executeQuery({
       query: removeMemberMutation,
       variables: { workspaceId, userId },
@@ -88,7 +88,7 @@ export function useWorkspaceMembersActions(workspaceId) {
       async (data) => {
         return {
           workspace: {
-            members: data.workspace.members.filter((m) => m._id !== userId),
+            members: data.workspace.members.filter((m) => m.id !== userId),
           },
         }
       },
@@ -98,7 +98,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   }
 
   const inviteMember = async (user) => {
-    const { _id: userId } = user
+    const { id: userId } = user
     await executeQuery({
       query: inviteMemberMutation,
       variables: { workspaceId, userId },
@@ -163,7 +163,7 @@ export function useWorkspaceActions() {
     })
     await mutate(
       async (data) => ({
-        workspaces: data.workspaces.filter((w) => w._id !== workspaceId),
+        workspaces: data.workspaces.filter((w) => w.id !== workspaceId),
       }),
       { revalidate: false }
     )
@@ -181,7 +181,7 @@ export function useWorkspaceActions() {
     await mutate(
       async (data) => ({
         workspaces: data.workspaces.map((w) => {
-          if (w._id === workspaceId) {
+          if (w.id === workspaceId) {
             return {
               ...w,
               formMetadata: input,

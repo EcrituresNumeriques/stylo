@@ -1,7 +1,7 @@
 #import './Credentials.graphql'
 
 fragment basicVersionFields on Version {
-  _id
+  id
   version
   revision
   message
@@ -14,14 +14,14 @@ fragment basicVersionFields on Version {
 
 mutation renameVersion($versionId: ID!, $name: String) {
   renameVersion(versionId: $versionId, name: $name) {
-    _id
+    id
     message
   }
 }
 
 query getArticleVersions($article: ID!) {
   article(article: $article) {
-    _id
+    id
     updatedAt
     versions {
       ...basicVersionFields

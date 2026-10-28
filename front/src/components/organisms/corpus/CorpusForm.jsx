@@ -38,7 +38,7 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
       const editCorpusInput = fromFormData(event.target)
       if (corpus !== undefined) {
         await updateCorpus({
-          corpusId: corpus._id,
+          corpusId: corpus.id,
           ...editCorpusInput,
         })
       } else {

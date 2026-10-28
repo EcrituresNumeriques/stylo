@@ -16,7 +16,7 @@ export default function UserDeleteConfirm({ onCancel }) {
   const logout = useLogout()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
-  const userId = useSelector((state) => state.activeUser._id)
+  const userId = useSelector((state) => state.activeUser.id)
   return (
     <form
       onSubmit={async (event) => {

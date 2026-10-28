@@ -1,7 +1,7 @@
 #import './Credentials.graphql'
 
 fragment basicVersionFields on Version {
-  _id
+  id
   createdAt
   message
   owner {
@@ -28,7 +28,7 @@ fragment articleVersionFields on Version {
 }
 
 fragment basicArticleFields on Article {
-  _id
+  id
   owner {
     ...basicPublicUserFields
   }
@@ -77,10 +77,10 @@ fragment previewArticleFields on Article {
 
 mutation updateArticle($updateArticleInput: UpdateArticleInput!) {
   updateArticle(updateArticleInput: $updateArticleInput) {
-    _id
+    id
     title
     tags {
-      _id
+      id
       name
       color
     }
@@ -89,14 +89,14 @@ mutation updateArticle($updateArticleInput: UpdateArticleInput!) {
 
 mutation setArticleZoteroLink($articleId: ID!, $url: String!) {
   setArticleZoteroLink(articleId: $articleId, zotero: $url) {
-    _id
+    id
     zoteroLink
   }
 }
 
 mutation setArticleNakalaLink($articleId: ID!, $url: String!) {
   setArticleNakalaLink(articleId: $articleId, nakala: $url) {
-    _id
+    id
     nakalaLink
   }
 }
@@ -112,7 +112,7 @@ query getArticleVersions($articleId: ID!) {
 query getArticleWorkspaces($articleId: ID!) {
   article(article: $articleId) {
     workspaces {
-      _id
+      id
       color
       name
     }
@@ -131,13 +131,13 @@ query getArticleContributors($articleId: ID!) {
 
 mutation deleteArticle($articleId: ID!) {
   deleteArticle(articleId: $articleId) {
-    _id
+    id
   }
 }
 
 mutation duplicateArticle($articleId: ID!, $to: ID!) {
   duplicateArticle(article: $articleId, to: $to) {
-    _id
+    id
     title
     createdAt
     updatedAt
@@ -157,7 +157,7 @@ mutation updateArticleBibliography($input: UpdateArticleBibliographyInput!) {
 
 mutation addArticleTags($articleId: ID!, $tags: [ID]!) {
   addArticleTags(articleId: $articleId, tags: $tags) {
-    _id
+    id
     name
     color
   }
@@ -165,7 +165,7 @@ mutation addArticleTags($articleId: ID!, $tags: [ID]!) {
 
 mutation removeArticleTags($articleId: ID!, $tags: [ID]!) {
   removeArticleTags(articleId: $articleId, tags: $tags) {
-    _id
+    id
     name
     color
   }
@@ -184,7 +184,7 @@ query getArticleInfo($articleId: ID!) {
 query getArticleTags($articleId: ID!) {
   article(article: $articleId) {
     tags {
-      _id
+      id
       name
       color
     }
@@ -206,7 +206,7 @@ query getArticleMetadata(
   $hasVersion: Boolean!
 ) {
   article(article: $articleId) {
-    _id
+    id
 
     workingVersion {
       metadata

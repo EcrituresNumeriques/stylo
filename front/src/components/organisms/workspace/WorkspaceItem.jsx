@@ -114,7 +114,7 @@ export default function WorkspaceItem({ workspace }) {
     <article className={styles.article}>
       <header className={styles.header}>
         <div className={styles.heading}>
-          <h2 className={styles.title} id={`workspace-${workspace._id}-title`}>
+          <h2 className={styles.title} id={`workspace-${workspace.id}-title`}>
             <span
               className={styles.chip}
               style={{ backgroundColor: workspace.color }}

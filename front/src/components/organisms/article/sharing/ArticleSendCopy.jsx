@@ -13,7 +13,7 @@ import styles from './ArticleSendCopy.module.scss'
 export default function ArticleSendCopy({ article }) {
   const { workspaceId: activeWorkspaceId } = useParams()
   const { copy } = useArticleActions({
-    articleId: article._id,
+    articleId: article.id,
     activeWorkspaceId,
   })
   const { t } = useTranslation()
@@ -22,7 +22,7 @@ export default function ArticleSendCopy({ article }) {
     async ({ user, action }) => {
       if (action === 'select' || action === 'unselect') {
         try {
-          await copy(user._id)
+          await copy(user.id)
           toast(
             t('article.sendCopy.successNotification', {
               username: user.displayName || user.username,
@@ -43,7 +43,7 @@ export default function ArticleSendCopy({ article }) {
         }
       }
     },
-    [article._id]
+    [article.id]
   )
 
   return (

@@ -51,13 +51,13 @@ export default function StyloApp() {
   // Setup user session
   useEffect(() => {
     dispatch({ type: 'PROFILE', user })
-    setSentryUser({ id: user?._id })
+    setSentryUser({ id: user?.id })
 
     if (hasTrackingConsent) {
       const _paq = (window._paq = window._paq || [])
-      _paq.push(['setUserId', user?._id])
+      _paq.push(['setUserId', user?.id])
     }
-  }, [user?._id, hasTrackingConsent])
+  }, [user?.id, hasTrackingConsent])
 
   useEffect(() => {
     if (location.pathname.match(/\/books/i)) {

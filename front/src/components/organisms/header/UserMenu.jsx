@@ -23,7 +23,7 @@ export default function UserMenu() {
   } = useComponentVisible()
   const { user } = useRouteLoaderData('app')
 
-  if (!user?._id) {
+  if (!user?.id) {
     return <AnonymousSubmenu />
   }
 

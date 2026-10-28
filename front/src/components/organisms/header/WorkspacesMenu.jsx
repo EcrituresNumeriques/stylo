@@ -118,10 +118,10 @@ function Submenu({
         <li>
           <button
             onClick={() => setActiveWorkspaceId(null)}
-            aria-pressed={!activeWorkspace?._id}
+            aria-pressed={!activeWorkspace?.id}
             title={t('header.workspaces.selectButton', {
               workspace: '$t(header.workspaces.myspace)',
-              selected: !activeWorkspace?._id,
+              selected: !activeWorkspace?.id,
             })}
             type="button"
           >
@@ -131,13 +131,13 @@ function Submenu({
         </li>
 
         {workspaces.map((workspace) => (
-          <li key={workspace._id}>
+          <li key={workspace.id}>
             <button
-              onClick={() => setActiveWorkspaceId(workspace._id)}
-              aria-pressed={activeWorkspace?._id === workspace._id}
+              onClick={() => setActiveWorkspaceId(workspace.id)}
+              aria-pressed={activeWorkspace?.id === workspace.id}
               aria-label={t('header.workspaces.selectButton', {
                 workspace: workspace.name,
-                selected: activeWorkspace?._id === workspace._id,
+                selected: activeWorkspace?.id === workspace.id,
               })}
               type="button"
             >

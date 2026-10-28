@@ -62,7 +62,7 @@ export default function Articles() {
           }
           // if we find at least one matching tag in the selected list, we keep the article
           return selectedTagIds.some((tagId) =>
-            article.tags.find(({ _id }) => _id === tagId)
+            article.tags.find(({ id }) => id === tagId)
           )
         })
         .filter(
@@ -150,10 +150,10 @@ export default function Articles() {
         <div>
           {keepArticles.map((article) => (
             <Article
-              key={`article-${article._id}`}
+              key={`article-${article.id}`}
               article={article}
               corpus={corpora.filter((c) =>
-                c.articles.map((a) => a.article._id).includes(article._id)
+                c.articles.map((a) => a.article.id).includes(article.id)
               )}
             />
           ))}

@@ -8,12 +8,12 @@ import Component from './TagEditForm.jsx'
 
 describe('TagEditForm', () => {
   const preloadedState = {
-    activeUser: { _id: 'test-user-id' },
+    activeUser: { id: 'test-user-id' },
   }
   const emptyTag = {}
 
   const existingTag = {
-    _id: 'tag-id',
+    id: 'tag-id',
     name: 'existing tag',
     color: '#fc0',
     description: '',

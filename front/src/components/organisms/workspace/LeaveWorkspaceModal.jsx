@@ -13,8 +13,8 @@ export default function LeaveWorkspaceModal({ close, bindings, workspace }) {
   const { t } = useTranslation('workspace', { useSuspense: false })
   const { leaveWorkspace } = useWorkspaceActions()
   const handleLeavingWorkspace = useCallback(async () => {
-    await leaveWorkspace(workspace._id)
-  }, [workspace._id])
+    await leaveWorkspace(workspace.id)
+  }, [workspace.id])
 
   const membersCount = workspace.stats?.membersCount ?? 0
 

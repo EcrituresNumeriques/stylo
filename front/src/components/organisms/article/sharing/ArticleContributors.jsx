@@ -10,13 +10,13 @@ import styles from './ArticleContributors.module.scss'
 
 export default function ArticleContributors({ article, contributors }) {
   const { t } = useTranslation()
-  const articleId = article._id
+  const articleId = article.id
   const { addContributor, removeContributor } = useArticleContributorActions({
     articleId,
   })
   const handleUserUpdated = useCallback(
     async ({ user, action }) => {
-      const { _id: userId } = user
+      const { id: userId } = user
       if (action === 'select') {
         // add contributor
         try {

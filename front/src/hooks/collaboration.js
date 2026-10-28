@@ -44,7 +44,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
   const { websocketEndpoint } = applicationConfig
   const activeUser = useSelector(
     (state) => ({
-      _id: state.activeUser._id,
+      id: state.activeUser.id,
       email: state.activeUser.email,
       displayName: state.activeUser.displayName,
       username: state.activeUser.username,
@@ -54,13 +54,13 @@ export function useCollaboration({ articleId, onWritersChange }) {
 
   const writerInfo = useMemo(
     () => ({
-      id: activeUser._id,
+      id: activeUser.id,
       email: activeUser.email,
       displayName: activeUser.displayName,
       username: activeUser.username,
       color: colors[Math.floor(Math.random() * 14)],
     }),
-    [activeUser?._id]
+    [activeUser?.id]
   )
 
   const handleWritersUpdated = useCallback(

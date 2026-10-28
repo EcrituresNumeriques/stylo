@@ -42,13 +42,11 @@ export default function CorpusSelectItems({ articleId }) {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((c) => (
           <CorpusSelectItem
-            key={c._id}
-            id={c._id}
+            key={c.id}
+            id={c.id}
             name={c.name}
             articleId={articleId}
-            selected={c.articles
-              .map((a) => a?.article?._id)
-              .includes(articleId)}
+            selected={c.articles.map((a) => a?.article?.id).includes(articleId)}
             onChange={handleCorpusUpdate}
           />
         ))}

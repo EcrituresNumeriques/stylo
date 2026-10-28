@@ -15,8 +15,8 @@ import styles from './ContactSearch.module.scss'
 
 /**
  * @param {object} props
- * @param {Array<{_id: string, email: string}>} props.members
- * @param {(event: {action: string, user: {_id: string}}) => void} props.onUserUpdated
+ * @param {Array<{id: string, email: string}>} props.members
+ * @param {(event: {action: string, user: {id: string}}) => void} props.onUserUpdated
  * @param {React.ReactElement} props.selectedIcon
  * @param {React.ReactElement} props.unselectedIcon
  * @param {boolean} props.showActiveUser
@@ -32,7 +32,7 @@ export default function ContactSearch({
   const { t } = useTranslation()
   const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
-  const activeUserId = activeUser._id
+  const activeUserId = activeUser.id
   const { contacts: userContacts, add, remove } = useContactActions()
   const { query } = useGraphQLClient()
   const [filter, setFilter] = useState('')
@@ -42,7 +42,7 @@ export default function ContactSearch({
     (contact) => {
       const contactName = displayName(contact)
       return (
-        contact._id !== activeUserId &&
+        contact.id !== activeUserId &&
         (contact.email.toLowerCase().includes(filter.toLowerCase()) ||
           contactName.toLowerCase().includes(filter.toLowerCase()))
       )
@@ -52,20 +52,20 @@ export default function ContactSearch({
 
   const contacts = useMemo(() => {
     const membersById = members.reduce((agg, m) => {
-      agg[m._id] = m
+      agg[m.id] = m
       return agg
     }, {})
     const contactsById = userContacts?.reduce((agg, contact) => {
-      if (membersById[contact._id]) {
+      if (membersById[contact.id]) {
         // contact is a member
-        agg[contact._id] = {
+        agg[contact.id] = {
           ...contact,
           active: true,
           selected: true,
         }
         return agg
       }
-      agg[contact._id] = {
+      agg[contact.id] = {
         ...contact,
         active: true,
         selected: false,
@@ -75,7 +75,7 @@ export default function ContactSearch({
     // remove members that are also contacts
     const contactIds = Object.keys(contactsById)
     const distantMembers = members
-      .filter((m) => !contactIds.includes(m._id))
+      .filter((m) => !contactIds.includes(m.id))
       .map((m) => ({ ...m, selected: true }))
     return [...Object.values(contactsById), ...distantMembers]
   }, [userContacts, members])
@@ -87,9 +87,9 @@ export default function ContactSearch({
 
   const handleContactUpdate = useCallback(
     async (event) => {
-      const { _id: userId } = event.user
+      const { id: userId } = event.user
       if (event.action === 'select' || event.action === 'active') {
-        const contactsFound = contacts.find((c) => c._id === userId)
+        const contactsFound = contacts.find((c) => c.id === userId)
         if (!contactsFound) {
           setUserFound(null)
         }
@@ -107,7 +107,7 @@ export default function ContactSearch({
   async function findUserByEmail({ email, contacts, activeUserId }) {
     const existingContactsFound = contacts.filter(
       (c) =>
-        c._id !== activeUserId &&
+        c.id !== activeUserId &&
         c.email.toLowerCase().includes(email.toLowerCase())
     )
     return existingContactsFound.length === 0
@@ -128,7 +128,7 @@ export default function ContactSearch({
           contacts,
           activeUserId,
         })
-        if (userFound && userFound._id === activeUserId) {
+        if (userFound && userFound.id === activeUserId) {
           setUserFound(null)
         } else {
           setUserFound(userFound)
@@ -151,7 +151,7 @@ export default function ContactSearch({
 
   const inactiveUser =
     filter.length > 0 && contactsFound.length === 0 && !userFound
-      ? { _id: 'inactive', email: filter, state: 'inactive' }
+      ? { id: 'inactive', email: filter, state: 'inactive' }
       : undefined
 
   return (
@@ -180,7 +180,7 @@ export default function ContactSearch({
         )}
         {contactsFound.map((user) => (
           <ContactItem
-            key={user._id}
+            key={user.id}
             user={user}
             selected={user.selected}
             active={user.active}
@@ -191,7 +191,7 @@ export default function ContactSearch({
         ))}
         {userFound && (
           <ContactItem
-            key={userFound._id}
+            key={userFound.id}
             user={userFound}
             hideName={true}
             selectedIcon={selectedIcon}

@@ -3,7 +3,7 @@ query getTags {
     tags {
       name
       color
-      _id
+      id
     }
   }
 }
@@ -15,7 +15,7 @@ mutation updateTag(
   $description: String!
 ) {
   updateTag(tag: $tag, name: $name, description: $description, color: $color) {
-    _id
+    id
     name
     description
     color
@@ -28,7 +28,7 @@ mutation createTag(
   $color: HexColorCode!
 ) {
   createTag(name: $name, description: $description, color: $color) {
-    _id
+    id
     name
     description
     color

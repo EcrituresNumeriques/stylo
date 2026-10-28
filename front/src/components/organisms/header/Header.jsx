@@ -32,7 +32,7 @@ export default function Header() {
   const headerRef = useRef(null)
   const activeWorkspaceId = useActiveWorkspaceId()
   const { user } = useRouteLoaderData('app')
-  const userId = user?._id
+  const userId = user?.id
   const baseUrl = useMemo(
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
     [activeWorkspaceId]

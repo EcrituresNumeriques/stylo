@@ -18,8 +18,8 @@ describe('Article', () => {
             data: {
               article: {
                 tags: [
-                  { _id: '111', name: 'pending' },
-                  { _id: '222', name: 'done' },
+                  { id: '111', name: 'pending' },
+                  { id: '222', name: 'done' },
                 ],
               },
             },
@@ -39,11 +39,11 @@ describe('Article', () => {
         <div>
           <ul>
             {tags?.map((t) => (
-              <li key={t._id}>
+              <li key={t.id}>
                 {t.name}
                 <button
-                  data-testid={'add-tag-' + t._id}
-                  onClick={() => add(t._id)}
+                  data-testid={'add-tag-' + t.id}
+                  onClick={() => add(t.id)}
                 ></button>
               </li>
             ))}
@@ -69,7 +69,7 @@ describe('Article', () => {
           resolve({
             data: {
               article: {
-                tags: [{ _id: '222', name: 'done' }],
+                tags: [{ id: '222', name: 'done' }],
               },
             },
           })
@@ -88,11 +88,11 @@ describe('Article', () => {
         <div>
           <ul>
             {tags?.map((t) => (
-              <li key={t._id}>
+              <li key={t.id}>
                 {t.name}
                 <button
-                  data-testid={'remove-tag-' + t._id}
-                  onClick={() => remove(t._id)}
+                  data-testid={'remove-tag-' + t.id}
+                  onClick={() => remove(t.id)}
                 ></button>
               </li>
             ))}
@@ -232,11 +232,11 @@ describe('Article versions', () => {
               createArticleVersion: {
                 versions: [
                   {
-                    _id: '111',
+                    id: '111',
                     message: 'This is a minor version!',
                   },
                   {
-                    _id: '222',
+                    id: '222',
                     message: 'This is a major version!',
                   },
                 ],

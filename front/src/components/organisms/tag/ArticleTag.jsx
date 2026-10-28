@@ -22,8 +22,8 @@ export default function ArticleTag({
         {!disableAction && (
           <input
             name={key}
-            value={tag._id}
-            data-id={tag._id}
+            value={tag.id}
+            data-id={tag.id}
             type="checkbox"
             checked={isSelected}
             onChange={onClick}

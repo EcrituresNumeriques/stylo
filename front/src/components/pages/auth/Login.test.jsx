@@ -21,7 +21,7 @@ vi.mock('../../../config.js', () => ({
 
 describe('Login', () => {
   const preloadedState = {
-    activeUser: { _id: 'test-user-id' },
+    activeUser: { id: 'test-user-id' },
   }
 
   beforeEach(() => {

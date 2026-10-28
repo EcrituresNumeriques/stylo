@@ -40,7 +40,7 @@ export default function ArticleForm({
 
   const { create } = useArticlesActions({ activeWorkspaceId: workspaceId })
   const { update } = useArticleActions({
-    articleId: article?._id,
+    articleId: article?.id,
     activeWorkspaceId: workspaceId,
   })
 
@@ -88,8 +88,8 @@ export default function ArticleForm({
         defaultValue={article?.title}
       />
 
-      <TagsField defaultValues={article?.tags?.map((t) => t._id)} />
-      <WorkspacesField articleId={article?._id} workspaceId={workspaceId} />
+      <TagsField defaultValues={article?.tags?.map((t) => t.id)} />
+      <WorkspacesField articleId={article?.id} workspaceId={workspaceId} />
 
       <FormActions
         onCancel={onCancel}
@@ -138,21 +138,21 @@ function WorkspacesField({ workspaceId, articleId }) {
     return null
   }
 
-  const defaultValues = data.article.workspaces.map((w) => w._id)
+  const defaultValues = data.article.workspaces.map((w) => w.id)
   return (
     <div>
       <span className={formStyles.fieldLabel}>{t('header')}</span>
 
       <ul className={checkboxStyles.inlineList}>
         {workspaces.map((workspace) => (
-          <li key={`selectWorkspace-${workspace._id}`}>
+          <li key={`selectWorkspace-${workspace.id}`}>
             <Checkbox
               name="workspaces[]"
-              value={workspace._id}
+              value={workspace.id}
               color={workspace.color}
               defaultChecked={
-                workspaceId === workspace._id ||
-                defaultValues.includes(workspace._id)
+                workspaceId === workspace.id ||
+                defaultValues.includes(workspace.id)
               }
             >
               {workspace.name}
@@ -186,12 +186,12 @@ function TagsField({ defaultValues = [] }) {
 
       <ul className={checkboxStyles.inlineList}>
         {tags.map((t) => (
-          <li key={`selectTag-${t._id}`}>
+          <li key={`selectTag-${t.id}`}>
             <Checkbox
               name="tags[]"
-              value={t._id}
+              value={t.id}
               color={t.color}
-              defaultChecked={defaultValues.includes(t._id)}
+              defaultChecked={defaultValues.includes(t.id)}
             >
               {t.name}
             </Checkbox>

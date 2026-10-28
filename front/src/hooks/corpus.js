@@ -56,7 +56,7 @@ export function useCorpusActions() {
     })
     await mutate(async (data) => ({
       ...data,
-      corpora: data.corpora.filter((c) => c._id !== corpusId),
+      corpora: data.corpora.filter((c) => c.id !== corpusId),
     }))
   }
   const updateCorpus = async ({ corpusId, name, description, metadata }) => {
@@ -75,7 +75,7 @@ export function useCorpusActions() {
     await mutate(async (data) => ({
       ...data,
       corpora: data.corpora.map((c) => {
-        if (c._id === corpusId) {
+        if (c.id === corpusId) {
           return {
             ...c,
             ...(name && { name }),

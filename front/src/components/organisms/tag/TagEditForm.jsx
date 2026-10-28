@@ -11,7 +11,7 @@ import { FormActions } from '../../molecules/index.js'
 
 /**
  * @param {object} props
- * @param {{_id?: string, name?: string, description?: string, color?: string}|null} props.tag
+ * @param {{id?: string, name?: string, description?: string, color?: string}|null} props.tag
  * @param {(result: unknown) => void} props.onSubmit
  * @param {() => void} props.onCancel
  * @returns {Element}
@@ -20,7 +20,7 @@ export default function TagEditForm({ tag, onSubmit, onCancel }) {
   const { create, update } = useUserTagActions()
   const { t } = useTranslation()
 
-  const isNew = Boolean(!tag?._id)
+  const isNew = Boolean(!tag?.id)
 
   const title = isNew ? t('tag.editForm.title') : t('tag.createForm.title')
 
@@ -28,7 +28,7 @@ export default function TagEditForm({ tag, onSubmit, onCancel }) {
     event.preventDefault()
     const data = {
       ...fromFormData(event.target),
-      tag: tag?._id ?? null,
+      tag: tag?.id ?? null,
     }
     const result = isNew ? await create(data) : await update(data)
     onSubmit(result)

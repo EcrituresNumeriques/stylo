@@ -6,8 +6,7 @@ export function merge(...lists) {
       // we keep users who do not appear further in the array
       .filter((user, index, allUsers) => {
         return (
-          allUsers.slice(index + 1).some(({ _id }) => _id === user._id) ===
-          false
+          allUsers.slice(index + 1).some(({ id }) => id === user.id) === false
         )
       })
   )

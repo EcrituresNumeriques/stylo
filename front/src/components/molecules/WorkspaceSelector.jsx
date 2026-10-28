@@ -18,7 +18,7 @@ export default function WorkspaceSelector({
   return (
     <Select name={name} id={id} label={label} disabled={disabled}>
       {workspaces.map((workspace) => (
-        <option value={workspace._id} key={workspace._id}>
+        <option value={workspace.id} key={workspace.id}>
           {workspace.name}
         </option>
       ))}

@@ -156,7 +156,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     const result = await executeQuery({
       query: duplicateArticle,
       variables: {
-        to: activeUser._id,
+        to: activeUser.id,
         articleId,
       },
       sessionToken,
@@ -186,7 +186,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     })
     await mutateArticles(async (data) => {
       const updatedArticles =
-        data?.articles?.filter((article) => article._id !== articleId) ?? []
+        data?.articles?.filter((article) => article.id !== articleId) ?? []
       return {
         ...data,
         articles: updatedArticles,
@@ -217,7 +217,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     await mutateArticleWorkspaces()
     await mutateArticles(async (data) => {
       const updatedArticles = data.articles.map((article) =>
-        article._id === updatedArticle._id ? updatedArticle : article
+        article.id === updatedArticle.id ? updatedArticle : article
       )
       return {
         ...data,
@@ -273,7 +273,7 @@ export function useArticleMetadata({ articleId, versionId }) {
       sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
-        userId: activeUser._id,
+        userId: activeUser.id,
         articleId: articleId,
         content: { metadataFormType },
       },
@@ -303,7 +303,7 @@ export function useArticleMetadata({ articleId, versionId }) {
       sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
-        userId: activeUser._id,
+        userId: activeUser.id,
         articleId: articleId,
         content: { metadata },
       },
@@ -343,7 +343,7 @@ export function useArticleMetadata({ articleId, versionId }) {
         }
       } catch (e) {
         console.error(
-          `Ignore form metadata configured on workspace id: ${w._id}`,
+          `Ignore form metadata configured on workspace id: ${w.id}`,
           e
         )
         return null
@@ -534,7 +534,7 @@ export function useArticleVersionActions({ articleId }) {
     const response = await executeQuery({
       query: createArticleVersion,
       variables: {
-        userId: activeUser._id,
+        userId: activeUser.id,
         articleId,
         major: version.major,
         message: version.description,
@@ -561,7 +561,7 @@ export function useArticleVersionActions({ articleId }) {
       article: {
         ...data?.article,
         versions: data.article.versions.map((v) => {
-          if (v._id === versionId) {
+          if (v.id === versionId) {
             return {
               ...v,
               ...response.renameVersion,

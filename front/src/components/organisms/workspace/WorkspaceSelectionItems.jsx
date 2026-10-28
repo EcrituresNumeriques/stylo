@@ -51,12 +51,12 @@ export default function WorkspaceSelectionItems({ articleId }) {
     <>
       {workspaces.map((workspace) => (
         <WorkspaceSelectItem
-          key={workspace._id}
-          id={workspace._id}
+          key={workspace.id}
+          id={workspace.id}
           color={workspace.color}
           name={workspace.name}
           articleId={articleId}
-          selected={articleWorkspaces.map((w) => w._id).includes(workspace._id)}
+          selected={articleWorkspaces.map((w) => w.id).includes(workspace.id)}
           onChange={handleWorkspaceUpdate}
         />
       ))}
