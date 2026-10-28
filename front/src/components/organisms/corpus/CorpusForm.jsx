@@ -18,7 +18,7 @@ import styles from './corpusCreate.module.scss'
  */
 export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
   const { t } = useTranslation('corpus', { useSuspense: false })
-  const titleInputRef = useRef(null)
+  const nameInputRef = useRef(null)
   const { createCorpus, updateCorpus } = useCorpusActions()
 
   const action = useMemo(
@@ -27,8 +27,8 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
   )
 
   useEffect(() => {
-    if (titleInputRef.current !== undefined) {
-      titleInputRef.current.focus()
+    if (nameInputRef.current !== undefined) {
+      nameInputRef.current.focus()
     }
   }, [])
 
@@ -59,8 +59,8 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
     <form onSubmit={handleSubmit} className={styles.form}>
       <Field
         required={true}
-        ref={titleInputRef}
-        name="title"
+        ref={nameInputRef}
+        name="name"
         label={t('actions.create.fields.name')}
         type="text"
         defaultValue={corpus?.name}
