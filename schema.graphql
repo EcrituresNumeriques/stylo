@@ -751,6 +751,7 @@ input UserFilter {
 
 input UserProfileInput {
   displayName: String
+  email: String
   firstName: String
   institution: String
   lastName: String
