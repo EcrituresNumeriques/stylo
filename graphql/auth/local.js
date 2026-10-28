@@ -36,7 +36,28 @@ async function onSuccess(req, res) {
   })
 
   res.statusCode = 200
-  res.json({ user: req.user, token })
+  res.json({ user: toPublicUser(req.user), token })
+}
+
+/**
+ * Only expose the public profile of the user
+ * (never the password hash nor the auth providers tokens).
+ *
+ * @param {import('mongoose').HydratedDocument<import('../models/user.js')>} user
+ * @returns {Record<string, any>}
+ */
+function toPublicUser(user) {
+  return {
+    id: user.id,
+    email: user.email,
+    username: user.username,
+    displayName: user.displayName,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    institution: user.institution,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  }
 }
 
 async function verify(username, password, done) {
