@@ -113,7 +113,7 @@ Un último ejemplo para el camino, que puede ser útil en el contexto de los dat
 
 ```graphql
 query articlesCorpus {
- corpus(filter:{corpusId: " ID DEL CORPUS"}){
+ corpus(corpusId: " ID DEL CORPUS"){
  articles{
  article{
  title
