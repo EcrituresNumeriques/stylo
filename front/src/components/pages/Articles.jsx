@@ -45,12 +45,12 @@ export default function Articles() {
       revalidateOnReconnect: false,
       fallbackData: {
         articles: [],
-        corpuses: [],
+        corpora: [],
         workspace: {},
       },
     }
   )
-  const { articles, corpuses, workspace = {} } = data
+  const { articles, corpora, workspace = {} } = data
   const workspaceName = useWorkspaceName({ workspace })
 
   const keepArticles = useMemo(
@@ -152,7 +152,7 @@ export default function Articles() {
             <Article
               key={`article-${article._id}`}
               article={article}
-              corpus={corpuses.filter((c) =>
+              corpus={corpora.filter((c) =>
                 c.articles.map((a) => a.article._id).includes(article._id)
               )}
             />

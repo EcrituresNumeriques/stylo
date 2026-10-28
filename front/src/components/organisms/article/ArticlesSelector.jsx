@@ -36,7 +36,7 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
       revalidateOnReconnect: false,
       fallbackData: {
         articles: [],
-        corpuses: [],
+        corpora: [],
         workspace: {},
       },
     }

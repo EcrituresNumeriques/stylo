@@ -327,8 +327,8 @@ type Workspace {
   formMetadata: WorkspaceFormMetadata
   members: [User!]!
   articles: [Article!]!
-  corpus: [Corpus!]! @deprecated(reason: "Use corpuses instead.")
-  corpuses: [Corpus!]!
+  corpus: [Corpus!]! @deprecated(reason: "Use corpora instead.")
+  corpora: [Corpus!]!
   creator: User!
   createdAt: DateTime
   updatedAt: DateTime
@@ -419,7 +419,7 @@ input FilterCorpusInput {
 }
 
 input CorpusFilterInput {
-  "List the corpuses of this workspace (or the personal corpuses of the authenticated user when omitted)"
+  "List the corpora of this workspace (or the personal corpora of the authenticated user when omitted)"
   workspaceId: ID
 }
 
@@ -468,10 +468,10 @@ type Query {
   """
   Get a list of corpus with an optional filter
   """
-  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpuses to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
+  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
 
-  "Get the corpuses of a workspace, or the personal corpuses of the authenticated user when no workspace is given"
-  corpuses(filter: CorpusFilterInput): [Corpus!]!
+  "Get the corpora of a workspace, or the personal corpora of the authenticated user when no workspace is given"
+  corpora(filter: CorpusFilterInput): [Corpus!]!
 
   "Get a corpus [with an access key]"
   sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus

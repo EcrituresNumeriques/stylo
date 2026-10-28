@@ -7,7 +7,7 @@ const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Corpus = require('../models/corpus')
 
-async function getWorkspaceCorpuses(workspace) {
+async function getWorkspaceCorpora(workspace) {
   return Corpus.find({ workspace: workspace._id })
     .populate([{ path: 'creator' }])
     .sort([['updatedAt', -1]])
@@ -209,13 +209,13 @@ module.exports = {
       })
     },
 
-    /** @deprecated Use corpuses instead. */
+    /** @deprecated Use corpora instead. */
     async corpus(workspace) {
-      return getWorkspaceCorpuses(workspace)
+      return getWorkspaceCorpora(workspace)
     },
 
-    async corpuses(workspace) {
-      return getWorkspaceCorpuses(workspace)
+    async corpora(workspace) {
+      return getWorkspaceCorpora(workspace)
     },
 
     async member(workspace, { userId }) {

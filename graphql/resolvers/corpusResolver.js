@@ -17,7 +17,7 @@ async function getCorpusByContext(corpusId, context) {
   return getCorpusByUser(corpusId, userId)
 }
 
-async function listCorpuses(workspaceId, { user, userId }) {
+async function listCorpora(workspaceId, { user, userId }) {
   if (workspaceId) {
     // permission: make sure that the user belongs to the workspace
     await Workspace.getWorkspaceById(workspaceId, user).orFail(
@@ -211,7 +211,7 @@ module.exports = {
   Query: {
     /**
      * Get a list of corpus.
-     * @deprecated Use corpuses to get a list of corpus.
+     * @deprecated Use corpora to get a list of corpus.
      *
      * @param _
      * @param args
@@ -250,19 +250,19 @@ module.exports = {
         return [corpus]
       }
 
-      return listCorpuses(workspaceIdFilter, context)
+      return listCorpora(workspaceIdFilter, context)
     },
 
     /**
-     * Get the corpuses of a workspace, or the personal corpuses of the authenticated user.
+     * Get the corpora of a workspace, or the personal corpora of the authenticated user.
      *
      * @param _
      * @param args
      * @param context
      * @returns {Promise<[Corpus]>}
      */
-    async corpuses(_, args, context) {
-      return listCorpuses(args?.filter?.workspaceId, context)
+    async corpora(_, args, context) {
+      return listCorpora(args?.filter?.workspaceId, context)
     },
 
     async sharedCorpus(_, args) {

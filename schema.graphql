@@ -441,10 +441,10 @@ type Query {
   article(article: ID!): Article
   "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
   articles(filter: FilterCorpusInput): [Article]
+  "Get the corpora of a workspace, or the personal corpora of the authenticated user when no workspace is given"
+  corpora(filter: CorpusFilterInput): [Corpus!]!
   "Get a list of corpus with an optional filter"
-  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpuses to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
-  "Get the corpuses of a workspace, or the personal corpuses of the authenticated user when no workspace is given"
-  corpuses(filter: CorpusFilterInput): [Corpus!]!
+  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
   getUser(filter: UserFilter): User
   "Fetch an article [with an access key]"
   sharedArticle(accessKey: JWT, article: ID!): Article
@@ -557,8 +557,8 @@ type Workspace {
   articles: [Article!]!
   bibliographyStyle: String
   color: HexColorCode!
-  corpus: [Corpus!]! @deprecated(reason: "Use corpuses instead.")
-  corpuses: [Corpus!]!
+  corpora: [Corpus!]!
+  corpus: [Corpus!]! @deprecated(reason: "Use corpora instead.")
   createdAt: DateTime
   creator: User!
   description: String
@@ -656,7 +656,7 @@ input ArticleVersionInput {
 }
 
 input CorpusFilterInput {
-  "List the corpuses of this workspace (or the personal corpuses of the authenticated user when omitted)"
+  "List the corpora of this workspace (or the personal corpora of the authenticated user when omitted)"
   workspaceId: ID
 }
 
