@@ -11,6 +11,7 @@ const User = require('../models/user.js')
 const Tag = require('../models/tag.js')
 const Corpus = require('../models/corpus.js')
 const { createLoaders } = require('../loaders.js')
+const { NotFoundError } = require('../helpers/errors.js')
 
 const { after, before, beforeEach, describe, test } = require('node:test')
 const assert = require('node:assert')
@@ -209,6 +210,42 @@ describe('article resolver', () => {
       assert.deepEqual(
         articles.map((a) => a.title),
         ['Article A']
+      )
+    })
+
+    test('refuses to list the articles of a workspace the user is not a member of', async () => {
+      const article = await Article.create({
+        title: 'Private article',
+        owner: [user6._id],
+      })
+      const otherWorkspace = await Workspace.create({
+        name: 'Workspace B',
+        color: '#e76f51',
+        members: [{ user: user6._id }],
+        articles: [article.id],
+        creator: user6._id,
+      })
+
+      await assert.rejects(
+        async () =>
+          ArticleQuery.articles(
+            {},
+            { filter: { workspaceId: otherWorkspace._id } },
+            context
+          ),
+        NotFoundError
+      )
+    })
+
+    test('refuses to list the articles of an unknown workspace', async () => {
+      await assert.rejects(
+        async () =>
+          ArticleQuery.articles(
+            {},
+            { filter: { workspaceId: new ObjectId() } },
+            context
+          ),
+        NotFoundError
       )
     })
   })

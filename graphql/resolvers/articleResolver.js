@@ -9,6 +9,7 @@ const Workspace = require('../models/workspace.js')
 const Version = require('../models/version.js')
 
 const isUser = require('../policies/isUser.js')
+const { getWorkspace } = require('./workspaceResolver.js')
 const { reformat } = require('../helpers/metadata.js')
 const {
   computeMajorVersion,
@@ -510,10 +511,12 @@ module.exports = {
 
       // prefilter by articles contained in a workspace or corpus
       if (args.filter?.workspaceId) {
-        const workspace = await Workspace.findById(
+        // permission: make sure that the user belongs to the workspace
+        const workspace = await getWorkspace(
           args.filter.workspaceId,
-          'articles'
-        ).lean()
+          context.token,
+          context.user
+        )
         filterIds = [...workspace.articles]
       }
 
