@@ -157,6 +157,14 @@
         cmd: "docker image prune -f"
       run_once: true
 
+    # images taguées inutilisées (anciennes versions) ; après le restart pour ne pas
+    # supprimer une image fraîchement tirée mais construite il y a plus de 24h
+    - name: Prune unused Docker images older than 24h
+      become: yes
+      ansible.builtin.shell:
+        cmd: "docker image prune -af --filter until=24h"
+      run_once: true
+
   handlers:
     - name: reload nginx
       become: true
