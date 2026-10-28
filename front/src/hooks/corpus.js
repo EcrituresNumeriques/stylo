@@ -26,13 +26,13 @@ export function useCorpusActions() {
   })
 
   const sessionToken = useSelector((state) => state.sessionToken)
-  const createCorpus = async ({ title, description, type }) => {
+  const createCorpus = async ({ name, description, type }) => {
     const response = await executeQuery({
       sessionToken,
       query: createCorpusQuery,
       variables: {
         createCorpusInput: {
-          name: title,
+          name,
           description,
           type,
           workspace: workspaceId,
@@ -59,14 +59,14 @@ export function useCorpusActions() {
       corpuses: data.corpuses.filter((c) => c._id !== corpusId),
     }))
   }
-  const updateCorpus = async ({ corpusId, title, description, metadata }) => {
+  const updateCorpus = async ({ corpusId, name, description, metadata }) => {
     await executeQuery({
       sessionToken,
       query: updateCorpusQuery,
       variables: {
         corpusId,
         updateCorpusInput: {
-          name: title,
+          name,
           description,
           metadata,
         },
@@ -78,7 +78,7 @@ export function useCorpusActions() {
         if (c._id === corpusId) {
           return {
             ...c,
-            ...(title && { name: title }),
+            ...(name && { name }),
             ...(description && { description }),
             ...(metadata !== undefined && { metadata }),
             updatedAt: new Date(),
