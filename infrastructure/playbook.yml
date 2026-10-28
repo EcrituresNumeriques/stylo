@@ -131,6 +131,15 @@
         dest: "~/stylo/front-assets/"
         delete: true
 
+    # remet à zéro le compteur de démarrages (StartLimitBurst) pour ne pas
+    # bloquer un déploiement qui suit de près un précédent
+    - name: Reset failed state of containers service
+      become: true
+      ansible.builtin.command:
+        cmd: "systemctl reset-failed docker-compose-stylo"
+      changed_when: false
+      failed_when: false
+
     - name: Restart containers
       become: true
       ansible.builtin.systemd:
@@ -140,10 +149,12 @@
       environment:
         NODE_OPTIONS: "{{ node_options_flag }}"
 
-    - name: Prune Docker system
+    # uniquement les images sans tag : un prune -a supprimerait les conteneurs
+    # et images que docker compose est encore en train de démarrer
+    - name: Prune dangling Docker images
       become: yes
       ansible.builtin.shell:
-        cmd: "docker system prune -af"
+        cmd: "docker image prune -f"
       run_once: true
 
   handlers:
