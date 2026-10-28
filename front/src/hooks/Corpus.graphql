@@ -24,9 +24,16 @@ query getCorpora(
   $filter: CorpusFilterInput
   $isPersonalWorkspace: Boolean = true
   $workspaceId: ID
+  $includeArticles: Boolean = false
 ) {
   corpora(filter: $filter) {
     ...basicCorpusFields
+
+    articles @include(if: $includeArticles) {
+      article {
+        _id
+      }
+    }
   }
 
   workspace(workspaceId: $workspaceId) @skip(if: $isPersonalWorkspace) {
@@ -35,13 +42,11 @@ query getCorpora(
 }
 
 query getCorpus(
-  $filter: FilterCorpusInput
-  $isPersonalWorkspace: Boolean = true
-  $workspaceId: ID
+  $corpusId: ID!
   $includeArticles: Boolean = false
   $includeWorkingVersion: Boolean = false
 ) {
-  corpus(filter: $filter) {
+  corpus(corpusId: $corpusId) {
     ...basicCorpusFields
 
     articles @include(if: $includeArticles) {
@@ -57,14 +62,10 @@ query getCorpus(
       }
     }
   }
-
-  workspace(workspaceId: $workspaceId) @skip(if: $isPersonalWorkspace) {
-    ...basicWorkspaceFields
-  }
 }
 
-query getCorpusArticles($filter: FilterCorpusInput) {
-  corpus(filter: $filter) {
+query getCorpusArticles($corpusId: ID!) {
+  corpus(corpusId: $corpusId) {
     articles {
       article {
         _id

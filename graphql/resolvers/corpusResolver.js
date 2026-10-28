@@ -2,7 +2,6 @@ const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors.js')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 const { logger } = require('../logger')
-const { NotAuthorizedError } = require('../helpers/errors')
 const { diff } = require('../helpers/diff')
 
 async function getCorpusByContext(corpusId, context) {
@@ -210,47 +209,15 @@ module.exports = {
 
   Query: {
     /**
-     * Get a list of corpus.
-     * @deprecated Use corpora to get a list of corpus.
+     * Get a corpus for a given id.
      *
      * @param _
-     * @param args
+     * @param corpusId: string
      * @param context
-     * @returns {Promise<[Corpus]>}
+     * @returns {Promise<Corpus>}
      */
-    async corpus(_, args, context) {
-      const { user, userId, token } = context
-      const filter = args?.filter
-
-      const workspaceIdFilter = filter?.workspaceId
-      const corpusIdFilter = filter?.corpusId
-
-      if (corpusIdFilter) {
-        const corpus = await Corpus.findOne({ _id: corpusIdFilter }).orFail(
-          new NotFoundError('Corpus', corpusIdFilter)
-        )
-
-        // permission: admin token can access any corpus!
-        if (token?.admin === true) {
-          return [corpus]
-        }
-
-        if (corpus.workspace) {
-          // permission: make sure that the user belongs to the corpus workspace
-          await Workspace.getWorkspaceById(corpus.workspace, user).orFail(
-            new NotAuthorizedError()
-          )
-        } else {
-          // permission: make sure that the corpus belongs to the user
-          if (corpus.creator.toString() !== userId) {
-            throw new NotAuthorizedError()
-          }
-        }
-
-        return [corpus]
-      }
-
-      return listCorpora(workspaceIdFilter, context)
+    async corpus(_, { corpusId }, context) {
+      return getCorpusByContext(corpusId, context)
     },
 
     /**
