@@ -40,12 +40,11 @@ export function useCorpusActions() {
         },
       },
     })
-    await mutate(async (data) => {
-      return {
-        corpuses: [...(data?.corpuses ?? []), response.createCorpus],
-        ...data,
-      }
-    })
+    await mutate(async (data) => ({
+      ...data,
+      // the server sorts corpus by most recently updated first
+      corpuses: [response.createCorpus, ...(data?.corpuses ?? [])],
+    }))
   }
   const deleteCorpus = async (corpusId) => {
     await executeQuery({
@@ -56,6 +55,7 @@ export function useCorpusActions() {
       },
     })
     await mutate(async (data) => ({
+      ...data,
       corpuses: data.corpuses.filter((c) => c._id !== corpusId),
     }))
   }
@@ -73,11 +73,12 @@ export function useCorpusActions() {
       },
     })
     await mutate(async (data) => ({
+      ...data,
       corpuses: data.corpuses.map((c) => {
         if (c._id === corpusId) {
           return {
             ...c,
-            ...(title && { title }),
+            ...(title && { name: title }),
             ...(description && { description }),
             ...(metadata !== undefined && { metadata }),
             updatedAt: new Date(),
