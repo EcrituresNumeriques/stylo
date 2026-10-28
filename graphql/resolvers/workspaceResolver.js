@@ -259,4 +259,6 @@ module.exports = {
       return workspace.inviteMember(userId)
     },
   },
+
+  getWorkspace,
 }
