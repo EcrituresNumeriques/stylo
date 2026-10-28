@@ -1,7 +1,7 @@
 #import './Credentials.graphql'
 
 fragment basicCorpusFields on Corpus {
-  _id
+  id
   createdAt
   creator {
     ...extendedPublicUserFields
@@ -14,7 +14,7 @@ fragment basicCorpusFields on Corpus {
 }
 
 fragment basicWorkspaceFields on Workspace {
-  _id
+  id
   name
   color
   description
@@ -46,7 +46,7 @@ query getCorpus(
 
     articles @include(if: $includeArticles) {
       article {
-        _id
+        id
         title
 
         workingVersion @include(if: $includeWorkingVersion) {
@@ -67,7 +67,7 @@ query getCorpusArticles($filter: FilterCorpusInput) {
   corpus(filter: $filter) {
     articles {
       article {
-        _id
+        id
         title
 
         workingVersion {
@@ -88,7 +88,7 @@ query getCorpusPreview(
 
     articles {
       article {
-        _id
+        id
         title
 
         workingVersion {
@@ -107,7 +107,7 @@ query getCorpusPreview(
 
 mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
   createCorpus(createCorpusInput: $createCorpusInput) {
-    _id
+    id
     name
     description
     creator {
@@ -121,31 +121,31 @@ mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
 
 mutation deleteCorpus($corpusId: ID!) {
   deleteCorpus(corpusId: $corpusId) {
-    _id
+    id
   }
 }
 
 mutation updateMetadata($corpusId: ID!, $metadata: JSON!) {
   updateCorpusMetadata(corpusId: $corpusId, metadata: $metadata) {
-    _id
+    id
   }
 }
 
 mutation updateCorpus($corpusId: ID!, $updateCorpusInput: UpdateCorpusInput!) {
   updateCorpus(corpusId: $corpusId, updateCorpusInput: $updateCorpusInput) {
-    _id
+    id
   }
 }
 
 mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
   removeCorpusArticle(corpusId: $corpusId, articleId: $articleId) {
-    _id
+    id
   }
 }
 
 mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
   addCorpusArticle(corpusId: $corpusId, articleId: $articleId) {
-    _id
+    id
   }
 }
 
@@ -157,7 +157,7 @@ mutation updateArticlesOrder(
     corpusId: $corpusId
     articlesOrderInput: $articlesOrderInput
   ) {
-    _id
+    id
   }
 }
 
@@ -165,6 +165,6 @@ mutation setCorpusArticles($corpusId: ID!, $articleIds: [ID]!) {
   setCorpusArticles(
     setCorpusArticlesInput: { corpusId: $corpusId, articleIds: $articleIds }
   ) {
-    _id
+    id
   }
 }

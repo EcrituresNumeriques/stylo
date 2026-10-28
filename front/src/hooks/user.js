@@ -18,7 +18,7 @@ import { createTag, getTags, updateTag } from './Tag.graphql'
  */
 export function useActiveUserId() {
   const { user } = useRouteLoaderData('app')
-  return user?._id
+  return user?.id
 }
 
 /**
@@ -153,7 +153,7 @@ export function useUserTagActions() {
       async (data) => ({
         user: {
           tags: data.user.tags.map((tag) => {
-            return tag._id === result.updateTag._id ? result.updateTag : tag
+            return tag.id === result.updateTag.id ? result.updateTag : tag
           }),
         },
       }),

@@ -23,7 +23,7 @@ export default function Workspaces() {
   const workspaceCreateModal = useModal()
 
   const [personalWorkspace, setPersonalWorkspace] = useState({
-    _id: activeUser._id,
+    id: activeUser.id,
     name: t('myspace.name'),
     personal: true,
     members: [],
@@ -36,7 +36,7 @@ export default function Workspaces() {
         const getUserStatsResponse = await query({ query: getUserStats })
         const userStats = getUserStatsResponse.user.stats
         setPersonalWorkspace({
-          _id: activeUser._id,
+          id: activeUser.id,
           personal: true,
           name: t('myspace.name'),
           description: '',
@@ -51,7 +51,7 @@ export default function Workspaces() {
         alert(err)
       }
     })()
-  }, [activeUser._id, t])
+  }, [activeUser.id, t])
 
   const filteredWorkspaces = useMemo(() => {
     return [personalWorkspace, ...workspaces].filter(
@@ -106,7 +106,7 @@ export default function Workspaces() {
       <div className={styles.workspacesList}>
         {filteredWorkspaces.map((workspace) => (
           <WorkspaceItem
-            key={`workspace-${workspace._id}`}
+            key={`workspace-${workspace.id}`}
             workspace={workspace}
           />
         ))}

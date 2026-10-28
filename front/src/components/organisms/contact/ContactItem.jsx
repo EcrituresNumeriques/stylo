@@ -51,7 +51,7 @@ export default function ContactItem({
 
   return (
     <div
-      key={`contact-${user._id}`}
+      key={`contact-${user.id}`}
       className={clsx(
         styles.contact,
         muted ? styles.muted : '',

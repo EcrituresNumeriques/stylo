@@ -29,7 +29,7 @@ export default function WorkspaceUpdateFormMetadata({
     event.preventDefault()
     try {
       const updateFormMetadataInput = fromFormData(event.target)
-      await updateFormMetadata(workspace._id, updateFormMetadataInput)
+      await updateFormMetadata(workspace.id, updateFormMetadataInput)
       toast(t('actions.metadata.success'), {
         type: 'info',
       })

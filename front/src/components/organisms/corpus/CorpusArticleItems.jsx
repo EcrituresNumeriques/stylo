@@ -11,7 +11,7 @@ import CorpusArticleCard from './CorpusArticleCard.jsx'
 /**
  * @param {object} props
  * @param {string} [props.corpusId]
- * @param {Array<{article: {_id: string}}>} [props.articles]
+ * @param {Array<{article: {id: string}}>} [props.articles]
  * @param {() => void} props.onUpdate - Called after the article order has been updated
  * @returns {JSX.Element}
  */
@@ -32,7 +32,7 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
     debounce(
       async (orderedArticles) => {
         const articlesOrderInput = orderedArticles.map((item, index) => ({
-          articleId: item._id,
+          articleId: item.id,
           order: index,
         }))
         try {
@@ -77,9 +77,9 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   const renderCard = useCallback((card, index) => {
     return (
       <CorpusArticleCard
-        key={card._id}
+        key={card.id}
         index={index}
-        id={card._id}
+        id={card.id}
         article={card}
         moveCard={(dragIndex, hoverIndex) => {
           moveArticleCard(dragIndex, hoverIndex)

@@ -13,10 +13,10 @@ describe('CollaborativeEditorWriters', () => {
   test('renders one avatar per writer', () => {
     const writers = {
       'user-1': {
-        user: { _id: 'user-1', displayName: 'Alice', color: '#ff0000' },
+        user: { id: 'user-1', displayName: 'Alice', color: '#ff0000' },
       },
       'user-2': {
-        user: { _id: 'user-2', displayName: 'Bob', color: '#0000ff' },
+        user: { id: 'user-2', displayName: 'Bob', color: '#0000ff' },
       },
     }
 
@@ -29,7 +29,7 @@ describe('CollaborativeEditorWriters', () => {
 
   test('falls back to username when displayName is absent', () => {
     const writers = {
-      'user-1': { user: { _id: 'user-1', username: 'alice42' } },
+      'user-1': { user: { id: 'user-1', username: 'alice42' } },
     }
 
     renderWithProviders(<CollaborativeEditorWriters writers={writers} />)

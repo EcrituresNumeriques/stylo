@@ -11,7 +11,7 @@ import styles from './ArticlesSelector.module.scss'
 
 export function ArticlesSelector({ corpusArticles, onUpdate }) {
   const [selectedArticleIds, setSelectedArticleIds] = useState(
-    corpusArticles.map((a) => a.article._id)
+    corpusArticles.map((a) => a.article.id)
   )
   const { t } = useTranslation('corpus', { useSuspense: false })
   const [filter, setFilter] = useState('')
@@ -95,14 +95,14 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
         {isLoading && <Loading />}
         {!isLoading &&
           keepArticles.map((article) => (
-            <div key={`article-${article._id}`} className={styles.article}>
+            <div key={`article-${article.id}`} className={styles.article}>
               <div>{article.title}</div>
               <Button
-                primary={isArticleSelected(article._id)}
-                onClick={() => toggleSelectedArticle(article._id)}
+                primary={isArticleSelected(article.id)}
+                onClick={() => toggleSelectedArticle(article.id)}
               >
-                {isArticleSelected(article._id) && <CheckIcon />}
-                {isArticleSelected(article._id)
+                {isArticleSelected(article.id) && <CheckIcon />}
+                {isArticleSelected(article.id)
                   ? t('actions.addArticles.added')
                   : t('actions.addArticles.add')}
               </Button>

@@ -39,7 +39,7 @@ import ArticleSendCopy from './sharing/ArticleSendCopy.jsx'
 
 /**
  * @param {object} props
- * @param {{title: string, owner: {displayName: string|undefined, username: string}, updatedAt: string, _id: string }} props.article
+ * @param {{title: string, owner: {displayName: string|undefined, username: string}, updatedAt: string, id: string }} props.article
  * @param {{id: string, name: string}[]} props.corpus
  * @returns {JSX.Element}
  * @class
@@ -47,7 +47,7 @@ import ArticleSendCopy from './sharing/ArticleSendCopy.jsx'
 export default function Article({ article, corpus }) {
   const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
-  const articleId = useMemo(() => article._id, [article])
+  const articleId = useMemo(() => article.id, [article])
   const { workspaceId: activeWorkspaceId } = useParams()
   const articleActions = useArticleActions({ articleId, activeWorkspaceId })
 
@@ -65,7 +65,7 @@ export default function Article({ article, corpus }) {
     )
   const contributors = (
     contributorsQueryData?.article?.contributors || []
-  ).filter((c) => c.user._id !== article.owner._id)
+  ).filter((c) => c.user.id !== article.owner.id)
   const { data: articleTagsQueryData } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
@@ -88,7 +88,7 @@ export default function Article({ article, corpus }) {
   const deleteModal = useModal()
   const updateModal = useModal()
 
-  const isArticleOwner = activeUser._id === article.owner._id
+  const isArticleOwner = activeUser.id === article.owner.id
 
   useEffect(() => {
     if (contributorsError) {
@@ -123,12 +123,12 @@ export default function Article({ article, corpus }) {
   return (
     <article
       className={styles.article}
-      aria-labelledby={`article-${article._id}-title`}
+      aria-labelledby={`article-${article.id}-title`}
       role="listitem"
     >
       <header className={styles.header}>
         <div className={styles.title}>
-          <h2 id={`article-${article._id}-title`}>{article.title}</h2>
+          <h2 id={`article-${article.id}-title`}>{article.title}</h2>
         </div>
 
         <div role="menu" className={styles.actionButtons}>
@@ -145,7 +145,7 @@ export default function Article({ article, corpus }) {
             role="menuitem"
             target="_blank"
             className={buttonStyles.icon}
-            to={`/article/${article._id}/annotate`}
+            to={`/article/${article.id}/annotate`}
             title={t('actions.annotate.title')}
           >
             <MessageSquareShare aria-label={t('actions.annotate.label')} />
@@ -154,7 +154,7 @@ export default function Article({ article, corpus }) {
           <Link
             role="menuitem"
             className={clsx(buttonStyles.primary, styles.primaryAction)}
-            to={`/article/${article._id}`}
+            to={`/article/${article.id}`}
             title={t('actions.edit.title')}
           >
             <Pencil aria-label={t('actions.edit.label')} />
@@ -215,7 +215,7 @@ export default function Article({ article, corpus }) {
               <Tag size={18} />
               {tags.map((t) => (
                 <div
-                  key={t._id}
+                  key={t.id}
                   className={styles.tag}
                   style={{
                     backgroundColor: Color.rrggbbaa(t.color || '#cccccc', 10),
@@ -224,7 +224,7 @@ export default function Article({ article, corpus }) {
                 >
                   <div>{t.name}</div>
                   <div
-                    key={'tag-' + t._id}
+                    key={'tag-' + t.id}
                     className={styles.tagChip}
                     style={{ backgroundColor: t.color || '#ccc' }}
                     aria-hidden
@@ -237,7 +237,7 @@ export default function Article({ article, corpus }) {
             <div className={styles.corpuses}>
               <Book size={18} />
               {corpus.map((c) => (
-                <div key={c._id}>{c.name}</div>
+                <div key={c.id}>{c.name}</div>
               ))}
             </div>
           )}
@@ -258,7 +258,7 @@ export default function Article({ article, corpus }) {
         }
       >
         <Export
-          articleId={article._id}
+          articleId={article.id}
           bib={article.workingVersion?.bibPreview}
           name={article.title}
           onCancel={() => exportModal.close()}

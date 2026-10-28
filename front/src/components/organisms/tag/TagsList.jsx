@@ -49,13 +49,13 @@ export default function TagsList({ action }) {
     <>
       <ul className={styles.filterByTags}>
         {tags.map((tag) => (
-          <li key={`filterTag-${tag._id}`}>
+          <li key={`filterTag-${tag.id}`}>
             <ArticleTag
               tag={tag}
-              name={`filterTag-${tag._id}`}
+              name={`filterTag-${tag.id}`}
               onClick={handleTagSelected}
               disableAction={false}
-              selected={selectedTagIds.includes(tag._id)}
+              selected={selectedTagIds.includes(tag.id)}
               addon={
                 action && (
                   <>

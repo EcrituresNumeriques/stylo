@@ -2,7 +2,7 @@
 
 mutation addArticleContributor($userId: ID!, $articleId: ID!) {
   addArticleContributor(articleId: $articleId, userId: $userId) {
-    _id
+    id
     contributors {
       roles
       user {
@@ -14,7 +14,7 @@ mutation addArticleContributor($userId: ID!, $articleId: ID!) {
 
 mutation removeArticleContributor($userId: ID!, $articleId: ID!) {
   removeArticleContributor(articleId: $articleId, userId: $userId) {
-    _id
+    id
     contributors {
       roles
       user {

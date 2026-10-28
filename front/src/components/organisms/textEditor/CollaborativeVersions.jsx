@@ -61,15 +61,15 @@ export default function CollaborativeVersions({
       const date = new Date(version.createdAt)
       const versionItem = (
         <Version
-          key={`showVersion-${version._id}`}
+          key={`showVersion-${version.id}`}
           date={date}
           title={title}
           description={version.message}
           type={version.type}
           creator={displayName(version.owner)}
-          selected={selectedVersion === version._id}
+          selected={selectedVersion === version.id}
           onClick={() => {
-            navigate(`/article/${articleId}/version/${version._id}`)
+            navigate(`/article/${articleId}/version/${version.id}`)
           }}
         />
       )
@@ -124,7 +124,7 @@ export default function CollaborativeVersions({
         {...createVersionModal.bindings}
       >
         <CreateVersion
-          articleId={article._id}
+          articleId={article.id}
           onClose={() => createVersionModal.close()}
           onSubmit={() => createVersionModal.close()}
         />

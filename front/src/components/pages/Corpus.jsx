@@ -50,7 +50,7 @@ export default function Corpus() {
       ) : (
         <div className={styles.corpusList}>
           {corpus.map((c) => (
-            <CorpusItem key={c._id} corpus={c} />
+            <CorpusItem key={c.id} corpus={c} />
           ))}
         </div>
       )}

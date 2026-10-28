@@ -111,7 +111,7 @@ export default function UserProfile() {
         <dl className={styles.info}>
           <dt>{t('user.account.id')}</dt>
           <dd>
-            <code>{activeUser._id}</code>
+            <code>{activeUser.id}</code>
           </dd>
 
           {activeUser.username && (

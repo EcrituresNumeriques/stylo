@@ -11,7 +11,7 @@ import ContactSearch from '../contact/ContactSearch.jsx'
 export default function WorkspaceManageMembers({ workspace }) {
   const { t } = useTranslation('workspace', { useSuspense: false })
   const displayName = useDisplayName()
-  const workspaceId = workspace._id
+  const workspaceId = workspace.id
   const { members, error, isLoading, inviteMember, removeMember } =
     useWorkspaceMembersActions(workspaceId)
 

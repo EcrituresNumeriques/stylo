@@ -91,7 +91,7 @@ export default function CorpusArticleCard({ id, article, index, moveCard }) {
         <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
       </svg>
 
-      <Link to={`/article/${article._id}`} className={styles.title}>
+      <Link to={`/article/${article.id}`} className={styles.title}>
         {article.title}
       </Link>
     </div>

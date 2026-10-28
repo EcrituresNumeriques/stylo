@@ -2,7 +2,7 @@
 
 mutation addContact($contactId: ID!) {
   addContact(contactUserId: $contactId) {
-    _id
+    id
     acquintances {
       ...extendedPublicUserFields
     }
@@ -11,7 +11,7 @@ mutation addContact($contactId: ID!) {
 
 mutation removeContact($contactId: ID!) {
   removeContact(contactUserId: $contactId) {
-    _id
+    id
     acquintances {
       ...extendedPublicUserFields
     }
