@@ -17,6 +17,27 @@ async function getCorpusByContext(corpusId, context) {
   return getCorpusByUser(corpusId, userId)
 }
 
+async function listCorpuses(workspaceId, { user, userId }) {
+  if (workspaceId) {
+    // permission: make sure that the user belongs to the workspace
+    await Workspace.getWorkspaceById(workspaceId, user).orFail(
+      new NotFoundError('Workspace', workspaceId)
+    )
+
+    return Corpus.find({ workspace: workspaceId })
+      .populate([{ path: 'creator' }])
+      .sort([['updatedAt', -1]])
+  }
+
+  // personal corpus
+  if (!userId) {
+    throw new NotAuthenticatedError()
+  }
+  return Corpus.find({ creator: userId, workspace: workspaceId })
+    .populate([{ path: 'creator' }])
+    .sort([['updatedAt', -1]])
+}
+
 async function getCorpus(corpusId) {
   const corpus = await Corpus.findById(corpusId).populate('creator')
 
@@ -190,6 +211,7 @@ module.exports = {
   Query: {
     /**
      * Get a list of corpus.
+     * @deprecated Use corpuses to get a list of corpus.
      *
      * @param _
      * @param args
@@ -228,21 +250,19 @@ module.exports = {
         return [corpus]
       }
 
-      if (workspaceIdFilter) {
-        // permission: make sure that the user belongs to the workspace
-        await Workspace.getWorkspaceById(workspaceIdFilter, user).orFail(
-          new NotFoundError('Workspace', workspaceIdFilter)
-        )
+      return listCorpuses(workspaceIdFilter, context)
+    },
 
-        return Corpus.find({ workspace: workspaceIdFilter })
-          .populate([{ path: 'creator' }])
-          .sort([['updatedAt', -1]])
-      }
-
-      // personal corpus
-      return Corpus.find({ creator: userId, workspace: workspaceIdFilter })
-        .populate([{ path: 'creator' }])
-        .sort([['updatedAt', -1]])
+    /**
+     * Get the corpuses of a workspace, or the personal corpuses of the authenticated user.
+     *
+     * @param _
+     * @param args
+     * @param context
+     * @returns {Promise<[Corpus]>}
+     */
+    async corpuses(_, args, context) {
+      return listCorpuses(args?.filter?.workspaceId, context)
     },
 
     async sharedCorpus(_, args) {

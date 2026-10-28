@@ -20,7 +20,7 @@ query getWorkspaceArticles(
     description
   }
 
-  corpus(filter: $filter) {
+  corpuses(filter: { workspaceId: $workspaceId }) {
     _id
     name
     articles {

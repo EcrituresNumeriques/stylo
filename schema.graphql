@@ -160,7 +160,7 @@ type Mutation {
   Retrieve an article by ID to perform mutations on it.
   Returns an error if the article does not exist or cannot be accessed.
   """
-  article(articleId: ID!): Article
+  article(articleId: ID!): Article @deprecated(reason: "Use the article mutations at the root instead.")
   """
 
   Change the password of the authenticated user.
@@ -172,7 +172,7 @@ type Mutation {
   Retrieve a corpus by ID to perform mutations on it.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
-  corpus(corpusId: ID!): Corpus
+  corpus(corpusId: ID!): Corpus @deprecated(reason: "Use the corpus mutations at the root instead.")
   """
 
   Create a new article for the authenticated user.
@@ -433,7 +433,7 @@ type Mutation {
   Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
   Returns an error if the workspace does not exist or cannot be accessed.
   """
-  workspace(workspaceId: ID!): Workspace
+  workspace(workspaceId: ID!): Workspace @deprecated(reason: "Use the workspace mutations at the root instead.")
 }
 
 type Query {
@@ -442,7 +442,9 @@ type Query {
   "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
   articles(filter: FilterCorpusInput): [Article]
   "Get a list of corpus with an optional filter"
-  corpus(filter: FilterCorpusInput): [Corpus!]
+  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpuses to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
+  "Get the corpuses of a workspace, or the personal corpuses of the authenticated user when no workspace is given"
+  corpuses(filter: CorpusFilterInput): [Corpus!]!
   getUser(filter: UserFilter): User
   "Fetch an article [with an access key]"
   sharedArticle(accessKey: JWT, article: ID!): Article
@@ -555,7 +557,8 @@ type Workspace {
   articles: [Article!]!
   bibliographyStyle: String
   color: HexColorCode!
-  corpus: [Corpus!]!
+  corpus: [Corpus!]! @deprecated(reason: "Use corpuses instead.")
+  corpuses: [Corpus!]!
   createdAt: DateTime
   creator: User!
   description: String
@@ -652,6 +655,11 @@ input ArticleVersionInput {
   userId: ID!
 }
 
+input CorpusFilterInput {
+  "List the corpuses of this workspace (or the personal corpuses of the authenticated user when omitted)"
+  workspaceId: ID
+}
+
 input CreateArticleInput {
   tags: [ID]
   title: String!
@@ -674,7 +682,7 @@ input CreateWorkspaceInput {
 }
 
 input FilterCorpusInput {
-  corpusId: ID
+  corpusId: ID @deprecated(reason: "Use the corpus query with a corpusId argument instead (available in the next major version).")
   workspaceId: ID
 }
 

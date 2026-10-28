@@ -327,7 +327,8 @@ type Workspace {
   formMetadata: WorkspaceFormMetadata
   members: [User!]!
   articles: [Article!]!
-  corpus: [Corpus!]!
+  corpus: [Corpus!]! @deprecated(reason: "Use corpuses instead.")
+  corpuses: [Corpus!]!
   creator: User!
   createdAt: DateTime
   updatedAt: DateTime
@@ -414,7 +415,12 @@ input CreateCorpusInput {
 
 input FilterCorpusInput {
   workspaceId: ID
-  corpusId: ID
+  corpusId: ID @deprecated(reason: "Use the corpus query with a corpusId argument instead (available in the next major version).")
+}
+
+input CorpusFilterInput {
+  "List the corpuses of this workspace (or the personal corpuses of the authenticated user when omitted)"
+  workspaceId: ID
 }
 
 input ImportArticleInput {
@@ -462,7 +468,10 @@ type Query {
   """
   Get a list of corpus with an optional filter
   """
-  corpus(filter: FilterCorpusInput): [Corpus!]
+  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpuses to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
+
+  "Get the corpuses of a workspace, or the personal corpuses of the authenticated user when no workspace is given"
+  corpuses(filter: CorpusFilterInput): [Corpus!]!
 
   "Get a corpus [with an access key]"
   sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
@@ -611,7 +620,7 @@ type Mutation {
   Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
   Returns an error if the workspace does not exist or cannot be accessed.
   """
-  workspace(workspaceId: ID!): Workspace
+  workspace(workspaceId: ID!): Workspace @deprecated(reason: "Use the workspace mutations at the root instead.")
 
   "Leave a workspace as the authenticated user."
   leaveWorkspace(workspaceId: ID!): Workspace
@@ -632,7 +641,7 @@ type Mutation {
   Retrieve an article by ID to perform mutations on it.
   Returns an error if the article does not exist or cannot be accessed.
   """
-  article(articleId: ID!): Article
+  article(articleId: ID!): Article @deprecated(reason: "Use the article mutations at the root instead.")
 
   """
   Update an article's title, tags, or workspaces.
@@ -644,7 +653,7 @@ type Mutation {
   Retrieve a corpus by ID to perform mutations on it.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
-  corpus(corpusId: ID!): Corpus
+  corpus(corpusId: ID!): Corpus @deprecated(reason: "Use the corpus mutations at the root instead.")
 
   """
   Updates the articles associated with the corpus.
