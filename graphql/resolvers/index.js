@@ -35,6 +35,17 @@ const {
 } = require('graphql-scalars')
 const { GraphQLJSON, GraphQLJSONObject } = require('./jsonScalar.js')
 
+/**
+ * Expose the identifier as `id` (instead of the MongoDB `_id`),
+ * for both Mongoose documents and lean objects.
+ */
+function withId(resolvers = {}) {
+  return {
+    ...resolvers,
+    id: (object) => object._id.toString(),
+  }
+}
+
 module.exports = {
   // Custom Scalars
   JSON: GraphQLJSON,
@@ -45,14 +56,15 @@ module.exports = {
   DateTime: DateTimeResolver,
 
   // Types and Nested queries/mutations
-  User,
-  Article,
-  Tag,
-  Version,
+  User: withId(User),
+  UserSearch: withId(),
+  Article: withId(Article),
+  Tag: withId(Tag),
+  Version: withId(Version),
   InstanceUsageStats,
   WorkingVersion,
-  Workspace,
-  Corpus,
+  Workspace: withId(Workspace),
+  Corpus: withId(Corpus),
   // Root queries & mutations
   Query: {
     ...UserQuery,
