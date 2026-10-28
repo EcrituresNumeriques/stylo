@@ -14,13 +14,14 @@ interface InstanceObjectUsageStats {
 }
 
 type Article {
-  _id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   addContributor(userId: ID!): Article @deprecated(reason: "Use addArticleContributor mutation at the root instead.")
   addTags(tags: [ID]!): [Tag] @deprecated(reason: "Use addArticleTags mutation at the root instead.")
   contributors: [ArticleContributor]!
   createVersion(articleVersionInput: ArticleVersionInput!): Article @deprecated(reason: "Use createArticleVersion mutation at the root instead.")
   createdAt: DateTime
   delete(dryRun: Boolean): Boolean @deprecated(reason: "Use deleteArticle mutation at the root instead.")
+  id: ID!
   nakalaLink: String
   owner: User
   preview: ArticlePreviewSettings
@@ -72,7 +73,7 @@ type BibliographyEntry {
 }
 
 type Corpus {
-  _id: String!
+  _id: String! @deprecated(reason: "Use id instead.")
   addArticle(articleId: ID!): Corpus @deprecated(reason: "Use addCorpusArticle mutation at the root instead.")
   article(articleId: ID!): CorpusArticle
   articles: [CorpusArticle!]!
@@ -80,6 +81,7 @@ type Corpus {
   creator: User!
   delete: Corpus! @deprecated(reason: "Use deleteCorpus mutation at the root instead.")
   description: String
+  id: ID!
   metadata: JSON
   name: String!
   rename(name: String!): Corpus @deprecated(reason: "Use renameCorpus mutation at the root instead.")
@@ -467,18 +469,19 @@ type Query {
 }
 
 type Tag {
-  _id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   articles: [Article]
   color: HexColorCode
   createdAt: DateTime
   description: String
+  id: ID!
   name: String!
   owner: ID
   updatedAt: DateTime
 }
 
 type User {
-  _id: ID
+  _id: ID @deprecated(reason: "Use id instead.")
   acquintances(limit: Int, page: Int): [User]
   addContact(userId: ID!): User @deprecated(reason: "Use addContact mutation at the root instead.")
   articles(limit: Int, page: Int): [Article]
@@ -489,6 +492,7 @@ type User {
   displayName: String
   email: EmailAddress
   firstName: String
+  id: ID!
   institution: String
   lastName: String
   permissions: [UserPermission]
@@ -507,10 +511,11 @@ type UserPermission {
 }
 
 type UserSearch {
-  _id: ID
+  _id: ID @deprecated(reason: "Use id instead.")
   displayName: String
   email: EmailAddress
   firstName: String
+  id: ID!
   lastName: String
 }
 
@@ -520,12 +525,13 @@ type UserStats {
 }
 
 type Version {
-  _id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   article: Article
   bib: String
   bibPreview: String
   bibliography: [BibliographyEntry]
   createdAt: DateTime
+  id: ID!
   md: String
   message: String
   metadata: JSON
@@ -551,7 +557,7 @@ type WorkingVersion {
 }
 
 type Workspace {
-  _id: String!
+  _id: String! @deprecated(reason: "Use id instead.")
   addArticle(articleId: ID!): Workspace @deprecated(reason: "Use addWorkspaceArticle mutation at the root instead.")
   article(articleId: ID!): WorkspaceArticle
   articles: [Article!]!
@@ -563,6 +569,7 @@ type Workspace {
   creator: User!
   description: String
   formMetadata: WorkspaceFormMetadata
+  id: ID!
   inviteMember(userId: ID!): Workspace @deprecated(reason: "Use inviteWorkspaceMember mutation at the root instead.")
   leave: Workspace @deprecated(reason: "Use leaveWorkspace mutation at the root instead.")
   member(userId: ID!): WorkspaceMember

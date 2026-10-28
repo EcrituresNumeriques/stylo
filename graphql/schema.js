@@ -35,7 +35,8 @@ enum AuthTokenService {
 }
 
 type UserSearch {
-  _id: ID
+  id: ID!
+  _id: ID @deprecated(reason: "Use id instead.")
   displayName: String
   email: EmailAddress
   firstName: String
@@ -64,7 +65,8 @@ type AuthProvidersMap {
 }
 
 type User {
-  _id: ID
+  id: ID!
+  _id: ID @deprecated(reason: "Use id instead.")
   displayName: String
   username: String
   authTypes: [AuthType]
@@ -94,7 +96,8 @@ type UserPermission {
 }
 
 type Tag {
-  _id: ID!
+  id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   name: String!
   owner: ID
   description: String
@@ -124,7 +127,8 @@ type WorkingVersion {
 }
 
 type Version {
-  _id: ID!
+  id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   name: String
   version: Int
   revision: Int
@@ -175,7 +179,8 @@ input UpdateArticleMetadataInput {
 }
 
 type Article {
-  _id: ID!
+  id: ID!
+  _id: ID! @deprecated(reason: "Use id instead.")
   title: String
   zoteroLink: String
   nakalaLink: String
@@ -319,7 +324,8 @@ type WorkspaceFormMetadata {
 }
 
 type Workspace {
-  _id: String!
+  id: ID!
+  _id: String! @deprecated(reason: "Use id instead.")
   name: String!
   description: String
   color: HexColorCode!
@@ -383,7 +389,8 @@ input UpdateCorpusInput {
 }
 
 type Corpus {
-  _id: String!
+  id: ID!
+  _id: String! @deprecated(reason: "Use id instead.")
   type: CorpusType!
   name: String!
   description: String
