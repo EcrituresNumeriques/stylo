@@ -20,12 +20,12 @@ fragment basicWorkspaceFields on Workspace {
   description
 }
 
-query getCorpuses(
+query getCorpora(
   $filter: CorpusFilterInput
   $isPersonalWorkspace: Boolean = true
   $workspaceId: ID
 ) {
-  corpuses(filter: $filter) {
+  corpora(filter: $filter) {
     ...basicCorpusFields
   }
 

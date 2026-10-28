@@ -171,7 +171,7 @@ describe('corpus resolver', () => {
     assert.equal(firstCorpusFound.creator._id.toString(), thomas._id.toString())
   })
 
-  test('list the personal corpuses of the authenticated user', async () => {
+  test('list the personal corpora of the authenticated user', async () => {
     const alice = await User.create({ email: 'alice@huma-num.fr' })
     const bob = await User.create({ email: 'bob@huma-num.fr' })
     const workspace = await Workspace.create({
@@ -189,18 +189,18 @@ describe('corpus resolver', () => {
     })
     await Corpus.create({ name: 'Not mine', creator: bob.id })
 
-    const corpuses = await Query.corpuses(
+    const corpora = await Query.corpora(
       {},
       {},
       { user: alice, userId: alice.id }
     )
     assert.deepEqual(
-      corpuses.map((c) => c.name),
+      corpora.map((c) => c.name),
       ['Personal']
     )
   })
 
-  test('list the corpuses of a workspace', async () => {
+  test('list the corpora of a workspace', async () => {
     const alice = await User.create({ email: 'alice.w@huma-num.fr' })
     const bob = await User.create({ email: 'bob.w@huma-num.fr' })
     const workspace = await Workspace.create({
@@ -217,18 +217,18 @@ describe('corpus resolver', () => {
     })
     await Corpus.create({ name: 'Personal', creator: bob.id })
 
-    const corpuses = await Query.corpuses(
+    const corpora = await Query.corpora(
       {},
       { filter: { workspaceId: workspace.id } },
       { user: bob, userId: bob.id }
     )
     assert.deepEqual(
-      corpuses.map((c) => c.name),
+      corpora.map((c) => c.name),
       ['Shared']
     )
   })
 
-  test('refuse to list the corpuses of a workspace the user is not a member of', async () => {
+  test('refuse to list the corpora of a workspace the user is not a member of', async () => {
     const alice = await User.create({ email: 'alice.x@huma-num.fr' })
     const mallory = await User.create({ email: 'mallory@huma-num.fr' })
     const workspace = await Workspace.create({
@@ -240,7 +240,7 @@ describe('corpus resolver', () => {
     })
 
     await assert.rejects(
-      Query.corpuses(
+      Query.corpora(
         {},
         { filter: { workspaceId: workspace.id } },
         { user: mallory, userId: mallory.id }
@@ -249,7 +249,7 @@ describe('corpus resolver', () => {
     )
   })
 
-  test('refuse to list personal corpuses when not authenticated', async () => {
-    await assert.rejects(Query.corpuses({}, {}, {}), NotAuthenticatedError)
+  test('refuse to list personal corpora when not authenticated', async () => {
+    await assert.rejects(Query.corpora({}, {}, {}), NotAuthenticatedError)
   })
 })

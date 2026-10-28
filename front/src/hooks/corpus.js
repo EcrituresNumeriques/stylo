@@ -4,8 +4,8 @@ import { executeQuery } from '../helpers/graphQL.js'
 import {
   createCorpus as createCorpusQuery,
   deleteCorpus as deleteCorpusQuery,
+  getCorpora as getCorporaQuery,
   getCorpusArticles as getCorpusArticlesQuery,
-  getCorpuses as getCorpusesQuery,
   updateCorpus as updateCorpusQuery,
 } from './Corpus.graphql'
 import useGraphQL, { useMutateData } from './graphql.js'
@@ -15,7 +15,7 @@ export function useCorpusActions() {
   const workspaceId = useActiveWorkspaceId() ?? null
 
   const { mutate } = useMutateData({
-    query: getCorpusesQuery,
+    query: getCorporaQuery,
     variables: {
       isPersonalWorkspace: !workspaceId,
       filter: {
@@ -43,7 +43,7 @@ export function useCorpusActions() {
     await mutate(async (data) => ({
       ...data,
       // the server sorts corpus by most recently updated first
-      corpuses: [response.createCorpus, ...(data?.corpuses ?? [])],
+      corpora: [response.createCorpus, ...(data?.corpora ?? [])],
     }))
   }
   const deleteCorpus = async (corpusId) => {
@@ -56,7 +56,7 @@ export function useCorpusActions() {
     })
     await mutate(async (data) => ({
       ...data,
-      corpuses: data.corpuses.filter((c) => c._id !== corpusId),
+      corpora: data.corpora.filter((c) => c._id !== corpusId),
     }))
   }
   const updateCorpus = async ({ corpusId, name, description, metadata }) => {
@@ -74,7 +74,7 @@ export function useCorpusActions() {
     })
     await mutate(async (data) => ({
       ...data,
-      corpuses: data.corpuses.map((c) => {
+      corpora: data.corpora.map((c) => {
         if (c._id === corpusId) {
           return {
             ...c,
@@ -100,7 +100,7 @@ export function useCorpusActions() {
 export function useCorpus({ workspaceId = null }) {
   const { data, error, isLoading } = useGraphQL(
     {
-      query: getCorpusesQuery,
+      query: getCorporaQuery,
       variables: {
         isPersonalWorkspace: !workspaceId,
         filter: {
@@ -113,7 +113,7 @@ export function useCorpus({ workspaceId = null }) {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       fallbackData: {
-        corpuses: [],
+        corpora: [],
         workspace: {},
       },
     }
@@ -122,7 +122,7 @@ export function useCorpus({ workspaceId = null }) {
   return {
     error,
     isLoading,
-    corpus: data.corpuses,
+    corpus: data.corpora,
     workspace: data.workspace ?? {},
   }
 }
