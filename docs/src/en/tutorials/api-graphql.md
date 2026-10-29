@@ -109,7 +109,7 @@ One last example for the road, which may be useful in the context of Stylo data 
 ```graphql
 Exemple 4 :
 query articlesCorpus {
-  corpus(filter:{corpusId: " ID OF THE CORPUS "}){
+  corpus(corpusId: " ID OF THE CORPUS "){
     articles{
       article{
         title

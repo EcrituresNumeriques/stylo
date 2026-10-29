@@ -37,12 +37,12 @@ describe('corpus resolver', () => {
       tags: [],
     })
     await CorpusMutation.addArticle(corpus, { articleId: thesis.id })
-    const corpusList = await Query.corpus(
+    const corpusFound = await Query.corpus(
       {},
-      {},
+      { corpusId: corpus.id },
       { user: guillaume, userId: guillaume.id }
     )
-    const firstCorpusFound = corpusList[0].toJSON()
+    const firstCorpusFound = corpusFound.toJSON()
     assert.equal(firstCorpusFound.name, 'Corpus A')
     assert.deepEqual(
       firstCorpusFound.articles.map((a) => a.article.toString()),
@@ -75,13 +75,13 @@ describe('corpus resolver', () => {
       articleId: thesis.id,
     })
     await corpusArticle.remove()
-    const corpusList = await Query.corpus(
+    const corpusFound = await Query.corpus(
       {},
-      {},
+      { corpusId: corpus.id },
       { user: clara, userId: clara.id }
     )
 
-    const firstCorpusFound = corpusList[0].toJSON()
+    const firstCorpusFound = corpusFound.toJSON()
     assert.equal(firstCorpusFound.name, 'Corpus B')
     assert.deepEqual(firstCorpusFound.articles, [])
     assert.equal(firstCorpusFound.creator._id.toString(), clara._id.toString())
@@ -136,13 +136,13 @@ describe('corpus resolver', () => {
       articleId: chapter1.id,
     })
     await corpusArticle.move(1)
-    const corpusList = await Query.corpus(
+    const corpusFound = await Query.corpus(
       {},
-      {},
+      { corpusId: corpus.id },
       { user: thomas, userId: thomas.id }
     )
 
-    const firstCorpusFound = corpusList[0].toJSON()
+    const firstCorpusFound = corpusFound.toJSON()
     assert.equal(firstCorpusFound.name, 'Corpus C')
     assert.deepEqual(
       firstCorpusFound.articles.map((a) => ({
@@ -251,5 +251,71 @@ describe('corpus resolver', () => {
 
   test('refuse to list personal corpora when not authenticated', async () => {
     await assert.rejects(Query.corpora({}, {}, {}), NotAuthenticatedError)
+  })
+
+  test('get a corpus of a workspace as a member', async () => {
+    const alice = await User.create({ email: 'alice.y@huma-num.fr' })
+    const bob = await User.create({ email: 'bob.y@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace D',
+      color: '#bb69ff',
+      members: [{ user: alice.id }, { user: bob.id }],
+      articles: [],
+      creator: alice.id,
+    })
+    const corpus = await Corpus.create({
+      name: 'Shared corpus',
+      creator: alice.id,
+      workspace: workspace.id,
+    })
+
+    const corpusFound = await Query.corpus(
+      {},
+      { corpusId: corpus.id },
+      { user: bob, userId: bob.id }
+    )
+    assert.equal(corpusFound.name, 'Shared corpus')
+  })
+
+  test('refuse to get a corpus the user cannot access', async () => {
+    const alice = await User.create({ email: 'alice.z@huma-num.fr' })
+    const mallory = await User.create({ email: 'mallory.z@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace E',
+      color: '#bb69ff',
+      members: [{ user: alice.id }],
+      articles: [],
+      creator: alice.id,
+    })
+    const personalCorpus = await Corpus.create({
+      name: 'Personal corpus',
+      creator: alice.id,
+    })
+    const workspaceCorpus = await Corpus.create({
+      name: 'Workspace corpus',
+      creator: alice.id,
+      workspace: workspace.id,
+    })
+
+    for (const corpus of [personalCorpus, workspaceCorpus]) {
+      await assert.rejects(
+        Query.corpus(
+          {},
+          { corpusId: corpus.id },
+          { user: mallory, userId: mallory.id }
+        ),
+        NotFoundError
+      )
+    }
+  })
+
+  test('refuse to get a corpus when not authenticated', async () => {
+    const alice = await User.create({ email: 'alice.n@huma-num.fr' })
+    const corpus = await Corpus.create({ name: 'Corpus', creator: alice.id })
+
+    await assert.rejects(
+      Query.corpus({}, { corpusId: corpus.id }, {}),
+      NotAuthenticatedError
+    )
   })
 })

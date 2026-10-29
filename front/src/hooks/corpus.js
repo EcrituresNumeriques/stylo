@@ -131,17 +131,13 @@ export function useCorpusArticles({ corpusId }) {
   const { data, error, isLoading } = useGraphQL(
     {
       query: getCorpusArticlesQuery,
-      variables: {
-        filter: {
-          corpusId,
-        },
-      },
+      variables: { corpusId },
     },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       fallbackData: {
-        corpus: [],
+        corpus: null,
       },
     }
   )

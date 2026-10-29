@@ -420,9 +420,9 @@ input CreateCorpusInput {
   workspace: String
 }
 
-input FilterCorpusInput {
+input ArticleFilterInput {
+  "List the articles of this workspace (or the articles of the authenticated user when omitted)"
   workspaceId: ID
-  corpusId: ID @deprecated(reason: "Use the corpus query with a corpusId argument instead (available in the next major version).")
 }
 
 input CorpusFilterInput {
@@ -451,8 +451,8 @@ type Query {
   "Fetch a tag of the authenticated user"
   tag(tag: ID!): Tag
 
-  "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
-  articles (filter: FilterCorpusInput): [Article]
+  "Fetch the authenticated user's articles, optionally filtered by workspace"
+  articles (filter: ArticleFilterInput): [Article]
 
   "Fetch article info [need to have access to this article]"
   article(article: ID!): Article
@@ -473,9 +473,10 @@ type Query {
   workspaces: [Workspace!]
 
   """
-  Get a list of corpus with an optional filter
+  Get a corpus by ID.
+  Requires authentication as the corpus creator or as a member of its workspace.
   """
-  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
+  corpus(corpusId: ID!): Corpus
 
   "Get the corpora of a workspace, or the personal corpora of the authenticated user when no workspace is given"
   corpora(filter: CorpusFilterInput): [Corpus!]!
