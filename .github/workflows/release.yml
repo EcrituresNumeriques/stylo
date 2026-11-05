@@ -17,13 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
       - run: |
           node -e "const pkg = require('./package.json'); pkg.version = '$RELEASE_VERSION'; require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, '  '), 'utf8')"
           node -e "const pkg = require('./front/package.json'); pkg.version = '$RELEASE_VERSION'; require('fs').writeFileSync('./front/package.json', JSON.stringify(pkg, null, '  '), 'utf8')"
           node -e "const pkg = require('./graphql/package.json'); pkg.version = '$RELEASE_VERSION'; require('fs').writeFileSync('./graphql/package.json', JSON.stringify(pkg, null, '  '), 'utf8')"
           npm i --package-lock-only
-          npm i --prefix=graphql --package-lock-only
-          npm i --prefix=front --package-lock-only
 
           RELEASE_GIT_NAME=$(curl -s https://api.github.com/users/$GITHUB_ACTOR | jq -r .name)
           RELEASE_GIT_EMAIL=$RELEASE_USER@users.noreply.github.com
