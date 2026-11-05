@@ -1,6 +1,6 @@
 {
   "name": "@ecrituresnumeriques/stylo-graphql",
-  "version": "3.11.0",
+  "version": "3.13.0",
   "description": "",
   "main": "app.js",
   "private": true,
