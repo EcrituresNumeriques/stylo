@@ -1,16 +1,5 @@
 #import './Credentials.graphql'
-
-fragment basicVersionFields on Version {
-  id
-  createdAt
-  message
-  owner {
-    ...basicPublicUserFields
-  }
-  type
-  revision
-  version
-}
+#import './Versions.graphql'
 
 fragment articleVersionFields on Version {
   name
