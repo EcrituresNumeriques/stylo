@@ -18,17 +18,14 @@ export default function CorpusArticles({ corpusId }) {
   const { data, isLoading, mutate } = useFetchData(
     {
       query: getCorpus,
-      variables: { filter: { corpusId: corpusId }, includeArticles: true },
+      variables: { corpusId, includeArticles: true },
     },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
   )
-  const corpusArticles = useMemo(
-    () => data?.corpus?.[0]?.articles || [],
-    [data]
-  )
+  const corpusArticles = useMemo(() => data?.corpus?.articles || [], [data])
 
   const handleUpdate = useCallback(() => {
     mutate()

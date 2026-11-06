@@ -109,7 +109,7 @@ Un dernier exemple pour la route, qui peut vous être utile dans le cadre des do
 ```graphql
 Exemple 4 :
 query articlesCorpus {
-  corpus(filter:{corpusId: " ID DU CORPUS "}){
+  corpus(corpusId: " ID DU CORPUS "){
     articles{
       article{
         title

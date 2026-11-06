@@ -441,12 +441,15 @@ type Mutation {
 type Query {
   "Fetch article info [need to have access to this article]"
   article(article: ID!): Article
-  "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
-  articles(filter: FilterCorpusInput): [Article]
+  "Fetch the authenticated user's articles, optionally filtered by workspace"
+  articles(filter: ArticleFilterInput): [Article]
   "Get the corpora of a workspace, or the personal corpora of the authenticated user when no workspace is given"
   corpora(filter: CorpusFilterInput): [Corpus!]!
-  "Get a list of corpus with an optional filter"
-  corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
+  """
+  Get a corpus by ID.
+  Requires authentication as the corpus creator or as a member of its workspace.
+  """
+  corpus(corpusId: ID!): Corpus
   getUser(filter: UserFilter): User
   "Fetch an article [with an access key]"
   sharedArticle(accessKey: JWT, article: ID!): Article
@@ -646,6 +649,11 @@ scalar JSONObject
 "A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction."
 scalar JWT
 
+input ArticleFilterInput {
+  "List the articles of this workspace (or the articles of the authenticated user when omitted)"
+  workspaceId: ID
+}
+
 input ArticleOrder {
   articleId: ID!
   order: Int!
@@ -686,11 +694,6 @@ input CreateWorkspaceInput {
   color: String!
   description: String
   name: String!
-}
-
-input FilterCorpusInput {
-  corpusId: ID @deprecated(reason: "Use the corpus query with a corpusId argument instead (available in the next major version).")
-  workspaceId: ID
 }
 
 input ImportArticleInput {
