@@ -122,3 +122,25 @@ jobs:
           MATTERMOST_ICON_URL: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
         env:
           LATEST_COMMIT_MESSAGE:
+
+  # Passe en « Fini·e » et ferme les issues « Validé » du projet « Backlog Stylo »
+  # dont les PR sont incluses dans la version déployée.
+  backlog:
+    runs-on: ubuntu-latest
+    needs: [deployment]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
+      - uses: actions/github-script@v9
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const { closeDeployedIssues } = await import('${{ github.workspace }}/.github/scripts/backlog.mjs')
+            await closeDeployedIssues({ github, context, core, version: process.env.RELEASE_VERSION })
