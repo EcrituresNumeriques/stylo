@@ -80,13 +80,14 @@ module.exports = {
   Query: {
     async tag(_, args, context) {
       const { userId } = isUser(args, context)
+      const tagId = requireArgument('tagId', args.tagId, args.tag)
       const query = context.token.admin
-        ? { _id: args.tag }
-        : { _id: args.tag, owner: userId }
+        ? { _id: tagId }
+        : { _id: tagId, owner: userId }
 
       const tag = await Tag.findOne(query)
       if (!tag) {
-        throw new NotFoundError('Tag', args.tag)
+        throw new NotFoundError('Tag', tagId)
       }
       return tag
     },

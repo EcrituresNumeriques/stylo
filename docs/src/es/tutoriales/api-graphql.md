@@ -80,7 +80,7 @@ En el ejemplo 2, necesitas introducir el identificador de uno de los elementos d
 ```graphql 
 Ejemplo 2 :
 query articles {
-    article(article: "ID ARTÍCULO"){
+    article(articleId: "ID ARTÍCULO"){
     title
        owner {
     displayName
@@ -96,7 +96,7 @@ Para este tercero ejemplo, una vez más necesitas introducir el identificador de
 ```graphql
 Ejemplo 3 :
 query {
-    article(article: "ID ARTÍCULO"){
+    article(articleId: "ID ARTÍCULO"){
     title
     contributors{user{displayName}}
     workingVersion{md yaml bib}

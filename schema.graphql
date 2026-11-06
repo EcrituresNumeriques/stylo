@@ -257,7 +257,7 @@ type Mutation {
   The duplicate is created as a new, independent article.
   Requires authentication and access to the article.
   """
-  duplicateArticle(article: ID!, to: ID!): Article
+  duplicateArticle(article: ID @deprecated(reason: "Use articleId instead."), articleId: ID, to: ID @deprecated(reason: "Use userId instead."), userId: ID): Article
   """
 
   Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
@@ -354,7 +354,7 @@ type Mutation {
   Share an article with another user, granting them contributor access.
   Requires authentication as the article owner.
   """
-  shareArticle(article: ID!, to: ID!): Article
+  shareArticle(article: ID @deprecated(reason: "Use articleId instead."), articleId: ID, to: ID @deprecated(reason: "Use userId instead."), userId: ID): Article
   """
 
   Unlink an external authentication service from the current user account.
@@ -367,7 +367,7 @@ type Mutation {
   Remove a user's contributor access from an article.
   Requires authentication as the article owner.
   """
-  unshareArticle(article: ID!, to: ID!): Article
+  unshareArticle(article: ID @deprecated(reason: "Use articleId instead."), articleId: ID, to: ID @deprecated(reason: "Use userId instead."), userId: ID): Article
   """
 
   Update an article's title, tags, or workspaces.
@@ -441,7 +441,7 @@ type Mutation {
 
 type Query {
   "Fetch article info [need to have access to this article]"
-  article(article: ID!): Article
+  article(article: ID @deprecated(reason: "Use articleId instead."), articleId: ID): Article
   "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
   articles(filter: FilterCorpusInput): [Article]
   "Get the corpora of a workspace, or the personal corpora of the authenticated user when no workspace is given"
@@ -450,19 +450,19 @@ type Query {
   corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
   getUser(filter: UserFilter): User
   "Fetch an article [with an access key]"
-  sharedArticle(accessKey: JWT, article: ID!): Article
+  sharedArticle(accessKey: JWT, article: ID @deprecated(reason: "Use articleId instead."), articleId: ID): Article
   "Get a corpus [with an access key]"
   sharedCorpus(accessKey: JWT, corpusId: ID!): Corpus
   "Fetch instance stats"
   stats: InstanceUsageStats
   "Fetch a tag of the authenticated user"
-  tag(tag: ID!): Tag
+  tag(tag: ID @deprecated(reason: "Use tagId instead."), tagId: ID): Tag
   "Fetch the authenticated user's tags"
   tags: [Tag]
   "Get authenticated user info."
   user: User
   "Fetch version info"
-  version(version: ID!): Version
+  version(version: ID @deprecated(reason: "Use versionId instead."), versionId: ID): Version
   "Get a given workspace"
   workspace(workspaceId: ID): Workspace
   "Get a list of workspaces for the authenticated user"

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Version = require('../models/version')
 const Article = require('../models/article')
 const { NotFoundError } = require('../helpers/errors')
+const { requireArgument } = require('../helpers/arguments.js')
 const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
 const { toLegacyFormat } = require('../helpers/metadata')
@@ -22,7 +23,12 @@ module.exports = {
   },
 
   Query: {
-    async version(_, { version: versionId }) {
+    async version(_, args) {
+      const versionId = requireArgument(
+        'versionId',
+        args.versionId,
+        args.version
+      )
       // TODO need to make sure user should have access to this version
       const version = await Version.findById(versionId).populate('owner')
       if (!version) {

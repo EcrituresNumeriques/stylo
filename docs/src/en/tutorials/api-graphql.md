@@ -80,7 +80,7 @@ In example 2, you need to enter the identifier of one of the items in the previo
 ```graphql 
 Example 2:
 query articles {
-    article(article: “ARTICLE ID”){
+    article(articleId: “ARTICLE ID”){
     title
        owner {
     displayName
@@ -96,7 +96,7 @@ For this thrid example, once again, you need to enter your article ID in the app
 ```graphql
 Example 3 :
 query {
-    article(article: “ARTICLE ID”){
+    article(articleId: “ARTICLE ID”){
     title
     contributors{user{displayName}}
     workingVersion{md yaml bib}

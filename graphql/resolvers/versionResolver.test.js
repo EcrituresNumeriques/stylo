@@ -1,8 +1,11 @@
 const {
+  Query: VersionQuery,
   Mutation: VersionMutation,
   Version: VersionResolver,
 } = require('./versionResolver')
 const Version = require('../models/version')
+// registers the User model used by populate('owner')
+require('../models/user')
 const { ObjectId } = require('mongoose').Types
 const { before, after, describe, test } = require('node:test')
 const assert = require('node:assert')
@@ -17,6 +20,35 @@ describe('Version resolver', () => {
 
   after(async () => {
     await teardown(container)
+  })
+
+  describe('Query.version', () => {
+    test('fetches a version with the versionId argument', async () => {
+      const version = await Version.create({
+        owner: new ObjectId(),
+        message: 'With versionId',
+      })
+
+      const result = await VersionQuery.version({}, { versionId: version._id })
+      assert.equal(result.message, 'With versionId')
+    })
+
+    test('still accepts the deprecated version argument', async () => {
+      const version = await Version.create({
+        owner: new ObjectId(),
+        message: 'With version',
+      })
+
+      const result = await VersionQuery.version({}, { version: version._id })
+      assert.equal(result.message, 'With version')
+    })
+
+    test('requires the version identifier', async () => {
+      await assert.rejects(
+        () => VersionQuery.version({}, {}),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
   })
 
   describe('Mutation.renameVersion', () => {

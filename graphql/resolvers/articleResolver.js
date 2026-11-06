@@ -271,8 +271,13 @@ module.exports = {
      * @returns
      */
     async shareArticle(_root, args, context) {
-      const withUser = await getUser(args.to)
-      const article = await getArticleByContext(args.article, context)
+      const withUser = await getUser(
+        requireArgument('userId', args.userId, args.to)
+      )
+      const article = await getArticleByContext(
+        requireArgument('articleId', args.articleId, args.article),
+        context
+      )
       await article.shareWith(withUser)
       return article
     },
@@ -286,8 +291,13 @@ module.exports = {
      * @returns
      */
     async unshareArticle(_root, args, context) {
-      const withUser = await getUser(args.to)
-      const article = await getArticleByContext(args.article, context)
+      const withUser = await getUser(
+        requireArgument('userId', args.userId, args.to)
+      )
+      const article = await getArticleByContext(
+        requireArgument('articleId', args.articleId, args.article),
+        context
+      )
       await article.unshareWith(withUser)
       return article
     },
@@ -301,10 +311,14 @@ module.exports = {
      * @returns {Promise<import('./article')>}
      */
     async duplicateArticle(_root, args, context) {
-      const withUser = await getUser(args.to)
-      const article = await getArticleByContext(args.article, context)
+      const recipientId = requireArgument('userId', args.userId, args.to)
+      const withUser = await getUser(recipientId)
+      const article = await getArticleByContext(
+        requireArgument('articleId', args.articleId, args.article),
+        context
+      )
       const userId = context.userId
-      const prefix = userId === args.to ? '[Copy] ' : '[Sent] '
+      const prefix = userId === recipientId ? '[Copy] ' : '[Sent] '
 
       const newArticle = new Article({
         ...article.toObject(),
@@ -506,16 +520,21 @@ module.exports = {
      * Fetch an article as the current user
      *
      * @param {null} _root
-     * @param {{ article: string }} args
+     * @param {{ articleId?: string, article?: string }} args
      * @param {{ loaders: { article }, userId, token }} context
      * @returns
      */
     async article(_root, args, context) {
-      return await getArticleByContext(args.article, context)
+      return await getArticleByContext(
+        requireArgument('articleId', args.articleId, args.article),
+        context
+      )
     },
 
     async sharedArticle(_root, args) {
-      return getArticle(args.article)
+      return getArticle(
+        requireArgument('articleId', args.articleId, args.article)
+      )
     },
 
     /**

@@ -515,19 +515,19 @@ type Query {
   tags: [Tag]
 
   "Fetch a tag of the authenticated user"
-  tag(tag: ID!): Tag
+  tag(tagId: ID, tag: ID @deprecated(reason: "Use tagId instead.")): Tag
 
   "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
   articles (filter: FilterCorpusInput): [Article]
 
   "Fetch article info [need to have access to this article]"
-  article(article: ID!): Article
+  article(articleId: ID, article: ID @deprecated(reason: "Use articleId instead.")): Article
 
   "Fetch an article [with an access key]"
-  sharedArticle(article: ID!, accessKey: JWT): Article
+  sharedArticle(articleId: ID, article: ID @deprecated(reason: "Use articleId instead."), accessKey: JWT): Article
 
   "Fetch version info"
-  version(version: ID!): Version
+  version(versionId: ID, version: ID @deprecated(reason: "Use versionId instead.")): Version
 
   "Fetch instance stats"
   stats: InstanceUsageStats
@@ -668,20 +668,35 @@ type Mutation {
   Share an article with another user, granting them contributor access.
   Requires authentication as the article owner.
   """
-  shareArticle(article: ID!, to: ID!): Article
+  shareArticle(
+    articleId: ID
+    userId: ID
+    article: ID @deprecated(reason: "Use articleId instead.")
+    to: ID @deprecated(reason: "Use userId instead.")
+  ): Article
 
   """
   Remove a user's contributor access from an article.
   Requires authentication as the article owner.
   """
-  unshareArticle(article: ID!, to: ID!): Article
+  unshareArticle(
+    articleId: ID
+    userId: ID
+    article: ID @deprecated(reason: "Use articleId instead.")
+    to: ID @deprecated(reason: "Use userId instead.")
+  ): Article
 
   """
   Duplicate the working copy of an article and assign it to another user (or yourself).
   The duplicate is created as a new, independent article.
   Requires authentication and access to the article.
   """
-  duplicateArticle(article: ID!, to: ID!): Article
+  duplicateArticle(
+    articleId: ID
+    userId: ID
+    article: ID @deprecated(reason: "Use articleId instead.")
+    to: ID @deprecated(reason: "Use userId instead.")
+  ): Article
 
   """
   Create a new workspace.
