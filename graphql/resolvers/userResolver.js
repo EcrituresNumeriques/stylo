@@ -5,6 +5,7 @@ const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Tag = require('../models/tag')
 const { BadRequestError } = require('../helpers/errors')
+const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
 
 const config = require('../config.js')
@@ -28,7 +29,8 @@ module.exports = {
       return true
     },
 
-    async createUser(_, { details: userInput }) {
+    async createUser(_, args) {
+      const userInput = requireArgument('input', args.input, args.details)
       // check for user uniqueness
       const existingUser = await User.findOne({ email: userInput.email })
       if (existingUser) {
@@ -54,12 +56,13 @@ module.exports = {
      * Create account after two steps login
      * @param {DataLoaders} _
      * @param {Object} args
-     * @param {Object} args.details Form details
+     * @param {Object} args.input Form details
+     * @param {Object} [args.details] Form details (deprecated, use input instead)
      * @param {'humanid'|'hypothesis'|'zotero'} args.service Only used to validate GraphQL mutation.
      * @param {RequestContext} context
      * @returns {Promise<string>}
      */
-    async createUserWithAuth(_, { details }, { session }) {
+    async createUserWithAuth(_, args, { session }) {
       // link accounts
       if (!session?.pendingRegistration) {
         throw new BadRequestError(
@@ -67,6 +70,7 @@ module.exports = {
           'No registration found'
         )
       }
+      const details = requireArgument('input', args.input, args.details)
 
       const user = await User.create({
         // will unwrap 'email, 'authProviders' and possibly 'displayName'
@@ -252,7 +256,7 @@ module.exports = {
 
     async updateUser(_, args, context) {
       const { userId } = isUser(args, context)
-      const { details } = args
+      const details = requireArgument('input', args.input, args.details)
 
       const thisUser = await User.findById(userId)
       if (!thisUser) {

@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const isUser = require('../policies/isUser')
+const { requireArgument } = require('../helpers/arguments.js')
 
 async function checkCredentials({ username, password }) {
   if (!username || username.trim().length === 0) {
@@ -32,6 +33,16 @@ module.exports = {
   Mutation: {
     async changePassword(_, args, context) {
       const { userId } = isUser(args, context)
+      const currentPassword = requireArgument(
+        'input',
+        args.input?.currentPassword,
+        args.old
+      )
+      const newPassword = requireArgument(
+        'input',
+        args.input?.newPassword,
+        args.new
+      )
 
       // find User
       const user = await User.findOne({ _id: userId })
@@ -40,12 +51,12 @@ module.exports = {
       }
 
       // check old password
-      if (!(await user.comparePassword(args.old))) {
+      if (!(await user.comparePassword(currentPassword))) {
         throw new Error('Old password is incorrect')
       }
 
       // set new password
-      user.set('password', args.new)
+      user.set('password', newPassword)
       await user.save()
 
       return user

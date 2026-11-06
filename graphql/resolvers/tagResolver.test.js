@@ -66,6 +66,87 @@ describe('Tag resolver', () => {
     })
   })
 
+  describe('Mutation.createTag', () => {
+    test('creates a tag from the input argument', async () => {
+      const tag = await TagMutation.createTag(
+        {},
+        { input: { name: 'input', description: 'desc', color: '#ff0000' } },
+        makeContext(user)
+      )
+      assert.equal(tag.name, 'input')
+      assert.equal(tag.description, 'desc')
+      assert.equal(tag.color, '#ff0000')
+      assert.equal(tag.owner._id.toString(), user._id.toString())
+    })
+
+    test('creates a tag from the deprecated inline arguments', async () => {
+      const tag = await TagMutation.createTag(
+        {},
+        { name: 'inline', color: '#00ff00' },
+        makeContext(user)
+      )
+      assert.equal(tag.name, 'inline')
+      assert.equal(tag.color, '#00ff00')
+    })
+
+    test('rejects a tag without name or color', async () => {
+      await assert.rejects(
+        () =>
+          TagMutation.createTag({}, { name: 'no color' }, makeContext(user)),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+      await assert.rejects(
+        () => TagMutation.createTag({}, {}, makeContext(user)),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
+  })
+
+  describe('Mutation.updateTag', () => {
+    test('updates a tag from the tagId and input arguments', async () => {
+      const tag = await Tag.create({
+        name: 'before',
+        description: 'kept',
+        color: '#000000',
+        owner: user._id,
+      })
+      const updated = await TagMutation.updateTag(
+        {},
+        { tagId: tag._id, input: { name: 'after' } },
+        makeContext(user)
+      )
+      assert.equal(updated.name, 'after')
+      assert.equal(updated.description, 'kept')
+    })
+
+    test('updates a tag from the deprecated arguments', async () => {
+      const tag = await Tag.create({
+        name: 'before',
+        color: '#000000',
+        owner: user._id,
+      })
+      const updated = await TagMutation.updateTag(
+        {},
+        { tag: tag._id, color: '#ffffff' },
+        makeContext(user)
+      )
+      assert.equal(updated.name, 'before')
+      assert.equal(updated.color, '#ffffff')
+    })
+
+    test('requires the tag identifier', async () => {
+      await assert.rejects(
+        () =>
+          TagMutation.updateTag(
+            {},
+            { input: { name: 'x' } },
+            makeContext(user)
+          ),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
+  })
+
   describe('Mutation.deleteTag', () => {
     test('returns the deleted tag', async () => {
       const tag = await Tag.create({ name: 'To delete', owner: user._id })

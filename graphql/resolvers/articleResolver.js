@@ -9,6 +9,7 @@ const Workspace = require('../models/workspace.js')
 const Version = require('../models/version.js')
 
 const isUser = require('../policies/isUser.js')
+const { requireArgument } = require('../helpers/arguments.js')
 const { getWorkspace } = require('./workspaceResolver.js')
 const { reformat } = require('../helpers/metadata.js')
 const {
@@ -172,7 +173,13 @@ module.exports = {
      * @param {{ userId, token }} context
      */
     async updateArticle(_root, args, context) {
-      const { id, title, tags, workspaces } = args.updateArticleInput
+      const input = requireArgument(
+        'input',
+        args.input,
+        args.updateArticleInput
+      )
+      const id = requireArgument('articleId', args.articleId, input.id)
+      const { title, tags, workspaces } = input
       const article = await getArticleByContext(id, context)
       if (title) {
         article.title = title
@@ -209,7 +216,11 @@ module.exports = {
      */
     async createArticle(_root, args, context) {
       const user = await getUser(context.userId)
-      const { title, tags, workspaces } = args.createArticleInput
+      const { title, tags, workspaces } = requireArgument(
+        'input',
+        args.input,
+        args.createArticleInput
+      )
 
       //Add default article + default version
       const yDoc = new Y.Doc({ gc: false })
@@ -329,12 +340,17 @@ module.exports = {
      * Requires authentication with access to the article (as owner, contributor, or via a workspace).
      *
      * @param {null} _root
-     * @param {{ input: { articleId: string, bib: string } }} args
+     * @param {{ articleId?: string, input: { articleId?: string, bib: string } }} args
      * @param {{ userId: string, token: object }} context
      * @returns {Promise<Array<object>>} Parsed bibliography entries
      */
     async updateArticleBibliography(_root, args, context) {
-      const { articleId, bib } = args.input
+      const { bib } = args.input
+      const articleId = requireArgument(
+        'articleId',
+        args.articleId,
+        args.input.articleId
+      )
       const article = await getArticleByContext(articleId, context)
       article.set('workingVersion.bib', bib)
       await article.save()
@@ -347,12 +363,17 @@ module.exports = {
      * Requires authentication with access to the article (as owner, contributor, or via a workspace).
      *
      * @param {null} _root
-     * @param {{ input: { articleId: string, metadata: object } }} args
+     * @param {{ articleId?: string, input: { articleId?: string, metadata: object } }} args
      * @param {{ userId: string, token: object }} context
      * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
      */
     async updateArticleMetadata(_root, args, context) {
-      const { articleId, metadata } = args.input
+      const { metadata } = args.input
+      const articleId = requireArgument(
+        'articleId',
+        args.articleId,
+        args.input.articleId
+      )
       const article = await getArticleByContext(articleId, context)
       article.set('workingVersion.metadata', metadata)
       return await article.save()
@@ -426,13 +447,15 @@ module.exports = {
       return article.tags
     },
 
-    async setArticlePreviewSettings(_root, { articleId, settings }, context) {
-      const article = await getArticleByContext(articleId, context)
+    async setArticlePreviewSettings(_root, args, context) {
+      const settings = requireArgument('input', args.input, args.settings)
+      const article = await getArticleByContext(args.articleId, context)
       return article.setPreviewSettings(settings)
     },
 
-    async updateArticleWorkingVersion(_root, { articleId, content }, context) {
-      const article = await getArticleByContext(articleId, context)
+    async updateArticleWorkingVersion(_root, args, context) {
+      const content = requireArgument('input', args.input, args.content)
+      const article = await getArticleByContext(args.articleId, context)
       return article.updateWorkingVersion(content)
     },
 
@@ -453,14 +476,18 @@ module.exports = {
       return article
     },
 
-    async createArticleVersion(
-      _root,
-      { articleId, articleVersionInput },
-      context
-    ) {
-      const article = await getArticleByContext(articleId, context)
+    async createArticleVersion(_root, args, context) {
+      const { major, message } = requireArgument(
+        'input',
+        args.input,
+        args.articleVersionInput
+      )
+      const article = await getArticleByContext(args.articleId, context)
+      // the author is the authenticated user: ArticleVersionInput.userId is ignored
       const result = await createVersion(article, {
-        ...articleVersionInput,
+        major,
+        message,
+        userId: context.userId,
         type: 'userAction',
       })
       if (result === false) {
@@ -626,9 +653,13 @@ module.exports = {
     },
 
     /** @deprecated Use createArticleVersion root mutation instead. */
-    async createVersion(article, { articleVersionInput }) {
+    async createVersion(article, { articleVersionInput }, context) {
+      const { major, message } = articleVersionInput
+      // the author is the authenticated user: ArticleVersionInput.userId is ignored
       const result = await createVersion(article, {
-        ...articleVersionInput,
+        major,
+        message,
+        userId: context.userId,
         type: 'userAction',
       })
       if (result === false) {
