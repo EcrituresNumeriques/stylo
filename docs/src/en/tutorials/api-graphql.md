@@ -142,12 +142,15 @@ You can create articles, share your articles, duplicate them and much more. The 
 Let's look at an example of a mutation: 
 
 ```graphql
-mutation{createArticle(title: "ARTICLE TITLE",
-    user: "YOUR ID")
-    {title _id}}
+mutation {
+  createArticle(input: { title: "ARTICLE TITLE" }) {
+    id
+    title
+  }
+}
 ```
 
-In this example, we're asking the API to create an article for us. To do this, enter your ID number, which you'll find either in your Stylo account information, or which you can request in GraphQL Playground. Then enter the title you want in the appropriate space. Once the mutation has been launched, return to Stylo's “Articles” page and you'll see your new article with the chosen title. 
+In this example, we're asking the API to create an article for us. Enter the title you want in the appropriate space: the article is created in your account, the one associated with the API key entered in the HTTP headers. Once the mutation has been launched, return to Stylo's “Articles” page and you'll see your new article with the chosen title. 
 
 ## In conclusion
 
