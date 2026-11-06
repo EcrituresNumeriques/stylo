@@ -2,28 +2,55 @@
 
 Frontend for the site hosted at https://stylo.huma-num.fr
 
-## Prerequisite
-
-You will need Node.js (v18+) and npm on your machine.
+This folder is an npm workspace of the Stylo repository.
+The commands below are run from the **root of the repository**: see the [main `README.md`](../README.md) for the prerequisites and the configuration (`.env` file, which is also read by the frontend).
 
 ## Install
 
-Install the dependencies using `npm`:
+```bash
+npm clean-install
+```
 
-    $ npm install
+All the workspaces dependencies are installed at once, with a single `package-lock.json` at the root of the repository.
+To add a dependency to the frontend:
+
+```bash
+npm install <package> -w front
+```
 
 ## Develop
 
-    $ npm start
+Start the frontend and the GraphQL API:
+
+```bash
+npm run dev
+```
+
+The frontend is available on [`localhost:3000`](http://localhost:3000) and proxies the API requests to the GraphQL server on `localhost:3030`.
+To start the frontend only (the GraphQL API must be running): `npm start -w front`.
 
 ## Build
 
-    $ npm run build
+```bash
+npm run build -w front
+```
 
-## Serve
+The assets are generated in the `front/build` folder.
+To serve them locally:
 
-    $ npm exec serve ./build
+```bash
+npm run preview -w front
+```
 
-Or, on prior npm versions: `$ npx serve ./build`
+## Test
 
-Server will be available on localhost:5000.
+```bash
+npm test -w front
+```
+
+End-to-end tests use [Playwright](https://playwright.dev/) and require MongoDB and the Stylo services to be running (`npm run dev`):
+
+```bash
+npm exec -w front -- playwright install chromium
+npm run test:e2e -w front
+```
