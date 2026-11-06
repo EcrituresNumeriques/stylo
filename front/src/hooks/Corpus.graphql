@@ -125,12 +125,6 @@ mutation deleteCorpus($corpusId: ID!) {
   }
 }
 
-mutation updateMetadata($corpusId: ID!, $metadata: JSON!) {
-  updateCorpusMetadata(corpusId: $corpusId, metadata: $metadata) {
-    id
-  }
-}
-
 mutation updateCorpus($corpusId: ID!, $input: UpdateCorpusInput!) {
   updateCorpus(corpusId: $corpusId, input: $input) {
     id
@@ -151,12 +145,9 @@ mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
 
 mutation updateArticlesOrder(
   $corpusId: ID!
-  $articlesOrderInput: [ArticleOrder!]!
+  $input: UpdateCorpusArticlesOrderInput!
 ) {
-  updateCorpusArticlesOrder(
-    corpusId: $corpusId
-    articlesOrderInput: $articlesOrderInput
-  ) {
+  updateCorpusArticlesOrder(corpusId: $corpusId, input: $input) {
     id
   }
 }
