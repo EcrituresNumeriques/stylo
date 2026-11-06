@@ -4,9 +4,9 @@
   "extends": "//",
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!public"
-    ]
+    "includes": ["**", "!public"]
+  },
+  "html": {
+    "parser": { "interpolation": true }
   }
 }

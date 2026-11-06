@@ -35,12 +35,12 @@ export default defineConfig(async ({ mode }) => {
               {
                 name: 'core',
                 test: /node_modules\/(core-js|i18next|lucide-react|redux|react|react-.+)/,
-                priority: 5
+                priority: 5,
               },
               {
                 name: 'textEditor',
                 test: /node_modules\/(monaco-editor|monaco-.+|@monaco-editor\/.+|yjs|y-.+)/,
-                priority: 5
+                priority: 5,
               },
               // {
               //   name: 'vendor',
@@ -50,9 +50,9 @@ export default defineConfig(async ({ mode }) => {
               {
                 name: 'pagedPreview',
                 test: /node_modules\/pagedjs/,
-                priority: 90
-              }
-            ]
+                priority: 90,
+              },
+            ],
           },
         },
       },
