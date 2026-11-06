@@ -90,7 +90,10 @@ type Corpus {
   updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
   updateMetadata(metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpus mutation at the root instead.")
   updatedAt: DateTime
-  workspace: String
+  workspace: String @deprecated(reason: "Use workspaceId instead.")
+
+  "Workspace of the corpus (null for a personal corpus)"
+  workspaceId: ID
 }
 
 type CorpusArticle {
@@ -476,20 +479,26 @@ type Tag {
   articles: [Article]
   color: HexColorCode
   createdAt: DateTime
+
+  "User who created the tag"
+  creator: User
   description: String
   id: ID!
   name: String!
-  owner: ID
+  owner: ID @deprecated(reason: "Use creator instead.")
   updatedAt: DateTime
 }
 
 type User {
   _id: ID @deprecated(reason: "Use id instead.")
-  acquintances(limit: Int, page: Int): [User]
+  acquintances(limit: Int, page: Int): [User] @deprecated(reason: "Use contacts instead.")
   addContact(userId: ID!): User @deprecated(reason: "Use addContact mutation at the root instead.")
   articles(limit: Int, page: Int): [Article]
   authProviders: AuthProvidersMap
   authTypes: [AuthType]
+
+  "Users in the contact list of this user"
+  contacts: [User!]!
   createdAt: DateTime
   deletedAt: DateTime
   displayName: String
@@ -700,7 +709,10 @@ input CreateCorpusInput {
   metadata: JSON
   name: String!
   type: CorpusType!
-  workspace: String
+  workspace: String @deprecated(reason: "Use workspaceId instead.")
+
+  "Workspace of the corpus (omit for a personal corpus)"
+  workspaceId: ID
 }
 
 input CreateTagInput {

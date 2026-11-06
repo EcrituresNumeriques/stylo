@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const User = require('../models/user')
 const Tag = require('../models/tag')
 const Article = require('../models/article')
@@ -99,6 +100,16 @@ module.exports = {
   },
 
   Tag: {
+    async creator(tag, _args, context) {
+      if (!tag.owner) {
+        return null
+      }
+      if (tag instanceof mongoose.Document && tag.populated('owner')) {
+        return tag.owner
+      }
+      return context.loaders.users.load(tag.owner._id ?? tag.owner)
+    },
+
     async articles(tag) {
       return Article.find({ tags: tag._id }, null, null).populate('versions')
     },

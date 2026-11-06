@@ -10,6 +10,7 @@ const { ObjectId } = require('mongoose').Types
 const { before, after, describe, test } = require('node:test')
 const assert = require('node:assert')
 const { setup, teardown } = require('../tests/harness')
+const { createLoaders } = require('../loaders.js')
 
 describe('Tag resolver', () => {
   let container
@@ -27,6 +28,40 @@ describe('Tag resolver', () => {
   const makeContext = (u, { admin = false } = {}) => ({
     user: u,
     token: { _id: u._id.toString(), admin },
+  })
+
+  describe('Tag.creator', () => {
+    test('returns the user who created the tag', async () => {
+      const tag = await Tag.create({
+        name: 'creator',
+        color: '#000000',
+        owner: user._id,
+      })
+      const creator = await TagResolver.creator(
+        tag,
+        {},
+        {
+          loaders: createLoaders(),
+        }
+      )
+      assert.equal(creator._id.toString(), user._id.toString())
+    })
+
+    test('returns the populated owner', async () => {
+      const tag = await Tag.create({
+        name: 'populated',
+        color: '#000000',
+        owner: user._id,
+      })
+      await tag.populate('owner')
+      const creator = await TagResolver.creator(tag, {}, {})
+      assert.equal(creator.email, user.email)
+    })
+
+    test('returns null when the tag has no owner', async () => {
+      const tag = await Tag.create({ name: 'orphan', color: '#000000' })
+      assert.equal(await TagResolver.creator(tag, {}, {}), null)
+    })
   })
 
   describe('Tag.articles', () => {

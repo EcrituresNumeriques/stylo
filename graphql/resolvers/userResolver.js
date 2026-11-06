@@ -315,12 +315,23 @@ module.exports = {
       })
     },
 
+    /** @deprecated Use contacts instead. */
     async acquintances(user, _args, context) {
       return Promise.all(
         user.acquintances.map((contactId) =>
           context.loaders.users.load(contactId)
         )
       )
+    },
+
+    async contacts(user, _args, context) {
+      const contacts = await Promise.all(
+        (user.acquintances ?? []).map((contactId) =>
+          context.loaders.users.load(contactId?._id ?? contactId)
+        )
+      )
+      // a contact may have been deleted
+      return contacts.filter(Boolean)
     },
 
     authProviders(user) {

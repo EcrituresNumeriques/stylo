@@ -77,7 +77,9 @@ type User {
   institution: String
   tags: [Tag]
   permissions: [UserPermission]
-  acquintances(limit: Int, page: Int): [User]
+  acquintances(limit: Int, page: Int): [User] @deprecated(reason: "Use contacts instead.")
+  "Users in the contact list of this user"
+  contacts: [User!]!
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
   createdAt: DateTime
@@ -99,7 +101,9 @@ type Tag {
   id: ID!
   _id: ID! @deprecated(reason: "Use id instead.")
   name: String!
-  owner: ID
+  owner: ID @deprecated(reason: "Use creator instead.")
+  "User who created the tag"
+  creator: User
   description: String
   color: HexColorCode
   articles: [Article]
@@ -475,7 +479,9 @@ type Corpus {
   name: String!
   description: String
   metadata: JSON
-  workspace: String
+  workspace: String @deprecated(reason: "Use workspaceId instead.")
+  "Workspace of the corpus (null for a personal corpus)"
+  workspaceId: ID
   articles: [CorpusArticle!]!
   creator: User!
   createdAt: DateTime
@@ -497,7 +503,9 @@ input CreateCorpusInput {
   type: CorpusType!
   description: String
   metadata: JSON
-  workspace: String
+  workspace: String @deprecated(reason: "Use workspaceId instead.")
+  "Workspace of the corpus (omit for a personal corpus)"
+  workspaceId: ID
 }
 
 input FilterCorpusInput {
