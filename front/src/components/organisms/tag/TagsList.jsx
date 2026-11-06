@@ -1,5 +1,5 @@
 import { Settings, Tag } from 'lucide-react'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -22,6 +22,7 @@ export default function TagsList({ action }) {
   )
 
   const editTagModal = useModal()
+  const [editedTag, setEditedTag] = useState(null)
   const createTagModal = useModal()
 
   const { data, isLoading } = useFetchData(
@@ -58,33 +59,20 @@ export default function TagsList({ action }) {
               selected={selectedTagIds.includes(tag.id)}
               addon={
                 action && (
-                  <>
-                    <Modal
-                      {...editTagModal.bindings}
-                      title={
-                        <>
-                          <Tag /> {t('tag.editForm.title')}
-                        </>
-                      }
-                    >
-                      <TagEditForm
-                        tag={tag}
-                        onSubmit={() => editTagModal.close()}
-                        onCancel={() => editTagModal.close()}
-                      />
-                    </Modal>
-                    <Button
-                      icon
-                      small
-                      aria-label={t('tag.editForm.buttonTitle', {
-                        name: tag.name,
-                      })}
-                      type="button"
-                      onClick={() => editTagModal.show()}
-                    >
-                      <Settings size="1rem" />
-                    </Button>
-                  </>
+                  <Button
+                    icon
+                    small
+                    aria-label={t('tag.editForm.buttonTitle', {
+                      name: tag.name,
+                    })}
+                    type="button"
+                    onClick={() => {
+                      setEditedTag(tag)
+                      editTagModal.show()
+                    }}
+                  >
+                    <Settings size="1rem" />
+                  </Button>
                 )
               }
             ></ArticleTag>
@@ -99,6 +87,24 @@ export default function TagsList({ action }) {
           </Button>
         </li>
       </ul>
+
+      <Modal
+        {...editTagModal.bindings}
+        title={
+          <>
+            <Tag /> {t('tag.editForm.title')}
+          </>
+        }
+      >
+        {editedTag && (
+          <TagEditForm
+            key={editedTag.id}
+            tag={editedTag}
+            onSubmit={() => editTagModal.close()}
+            onCancel={() => editTagModal.close()}
+          />
+        )}
+      </Modal>
 
       <Modal
         {...createTagModal.bindings}
