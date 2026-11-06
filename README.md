@@ -33,9 +33,9 @@ nvm install v24 --default
 
 # Développement local
 
-L'application se lance en combinant une base de données MongoDB, et des applications Node.js (v18+).
+L'application se lance en combinant une base de données MongoDB et deux applications Node.js (`front` et `graphql`), gérées comme des [workspaces npm](https://docs.npmjs.com/cli/using-npm/workspaces) depuis la racine du dépôt.
 
-**La première fois que vous installez le projet**, lancez ces commandes :
+**La première fois que vous installez le projet**, lancez ces commandes à la racine du dépôt (les dépendances de tous les workspaces sont installées en une seule fois) :
 
 ```bash
 cp stylo-example.env .env
@@ -47,13 +47,12 @@ npm clean-install
 Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :
 
 ```bash
-DOTENV_CONFIG_PATH=.env NODE_OPTIONS="--require dotenv/config" npm run --prefix graphql generate-service-token --silent
+DOTENV_CONFIG_PATH=.env NODE_OPTIONS="--require dotenv/config" npm run -w graphql generate-service-token --silent
 ```
 
-Ensuite, ainsi que le reste du temps :
+Ensuite, ainsi que le reste du temps, démarrez MongoDB (par exemple sous macOS : `brew services start mongodb-community`) puis lancez :
 
 ```bash
-mongod --config /usr/local/etc/mongod.conf --fork
 npm run dev
 ```
 
@@ -73,7 +72,17 @@ npm run dev
 ```
 
 L'[interface web de Stylo](./front) est alors disponible sur ([`localhost:3000`](http://localhost:3000)).<br>
-L'[API GraphQL](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/) et le [service d'export](./export) sur [`localhost:3080`](http://localhost:3080/).
+L'[API GraphQL](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/), le service d'export sur [`localhost:3080`](http://localhost:3080/) et l'API Pandoc sur [`localhost:3090`](http://localhost:3090/).
+
+## Gérer les dépendances
+
+Il n'y a qu'un seul fichier `package-lock.json`, à la racine du dépôt.
+Pour ajouter ou mettre à jour une dépendance, lancez la commande depuis la racine en précisant le workspace concerné :
+
+```bash
+npm install <paquet> -w front
+npm install <paquet> -w graphql
+```
 
 # Installation
 
