@@ -139,6 +139,25 @@ async function isIncludedIn(github, context, sha, ref) {
   }
 }
 
+async function closeIssue(github, context, issueNumber) {
+  try {
+    await github.rest.issues.update({
+      ...context.repo,
+      issue_number: issueNumber,
+      state: 'closed',
+      state_reason: 'completed',
+    })
+  } catch (error) {
+    // « This issue was closed by another request » : déjà fermée, c'est ce qu'on veut.
+    const alreadyClosed = error.response?.data?.errors?.some((e) =>
+      e.message?.includes('closed by another request')
+    )
+    if (error.status !== 422 || !alreadyClosed) {
+      throw error
+    }
+  }
+}
+
 function issueLink(issue) {
   return `[#${issue.number}](${issue.url}) ${issue.title}`
 }
@@ -194,20 +213,17 @@ export async function closeDeployedIssues({ github, context, core, version }) {
       continue
     }
 
-    await setStatus(github, item.id, STATUS.fini)
     if (issue.state === 'OPEN') {
       await github.rest.issues.createComment({
         ...context.repo,
         issue_number: issue.number,
         body: `Déployé en production avec la version [${version}](${context.serverUrl}/${repoName}/tree/${tag}).`,
       })
-      await github.rest.issues.update({
-        ...context.repo,
-        issue_number: issue.number,
-        state: 'closed',
-        state_reason: 'completed',
-      })
+      await closeIssue(github, context, issue.number)
     }
+    // Le projet ferme aussi les issues passées en « Fini·e » : on ferme
+    // l'issue avant de changer le statut pour ne pas entrer en concurrence.
+    await setStatus(github, item.id, STATUS.fini)
     closed.push(issue)
     core.info(`#${issue.number} → ${STATUS.fini.name}`)
   }
