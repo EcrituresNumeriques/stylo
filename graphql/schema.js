@@ -170,8 +170,11 @@ input CreateArticleInput {
 
 input UpdateArticleInput {
   id: ID @deprecated(reason: "Use the articleId argument of updateArticle instead.")
-  title: String!
+  "New title of the article (unchanged when omitted)"
+  title: String
+  "Identifiers of the tags of the article (unchanged when omitted)"
   tags: [ID]
+  "Identifiers of the workspaces of the article (unchanged when omitted)"
   workspaces: [ID]
 }
 
@@ -204,7 +207,7 @@ type Article {
   addTags(tags: [ID]!): [Tag] @deprecated(reason: "Use addArticleTags mutation at the root instead.")
   delete(dryRun: Boolean): Boolean @deprecated(reason: "Use deleteArticle mutation at the root instead.")
   removeTags(tags: [ID]!): [Tag] @deprecated(reason: "Use removeArticleTags mutation at the root instead.")
-  rename(title: String!): Boolean @deprecated(reason: "Use renameArticle mutation at the root instead.")
+  rename(title: String!): Boolean @deprecated(reason: "Use updateArticle mutation at the root instead.")
   setPreviewSettings(settings: ArticlePreviewInput!): Article @deprecated(reason: "Use setArticlePreviewSettings mutation at the root instead.")
   setZoteroLink(zotero: String!): Boolean @deprecated(reason: "Use setArticleZoteroLink mutation at the root instead.")
   setNakalaLink(nakala: String!): Boolean @deprecated(reason: "Use setArticleNakalaLink mutation at the root instead.")
@@ -440,12 +443,23 @@ type CorpusArticle {
 
   # mutation
   remove: Corpus! @deprecated(reason: "Use removeCorpusArticle mutation at the root instead.")
-  move(order: Int): Corpus @deprecated(reason: "Use moveCorpusArticle mutation at the root instead.")
+  move(order: Int): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
 }
 
+"Deprecated: use ArticleOrderInput with the input argument of updateCorpusArticlesOrder instead."
 input ArticleOrder {
   articleId: ID!
   order: Int!
+}
+
+input ArticleOrderInput {
+  articleId: ID!
+  order: Int!
+}
+
+input UpdateCorpusArticlesOrderInput {
+  "Position of each article in the corpus"
+  articles: [ArticleOrderInput!]!
 }
 
 input UpdateCorpusInput {
@@ -471,8 +485,8 @@ type Corpus {
 
   # mutations
   addArticle(articleId: ID!): Corpus @deprecated(reason: "Use addCorpusArticle mutation at the root instead.")
-  rename(name: String!): Corpus @deprecated(reason: "Use renameCorpus mutation at the root instead.")
-  updateMetadata(metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpusMetadata mutation at the root instead.")
+  rename(name: String!): Corpus @deprecated(reason: "Use updateCorpus mutation at the root instead.")
+  updateMetadata(metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpus mutation at the root instead.")
   updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
   delete: Corpus! @deprecated(reason: "Use deleteCorpus mutation at the root instead.")
   update(updateCorpusInput: UpdateCorpusInput!): Corpus! @deprecated(reason: "Use updateCorpus mutation at the root instead.")
@@ -673,7 +687,7 @@ type Mutation {
     userId: ID
     article: ID @deprecated(reason: "Use articleId instead.")
     to: ID @deprecated(reason: "Use userId instead.")
-  ): Article
+  ): Article @deprecated(reason: "Use addArticleContributor instead.")
 
   """
   Remove a user's contributor access from an article.
@@ -684,7 +698,7 @@ type Mutation {
     userId: ID
     article: ID @deprecated(reason: "Use articleId instead.")
     to: ID @deprecated(reason: "Use userId instead.")
-  ): Article
+  ): Article @deprecated(reason: "Use removeArticleContributor instead.")
 
   """
   Duplicate the working copy of an article and assign it to another user (or yourself).
@@ -740,6 +754,7 @@ type Mutation {
 
   """
   Update an article's title, tags, or workspaces.
+  Only the fields given in the input are changed.
   Requires authentication as the article owner.
   """
   updateArticle(articleId: ID, input: UpdateArticleInput, updateArticleInput: UpdateArticleInput @deprecated(reason: "Use the input argument instead.")): Article!
@@ -772,16 +787,17 @@ type Mutation {
   Rename a corpus by ID.
   Requires authentication with access to the corpus.
   """
-  renameCorpus(corpusId: ID!, name: String!): Corpus
+  renameCorpus(corpusId: ID!, name: String!): Corpus @deprecated(reason: "Use updateCorpus with input.name instead.")
 
   """
   Update the metadata of a corpus.
   Requires authentication with access to the corpus.
   """
-  updateCorpusMetadata(corpusId: ID!, metadata: JSON!): Corpus
+  updateCorpusMetadata(corpusId: ID!, metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpus with input.metadata instead.")
 
   """
   Update a corpus's name, description, or metadata.
+  Only the fields given in the input are changed.
   Requires authentication with access to the corpus.
   """
   updateCorpus(corpusId: ID!, input: UpdateCorpusInput, updateCorpusInput: UpdateCorpusInput @deprecated(reason: "Use the input argument instead.")): Corpus!
@@ -802,13 +818,13 @@ type Mutation {
   Move an article to a new position within a corpus.
   Requires authentication with access to the corpus.
   """
-  moveCorpusArticle(corpusId: ID!, articleId: ID!, order: Int): Corpus
+  moveCorpusArticle(corpusId: ID!, articleId: ID!, order: Int): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder instead.")
 
   """
   Reorder the articles within a corpus.
   Requires authentication with access to the corpus.
   """
-  updateCorpusArticlesOrder(corpusId: ID!, articlesOrderInput: [ArticleOrder!]!): Corpus
+  updateCorpusArticlesOrder(corpusId: ID!, input: UpdateCorpusArticlesOrderInput, articlesOrderInput: [ArticleOrder!] @deprecated(reason: "Use the input argument instead.")): Corpus
 
   """
   Update the bibliography of an article from a BibTeX string.
@@ -822,7 +838,7 @@ type Mutation {
   Replaces the entire metadata object stored in the working copy.
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
   """
-  updateArticleMetadata(articleId: ID, input: UpdateArticleMetadataInput!): Article
+  updateArticleMetadata(articleId: ID, input: UpdateArticleMetadataInput!): Article @deprecated(reason: "Use updateArticleWorkingVersion with input.metadata instead.")
   
   """
   Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
@@ -842,7 +858,7 @@ type Mutation {
   Rename an article by ID. Returns the updated article.
   Requires authentication with access to the article.
   """
-  renameArticle(articleId: ID!, title: String!): Article
+  renameArticle(articleId: ID!, title: String!): Article @deprecated(reason: "Use updateArticle with input.title instead.")
 
   """
   Set the Zotero library link on an article. Returns the updated article.
