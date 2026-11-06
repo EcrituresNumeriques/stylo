@@ -3,6 +3,8 @@
 This folder is an npm workspace of the Stylo repository.
 The commands below are run from the **root of the repository**: see the [main `README.md`](../README.md) for the prerequisites and the configuration (`.env` file at the root of the repository).
 
+Before changing the GraphQL schema, read the [API conventions](CONVENTIONS.md) (in French).
+
 ## Install
 
 ```bash
