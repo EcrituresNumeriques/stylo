@@ -292,6 +292,39 @@ describe('article resolver', () => {
       // eg: versions
     })
 
+    test('duplicateArticle accepts the articleId and userId arguments', async () => {
+      const article = await Article.create({
+        title: 'Sent thesis',
+        owner: [context.userId],
+      })
+
+      const duplicatedArticle = await ArticleMutation.duplicateArticle(
+        {},
+        { articleId: article._id, userId: user5._id },
+        context
+      )
+
+      assert.equal(duplicatedArticle.title, '[Sent] Sent thesis')
+      assert.equal(duplicatedArticle.owner.toString(), user5._id.toString())
+    })
+
+    test('duplicateArticle requires the recipient', async () => {
+      const article = await Article.create({
+        title: 'No recipient',
+        owner: [context.userId],
+      })
+
+      await assert.rejects(
+        () =>
+          ArticleMutation.duplicateArticle(
+            {},
+            { articleId: article._id },
+            context
+          ),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
+
     test('duplicated article is still linked to corpus and workspace', async () => {
       const article = await Article.create({
         title: 'My thesis',
@@ -694,6 +727,46 @@ describe('article resolver', () => {
           { input: { articleId: article._id, metadata: {} } },
           { user: {}, userId: null, token: {} }
         )
+      )
+    })
+  })
+
+  describe('Query.article', () => {
+    test('fetches an article with the articleId argument', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      const article = await Article.create({
+        title: 'Fetched with articleId',
+        owner: [user5._id],
+      })
+
+      const result = await ArticleQuery.article(
+        {},
+        { articleId: article._id.toString() },
+        context
+      )
+      assert.equal(result.title, 'Fetched with articleId')
+    })
+
+    test('still accepts the deprecated article argument', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      const article = await Article.create({
+        title: 'Fetched with article',
+        owner: [user5._id],
+      })
+
+      const result = await ArticleQuery.article(
+        {},
+        { article: article._id.toString() },
+        context
+      )
+      assert.equal(result.title, 'Fetched with article')
+    })
+
+    test('requires the article identifier', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      await assert.rejects(
+        () => ArticleQuery.article({}, {}, context),
+        (error) => error.extensions.code === 'INVALID_INPUT'
       )
     })
   })

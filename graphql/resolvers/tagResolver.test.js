@@ -182,6 +182,20 @@ describe('Tag resolver', () => {
       assert.equal(result.name, 'My Tag')
     })
 
+    test('accepts the tagId argument', async () => {
+      const tag = await Tag.create({
+        name: 'tagId',
+        color: '#000000',
+        owner: user._id,
+      })
+      const result = await TagQuery.tag(
+        {},
+        { tagId: tag._id },
+        makeContext(user)
+      )
+      assert.equal(result.name, 'tagId')
+    })
+
     test('throws a not found error when the tag does not exist', async () => {
       await assert.rejects(
         () => TagQuery.tag({}, { tag: new ObjectId() }, makeContext(user)),
