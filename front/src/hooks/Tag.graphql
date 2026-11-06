@@ -14,7 +14,10 @@ mutation updateTag(
   $name: String!
   $description: String!
 ) {
-  updateTag(tag: $tag, name: $name, description: $description, color: $color) {
+  updateTag(
+    tagId: $tag
+    input: { name: $name, description: $description, color: $color }
+  ) {
     id
     name
     description
@@ -27,7 +30,7 @@ mutation createTag(
   $description: String
   $color: HexColorCode!
 ) {
-  createTag(name: $name, description: $description, color: $color) {
+  createTag(input: { name: $name, description: $description, color: $color }) {
     id
     name
     description

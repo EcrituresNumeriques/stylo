@@ -94,14 +94,14 @@ mutation removeWorkspaceMember($workspaceId: ID!, $userId: ID!) {
   }
 }
 
-mutation createWorkspace($createWorkspaceInput: CreateWorkspaceInput!) {
-  createWorkspace(createWorkspaceInput: $createWorkspaceInput) {
+mutation createWorkspace($input: CreateWorkspaceInput!) {
+  createWorkspace(input: $input) {
     id
   }
 }
 
 mutation create($data: CreateWorkspaceInput!) {
-  createWorkspace(createWorkspaceInput: $data) {
+  createWorkspace(input: $data) {
     id
     name
     description
@@ -126,7 +126,7 @@ mutation updateFormMetadata(
   $workspaceId: ID!
   $input: UpdateWorkspaceFormMetadataInput!
 ) {
-  updateWorkspaceFormMetadata(details: $input, workspaceId: $workspaceId) {
+  updateWorkspaceFormMetadata(workspaceId: $workspaceId, input: $input) {
     id
   }
 }

@@ -59,8 +59,8 @@ query getWorkspaceArticles(
   }
 }
 
-mutation createArticle($createArticleInput: CreateArticleInput!) {
-  createArticle(createArticleInput: $createArticleInput) {
+mutation createArticle($input: CreateArticleInput!) {
+  createArticle(input: $input) {
     id
     title
     updatedAt

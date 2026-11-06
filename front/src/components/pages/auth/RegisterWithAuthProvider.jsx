@@ -31,7 +31,7 @@ export default function RegisterWithAuthProvider() {
     try {
       const { createUserWithAuth: token } = await query({
         query: queries.createUserWithAuth,
-        variables: { details, service },
+        variables: { input: details, service },
         // needed to link the session to the http request in the resolver
         withCredentials: true,
       })

@@ -105,7 +105,7 @@ export function useArticlesActions({ activeWorkspaceId }) {
   const create = async (createInput) => {
     const { createArticle: createdArticle } = await executeQuery({
       query: createArticle,
-      variables: { createArticleInput: createInput },
+      variables: { input: createInput },
       sessionToken,
     })
     await mutateArticles(async (data) => {
@@ -202,8 +202,8 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
       sessionToken,
       query: updateArticle,
       variables: {
-        updateArticleInput: {
-          id: articleId,
+        articleId,
+        input: {
           title,
           tags,
           workspaces,
@@ -243,7 +243,6 @@ const emptyYaml = `---
 
 export function useArticleMetadata({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
   const hasVersion = typeof versionId === 'string'
   const { data, error, mutate, isLoading } = useFetchData(
     {
@@ -273,9 +272,8 @@ export function useArticleMetadata({ articleId, versionId }) {
       sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
-        userId: activeUser.id,
         articleId: articleId,
-        content: { metadataFormType },
+        input: { metadataFormType },
       },
     })
     // TODO use a common query for all mutations
@@ -303,9 +301,8 @@ export function useArticleMetadata({ articleId, versionId }) {
       sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
-        userId: activeUser.id,
         articleId: articleId,
-        content: { metadata },
+        input: { metadata },
       },
     })
     await mutate(
@@ -398,8 +395,8 @@ export function useEditableArticle({ articleId, versionId }) {
       sessionToken,
       query: updateArticleBibliography,
       variables: {
+        articleId,
         input: {
-          articleId,
           bib: bibtex,
         },
       },
@@ -525,7 +522,6 @@ export function useArticleVersion({ versionId }) {
 
 export function useArticleVersionActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
   const { mutate } = useMutateData({
     query: getArticleVersions,
     variables: { article: articleId },
@@ -534,7 +530,6 @@ export function useArticleVersionActions({ articleId }) {
     const response = await executeQuery({
       query: createArticleVersion,
       variables: {
-        userId: activeUser.id,
         articleId,
         major: version.major,
         message: version.description,
