@@ -64,11 +64,11 @@ Don't forget to close the brackets after opening each one. When you're ready, cl
 Example 1:
 query allMyArticles {
     user {
-     _id
+     id
      email
      
      articles {
-      _id
+      id
       title
       }
    }
@@ -113,7 +113,7 @@ query articlesCorpus {
     articles{
       article{
         title
-        _id
+        id
         workingVersion{md}
       }
     }

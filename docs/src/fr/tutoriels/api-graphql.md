@@ -64,11 +64,11 @@ Il ne faut pas oublier de refermer les crochets après l'ouverture de chacun. Qu
 Exemple 1 :
 query tousMesArticles {
     user {
-     _id
+     id
      email
      
      articles {
-      _id
+      id
       title
       }
    }
@@ -113,7 +113,7 @@ query articlesCorpus {
     articles{
       article{
         title
-        _id
+        id
         workingVersion{md}
       }
     }
