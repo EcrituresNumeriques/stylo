@@ -8,7 +8,14 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!docs", "!**/build", "!**/dist", "!front/public"]
+    "includes": [
+      "**",
+      "!docs",
+      "!**/build",
+      "!**/dist",
+      "!front/public",
+      "!schema.graphql"
+    ]
   },
   "formatter": {
     "enabled": true,
