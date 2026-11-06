@@ -64,11 +64,11 @@ No olvide cerrar los corchetes después de abrir cada uno. Cuando estés listo, 
 Ejemplo 1 :
 query allMyArticles {
     user {
-     _id
+     id
      email
      
      articles {
-      _id
+      id
       title
       }
    }
@@ -113,7 +113,7 @@ query articlesCorpus {
  articles{
  article{
  title
- _id
+ id
  workingVersion{md}
       }
     }
