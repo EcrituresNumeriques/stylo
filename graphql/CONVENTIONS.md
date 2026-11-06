@@ -140,10 +140,13 @@ Ces changements sont réservés à une version majeure et listés dans [#2132](h
 
 ### Vérifier l'absence de changement cassant
 
-`findBreakingChanges` de `graphql-js` compare deux schémas :
+`findBreakingChanges` de `graphql-js` compare deux schémas.
+Le schéma de `master` est construit à partir de ses seules définitions de types (`buildSchema`) : ses résolveurs ne correspondent plus forcément à ceux de la branche.
 
 ```sh
-git show origin/master:graphql/schema.js > graphql/schema.master.tmp.js
+git show origin/master:graphql/schema.js \
+  | sed 's/^module.exports = makeExecutableSchema({ typeDefs, resolvers })$/module.exports = require("graphql").buildSchema(typeDefs)/' \
+  > graphql/schema.master.tmp.js
 node -e "
 const { findBreakingChanges } = require('graphql')
 const changes = findBreakingChanges(require('./graphql/schema.master.tmp.js'), require('./graphql/schema.js'))
