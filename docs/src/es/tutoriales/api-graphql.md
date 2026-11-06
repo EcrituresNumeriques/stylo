@@ -60,8 +60,9 @@ A continuación, hay que especificar el tipo de consulta. En el primer ejemplo, 
 Por supuesto, puedes solicitar otra información. Las posibilidades son inmensas, y van de la mano con tus necesidades. 
 No olvide cerrar los corchetes después de abrir cada uno. Cuando estés listo, pulsa el botón ejecutar. 
 
+**Ejemplo 1:**
+
 ```graphql
-Ejemplo 1 :
 query allMyArticles {
     user {
      id
@@ -77,8 +78,9 @@ query allMyArticles {
 
 En el ejemplo 2, necesitas introducir el identificador de uno de los elementos de la lista anterior. Guárdalo, ya que también lo necesitarás para el último ejemplo. Una vez que hayas introducido la consulta, deberías ver el título de tu artículo, así como la persona a la que pertenece.
 
-```graphql 
-Ejemplo 2 :
+**Ejemplo 2:**
+
+```graphql
 query articles {
     article(articleId: "ID ARTÍCULO"){
     title
@@ -93,8 +95,9 @@ query articles {
 
 Para este tercero ejemplo, una vez más necesitas introducir el identificador de tu artículo en el espacio apropiado. Esta vez GraphQL te mostrará el título de tu artículo, quienes contribuyeron a él, ¡y también el Markdown, Yaml y BibTex que contiene! 
 
+**Ejemplo 3:**
+
 ```graphql
-Ejemplo 3 :
 query {
     article(articleId: "ID ARTÍCULO"){
     title
@@ -106,8 +109,9 @@ query {
 
 Un último ejemplo para el camino, que puede ser útil en el contexto de los datos de Stylo y su organización por "corpus": una consulta para obtener los nombres de todos los artículos de un corpus, con sus ids y las últimas versiones de su contenido. Puede obtener el ID de un corpus en su URL de "vista previa", en la aplicación Stylo.
 
+**Ejemplo 4:**
+
 ```graphql
-Ejemplo 4 :
 query articlesCorpus {
  corpus(filter:{corpusId: " ID DEL CORPUS"}){
  articles{

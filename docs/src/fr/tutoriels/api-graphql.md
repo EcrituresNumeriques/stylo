@@ -60,8 +60,9 @@ Ensuite, il faut spécifier le type de requête. Dans le premier exemple, nous l
 Vous pouvez bien sûr demander d'autres informations. Les possibilités sont immenses et vont de pair avec vos besoins. 
 Il ne faut pas oublier de refermer les crochets après l'ouverture de chacun. Quand vous êtes prêts, cliquez sur le bouton d'exécution. 
 
+**Exemple 1 :**
+
 ```graphql
-Exemple 1 :
 query tousMesArticles {
     user {
      id
@@ -77,8 +78,9 @@ query tousMesArticles {
 
 Dans l'exemple 2, il vous faut entrer l'identifiant de l'un des article de la liste précédente. Gardez-le, vous en aurez aussi besoin pour le dernier exemple. Une fois la requête entrée, vous devriez voir le titre de votre article, ainsi que la personne qui le détient.
 
-```graphql 
-Exemple 2 :
+**Exemple 2 :**
+
+```graphql
 query articles {
     article(articleId: " ID DE L'ARTICLE "){
     title
@@ -93,8 +95,9 @@ query articles {
 
 Dans l'exemple 3, il vous faut encore une fois d'entrer votre identifiant d'article dans l'espace approprié. Cette fois-ci, GraphQL vous montre le titre de votre article, ceux qui y ont contribué, mais aussi le Markdown, Yaml et BibTex qu'il contient ! 
 
+**Exemple 3 :**
+
 ```graphql
-Exemple 3 :
 query {
     article(articleId: " ID DE L'ARTICLE "){
     title
@@ -106,8 +109,9 @@ query {
 
 Un dernier exemple pour la route, qui peut vous être utile dans le cadre des données de Stylo et de leurs organisations en "corpus" : une requête pour avoir les noms de tous les articles d'un corpus, avec leurs id et les dernières versions de leurs contenus. Vous pouvez trouver l'ID d'un corpus sur son URL de « prévisualisation », sur l'application Stylo.
 
+**Exemple 4 :**
+
 ```graphql
-Exemple 4 :
 query articlesCorpus {
   corpus(filter:{corpusId: " ID DU CORPUS "}){
     articles{
