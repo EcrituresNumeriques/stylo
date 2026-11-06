@@ -38,7 +38,7 @@ You also need to enter your API key. In the Stylo application, click on your nam
 
 ```graphql
 {
-“Authorization": "YOUR API KEY" 
+"Authorization": "YOUR API KEY" 
 }
 ```
 
@@ -80,7 +80,7 @@ In example 2, you need to enter the identifier of one of the items in the previo
 ```graphql 
 Example 2:
 query articles {
-    article(articleId: “ARTICLE ID”){
+    article(articleId: "ARTICLE ID"){
     title
        owner {
     displayName
@@ -96,7 +96,7 @@ For this thrid example, once again, you need to enter your article ID in the app
 ```graphql
 Example 3 :
 query {
-    article(articleId: “ARTICLE ID”){
+    article(articleId: "ARTICLE ID"){
     title
     contributors{user{displayName}}
     workingVersion{md yaml bib}
@@ -142,8 +142,8 @@ You can create articles, share your articles, duplicate them and much more. The 
 Let's look at an example of a mutation: 
 
 ```graphql
-mutation{createArticle(title: “ARTICLE TITLE”,
-    user: “YOUR ID”)
+mutation{createArticle(title: "ARTICLE TITLE",
+    user: "YOUR ID")
     {title _id}}
 ```
 
