@@ -42,13 +42,12 @@ query getArticleVersion($versionId: ID!) {
 
 mutation createArticleVersion(
   $articleId: ID!
-  $userId: ID!
   $major: Boolean!
   $message: String
 ) {
   createArticleVersion(
     articleId: $articleId
-    articleVersionInput: { major: $major, message: $message, userId: $userId }
+    input: { major: $major, message: $message }
   ) {
     versions {
       ...basicVersionFields

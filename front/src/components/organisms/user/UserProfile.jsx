@@ -35,7 +35,7 @@ export default function UserProfile() {
       setIsSaving(true)
       const form = e.target
       const variables = {
-        details: fromFormData(form),
+        input: fromFormData(form),
       }
       try {
         const { updateUser: userDetails } = await query({

@@ -75,8 +75,8 @@ fragment previewArticleFields on Article {
   }
 }
 
-mutation updateArticle($updateArticleInput: UpdateArticleInput!) {
-  updateArticle(updateArticleInput: $updateArticleInput) {
+mutation updateArticle($articleId: ID!, $input: UpdateArticleInput!) {
+  updateArticle(articleId: $articleId, input: $input) {
     id
     title
     tags {
@@ -144,8 +144,11 @@ mutation duplicateArticle($articleId: ID!, $to: ID!) {
   }
 }
 
-mutation updateArticleBibliography($input: UpdateArticleBibliographyInput!) {
-  updateArticleBibliography(input: $input) {
+mutation updateArticleBibliography(
+  $articleId: ID!
+  $input: UpdateArticleBibliographyInput!
+) {
+  updateArticleBibliography(articleId: $articleId, input: $input) {
     authorName
     date
     entry
@@ -193,9 +196,9 @@ query getArticleTags($articleId: ID!) {
 
 mutation updateArticleWorkingVersion(
   $articleId: ID!
-  $content: WorkingVersionInput!
+  $input: UpdateArticleWorkingVersionInput!
 ) {
-  updateArticleWorkingVersion(articleId: $articleId, content: $content) {
+  updateArticleWorkingVersion(articleId: $articleId, input: $input) {
     updatedAt
   }
 }

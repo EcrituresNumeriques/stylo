@@ -31,7 +31,7 @@ export function useCorpusActions() {
       sessionToken,
       query: createCorpusQuery,
       variables: {
-        createCorpusInput: {
+        input: {
           name,
           description,
           type,
@@ -65,7 +65,7 @@ export function useCorpusActions() {
       query: updateCorpusQuery,
       variables: {
         corpusId,
-        updateCorpusInput: {
+        input: {
           name,
           description,
           metadata,
