@@ -75,6 +75,19 @@ Un argument `userId` désigne toujours **un autre** utilisateur : le contributeu
 - Une mutation qui réussit renvoie toujours la ressource : son type de retour est non nullable (`Article!`).
 - Une erreur passe par `errors`, pas par une valeur `null`.
 
+## Nullabilité
+
+Un champ de sortie non nul (`X!`, `[X!]!`) est une promesse : si le résolveur renvoie `null`, la requête échoue avec une erreur et le parent devient `null`.
+Avant de déclarer un champ non nul, vérifier que **toutes** les valeurs possibles sont non nulles :
+
+- une valeur facultative en base (par exemple une bibliographie vide) : le résolveur renvoie une valeur par défaut, comme une liste vide (`toEntries(bib ?? '')`) ;
+- une relation vers un document qui peut avoir été supprimé (un contact, une version) : le résolveur filtre les valeurs non résolues ;
+- un objet chargé par un DataLoader est un objet simple (`lean`) : les virtuals et les méthodes Mongoose n'y sont pas disponibles, un champ calculé par un virtual y vaut `null` (`User.authTypes`).
+
+Un champ qui peut légitimement être nul reste nullable, par exemple une relation facultative (`Corpus.workspaceId` pour un corpus personnel) ou une mutation qui ne renvoie rien (`logout`).
+
+Rendre non nul un champ de sortie existant ne casse pas les clients, mais un test qui exécute la requête à travers le schéma (`graphql({ schema, source })`, voir `schema.test.js`) doit couvrir les cas limites : les tests qui appellent directement les résolveurs ne vérifient pas la nullabilité.
+
 ## Erreurs
 
 Les erreurs sont levées avec les classes de `helpers/errors.js` :
