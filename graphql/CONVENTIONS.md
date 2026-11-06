@@ -159,7 +159,9 @@ rm graphql/schema.master.tmp.js
 ## Après une modification du schéma
 
 - Mettre à jour `schema.graphql` à la racine du dépôt (schéma utilisé par l'IDE).
-- Mettre à jour les requêtes du front (`front/src/hooks/*.graphql`) : le front ne doit utiliser aucun champ ni argument déprécié.
+- Mettre à jour les requêtes du front (`front/src/**/*.graphql`) : le front ne doit utiliser aucun champ ni argument déprécié.
+  Le test `tests/frontOperations.test.js` le vérifie : il valide chaque opération du front contre le schéma et échoue si elle utilise un élément déprécié.
+  Une exception temporaire s'ajoute dans `allowedDeprecations`, avec l'issue qui la supprimera.
 - Tester la nouvelle forme **et** l'ancienne forme dépréciée dans les tests des résolveurs, ainsi que l'erreur quand aucune n'est fournie.
 - Mettre à jour la liste des suppressions prévues dans [#2132](https://github.com/EcrituresNumeriques/stylo/issues/2132).
 - Si le changement concerne une requête utilisée dans la documentation, mettre à jour le tutoriel GraphQL (`docs/src/*/tutori*/api-graphql.md`).

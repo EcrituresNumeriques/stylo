@@ -6,10 +6,13 @@ on:
     - master
     paths:
     - 'graphql/**'
+    # the GraphQL tests validate the operations of the front against the schema
+    - 'front/src/**/*.graphql'
     - '.github/workflows/node*.yml'
   pull_request:
     paths:
     - 'graphql/**'
+    - 'front/src/**/*.graphql'
     - '.github/workflows/node*.yml'
 
 jobs:
