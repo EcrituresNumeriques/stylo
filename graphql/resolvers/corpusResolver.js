@@ -4,6 +4,7 @@ const Workspace = require('../models/workspace')
 const { logger } = require('../logger')
 const { NotAuthorizedError } = require('../helpers/errors')
 const { diff } = require('../helpers/diff')
+const { requireArgument } = require('../helpers/arguments.js')
 
 async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin) {
@@ -112,10 +113,14 @@ module.exports = {
      * @returns {Promise<*>}
      */
     async createCorpus(_, args, { user }) {
-      const { createCorpusInput } = args
       if (!user) {
         throw new NotAuthenticatedError()
       }
+      const createCorpusInput = requireArgument(
+        'input',
+        args.input,
+        args.createCorpusInput
+      )
 
       // any user can create a corpus
       const newCorpus = new Corpus({
@@ -143,7 +148,17 @@ module.exports = {
     },
 
     async setCorpusArticles(_, args, context) {
-      const { articleIds, corpusId } = args.setCorpusArticlesInput
+      const input = requireArgument(
+        'input',
+        args.input,
+        args.setCorpusArticlesInput
+      )
+      const corpusId = requireArgument(
+        'corpusId',
+        args.corpusId,
+        input.corpusId
+      )
+      const { articleIds } = input
       const corpus = await getCorpusByContext(corpusId, context)
       const initialArticleIds = corpus.articles.map((a) =>
         a.article._id.toString()
@@ -178,7 +193,13 @@ module.exports = {
       return corpus.updateMetadata(metadata)
     },
 
-    async updateCorpus(_, { corpusId, updateCorpusInput }, context) {
+    async updateCorpus(_, args, context) {
+      const { corpusId } = args
+      const updateCorpusInput = requireArgument(
+        'input',
+        args.input,
+        args.updateCorpusInput
+      )
       const corpus = await getCorpusByContext(corpusId, context)
       return corpus.update(updateCorpusInput)
     },

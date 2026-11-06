@@ -4,6 +4,7 @@ const {
   BadRequestError,
 } = require('../helpers/errors')
 const Workspace = require('../models/workspace')
+const { requireArgument } = require('../helpers/arguments.js')
 const Article = require('../models/article')
 const Corpus = require('../models/corpus')
 
@@ -78,10 +79,14 @@ class WorkspaceMember {
 module.exports = {
   Mutation: {
     async createWorkspace(_, args, { user }) {
-      const { createWorkspaceInput } = args
       if (!user) {
         throw new NotAuthenticatedError()
       }
+      const createWorkspaceInput = requireArgument(
+        'input',
+        args.input,
+        args.createWorkspaceInput
+      )
       // any user can create a workspace
       const newWorkspace = new Workspace({
         name: createWorkspaceInput.name,
@@ -95,10 +100,11 @@ module.exports = {
     },
 
     async updateWorkspaceFormMetadata(_, args, { user, token }) {
-      const { details, workspaceId } = args
+      const { workspaceId } = args
       if (!user) {
         throw new NotAuthenticatedError()
       }
+      const details = requireArgument('input', args.input, args.details)
       const { data, ui } = details
       if (data) {
         try {

@@ -4,7 +4,23 @@ const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 
-const { NotFoundError } = require('../helpers/errors')
+const { BadRequestError, NotFoundError } = require('../helpers/errors')
+const { requireArgument } = require('../helpers/arguments.js')
+
+/**
+ * Tag fields given inline (deprecated) rather than in the input argument.
+ * @param {object} args
+ * @returns {object|undefined}
+ */
+function deprecatedTagInput(args) {
+  const fields = ['name', 'description', 'color'].filter((field) =>
+    Object.hasOwn(args, field)
+  )
+  if (fields.length === 0) {
+    return undefined
+  }
+  return Object.fromEntries(fields.map((field) => [field, args[field]]))
+}
 
 module.exports = {
   Mutation: {
@@ -14,10 +30,21 @@ module.exports = {
       if (!thisUser) {
         throw new Error('This user does not exist')
       }
+      const input = requireArgument(
+        'input',
+        args.input,
+        deprecatedTagInput(args)
+      )
+      if (!input.name || !input.color) {
+        throw new BadRequestError(
+          'INVALID_INPUT',
+          'The name and the color of a tag are required.'
+        )
+      }
       return await Tag.create({
-        name: args.name,
-        description: args.description,
-        color: args.color,
+        name: input.name,
+        description: input.description,
+        color: input.color,
         owner: thisUser,
       })
     },
@@ -34,14 +61,16 @@ module.exports = {
 
     async updateTag(_, args, context) {
       const { userId } = isUser(args, context)
-      const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
+      const tagId = requireArgument('tagId', args.tagId, args.tag)
+      const input = args.input ?? deprecatedTagInput(args) ?? {}
+      const thisTag = await Tag.findOne({ _id: tagId, owner: userId })
       if (!thisTag) {
         throw new Error('Unable to find tag')
       }
       ;['name', 'description', 'color'].forEach((field) => {
-        if (Object.hasOwn(args, field)) {
+        if (Object.hasOwn(input, field)) {
           /* eslint-disable security/detect-object-injection */
-          thisTag.set(field, args[field])
+          thisTag.set(field, input[field])
         }
       })
       return thisTag.save()

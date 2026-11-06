@@ -550,6 +550,23 @@ describe('article resolver', () => {
       assert.ok(entries.length > 0)
     })
 
+    test('accepts the article identifier next to the input', async () => {
+      const article = await Article.create({
+        title: 'Article with bibliography next to the input',
+        owner: [context.userId],
+      })
+      const bib = '@article{next2024, title={Next}, author={Doe, Jane}}'
+
+      await ArticleMutation.updateArticleBibliography(
+        {},
+        { articleId: article._id, input: { bib } },
+        context
+      )
+
+      const updated = await Article.findById(article._id)
+      assert.equal(updated.workingVersion.bib, bib)
+    })
+
     test('replaces existing bibliography entirely', async () => {
       const article = await Article.create({
         title: 'Article with existing bibliography',
@@ -678,6 +695,96 @@ describe('article resolver', () => {
           { user: {}, userId: null, token: {} }
         )
       )
+    })
+  })
+
+  describe('update article with the input argument', () => {
+    test('updateArticle accepts articleId next to the input', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      const article = await Article.create({
+        title: 'Before',
+        owner: [user5._id],
+      })
+
+      const updated = await ArticleMutation.updateArticle(
+        {},
+        { articleId: article._id.toString(), input: { title: 'After' } },
+        context
+      )
+      assert.equal(updated.title, 'After')
+    })
+
+    test('updateArticle still accepts the deprecated updateArticleInput', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      const article = await Article.create({
+        title: 'Before',
+        owner: [user5._id],
+      })
+
+      const updated = await ArticleMutation.updateArticle(
+        {},
+        { updateArticleInput: { id: article._id.toString(), title: 'After' } },
+        context
+      )
+      assert.equal(updated.title, 'After')
+    })
+
+    test('updateArticle requires the article identifier', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      await assert.rejects(
+        () =>
+          ArticleMutation.updateArticle(
+            {},
+            { input: { title: 'After' } },
+            context
+          ),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
+  })
+
+  describe('create article version', () => {
+    test('the author of the version is the authenticated user', async () => {
+      const context = { user: user6, userId: user6._id, token: {} }
+      const article = await ArticleMutation.importArticle(
+        {},
+        { input: { title: 'Versioned article', content: '# Hello' } },
+        context
+      )
+
+      await ArticleMutation.createArticleVersion(
+        {},
+        { articleId: article._id, input: { major: true, message: 'first' } },
+        context
+      )
+
+      const updated = await Article.findById(article._id)
+      const version = await Version.findById(updated.versions[0])
+      assert.equal(version.owner.toString(), user6._id.toString())
+      assert.equal(version.message, 'first')
+      assert.equal(version.version, 1)
+    })
+
+    test('ignores the deprecated userId of ArticleVersionInput', async () => {
+      const context = { user: user6, userId: user6._id, token: {} }
+      const article = await ArticleMutation.importArticle(
+        {},
+        { input: { title: 'Versioned article', content: '# Hello' } },
+        context
+      )
+
+      await ArticleMutation.createArticleVersion(
+        {},
+        {
+          articleId: article._id,
+          articleVersionInput: { userId: user2._id, major: false },
+        },
+        context
+      )
+
+      const updated = await Article.findById(article._id)
+      const version = await Version.findById(updated.versions[0])
+      assert.equal(version.owner.toString(), user6._id.toString())
     })
   })
 
