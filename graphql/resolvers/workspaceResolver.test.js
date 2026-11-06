@@ -97,6 +97,30 @@ describe('workspace resolver', () => {
       ]
     )
   })
+  test('leave a workspace returns the workspace without the member', async () => {
+    const owner = await User.create({ email: 'leave-owner@huma-num.fr' })
+    const member = await User.create({ email: 'leave-member@huma-num.fr' })
+    const workspace = await Workspace.create({
+      name: 'Workspace to leave',
+      color: '#49ffe0',
+      members: [{ user: owner._id }, { user: member._id }],
+      creator: owner._id,
+    })
+
+    const result = await RootMutation.leaveWorkspace(
+      {},
+      { workspaceId: workspace.id },
+      { user: member, token: {} }
+    )
+
+    assert.deepEqual(
+      result.members.map((m) => m.user.toString()),
+      [owner._id.toString()]
+    )
+    const updated = await Workspace.findById(workspace.id)
+    assert.equal(updated.members.length, 1)
+  })
+
   test('remove existing member', async () => {
     const user1 = await User.create({
       email: 'clara@huma-num.fr',
