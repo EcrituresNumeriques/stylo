@@ -82,4 +82,77 @@ describe('schema', () => {
     assert.deepEqual(data.workspace, { id: workspace.id, _id: workspace.id })
     assert.deepEqual(data.corpora, [{ id: corpus.id, _id: corpus.id }])
   })
+
+  test('resolves the non-null lists and mutation results', async () => {
+    const user = await User.create({ email: 'schema-non-null@huma-num.fr' })
+    // an article without bibliography, tag, version, contributor or workspace
+    const article = await Article.create({
+      title: 'Empty article',
+      owner: user._id,
+      workingVersion: { bib: null },
+    })
+    const contextValue = {
+      user,
+      userId: user.id,
+      token: { _id: user.id },
+      loaders: createLoaders(),
+    }
+
+    const query = await graphql({
+      schema,
+      source: `query ($articleId: ID!) {
+        user {
+          tags { id }
+          articles { id }
+          workspaces { id }
+          contacts { id }
+        }
+        tags { id }
+        workspaces { id }
+        articles { id }
+        article(articleId: $articleId) {
+          contributors { user { id } }
+          versions { id }
+          workspaces { id }
+          tags { id }
+          workingVersion { bibliography { key } }
+        }
+      }`,
+      variableValues: { articleId: article.id },
+      contextValue,
+    })
+
+    assert.equal(query.errors, undefined)
+    assert.deepEqual(query.data.user, {
+      tags: [],
+      articles: [{ id: article.id }],
+      workspaces: [],
+      contacts: [],
+    })
+    assert.deepEqual(query.data.article, {
+      contributors: [],
+      versions: [],
+      workspaces: [],
+      tags: [],
+      workingVersion: { bibliography: [] },
+    })
+
+    const mutation = await graphql({
+      schema,
+      source: `mutation ($articleId: ID!) {
+        createTag(input: { name: "Tag", color: "#000000" }) { id name }
+        updateArticleBibliography(articleId: $articleId, input: { bib: "" }) { key }
+        setArticleZoteroLink(articleId: $articleId, zotero: "zotero") { id }
+        deleteArticle(articleId: $articleId, dryRun: true) { id }
+      }`,
+      variableValues: { articleId: article.id },
+      contextValue,
+    })
+
+    assert.equal(mutation.errors, undefined)
+    assert.equal(mutation.data.createTag.name, 'Tag')
+    assert.deepEqual(mutation.data.updateArticleBibliography, [])
+    assert.deepEqual(mutation.data.setArticleZoteroLink, { id: article.id })
+    assert.deepEqual(mutation.data.deleteArticle, { id: article.id })
+  })
 })

@@ -56,8 +56,9 @@ module.exports = {
       return previewEntries(bib)
     },
 
-    bibliography({ bib = '' }) {
-      return toEntries(bib)
+    bibliography({ bib }) {
+      // the bibliography may be null: the field is non-nullable, return an empty list
+      return toEntries(bib ?? '')
     },
 
     yaml({ metadata = {} }, { options }) {
