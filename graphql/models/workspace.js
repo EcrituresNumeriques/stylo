@@ -144,10 +144,11 @@ const workspaceSchema = new Schema(
 )
 
 workspaceSchema.methods.leave = async function leave(userId) {
+  // returns the workspace after the update, without the member who left
   return this.constructor.findOneAndUpdate(
     { _id: this._id },
     { $pull: { members: { user: new mongoose.Types.ObjectId(userId) } } },
-    { lean: true }
+    { lean: true, returnDocument: 'after' }
   )
 }
 
