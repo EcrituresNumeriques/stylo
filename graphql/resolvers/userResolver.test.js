@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongoose').Types
-const { Mutation } = require('./userResolver.js')
+const { Mutation, User: UserResolver } = require('./userResolver.js')
+const { createLoaders } = require('../loaders.js')
 const User = require('../models/user.js')
 const { before, beforeEach, after, describe, test } = require('node:test')
 const assert = require('node:assert')
@@ -18,6 +19,44 @@ describe('user resolver', () => {
   beforeEach(async () => {
     // purge user collection
     await User.deleteMany({})
+  })
+
+  describe('User.contacts', () => {
+    test('returns the contacts of the user', async () => {
+      const contact = await User.create({ email: 'contact@example.com' })
+      const user = await User.create({
+        email: 'user@example.com',
+        acquintances: [contact._id],
+      })
+
+      const contacts = await UserResolver.contacts(
+        user,
+        {},
+        {
+          loaders: createLoaders(),
+        }
+      )
+      assert.deepEqual(
+        contacts.map((c) => c._id.toString()),
+        [contact._id.toString()]
+      )
+    })
+
+    test('ignores a contact that no longer exists', async () => {
+      const user = await User.create({
+        email: 'user@example.com',
+        acquintances: [new ObjectId()],
+      })
+
+      const contacts = await UserResolver.contacts(
+        user,
+        {},
+        {
+          loaders: createLoaders(),
+        }
+      )
+      assert.deepEqual(contacts, [])
+    })
   })
 
   describe('setAuthToken', () => {

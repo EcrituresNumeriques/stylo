@@ -171,6 +171,67 @@ describe('corpus resolver', () => {
     assert.equal(firstCorpusFound.creator._id.toString(), thomas._id.toString())
   })
 
+  describe('Corpus.workspaceId', () => {
+    test('creates a corpus in a workspace with the workspaceId field', async () => {
+      const user = await User.create({ email: 'workspace-id@huma-num.fr' })
+      const workspace = await Workspace.create({
+        name: 'Workspace',
+        color: '#000000',
+        members: [{ user: user._id }],
+        creator: user._id,
+      })
+
+      const corpus = await Mutation.createCorpus(
+        {},
+        {
+          input: {
+            name: 'In a workspace',
+            type: 'neutral',
+            workspaceId: workspace.id,
+          },
+        },
+        { user }
+      )
+
+      assert.equal(CorpusMutation.workspaceId(corpus), workspace.id)
+    })
+
+    test('still accepts the deprecated workspace field', async () => {
+      const user = await User.create({ email: 'workspace@huma-num.fr' })
+      const workspace = await Workspace.create({
+        name: 'Workspace',
+        color: '#000000',
+        members: [{ user: user._id }],
+        creator: user._id,
+      })
+
+      const corpus = await Mutation.createCorpus(
+        {},
+        {
+          input: {
+            name: 'Deprecated field',
+            type: 'neutral',
+            workspace: workspace.id,
+          },
+        },
+        { user }
+      )
+
+      assert.equal(CorpusMutation.workspaceId(corpus), workspace.id)
+    })
+
+    test('is null for a personal corpus', async () => {
+      const user = await User.create({ email: 'personal@huma-num.fr' })
+      const corpus = await Mutation.createCorpus(
+        {},
+        { input: { name: 'Personal', type: 'neutral' } },
+        { user }
+      )
+
+      assert.equal(CorpusMutation.workspaceId(corpus), null)
+    })
+  })
+
   describe('Mutation.updateCorpusArticlesOrder', () => {
     async function createCorpusWithArticles() {
       const user = await User.create({

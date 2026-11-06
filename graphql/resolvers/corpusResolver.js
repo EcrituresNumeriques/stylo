@@ -129,7 +129,7 @@ module.exports = {
         description: createCorpusInput.description,
         articles: [],
         metadata: createCorpusInput.metadata,
-        workspace: createCorpusInput.workspace,
+        workspace: createCorpusInput.workspaceId ?? createCorpusInput.workspace,
         creator: user._id,
       })
       return newCorpus.save()
@@ -293,6 +293,11 @@ module.exports = {
   },
 
   Corpus: {
+    workspaceId(corpus) {
+      const workspaceId = corpus.workspace?._id ?? corpus.workspace
+      return workspaceId ? workspaceId.toString() : null
+    },
+
     async articles(corpus, _args, context) {
       const articles = (
         await Promise.all(
