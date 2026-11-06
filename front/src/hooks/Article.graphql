@@ -102,7 +102,7 @@ mutation setArticleNakalaLink($articleId: ID!, $url: String!) {
 }
 
 query getArticleVersions($articleId: ID!) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     versions {
       ...basicVersionFields
     }
@@ -110,7 +110,7 @@ query getArticleVersions($articleId: ID!) {
 }
 
 query getArticleWorkspaces($articleId: ID!) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     workspaces {
       id
       color
@@ -120,7 +120,7 @@ query getArticleWorkspaces($articleId: ID!) {
 }
 
 query getArticleContributors($articleId: ID!) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     contributors {
       user {
         ...extendedPublicUserFields
@@ -135,8 +135,8 @@ mutation deleteArticle($articleId: ID!) {
   }
 }
 
-mutation duplicateArticle($articleId: ID!, $to: ID!) {
-  duplicateArticle(article: $articleId, to: $to) {
+mutation duplicateArticle($articleId: ID!, $userId: ID!) {
+  duplicateArticle(articleId: $articleId, userId: $userId) {
     id
     title
     createdAt
@@ -175,7 +175,7 @@ mutation removeArticleTags($articleId: ID!, $tags: [ID]!) {
 }
 
 query getArticleInfo($articleId: ID!) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     title
 
     workingVersion {
@@ -185,7 +185,7 @@ query getArticleInfo($articleId: ID!) {
 }
 
 query getArticleTags($articleId: ID!) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     tags {
       id
       name
@@ -208,7 +208,7 @@ query getArticleMetadata(
   $versionId: ID!
   $hasVersion: Boolean!
 ) {
-  article(article: $articleId) {
+  article(articleId: $articleId) {
     id
 
     workingVersion {
@@ -224,38 +224,38 @@ query getArticleMetadata(
     }
   }
 
-  version(version: $versionId) @include(if: $hasVersion) {
+  version(versionId: $versionId) @include(if: $hasVersion) {
     metadata
     metadataFormType
   }
 }
 
 query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
-  article(article: $id) {
+  article(articleId: $id) {
     ...basicArticleFields
     ...editableArticleFields
     ...previewArticleFields
   }
 
-  version(version: $version) @include(if: $hasVersion) {
+  version(versionId: $version) @include(if: $hasVersion) {
     ...articleVersionFields
   }
 }
 
 query getArticlePreview($id: ID!, $version: ID!, $hasVersion: Boolean!) {
-  sharedArticle(article: $id) {
+  sharedArticle(articleId: $id) {
     ...basicArticleFields
     ...editableArticleFields
     ...previewArticleFields
   }
 
-  version(version: $version) @include(if: $hasVersion) {
+  version(versionId: $version) @include(if: $hasVersion) {
     ...articleVersionFields
   }
 }
 
 query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
-  article(article: $article) {
+  article(articleId: $article) {
     ...basicArticleFields
     ...editableArticleFields
     ...previewArticleFields
@@ -265,7 +265,7 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     }
   }
 
-  version(version: $version) @include(if: $hasVersion) {
+  version(versionId: $version) @include(if: $hasVersion) {
     ...basicVersionFields
     ...articleVersionFields
     bibPreview
