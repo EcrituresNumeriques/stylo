@@ -75,13 +75,13 @@ type User {
   firstName: String
   lastName: String
   institution: String
-  tags: [Tag]
+  tags: [Tag!]!
   permissions: [UserPermission]
   acquintances(limit: Int, page: Int): [User] @deprecated(reason: "Use contacts instead.")
   "Users in the contact list of this user"
   contacts: [User!]!
-  articles(limit: Int, page: Int): [Article]
-  workspaces: [Workspace!]
+  articles(limit: Int, page: Int): [Article!]!
+  workspaces: [Workspace!]!
   createdAt: DateTime
   updatedAt: DateTime
   deletedAt: DateTime
@@ -106,7 +106,7 @@ type Tag {
   creator: User
   description: String
   color: HexColorCode
-  articles: [Article]
+  articles: [Article!]!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -123,7 +123,7 @@ type BibliographyEntry {
 type WorkingVersion {
   bib: String
   bibPreview: String
-  bibliography: [BibliographyEntry]
+  bibliography: [BibliographyEntry!]!
   md: String
   metadata: JSON
   metadataFormType: String
@@ -143,7 +143,7 @@ type Version {
   yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
-  bibliography: [BibliographyEntry]
+  bibliography: [BibliographyEntry!]!
   message: String
   article: Article
   owner: User
@@ -199,14 +199,14 @@ type Article {
   zoteroLink: String
   nakalaLink: String
   owner: User
-  contributors: [ArticleContributor]!
+  contributors: [ArticleContributor!]!
   workingVersion: WorkingVersion
-  versions(limit: Int, page: Int): [Version!]
+  versions(limit: Int, page: Int): [Version!]!
   tags: [Tag!]!
   preview: ArticlePreviewSettings
   createdAt: DateTime
   updatedAt: DateTime
-  workspaces: [Workspace!]
+  workspaces: [Workspace!]!
 
   addTags(tags: [ID]!): [Tag] @deprecated(reason: "Use addArticleTags mutation at the root instead.")
   delete(dryRun: Boolean): Boolean @deprecated(reason: "Use deleteArticle mutation at the root instead.")
@@ -251,7 +251,7 @@ type InstanceUsageStats {
 interface InstanceObjectUsageStats {
   total: Int!
   # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats]
+  years: [InstanceObjectUsageYearlyStats!]!
 }
 
 type InstanceObjectUsageYearlyStats {
@@ -265,13 +265,13 @@ type InstanceUserStats implements InstanceObjectUsageStats {
   # currentYear: Int!
   local: Int
   openid: Int
-  years: [InstanceObjectUsageYearlyStats]
+  years: [InstanceObjectUsageYearlyStats!]!
 }
 
 type InstanceArticleStats implements InstanceObjectUsageStats {
   total: Int!
   # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats]
+  years: [InstanceObjectUsageYearlyStats!]!
 }
 
 "Deprecated: use UpdateArticleWorkingVersionInput with the input argument of updateArticleWorkingVersion instead."
@@ -534,13 +534,13 @@ type Query {
   getUser(filter: UserFilter): User
 
   "Fetch the authenticated user's tags"
-  tags: [Tag]
+  tags: [Tag!]!
 
   "Fetch a tag of the authenticated user"
   tag(tagId: ID, tag: ID @deprecated(reason: "Use tagId instead.")): Tag
 
   "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
-  articles (filter: FilterCorpusInput): [Article]
+  articles (filter: FilterCorpusInput): [Article!]!
 
   "Fetch article info [need to have access to this article]"
   article(articleId: ID, article: ID @deprecated(reason: "Use articleId instead.")): Article
@@ -558,7 +558,7 @@ type Query {
   workspace(workspaceId: ID): Workspace
 
   "Get a list of workspaces for the authenticated user"
-  workspaces: [Workspace!]
+  workspaces: [Workspace!]!
 
   """
   Get a list of corpus with an optional filter
@@ -582,7 +582,7 @@ type Mutation {
 
   Requires authentication.
   """
-  deleteAccount: Boolean
+  deleteAccount: Boolean!
   """
   Create a new user account with email/password authentication.
   Also creates a default article for the new user.
@@ -593,7 +593,7 @@ type Mutation {
   Finalize user account creation after authentication with an external provider (e.g. OIDC).
   Returns a JWT token for the newly created session.
   """
-  createUserWithAuth(service: AuthTokenService!, input: CreateUserWithAuthInput, details: NewUserWithAuthInput @deprecated(reason: "Use the input argument instead.")): String
+  createUserWithAuth(service: AuthTokenService!, input: CreateUserWithAuthInput, details: NewUserWithAuthInput @deprecated(reason: "Use the input argument instead.")): String!
 
   """
   Log out the currently authenticated user and invalidate the current session.
@@ -604,26 +604,26 @@ type Mutation {
   Link an external service token (HumanID, Hypothesis, Zotero) to the current user account.
   Requires authentication.
   """
-  setAuthToken(service: AuthTokenService!): User
+  setAuthToken(service: AuthTokenService!): User!
 
   """
   Unlink an external authentication service from the current user account.
   Removes the stored token for the given service.
   Requires authentication.
   """
-  unsetAuthToken(service: AuthTokenService!): User
+  unsetAuthToken(service: AuthTokenService!): User!
 
   """
   Add a user to your contacts list by their user ID.
   Requires authentication.
   """
-  addContact(contactUserId: ID!): User
+  addContact(contactUserId: ID!): User!
 
   """
   Remove a user from your contacts list by their user ID.
   Requires authentication.
   """
-  removeContact(contactUserId: ID!): User
+  removeContact(contactUserId: ID!): User!
 
   """
   Add a user to your contacts list by their email address.
@@ -639,20 +639,20 @@ type Mutation {
     input: ChangePasswordInput
     old: String @deprecated(reason: "Use the input argument instead.")
     new: String @deprecated(reason: "Use the input argument instead.")
-  ): User
+  ): User!
 
   """
   Update profile information of the authenticated user (display name, first/last name, institution).
   Requires authentication.
   """
-  updateUser(input: UpdateUserInput, details: UserProfileInput @deprecated(reason: "Use the input argument instead.")): User
+  updateUser(input: UpdateUserInput, details: UserProfileInput @deprecated(reason: "Use the input argument instead.")): User!
 
   """
   Create a new article for the authenticated user.
   Optionally assigns tags and workspaces to the article at creation time.
   Requires authentication.
   """
-  createArticle(input: CreateArticleInput, createArticleInput: CreateArticleInput @deprecated(reason: "Use the input argument instead.")): Article
+  createArticle(input: CreateArticleInput, createArticleInput: CreateArticleInput @deprecated(reason: "Use the input argument instead.")): Article!
 
   """
   Create a new tag for the authenticated user.
@@ -664,7 +664,7 @@ type Mutation {
     name: String @deprecated(reason: "Use the input argument instead.")
     description: String @deprecated(reason: "Use the input argument instead.")
     color: HexColorCode @deprecated(reason: "Use the input argument instead.")
-  ): Tag
+  ): Tag!
 
   """
   Update the name, description, or color of an existing tag.
@@ -677,14 +677,14 @@ type Mutation {
     description: String @deprecated(reason: "Use the input argument instead.")
     color: HexColorCode @deprecated(reason: "Use the input argument instead.")
     tag: ID @deprecated(reason: "Use tagId instead.")
-  ): Tag
+  ): Tag!
 
   """
   Delete a tag and remove it from all articles it was applied to.
   Returns the deleted tag.
   Requires authentication as the tag owner.
   """
-  deleteTag(tagId: ID!): Tag
+  deleteTag(tagId: ID!): Tag!
 
   """
   Share an article with another user, granting them contributor access.
@@ -718,20 +718,20 @@ type Mutation {
     userId: ID
     article: ID @deprecated(reason: "Use articleId instead.")
     to: ID @deprecated(reason: "Use userId instead.")
-  ): Article
+  ): Article!
 
   """
   Create a new workspace.
   The authenticated user becomes the creator and first member of the workspace.
   """
-  createWorkspace(input: CreateWorkspaceInput, createWorkspaceInput: CreateWorkspaceInput @deprecated(reason: "Use the input argument instead.")): Workspace
+  createWorkspace(input: CreateWorkspaceInput, createWorkspaceInput: CreateWorkspaceInput @deprecated(reason: "Use the input argument instead.")): Workspace!
 
   """
   Update the JSON schema form metadata for a workspace.
   Controls the custom metadata form displayed in the workspace editor.
   Requires authentication as a workspace member.
   """
-  updateWorkspaceFormMetadata(workspaceId: ID!, input: UpdateWorkspaceFormMetadataInput, details: UpdateWorkspaceFormMetadataInput @deprecated(reason: "Use the input argument instead.")): Workspace
+  updateWorkspaceFormMetadata(workspaceId: ID!, input: UpdateWorkspaceFormMetadataInput, details: UpdateWorkspaceFormMetadataInput @deprecated(reason: "Use the input argument instead.")): Workspace!
 
   """
   Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
@@ -740,19 +740,19 @@ type Mutation {
   workspace(workspaceId: ID!): Workspace @deprecated(reason: "Use the workspace mutations at the root instead.")
 
   "Leave a workspace as the authenticated user."
-  leaveWorkspace(workspaceId: ID!): Workspace
+  leaveWorkspace(workspaceId: ID!): Workspace!
 
   "Invite a user to a workspace as a member."
-  inviteWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace
+  inviteWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace!
 
   "Add an article to a workspace."
-  addWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace
+  addWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace!
 
   "Remove a member from a workspace."
-  removeWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace
+  removeWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace!
 
   "Remove an article from a workspace."
-  removeWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace
+  removeWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace!
 
   """
   Retrieve an article by ID to perform mutations on it.
@@ -777,13 +777,13 @@ type Mutation {
   Updates the articles associated with the corpus.
   Existing articles that are not in the list will be removed, and articles not currently present will be added.
   """
-  setCorpusArticles(corpusId: ID, input: SetCorpusArticlesInput, setCorpusArticlesInput: SetCorpusArticlesInput @deprecated(reason: "Use the input argument instead.")): Corpus
+  setCorpusArticles(corpusId: ID, input: SetCorpusArticlesInput, setCorpusArticlesInput: SetCorpusArticlesInput @deprecated(reason: "Use the input argument instead.")): Corpus!
 
   """
   Create a new corpus in a workspace.
   A corpus groups articles together for publication or export purposes.
   """
-  createCorpus(input: CreateCorpusInput, createCorpusInput: CreateCorpusInput @deprecated(reason: "Use the input argument instead.")): Corpus
+  createCorpus(input: CreateCorpusInput, createCorpusInput: CreateCorpusInput @deprecated(reason: "Use the input argument instead.")): Corpus!
 
   """
   Delete a corpus by ID.
@@ -814,7 +814,7 @@ type Mutation {
   Add an article to a corpus.
   Requires authentication with access to the corpus.
   """
-  addCorpusArticle(corpusId: ID!, articleId: ID!): Corpus
+  addCorpusArticle(corpusId: ID!, articleId: ID!): Corpus!
 
   """
   Remove an article from a corpus.
@@ -832,14 +832,14 @@ type Mutation {
   Reorder the articles within a corpus.
   Requires authentication with access to the corpus.
   """
-  updateCorpusArticlesOrder(corpusId: ID!, input: UpdateCorpusArticlesOrderInput, articlesOrderInput: [ArticleOrder!] @deprecated(reason: "Use the input argument instead.")): Corpus
+  updateCorpusArticlesOrder(corpusId: ID!, input: UpdateCorpusArticlesOrderInput, articlesOrderInput: [ArticleOrder!] @deprecated(reason: "Use the input argument instead.")): Corpus!
 
   """
   Update the bibliography of an article from a BibTeX string.
   Returns the updated bibliography as a list of structured entries.
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
   """
-  updateArticleBibliography(articleId: ID, input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+  updateArticleBibliography(articleId: ID, input: UpdateArticleBibliographyInput!): [BibliographyEntry!]!
 
   """
   Update the metadata of an article's working copy.
@@ -853,14 +853,14 @@ type Mutation {
   Creates a new article owned by the authenticated user with the provided content as its working copy.
   Requires authentication.
   """
-  importArticle(input: ImportArticleInput!): Article
+  importArticle(input: ImportArticleInput!): Article!
 
   """
   Delete an article by ID.
   Returns the deleted article (or the article that would be deleted when dryRun is true).
   Requires authentication with access to the article.
   """
-  deleteArticle(articleId: ID!, dryRun: Boolean): Article
+  deleteArticle(articleId: ID!, dryRun: Boolean): Article!
 
   """
   Rename an article by ID. Returns the updated article.
@@ -872,61 +872,61 @@ type Mutation {
   Set the Zotero library link on an article. Returns the updated article.
   Requires authentication with access to the article.
   """
-  setArticleZoteroLink(articleId: ID!, zotero: String!): Article
+  setArticleZoteroLink(articleId: ID!, zotero: String!): Article!
 
   """
   Set the Nakala dataset link on an article. Returns the updated article.
   Requires authentication with access to the article.
   """
-  setArticleNakalaLink(articleId: ID!, nakala: String!): Article
+  setArticleNakalaLink(articleId: ID!, nakala: String!): Article!
 
   """
   Add tags to an article. Returns the updated list of tags.
   Requires authentication with access to the article.
   """
-  addArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+  addArticleTags(articleId: ID!, tags: [ID]!): [Tag!]!
 
   """
   Remove tags from an article. Returns the updated list of tags.
   Requires authentication with access to the article.
   """
-  removeArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+  removeArticleTags(articleId: ID!, tags: [ID]!): [Tag!]!
 
   """
   Update the preview settings (stylesheet, template) of an article.
   Requires authentication with access to the article.
   """
-  setArticlePreviewSettings(articleId: ID!, input: SetArticlePreviewSettingsInput, settings: ArticlePreviewInput @deprecated(reason: "Use the input argument instead.")): Article
+  setArticlePreviewSettings(articleId: ID!, input: SetArticlePreviewSettingsInput, settings: ArticlePreviewInput @deprecated(reason: "Use the input argument instead.")): Article!
 
   """
   Update the working version content of an article (markdown, bibliography, metadata).
   Requires authentication with access to the article.
   """
-  updateArticleWorkingVersion(articleId: ID!, input: UpdateArticleWorkingVersionInput, content: WorkingVersionInput @deprecated(reason: "Use the input argument instead.")): Article
+  updateArticleWorkingVersion(articleId: ID!, input: UpdateArticleWorkingVersionInput, content: WorkingVersionInput @deprecated(reason: "Use the input argument instead.")): Article!
 
   """
   Add a contributor to an article, granting them write access.
   Requires authentication with access to the article.
   """
-  addArticleContributor(articleId: ID!, userId: ID!): Article
+  addArticleContributor(articleId: ID!, userId: ID!): Article!
 
   """
   Remove a contributor from an article, revoking their write access.
   Requires authentication with access to the article.
   """
-  removeArticleContributor(articleId: ID!, userId: ID!): Article
+  removeArticleContributor(articleId: ID!, userId: ID!): Article!
 
   """
   Create a new version snapshot of an article's working copy.
   The author of the version is the authenticated user.
   Requires authentication with access to the article.
   """
-  createArticleVersion(articleId: ID!, input: CreateArticleVersionInput, articleVersionInput: ArticleVersionInput @deprecated(reason: "Use the input argument instead.")): Article
+  createArticleVersion(articleId: ID!, input: CreateArticleVersionInput, articleVersionInput: ArticleVersionInput @deprecated(reason: "Use the input argument instead.")): Article!
 
   """
   Rename a version by ID (updates its message). Returns the updated version.
   """
-  renameVersion(versionId: ID!, name: String): Version
+  renameVersion(versionId: ID!, name: String): Version!
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
