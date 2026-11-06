@@ -1,88 +1,66 @@
 # How to install Stylo
 
-Depending on your needs, you may want to install Stylo in different ways :
+Depending on your needs, you may want to install Stylo in different ways:
 
-- [With Docker](#run-with-docker) (suited to run Stylo rapidly)
-- [Without Docker](#run-without-docker) (suited to tailor your Stylo setup)
-
-[Ansible playbooks](#deploy-with-ansible) enable you to deploy Stylo on a remote machine, accessible with the SSH protocol.
-
-You can find various pointers in our [GitHub Actions automations](./.github/workflows/deploy.yml), and in the [`./infrastructure` folder](./infrastructure).
+- To work on Stylo's code, follow the local development instructions in the [`README.md`](README.md) file.
+- To run a complete Stylo instance on your machine, [use Docker Compose](#run-with-docker-compose).
+- To install Stylo on a server, use the Ansible playbook as described in the [`SERVER.md`](SERVER.md) file.
 
 ## Clone git project
 
 First step is to clone the project, you can use either the HTTPS or SSH version of the repository URL:
 
-    $ git clone git@github.com:EcrituresNumeriques/stylo.git
+```bash
+git clone git@github.com:EcrituresNumeriques/stylo.git
+cd stylo
+```
 
-## Run with Docker
+## Run with Docker Compose
 
-Useful to run a fully fledged Stylo in no time.
+Every Stylo service runs in a Docker container: MongoDB, the GraphQL API, the front-end (served by NGINX), the export service and the Pandoc API.
+You need [Docker](https://docs.docker.com/engine/install/) with the Compose plugin, and Node.js (see [`.nvmrc`](.nvmrc)) to build the front-end.
 
-Run the following command:
+Copy the configuration file:
 
-    $ cp stylo-example.env .env
-    $ docker-compose up
+```bash
+cp stylo-example.env .env
+```
 
-**NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
+Edit `.env`: the `SNOWPACK_PUBLIC_*` variables and the callback URLs must use the public URL of your instance (see [Expose Stylo](#expose-stylo)).
+Then build the front-end assets, which are served by the `front-stylo` container from the `front/build` folder:
 
-This gives your access to:
+```bash
+npm clean-install
+npm run build -w front
+```
 
-- Stylo (frontend): http://localhost:3000
-- GraphQL endpoint: http://localhost:3030
-- Export endpoint: http://localhost:3080
-- Pandoc API: http://localhost:3090
+Before the first start, set the `SE_GRAPHQL_TOKEN` variable in `.env` with the value produced by this command:
 
-## Run without Docker
+```bash
+docker compose run --rm --no-deps graphql-stylo npm run generate-service-token --silent
+```
 
-**Note**: this section can be improved.
+Then start Stylo:
 
-We recommend you to host Stylo **behind a reverse proxy**.
-We provide a working configuration example below for the Nginx server.
+```bash
+docker compose up -d
+```
 
-### Install the pre-requisite
+By default, the `latest` images are pulled from ghcr.io.
+To run a released version, set the `TAG` variable (for instance `TAG=3.13.1 docker compose up -d`), or use `docker compose up -d --build` to build the images from your working copy.
 
-    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-    $ nvm install v16
-    $ sudo apt install mongodb-org pandoc
+The services then listen on `127.0.0.1`:
 
-### Prepare the server
+- Front-end: port 3000
+- GraphQL API: port 3030
+- Export service: port 3080
+- Pandoc API: port 3090
 
-After _cloning_ the repo, build the service and its dependencies:
+## Expose Stylo
 
-    $ cp stylo-example.env .env
-    $ npm clean-install
-    $ npm start
-
-After the image is built, you should have a Stylo instance running on your server.
-Now, we need to expose it to the outside world with a reverse proxy.
-
-### Expose online
-
-Obtain a working sample file with the following command:
-
-    $ wget -O /etc/nginx/sites-available/stylo.conf \
-        https://github.com/EcrituresNumeriques/stylo/raw/dev/infrastructure/stylo.huma-num.fr.conf
-
-Replace the service domain name:
-
-    $ sed -i s/stylo.huma-num.fr/STYLO_SUBDOMAIN.MYDOMAIN.TLD/g' /etc/nginx/sites-available/stylo.conf
-
-Alternatively, alter the various ports, and domains on your own.
-
-When you are done, enable the website and reload the configuration:
-
-    $ ln -s /etc/nginx/sites-available/stylo.conf /etc/nginx/sites-enable/stylo.conf
-    $ nginx reload
-
-## Deploy with Ansible
-
-**Note**: this section can be improved.
-
-    $ pip install ansible===2.9.7 requests
-    $ cd infrastructure
-    $ ansible-playbook -i inventories/prod playbook.yml
+The `front-stylo` container only serves static files: a reverse proxy must route the API paths (`/graphql`, `/login`, `/events`, etc.) to the GraphQL API, and the other requests to the front-end.
+The NGINX configuration files in [`infrastructure/files`](infrastructure/files) are working examples: `stylo.huma-num.fr.conf` for the application, `export.stylo.huma-num.fr.conf` and `pandoc-api.stylo.huma-num.fr.conf` for the export services.
 
 ## Next steps
 
-Once you have an up and running Stylo instance, read the [`SERVER.md` file](SERVER.md) to run daily and maintenance operations, such as database migrations and such.
+Once you have an up and running Stylo instance, read the [`SERVER.md` file](SERVER.md) to run daily and maintenance operations, such as database backups and migrations.
