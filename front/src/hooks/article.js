@@ -146,7 +146,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     return await executeQuery({
       query: duplicateArticle,
       variables: {
-        to: toUserId,
+        userId: toUserId,
         articleId,
       },
       sessionToken,
@@ -156,7 +156,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     const result = await executeQuery({
       query: duplicateArticle,
       variables: {
-        to: activeUser.id,
+        userId: activeUser.id,
         articleId,
       },
       sessionToken,

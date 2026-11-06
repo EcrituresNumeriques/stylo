@@ -20,7 +20,7 @@ mutation renameVersion($versionId: ID!, $name: String) {
 }
 
 query getArticleVersions($article: ID!) {
-  article(article: $article) {
+  article(articleId: $article) {
     id
     updatedAt
     versions {
@@ -30,7 +30,7 @@ query getArticleVersions($article: ID!) {
 }
 
 query getArticleVersion($versionId: ID!) {
-  version(version: $versionId) {
+  version(versionId: $versionId) {
     ...basicVersionFields
     md
     bib
