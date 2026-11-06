@@ -47,7 +47,7 @@ npm clean-install
 Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :
 
 ```bash
-DOTENV_CONFIG_PATH=.env NODE_OPTIONS="--require dotenv/config" npm run -w graphql generate-service-token --silent
+npm run -w graphql generate-service-token --silent
 ```
 
 Ensuite, ainsi que le reste du temps, démarrez MongoDB (par exemple sous macOS : `brew services start mongodb-community`) puis lancez :
