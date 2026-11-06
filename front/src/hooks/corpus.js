@@ -35,7 +35,7 @@ export function useCorpusActions() {
           name,
           description,
           type,
-          workspace: workspaceId,
+          workspaceId,
           metadata: {},
         },
       },

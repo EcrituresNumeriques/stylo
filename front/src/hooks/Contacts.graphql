@@ -3,7 +3,7 @@
 mutation addContact($contactId: ID!) {
   addContact(contactUserId: $contactId) {
     id
-    acquintances {
+    contacts {
       ...extendedPublicUserFields
     }
   }
@@ -12,7 +12,7 @@ mutation addContact($contactId: ID!) {
 mutation removeContact($contactId: ID!) {
   removeContact(contactUserId: $contactId) {
     id
-    acquintances {
+    contacts {
       ...extendedPublicUserFields
     }
   }
@@ -26,7 +26,7 @@ query getUserByEmail($userEmail: String!) {
 
 query getContacts {
   user {
-    acquintances {
+    contacts {
       ...extendedPublicUserFields
     }
   }

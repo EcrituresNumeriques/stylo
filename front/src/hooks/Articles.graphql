@@ -7,7 +7,6 @@ query getWorkspaceArticles(
 ) {
   tags {
     id
-    owner
     description
     color
     name
@@ -52,7 +51,6 @@ query getWorkspaceArticles(
 
     tags {
       name
-      owner
       color
       id
     }
@@ -72,7 +70,6 @@ mutation createArticle($input: CreateArticleInput!) {
 
     tags {
       name
-      owner
       color
       id
     }

@@ -115,7 +115,7 @@ mutation createCorpus($input: CreateCorpusInput!) {
     }
     createdAt
     updatedAt
-    workspace
+    workspaceId
   }
 }
 
