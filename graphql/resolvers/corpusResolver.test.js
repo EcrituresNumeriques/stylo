@@ -1,4 +1,4 @@
-const { Query, Corpus: CorpusMutation } = require('./corpusResolver')
+const { Query, Mutation, Corpus: CorpusMutation } = require('./corpusResolver')
 const Corpus = require('../models/corpus')
 const User = require('../models/user')
 const Article = require('../models/article')
@@ -169,6 +169,81 @@ describe('corpus resolver', () => {
       ]
     )
     assert.equal(firstCorpusFound.creator._id.toString(), thomas._id.toString())
+  })
+
+  describe('Mutation.updateCorpusArticlesOrder', () => {
+    async function createCorpusWithArticles() {
+      const user = await User.create({
+        email: `order-${Date.now()}@huma-num.fr`,
+      })
+      const first = await Article.create({ title: 'First', owner: user.id })
+      const second = await Article.create({ title: 'Second', owner: user.id })
+      const corpus = await Corpus.create({
+        name: 'Ordered corpus',
+        creator: user.id,
+        articles: [
+          { article: first._id, order: 0 },
+          { article: second._id, order: 1 },
+        ],
+      })
+      return { user, corpus, first, second }
+    }
+
+    const orderOf = (corpus, article) =>
+      corpus.articles.find((a) => a.article.equals(article._id)).order
+
+    test('reorders the articles from the input argument', async () => {
+      const { user, corpus, first, second } = await createCorpusWithArticles()
+
+      const updated = await Mutation.updateCorpusArticlesOrder(
+        {},
+        {
+          corpusId: corpus.id,
+          input: {
+            articles: [
+              { articleId: second.id, order: 0 },
+              { articleId: first.id, order: 1 },
+            ],
+          },
+        },
+        { user, userId: user.id, token: {} }
+      )
+
+      assert.equal(orderOf(updated, second), 0)
+      assert.equal(orderOf(updated, first), 1)
+    })
+
+    test('still accepts the deprecated articlesOrderInput argument', async () => {
+      const { user, corpus, first, second } = await createCorpusWithArticles()
+
+      const updated = await Mutation.updateCorpusArticlesOrder(
+        {},
+        {
+          corpusId: corpus.id,
+          articlesOrderInput: [
+            { articleId: second.id, order: 0 },
+            { articleId: first.id, order: 1 },
+          ],
+        },
+        { user, userId: user.id, token: {} }
+      )
+
+      assert.equal(orderOf(updated, second), 0)
+    })
+
+    test('requires the order of the articles', async () => {
+      const { user, corpus } = await createCorpusWithArticles()
+
+      await assert.rejects(
+        () =>
+          Mutation.updateCorpusArticlesOrder(
+            {},
+            { corpusId: corpus.id },
+            { user, userId: user.id, token: {} }
+          ),
+        (error) => error.extensions.code === 'INVALID_INPUT'
+      )
+    })
   })
 
   test('list the personal corpora of the authenticated user', async () => {

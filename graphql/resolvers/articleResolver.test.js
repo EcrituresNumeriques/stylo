@@ -802,6 +802,26 @@ describe('article resolver', () => {
       assert.equal(updated.title, 'After')
     })
 
+    test('updateArticle only changes the fields given in the input', async () => {
+      const context = { user: user5, userId: user5._id, token: {} }
+      const tag = await Tag.create({ name: 'Partial', owner: user5._id })
+      const article = await Article.create({
+        title: 'Kept title',
+        owner: [user5._id],
+      })
+
+      const updated = await ArticleMutation.updateArticle(
+        {},
+        { articleId: article._id.toString(), input: { tags: [tag._id] } },
+        context
+      )
+      assert.equal(updated.title, 'Kept title')
+      assert.deepEqual(
+        updated.tags.map((t) => t._id.toString()),
+        [tag._id.toString()]
+      )
+    })
+
     test('updateArticle requires the article identifier', async () => {
       const context = { user: user5, userId: user5._id, token: {} }
       await assert.rejects(

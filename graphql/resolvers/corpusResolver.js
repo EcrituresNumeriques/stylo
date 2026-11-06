@@ -219,13 +219,14 @@ module.exports = {
       return corpus.moveArticle(articleId, order)
     },
 
-    async updateCorpusArticlesOrder(
-      _,
-      { corpusId, articlesOrderInput },
-      context
-    ) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.updateArticlesOrder(articlesOrderInput)
+    async updateCorpusArticlesOrder(_, args, context) {
+      const articlesOrder = requireArgument(
+        'input',
+        args.input?.articles,
+        args.articlesOrderInput
+      )
+      const corpus = await getCorpusByContext(args.corpusId, context)
+      return corpus.updateArticlesOrder(articlesOrder)
     },
   },
 
