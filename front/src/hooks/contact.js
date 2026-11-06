@@ -25,7 +25,7 @@ export function useContactActions() {
     await mutate(
       {
         user: {
-          acquintances: result.addContact.acquintances,
+          contacts: result.addContact.contacts,
         },
       },
       { revalidate: false }
@@ -40,7 +40,7 @@ export function useContactActions() {
     await mutate(
       {
         user: {
-          acquintances: result.removeContact.acquintances,
+          contacts: result.removeContact.contacts,
         },
       },
       { revalidate: false }
@@ -48,7 +48,7 @@ export function useContactActions() {
   }
 
   return {
-    contacts: data?.user?.acquintances || [],
+    contacts: data?.user?.contacts || [],
     isLoading,
     error,
     add,
