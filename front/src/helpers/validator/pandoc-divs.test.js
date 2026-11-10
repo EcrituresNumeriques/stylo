@@ -18,6 +18,22 @@ content
     expect(div.children).toHaveLength(0)
   })
 
+  test('parses the other opening fence syntaxes', () => {
+    const md = `::: {.question}
+:::
+::: answer
+::::
+::: {.figure lang=fr} :::
+:::`
+    const divs = parsePandocFencedDivs(md)
+    expect(divs.map((d) => [d.className, d.startLine, d.endLine])).toEqual([
+      ['question', 1, 2],
+      ['answer', 3, 4],
+      ['figure', 5, 6],
+    ])
+    expect(divs[2].attrs.lang).toBe('fr')
+  })
+
   test('parses attributes', () => {
     const md = `:::{.rich-quote lang="fr" origin="aut"}
 :::`

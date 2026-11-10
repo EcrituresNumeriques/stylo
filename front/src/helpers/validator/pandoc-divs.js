@@ -23,6 +23,25 @@ function parseAttrs(attrsStr) {
   return attrs
 }
 
+// `:::{.class}`, `::: {.class}`, `::: class`, optionally followed by colons
+// (`::: {.class} :::`)
+const OPENING_FENCE_RX =
+  /^(:{3,})[ \t]*(?:\{([^}]*)\}|([^\s{}:]+))[ \t]*(?::+[ \t]*)?\r?$/
+const CLOSING_FENCE_RX = /^:{3,}\s*$/
+
+/**
+ * Parse the opening fence of a pandoc fenced div. A bare word (`::: class`) is
+ * a shortcut for a single class (`::: {.class}`).
+ * @param {string} line
+ * @returns {{ colons: string, attrs: string } | null}
+ */
+export function parseOpeningFence(line) {
+  const match = line.match(OPENING_FENCE_RX)
+  if (!match) return null
+  const [, colons, attrs, word] = match
+  return { colons, attrs: attrs ?? `.${word}` }
+}
+
 /**
  * Parse pandoc fenced divs from raw markdown, returning a tree
  * that correctly reflects the nesting based on stack tracking.
@@ -38,9 +57,9 @@ export function parsePandocFencedDivs(markdown) {
     const line = lines[i]
     const lineNum = i + 1
 
-    const openMatch = line.match(/^(:::+)\{([^}]*)}\s*$/)
-    if (openMatch) {
-      const attrs = parseAttrs(openMatch[2])
+    const fence = parseOpeningFence(line)
+    if (fence) {
+      const attrs = parseAttrs(fence.attrs)
       const node = {
         type: 'div',
         className: attrs._class ?? '',
@@ -54,8 +73,7 @@ export function parsePandocFencedDivs(markdown) {
       continue
     }
 
-    const closeMatch = line.match(/^:::\s*$/)
-    if (closeMatch && stack.length > 1) {
+    if (CLOSING_FENCE_RX.test(line) && stack.length > 1) {
       stack.pop().endLine = lineNum
     }
   }

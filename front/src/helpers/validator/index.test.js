@@ -118,12 +118,26 @@ describe('preprocessPandocDivs() — lines that are NOT transformed', () => {
     expect(preprocessPandocDivs(input)).toBe(input)
   })
 
-  test('opening fence with trailing text after `}` is transformed', () => {
-    // The regex does NOT require `\s*$`, so trailing content is kept but the
-    // fence opening is still converted. remark-directive will then reject it.
-    expect(preprocessPandocDivs(':::{.figure} trailing')).toBe(
-      ':::figure{.figure} trailing'
+  test('opening fence with trailing text after `}` is not transformed', () => {
+    // Pandoc does not consider it as a fenced div either.
+    const input = ':::{.figure} trailing'
+    expect(preprocessPandocDivs(input)).toBe(input)
+  })
+})
+
+describe('preprocessPandocDivs() — other pandoc syntaxes', () => {
+  test('space between the colons and the attributes', () => {
+    expect(preprocessPandocDivs('::: {.question}')).toBe(
+      ':::question{.question}'
     )
+  })
+
+  test('bare class name', () => {
+    expect(preprocessPandocDivs('::: question')).toBe(':::question{.question}')
+  })
+
+  test('trailing colons', () => {
+    expect(preprocessPandocDivs('::: {.figure} :::')).toBe(':::figure{.figure}')
   })
 })
 
