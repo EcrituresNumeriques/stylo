@@ -1,7 +1,6 @@
-import remarkDirective from 'remark-directive'
-import remarkParse from 'remark-parse'
-import { unified } from 'unified'
 import { describe, expect, test } from 'vitest'
+
+import { preprocessPandocDivs, processor } from '../index.js'
 
 import {
   bibliographyTitle,
@@ -29,15 +28,7 @@ import {
 } from './metopes.js'
 
 function makeTree(md) {
-  const preprocessed = md.replace(
-    /^(:::+)\{([^}]*)\}/gm,
-    (_, colons, attrs) => {
-      const classMatch = attrs.match(/\.([a-zA-Z0-9_-]+)/)
-      const name = classMatch ? classMatch[1] : 'div'
-      return `${colons}${name}{${attrs}}`
-    }
-  )
-  return unified().use(remarkParse).use(remarkDirective).parse(preprocessed)
+  return processor.parse(preprocessPandocDivs(md))
 }
 
 function run(rule, md, context) {
@@ -972,6 +963,14 @@ Quelle est la question ?
     expect(d.code).toBe('qa-speaker-missing')
     expect(d.line).toBe(1)
     expect(d.messageParams).toEqual({ block: 'question' })
+  })
+
+  test('error when a question has no speaker, with a space before the attributes', () => {
+    const md = `::: {.question}
+Une question est posée.
+:::`
+    const [d] = run(questionAnswerSpeaker, md)
+    expect(d.code).toBe('qa-speaker-missing')
   })
 
   test('error when an answer has no speaker', () => {

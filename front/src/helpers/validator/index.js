@@ -2,20 +2,27 @@ import remarkDirective from 'remark-directive'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 
+import { parseOpeningFence } from './pandoc-divs.js'
 import { metopesRules } from './rules/metopes.js'
 
 /**
- * Converts pandoc-style fenced divs `:::{.class}` to remark-directive format `:::class{.class}`
- * so that remark-directive can parse them correctly.
+ * Converts pandoc-style fenced divs (`:::{.class}`, `::: {.class}` or
+ * `::: class`) to remark-directive format `:::class{.class}` so that
+ * remark-directive can parse them correctly.
  * @param {string} markdown
  * @returns {string}
  */
 export function preprocessPandocDivs(markdown) {
-  return markdown.replace(/^(:::+)\{([^}]*)}/gm, (_, colons, attrs) => {
-    const classMatch = attrs.match(/\.([a-zA-Z0-9_-]+)/)
-    const name = classMatch ? classMatch[1] : 'div'
-    return `${colons}${name}{${attrs}}`
-  })
+  return markdown
+    .split('\n')
+    .map((line) => {
+      const fence = parseOpeningFence(line)
+      if (!fence) return line
+      const classMatch = fence.attrs.match(/\.([a-zA-Z0-9_-]+)/)
+      const name = classMatch ? classMatch[1] : 'div'
+      return `${fence.colons}${name}{${fence.attrs}}`
+    })
+    .join('\n')
 }
 
 export const processor = unified().use(remarkParse).use(remarkDirective)
