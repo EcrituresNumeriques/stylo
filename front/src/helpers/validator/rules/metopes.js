@@ -498,7 +498,8 @@ function figureLineCredits(line) {
 }
 
 /**
- * Les crédits d'une figure ne peuvent apparaître qu'une fois. Le cas d'un span
+ * Les crédits d'une figure ne peuvent apparaître qu'une fois, y compris un span
+ * de crédits à l'intérieur d'un div de crédits. Le cas d'un span (hors légende)
  * et d'un div de crédits est déjà signalé par figureCreditsSpanOrDiv.
  *
  * @param {import('unist').Node} _tree
@@ -519,12 +520,27 @@ export function figureSingleCredits(_tree, markdown, diagnostics) {
           line: lineNum,
           column: span.start + 1,
           endColumn: span.end + 2,
-          inAlt: span.placement === 'alt',
+          placement: span.placement,
         })
       }
     })
+    for (const div of figure.children) {
+      if (div.className !== 'credits') continue
+      eachDirectLine(div, lines, (line, lineNum) => {
+        for (const span of nestedCreditsSpans(line)) {
+          spans.push({
+            line: lineNum,
+            column: span.start + 1,
+            endColumn: span.end + 2,
+            placement: 'div',
+          })
+        }
+      })
+    }
     const spanAndDivOnly =
-      divs.length === 1 && spans.length === 1 && !spans[0].inAlt
+      divs.length === 1 &&
+      spans.length === 1 &&
+      (spans[0].placement === 'direct' || spans[0].placement === 'nested')
     if (divs.length + spans.length < 2 || spanAndDivOnly) return
     const credits = [...divs, ...spans].sort(
       (a, b) => a.line - b.line || a.column - b.column
