@@ -529,6 +529,24 @@ describe('figureSingleCredits()', () => {
     expect(diagnostics.map((d) => d.line)).toEqual([3])
   })
 
+  test('error for a credits span inside a credits div', () => {
+    const md = `:::{.figure}
+
+[Titre de l'image]{.head}
+
+![Légende](mkdreference/medias/image.png)
+
+:::{.credits}
+Cette image est attribuée à [@baudelaire]. [Collection privée]{.credits}
+:::
+
+:::`
+    const diagnostics = run(figureSingleCredits, md)
+    expect(diagnostics.map((d) => [d.code, d.line, d.column])).toEqual([
+      ['figure-single-credits', 8, 44],
+    ])
+  })
+
   test('error for two credits divs', () => {
     const md = `:::{.figure}
 ![légende](image.png)
