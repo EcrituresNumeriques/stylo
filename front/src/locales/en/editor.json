@@ -122,7 +122,7 @@
       "richQuoteMissingQuote": "A rich quote must contain the quoted text in a Markdown quotation (`>`).",
       "singleEpigraph": "Only one epigraph is allowed per document.",
       "sponsorTextOnly": "A sponsor block may only contain text (disallowed element: $t({{element}})).",
-      "translationContentRestricted": "Apart from the translated text, a translation block may only contain bibliographic references (disallowed element: $t({{element}})).",
+      "translationContentRestricted": "Apart from the translated text, a translation block may only contain bibliographic references.",
       "translationContentRestrictedBlock": "A translation block may not contain blocks (block `.{{class}}` is not allowed).",
       "translationMissingQuote": "A translation block must contain the translated text in a Markdown quotation (`>`).",
       "translationNotNested": "Translation blocks cannot be nested.",

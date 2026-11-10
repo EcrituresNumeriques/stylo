@@ -122,7 +122,7 @@
       "richQuoteMissingQuote": "Une citation riche doit contenir le texte cité dans une citation Markdown (`>`).",
       "singleEpigraph": "Un seul épigraphe est autorisé par document.",
       "sponsorTextOnly": "Un bloc sponsor ne peut contenir que du texte (élément non autorisé : $t({{element}})).",
-      "translationContentRestricted": "En dehors du texte traduit, un bloc translation ne peut contenir que des références bibliographiques (élément non autorisé : $t({{element}})).",
+      "translationContentRestricted": "En dehors du texte traduit, un bloc translation ne peut contenir que des références bibliographiques.",
       "translationContentRestrictedBlock": "Un bloc translation ne peut pas contenir de bloc (bloc `.{{class}}` non autorisé).",
       "translationMissingQuote": "Un bloc translation doit contenir le texte traduit dans une citation Markdown (`>`).",
       "translationNotNested": "Les blocs translation ne peuvent pas être imbriqués.",
