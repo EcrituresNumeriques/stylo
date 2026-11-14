@@ -122,7 +122,7 @@
       "richQuoteMissingQuote": "Una cita enriquecida debe contener el texto citado en una cita Markdown (`>`).",
       "singleEpigraph": "Solo se permite un epígrafe por documento.",
       "sponsorTextOnly": "Un bloque sponsor solo puede contener texto (elemento no permitido: $t({{element}})).",
-      "translationContentRestricted": "Aparte del texto traducido, un bloque translation solo puede contener referencias bibliográficas (elemento no permitido: $t({{element}})).",
+      "translationContentRestricted": "Aparte del texto traducido, un bloque translation solo puede contener referencias bibliográficas.",
       "translationContentRestrictedBlock": "Un bloque translation no puede contener bloques (no se permite el bloque `.{{class}}`).",
       "translationMissingQuote": "Un bloque translation debe contener el texto traducido en una cita Markdown (`>`).",
       "translationNotNested": "Los bloques translation no pueden anidarse.",
