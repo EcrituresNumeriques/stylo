@@ -1,6 +1,6 @@
+require('./env.js')
 const convict = require('convict')
 const assert = require('node:assert/strict')
-require('dotenv').config({ path: ['.env', '../.env'] })
 
 const isURL = require('validator/lib/isURL')
 const ospath = require('node:path')
