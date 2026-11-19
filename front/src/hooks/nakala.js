@@ -13,7 +13,7 @@ import useSWR from 'swr'
  * @param {object} [params.payload] - The payload for POST requests (optional).
  * @returns {Promise<object>} The JSON response from the API.
  */
-function jsonFetcher({ url, payload }) {
+export function jsonFetcher({ url, payload }) {
   return fetch(url, {
     method: payload ? 'POST' : 'GET',
     cache: 'no-cache',
