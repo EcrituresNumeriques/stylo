@@ -5,6 +5,7 @@ const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
+const migrate = require('db-migrate')
 const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
@@ -395,35 +396,47 @@ yjsUtils.setPersistence({
 })
 wss.on('connection', yjsUtils.setupWSConnection)
 
-const server = app.listen(config.get('port'), (err) => {
-  if (err) {
-    logger.error({ err }, 'Unable to connect to MongoDB.')
-    throw err
-  }
+async function runMigrations() {
+  const migrateInstance = migrate.getInstance(true, { cwd: __dirname })
+  await migrateInstance.up()
+}
 
-  logger.info('Listening on http://localhost:%s', config.get('port'))
-})
+runMigrations()
+  .then(() => {
+    const server = app.listen(config.get('port'), (err) => {
+      if (err) {
+        logger.error({ err }, 'Unable to connect to MongoDB.')
+        throw err
+      }
 
-server.on('upgrade', (request, socket, head) => {
-  // the room name contains the article id, used as a MongoDB ObjectId when loading the document
-  if (!isArticleRoomUrl(request.url)) {
-    socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n')
-    return
-  }
-  canJoinArticleRoom(request.url, { jwtSecret })
-    .then((allowed) => {
-      if (!allowed) {
-        socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n')
+      logger.info('Listening on http://localhost:%s', config.get('port'))
+    })
+
+    server.on('upgrade', (request, socket, head) => {
+      // the room name contains the article id, used as a MongoDB ObjectId when loading the document
+      if (!isArticleRoomUrl(request.url)) {
+        socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n')
         return
       }
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request)
-      })
+      canJoinArticleRoom(request.url, { jwtSecret })
+        .then((allowed) => {
+          if (!allowed) {
+            socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n')
+            return
+          }
+          wss.handleUpgrade(request, socket, head, (ws) => {
+            wss.emit('connection', ws, request)
+          })
+        })
+        .catch((error) => {
+          Sentry.captureException(error)
+          socket.end(
+            'HTTP/1.1 500 Internal Server Error\r\nConnection: close\r\n\r\n'
+          )
+        })
     })
-    .catch((error) => {
-      Sentry.captureException(error)
-      socket.end(
-        'HTTP/1.1 500 Internal Server Error\r\nConnection: close\r\n\r\n'
-      )
-    })
-})
+  })
+  .catch((err) => {
+    logger.error({ err }, 'Unable to run database migrations.')
+    process.exit(1)
+  })

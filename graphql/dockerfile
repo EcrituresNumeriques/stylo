@@ -1,16 +1,30 @@
-FROM node:24-alpine
+FROM dhi.io/node:24-alpine3.24-dev AS build-stage
 
+ENV NODE_ENV="production"
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 COPY graphql/package.json ./graphql/
 
-RUN npm clean-install --workspace=@ecrituresnumeriques/stylo-graphql
+RUN npm clean-install --omit=dev --workspace=@ecrituresnumeriques/stylo-graphql
 
 COPY graphql/ ./graphql/
 
+# l'image d'exécution n'a pas de shell et tourne avec l'utilisateur node (uid 1000)
+RUN mkdir -p /data/ydata /data/yeditingsession
+
+FROM dhi.io/node:24-alpine3.24 AS runtime-stage
+
 ENV NODE_ENV="production"
+WORKDIR /usr/src/app
+
+COPY --from=build-stage /usr/src/app ./
+COPY --from=build-stage --chown=node:node /data /data
+
+ENV COLLABORATION_PERSISTENCE_DATA_DIR="/data/ydata"
+ENV COLLABORATION_EDITING_SESSION_PERSISTENCE_DATA_DIR="/data/yeditingsession"
+
 EXPOSE 3030
 
 WORKDIR /usr/src/app/graphql
-CMD ["npm", "run", "prod"]
+CMD ["node", "--tls-max-v1.2", "--heapsnapshot-signal=SIGUSR2", "app.js"]
