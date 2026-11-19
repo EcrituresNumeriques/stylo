@@ -16,9 +16,7 @@
     "lint": "biome ci .",
     "lint:fix": "biome check --write .",
     "posttest": "npm run lint",
-    "prestart": "npm run migrations",
     "start": "node app.js",
-    "preprod": "npm run migrations",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",

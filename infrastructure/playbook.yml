@@ -104,6 +104,18 @@
         job: "/home/stylo/stylo/backup.sh >> /var/log/backup.log 2>&1"
       when: site == "stylo.huma-num.fr"
 
+    - name: Give the graphql-stylo container user (node, uid 1000) write access to the collaboration data directories
+      become: yes
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/stylo/data/{{ item }}"
+        state: directory
+        owner: "1000"
+        group: "1000"
+        recurse: yes
+      loop:
+        - ydata
+        - yeditingsession
+
     - name: Pull Docker containers
       ansible.builtin.shell:
         cmd: "docker compose pull"
