@@ -3,14 +3,7 @@
 import * as decoding from 'lib0/decoding'
 import * as encoding from 'lib0/encoding'
 import * as map from 'lib0/map'
-// Import the ESM build of y-leveldb explicitly. Its package.json has no
-// `exports` map, so a bare `import 'y-leveldb'` resolves to `main`
-// (dist/y-leveldb.cjs), a CommonJS file that `require('yjs')` -> dist/yjs.cjs.
-// That would load Yjs a second time (alongside the ESM build used by
-// y-protocols/yjs here) and break constructor checks.
-// See https://github.com/yjs/yjs/issues/438
-// noinspection JSFileReferences
-import { LeveldbPersistence } from 'y-leveldb/src/y-leveldb.js'
+import { LeveldbPersistence } from 'y-leveldb'
 import * as awarenessProtocol from 'y-protocols/awareness'
 import * as syncProtocol from 'y-protocols/sync'
 import * as Y from 'yjs'
