@@ -1,4 +1,4 @@
-import archiver from 'archiver'
+import { ZipArchive } from 'archiver'
 import { logger } from '../logger.js'
 
 /**
@@ -21,7 +21,7 @@ import { logger } from '../logger.js'
  */
 async function zip(articles) {
   return new Promise((resolve, reject) => {
-    const archive = archiver('zip', { zlib: { level: 9 } })
+    const archive = new ZipArchive({ zlib: { level: 9 } })
     const chunks = []
 
     archive.on('data', (chunk) => chunks.push(chunk))

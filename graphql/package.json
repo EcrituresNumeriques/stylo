@@ -29,7 +29,7 @@
     "@graphql-tools/schema": "~10.0",
     "@sentry/node": "~10.56.0",
     "@sentry/profiling-node": "~10.56.0",
-    "archiver": "^7.0.1",
+    "archiver": "^8.0.0",
     "bcryptjs": "^3.0.3",
     "biblatex-csl-converter": "^3.2.2",
     "body-parser": "^2.2.2",
