@@ -22,6 +22,7 @@ export function jsonFetcher({ url, payload }) {
       accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    ...(payload ? { body: JSON.stringify(payload) } : {}),
   }).then((response) => response.json())
 }
 
