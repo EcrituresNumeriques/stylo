@@ -5,6 +5,7 @@ const User = require('../models/user.js')
 const { before, beforeEach, after, describe, test } = require('node:test')
 const assert = require('node:assert')
 const { setup, teardown } = require('../tests/harness')
+const config = require('../config.js')
 
 describe('user resolver', () => {
   let container
@@ -19,6 +20,20 @@ describe('user resolver', () => {
   beforeEach(async () => {
     // purge user collection
     await User.deleteMany({})
+  })
+
+  describe('User.features', () => {
+    test('returns the resolved features, not the stored opt-ins', (t) => {
+      const initialState = config.get('features.nakala')
+      t.after(() => config.set('features.nakala', initialState))
+      const user = new User({ features: ['nakala', 'unknown'] })
+
+      config.set('features.nakala', 'opt-in')
+      assert.deepEqual(UserResolver.features(user), ['nakala'])
+
+      config.set('features.nakala', 'off')
+      assert.deepEqual(UserResolver.features(user), [])
+    })
   })
 
   describe('User.contacts', () => {

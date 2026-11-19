@@ -56,6 +56,7 @@ const defaultState = {
   activeUser: {
     authTypes: [],
     authProviders: {},
+    features: [],
     selectedTagIds: [],
   },
   /** @type {UserPreferences} */

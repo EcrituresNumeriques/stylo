@@ -7,6 +7,7 @@ const Tag = require('../models/tag')
 const { BadRequestError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
+const { resolveFeatures } = require('../helpers/features.js')
 
 const config = require('../config.js')
 
@@ -332,6 +333,13 @@ module.exports = {
       )
       // a contact may have been deleted
       return contacts.filter(Boolean)
+    },
+
+    /**
+     * Features enabled for the user (not the raw opt-ins stored in `user.features`).
+     */
+    features(user) {
+      return resolveFeatures(user)
     },
 
     authProviders(user) {

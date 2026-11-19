@@ -242,6 +242,20 @@ module.exports = convict({
       },
     },
   },
+  /*
+   * Feature flags: one key per feature.
+   * - off: disabled for everyone
+   * - on: enabled for everyone
+   * - opt-in: enabled for users who have the feature in User.features
+   *   (see bin/features.mjs)
+   */
+  features: {
+    nakala: {
+      format: ['off', 'on', 'opt-in'],
+      env: 'FEATURE_NAKALA',
+      default: 'opt-in',
+    },
+  },
   nakala: {
     apiUrl: {
       format: 'url',

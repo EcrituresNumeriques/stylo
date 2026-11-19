@@ -82,6 +82,8 @@ type User {
   contacts: [User!]!
   articles(limit: Int, page: Int): [Article!]!
   workspaces: [Workspace!]!
+  "Features enabled for this user, according to the instance configuration and the user opt-ins"
+  features: [String!]!
   createdAt: DateTime
   updatedAt: DateTime
   deletedAt: DateTime

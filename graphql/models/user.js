@@ -67,6 +67,11 @@ const userSchema = new Schema(
     institution: String,
     connectedAt: Date,
     deletedAt: Date,
+    // features requested by the user (opt-in), see helpers/features.js
+    features: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,
