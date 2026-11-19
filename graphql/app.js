@@ -11,6 +11,7 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import pinoHttp from 'pino-http'
 import WebSocket from 'ws'
+import * as Y from 'yjs'
 import {
   humanidAuth,
   hypothesisAuth,
@@ -24,7 +25,7 @@ import { requestHandler as backupRequestHandler } from './backup/index.js'
 import config from './config.js'
 import { handleEvents } from './events.js'
 import { populateUserFromJWT } from './helpers/token.js'
-import * as yjsUtils from './helpers/yjs-utils.mjs'
+import * as yjsUtils from './helpers/yjs-utils.js'
 import { createLoaders } from './loaders.js'
 import { logger } from './logger.js'
 import User from './models/user.js'
@@ -37,9 +38,6 @@ const pino = pinoHttp({
   logger,
 })
 
-// Reuse the single (ESM) Yjs instance exposed by yjs-utils instead of
-// require('yjs') (CJS build) to avoid loading Yjs twice. See yjs#438.
-const Y = yjsUtils.Y
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')

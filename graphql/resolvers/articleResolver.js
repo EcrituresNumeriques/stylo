@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node'
 import YAML from 'js-yaml'
+import * as Y from 'yjs'
 import { requireArgument } from '../helpers/arguments.js'
 import { previewEntries } from '../helpers/bibliography.js'
 import { toEntries } from '../helpers/bibtex.js'
@@ -13,7 +14,7 @@ import {
   computeMajorVersion,
   computeMinorVersion,
 } from '../helpers/versions.js'
-import { getTextFromYjsDoc, Y } from '../helpers/yjs-utils.mjs'
+import { getTextFromYjsDoc } from '../helpers/yjs-utils.js'
 import { logger } from '../logger.js'
 import Article from '../models/article.js'
 import Corpus from '../models/corpus.js'

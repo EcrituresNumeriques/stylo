@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto'
 import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
+import * as Y from 'yjs'
 import { article as defaultArticle } from '../data/defaultsData.js'
-import { Y } from '../helpers/yjs-utils.mjs'
 
 const Schema = mongoose.Schema
 

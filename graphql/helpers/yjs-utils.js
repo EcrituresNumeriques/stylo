@@ -8,12 +8,6 @@ import * as awarenessProtocol from 'y-protocols/awareness'
 import * as syncProtocol from 'y-protocols/sync'
 import * as Y from 'yjs'
 
-// Re-export the ESM build of Yjs so CommonJS callers share the same module
-// instance. Mixing `require('yjs')` (dist/yjs.cjs) with the ESM `import`
-// (dist/yjs.mjs) loads Yjs twice and breaks constructor checks.
-// See https://github.com/yjs/yjs/issues/438
-export { Y }
-
 const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1
 // biome-ignore lint/correctness/noUnusedVariables: documentation purpose
