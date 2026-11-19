@@ -1,7 +1,6 @@
 const Sentry = require('@sentry/node')
 const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const pkg = require('./package.json')
-const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
@@ -33,10 +32,6 @@ if (config.get('sentry.dsn')) {
     profilesSampleRate: 1.0,
   })
 }
-
-process.env.YPERSISTENCE = config.get(
-  'collaboration.editingSessionDataDirectory'
-)
 
 const express = require('express')
 const { createHandler } = require('graphql-http/lib/use/express')
@@ -289,6 +284,9 @@ app.post(
 )
 
 // Collaborative Writing Websocket
+yjsUtils.setupLeveldbPersistence(
+  config.get('collaboration.editingSessionDataDirectory')
+)
 const builtinPersistence = yjsUtils.getPersistence()
 yjsUtils.setPersistence({
   bindState: async (roomName, ydoc) => {
@@ -316,7 +314,7 @@ yjsUtils.setPersistence({
         }
       }
       try {
-        // noinspection ES6RedundantAwait — le type est déclaré void mais l'implémentation LevelDB (initialisée quand YPERSISTENCE est configuré) est bien async
+        // noinspection ES6RedundantAwait — le type est déclaré void mais l'implémentation LevelDB (initialisée par setupLeveldbPersistence) est bien async
         await builtinPersistence.bindState(roomName, ydoc)
       } catch (error) {
         Sentry.captureException(error)

@@ -30,12 +30,16 @@ const wsReadyStateClosed = 3
 
 // disable gc when using snapshots!
 const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0'
-const persistenceDir = process.env.YPERSISTENCE
 /**
  * @type {{bindState: function(string,WSSharedDoc):void, writeState:function(string,WSSharedDoc):Promise<any>, provider: any}|null}
  */
 let persistence = null
-if (typeof persistenceDir === 'string') {
+
+/**
+ * Persists documents in a LevelDB database stored in the given directory.
+ * @param {string} persistenceDir
+ */
+export const setupLeveldbPersistence = (persistenceDir) => {
   console.info(`Persisting documents to "${persistenceDir}"`)
   // @ts-expect-error
   const ldb = new LeveldbPersistence(persistenceDir)
