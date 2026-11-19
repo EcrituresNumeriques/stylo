@@ -34,6 +34,8 @@ assets_path='./front/build'
 mongo_backup_path='/home/stylo/stylo/backup'
 se_domain_preview='stylo.huma-num.fr'
 nakala_api_url=https://api.nakala.fr
+# Feature flags : off | on | opt-in
+feature_nakala=opt-in
 #
 stylo_export_version=4.0.1
 pandoc_api_version=4.0.4

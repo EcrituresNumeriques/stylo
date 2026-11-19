@@ -9,18 +9,16 @@ import {
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useFeature } from '../../../hooks/features.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
 import NakalaIcon from '../../atoms/NakalaIcon.jsx'
 import styles from './EditorMenu.module.scss'
 import EditorMenuItem from './EditorMenuItem.jsx'
 
 export default function EditorMenu({ articleId, onChange }) {
-  const enableNakala = useMemo(
-    () => !window.location.href.startsWith('https://stylo.huma-num.fr/'),
-    []
-  ) // disable Nakala in production
+  const enableNakala = useFeature('nakala')
   const { t } = useTranslation()
   const { value: minimized, setValue: setMinimized } = usePreferenceItem(
     'minimized',

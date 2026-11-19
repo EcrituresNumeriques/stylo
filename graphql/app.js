@@ -54,6 +54,8 @@ const pino = require('pino-http')({
 const schema = require('./schema')
 
 const { populateUserFromJWT } = require('./helpers/token.js')
+const { requireFeature } = require('./helpers/features.js')
+const { withoutAuthorizationHeader } = require('./helpers/proxy.js')
 
 const User = require('./models/user')
 const {
@@ -251,7 +253,14 @@ app.use(
 )
 
 /* Nakala */
-app.use('/nakala', proxy(config.get('nakala.apiUrl')))
+app.use(
+  '/nakala',
+  populateUserFromJWT({ jwtSecret }),
+  requireFeature('nakala'),
+  proxy(config.get('nakala.apiUrl'), {
+    proxyReqOptDecorator: withoutAuthorizationHeader,
+  })
+)
 
 /* Backup */
 app.post(

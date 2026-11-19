@@ -11,7 +11,8 @@ const User = require('../models/user.js')
 const Tag = require('../models/tag.js')
 const Corpus = require('../models/corpus.js')
 const { createLoaders } = require('../loaders.js')
-const { NotFoundError } = require('../helpers/errors.js')
+const { NotAuthorizedError, NotFoundError } = require('../helpers/errors.js')
+const config = require('../config.js')
 
 const { after, before, beforeEach, describe, test } = require('node:test')
 const assert = require('node:assert')
@@ -491,7 +492,10 @@ describe('article resolver', () => {
       assert.equal(result.zoteroLink, 'https://www.zotero.org/groups/1')
     })
 
-    test('setArticleNakalaLink returns the updated article', async () => {
+    test('setArticleNakalaLink returns the updated article', async (t) => {
+      const initialState = config.get('features.nakala')
+      t.after(() => config.set('features.nakala', initialState))
+      config.set('features.nakala', 'on')
       const article = await Article.create({
         title: 'Nakala',
         owner: [context.userId],
@@ -505,6 +509,51 @@ describe('article resolver', () => {
 
       assert.equal(result._id.toString(), article._id.toString())
       assert.equal(result.nakalaLink, 'https://nakala.fr/10.34847/nkl.1')
+    })
+
+    test('setArticleNakalaLink is refused when the nakala feature is disabled', async (t) => {
+      const initialState = config.get('features.nakala')
+      t.after(() => config.set('features.nakala', initialState))
+      config.set('features.nakala', 'opt-in')
+      const article = await Article.create({
+        title: 'Nakala',
+        owner: [context.userId],
+      })
+
+      await assert.rejects(
+        () =>
+          ArticleMutation.setArticleNakalaLink(
+            {},
+            {
+              articleId: article._id,
+              nakala: 'https://nakala.fr/10.34847/nkl.1',
+            },
+            context
+          ),
+        NotAuthorizedError
+      )
+      const after = await Article.findById(article._id)
+      assert.ok(!after.nakalaLink)
+    })
+
+    test('deprecated Article.setNakalaLink is refused when the nakala feature is disabled', async (t) => {
+      const initialState = config.get('features.nakala')
+      t.after(() => config.set('features.nakala', initialState))
+      config.set('features.nakala', 'off')
+      const article = await Article.create({
+        title: 'Nakala',
+        owner: [context.userId],
+      })
+
+      await assert.rejects(
+        () =>
+          ArticleResolver.setNakalaLink(
+            article,
+            { nakala: 'https://nakala.fr/10.34847/nkl.1' },
+            context
+          ),
+        NotAuthorizedError
+      )
     })
 
     test('deprecated Article.rename still returns a boolean', async () => {

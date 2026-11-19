@@ -4,6 +4,7 @@
  * @description This module provides SWR-based React hooks for fetching
  * data from the Nakala API (user data and collections).
  */
+import { useSelector } from 'react-redux'
 import useSWR from 'swr'
 
 /**
@@ -11,9 +12,10 @@ import useSWR from 'swr'
  * @param {object} params - Request parameters.
  * @param {string} params.url - The request URL.
  * @param {object} [params.payload] - The payload for POST requests (optional).
+ * @param {string} [params.sessionToken] - The Stylo session token, required by the `/nakala` proxy.
  * @returns {Promise<object>} The JSON response from the API.
  */
-function jsonFetcher({ url, payload }) {
+function jsonFetcher({ url, payload, sessionToken }) {
   return fetch(url, {
     method: payload ? 'POST' : 'GET',
     cache: 'no-cache',
@@ -21,6 +23,7 @@ function jsonFetcher({ url, payload }) {
       'Cache-Control': 'no-cache',
       accept: 'application/json',
       'Content-Type': 'application/json',
+      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
     },
   }).then((response) => response.json())
 }
@@ -33,11 +36,12 @@ function jsonFetcher({ url, payload }) {
  * @returns {import('swr').SWRResponse} The SWR response containing data, error, isLoading, etc.
  */
 function useNakalaApi(path, payload, swrOptions = {}) {
+  const sessionToken = useSelector((state) => state.sessionToken)
   const key = () => {
     if (path === undefined) {
       throw new Error('Missing required value')
     }
-    return { url: `/nakala/${path}`, payload }
+    return { url: `/nakala/${path}`, payload, sessionToken }
   }
   return useSWR(key, jsonFetcher, {
     fallbackData: {},

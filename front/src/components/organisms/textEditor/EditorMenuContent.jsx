@@ -2,6 +2,8 @@ import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
+import { useFeature } from '../../../hooks/features.js'
+
 import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
 import Export from '../export/Export.jsx'
 import ArticleMetadata from '../metadata/ArticleMetadata.jsx'
@@ -28,6 +30,7 @@ export default function EditorMenuContent({
 }) {
   const { article } = useRouteLoaderData('article')
   const { t } = useTranslation()
+  const enableNakala = useFeature('nakala')
 
   if (!activeMenu) {
     return null
@@ -51,7 +54,9 @@ export default function EditorMenuContent({
       {activeMenu === 'bibliography' && (
         <ArticleBibliography articleId={articleId} />
       )}
-      {activeMenu === 'data' && <ArticleData articleId={articleId} />}
+      {enableNakala && activeMenu === 'data' && (
+        <ArticleData articleId={articleId} />
+      )}
       {activeMenu === 'export' && (
         <>
           <h2 style={{ cursor: 'pointer', userSelect: 'none' }}>

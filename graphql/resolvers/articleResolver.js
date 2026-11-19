@@ -22,9 +22,21 @@ const { toLegacyFormat } = require('../helpers/metadata.js')
 const Sentry = require('@sentry/node')
 const {
   NotAuthenticatedError,
+  NotAuthorizedError,
   BadRequestError,
 } = require('../helpers/errors.js')
+const { isFeatureEnabled } = require('../helpers/features.js')
 const { toEntries } = require('../helpers/bibtex')
+
+/**
+ * @param {import('../helpers/token.js').RequestContext} context
+ * @throws {NotAuthorizedError} when the nakala feature is disabled for the user
+ */
+function requireNakala(context) {
+  if (!isFeatureEnabled('nakala', context.user)) {
+    throw new NotAuthorizedError()
+  }
+}
 
 async function getUser(userId) {
   const user = await User.findById(userId)
@@ -445,6 +457,7 @@ module.exports = {
     },
 
     async setArticleNakalaLink(_root, { articleId, nakala }, context) {
+      requireNakala(context)
       const article = await getArticleByContext(articleId, context)
       return article.setNakalaLink(nakala)
     },
@@ -644,7 +657,8 @@ module.exports = {
     },
 
     /** @deprecated Use setArticleNakalaLink root mutation instead. */
-    async setNakalaLink(article, { nakala }) {
+    async setNakalaLink(article, { nakala }, context) {
+      requireNakala(context)
       await article.setNakalaLink(nakala)
       return true
     },
