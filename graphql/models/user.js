@@ -1,9 +1,8 @@
-const { Y } = require('../helpers/yjs-utils.mjs')
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const { randomUUID } = require('node:crypto')
-
-const { article: defaultArticle } = require('../data/defaultsData')
+import { randomUUID } from 'node:crypto'
+import bcrypt from 'bcryptjs'
+import mongoose from 'mongoose'
+import { article as defaultArticle } from '../data/defaultsData.js'
+import { Y } from '../helpers/yjs-utils.mjs'
 
 const Schema = mongoose.Schema
 
@@ -152,4 +151,4 @@ userSchema.virtual('authTypes').get(function authTypes() {
   return Array.from(types)
 })
 
-module.exports = mongoose.model('User', userSchema)
+export default mongoose.model('User', userSchema)

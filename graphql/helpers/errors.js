@@ -1,4 +1,4 @@
-const { GraphQLError } = require('graphql')
+import { GraphQLError } from 'graphql'
 
 class ApiError extends Error {
   constructor(type, ...errors) {
@@ -67,7 +67,7 @@ class NotFoundError extends GraphQLError {
   }
 }
 
-module.exports = {
+export {
   ApiError,
   BadRequestError,
   NotAuthenticatedError,

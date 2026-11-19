@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
-const toHex = require('colornames')
+import toHex from 'colornames'
+import mongoose from 'mongoose'
+
 const Schema = mongoose.Schema
 
 const tagSchema = new Schema(
@@ -49,4 +50,4 @@ tagSchema.post(
   }
 )
 
-module.exports = mongoose.model('Tag', tagSchema)
+export default mongoose.model('Tag', tagSchema)

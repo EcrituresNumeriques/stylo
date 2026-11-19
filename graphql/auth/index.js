@@ -1,9 +1,9 @@
-const localAuth = require('./local.js')
-const zoteroAuth = require('./zotero.js')
-const hypothesisAuth = require('./hypothesis.js')
-const humanidAuth = require('./humanid.js')
-const { createJWTToken } = require('../helpers/token.js')
-const config = require('../config.js')
+import config from '../config.js'
+import { createJWTToken } from '../helpers/token.js'
+import * as humanidAuth from './humanid.js'
+import * as hypothesisAuth from './hypothesis.js'
+import * as localAuth from './local.js'
+import * as zoteroAuth from './zotero.js'
 
 /**
  * Help auth handler recognize if we are in an account creation
@@ -72,13 +72,14 @@ async function onAuthSuccess(req, res) {
   return res.redirect(`${req.session.origin}/login#auth-token=${token}`)
 }
 
-module.exports = {
-  stampAuth,
+// auth strategies
+
+export {
+  humanidAuth,
+  hypothesisAuth,
+  localAuth,
   onAuthFailure,
   onAuthSuccess,
-  // auth strategies
-  localAuth,
+  stampAuth,
   zoteroAuth,
-  hypothesisAuth,
-  humanidAuth,
 }

@@ -1,6 +1,6 @@
-const { format } = require('node:util')
+import { format } from 'node:util'
 
-module.exports = function resolveUserIdFromContext(args, { token, user } = {}) {
+export default function resolveUserIdFromContext(args, { token, user } = {}) {
   const isAdmin = token.admin || user?.admin || false
   // This is the user we ask the data for
   const resolvedUserId = args.user || user?.id.toString() || token._id || null

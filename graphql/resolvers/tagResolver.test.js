@@ -1,16 +1,18 @@
-const {
-  Query: TagQuery,
-  Mutation: TagMutation,
-  Tag: TagResolver,
-} = require('./tagResolver')
-const Tag = require('../models/tag')
-const Article = require('../models/article')
-const User = require('../models/user')
-const { ObjectId } = require('mongoose').Types
-const { before, after, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness')
-const { createLoaders } = require('../loaders.js')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import mongoose from 'mongoose'
+import { createLoaders } from '../loaders.js'
+import Article from '../models/article.js'
+import Tag from '../models/tag.js'
+import User from '../models/user.js'
+import { setup, teardown } from '../tests/harness.js'
+import {
+  Mutation as TagMutation,
+  Query as TagQuery,
+  Tag as TagResolver,
+} from './tagResolver.js'
+
+const { ObjectId } = mongoose.Types
 
 describe('Tag resolver', () => {
   let container

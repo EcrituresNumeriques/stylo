@@ -1,6 +1,6 @@
-const { parse, walk, generate } = require('css-tree')
-const DOMPurify = require('dompurify')
-const { JSDOM } = require('jsdom')
+import { generate, parse, walk } from 'css-tree'
+import DOMPurify from 'dompurify'
+import { JSDOM } from 'jsdom'
 
 function shouldBePrefixed({ node, selectorName }) {
   return (
@@ -71,4 +71,4 @@ function sanitizeTemplate(html) {
   })
 }
 
-module.exports = { prefixRulesWith, sanitizeTemplate }
+export { prefixRulesWith, sanitizeTemplate }

@@ -1,7 +1,7 @@
-const { previewEntries } = require('./bibliography.js')
+import assert from 'node:assert'
 
-const { describe, test } = require('node:test')
-const assert = require('node:assert')
+import { describe, test } from 'node:test'
+import { previewEntries } from './bibliography.js'
 
 describe('previewEntries', () => {
   test('returns nothing if empty', () => {

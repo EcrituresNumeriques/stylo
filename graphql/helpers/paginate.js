@@ -9,4 +9,4 @@ const paginate = (array, limit, page) => {
   return array
 }
 
-module.exports = paginate
+export default paginate

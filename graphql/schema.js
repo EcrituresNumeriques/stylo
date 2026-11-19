@@ -1,5 +1,5 @@
-const { makeExecutableSchema } = require('@graphql-tools/schema')
-const resolvers = require('./resolvers/index.js')
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import * as resolvers from './resolvers/index.js'
 
 const typeDefs = `#graphql
 scalar JSON
@@ -929,4 +929,4 @@ type Mutation {
   renameVersion(versionId: ID!, name: String): Version!
 }`
 
-module.exports = makeExecutableSchema({ typeDefs, resolvers })
+export default makeExecutableSchema({ typeDefs, resolvers })

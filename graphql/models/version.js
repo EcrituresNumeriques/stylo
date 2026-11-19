@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+
 const Schema = mongoose.Schema
 
 const versionSchema = new Schema(
@@ -66,4 +67,4 @@ versionSchema.methods.rename = async function rename(name) {
   return this.save({ timestamps: false })
 }
 
-module.exports = mongoose.model('Version', versionSchema)
+export default mongoose.model('Version', versionSchema)

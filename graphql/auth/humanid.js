@@ -1,6 +1,6 @@
-const User = require('../models/user.js')
-const config = require('../config.js')
-const OidcStrategy = require('passport-openidconnect').Strategy
+import { Strategy as OidcStrategy } from 'passport-openidconnect'
+import config from '../config.js'
+import User from '../models/user.js'
 
 const strategy = new OidcStrategy(
   {
@@ -91,7 +91,4 @@ async function verify(
   )
 }
 
-module.exports = {
-  strategy,
-  verify,
-}
+export { strategy, verify }

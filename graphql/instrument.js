@@ -1,10 +1,10 @@
 // Initializes Sentry before any other module is loaded, so that its
 // integrations can instrument them (express, mongoose, graphql...).
-// Loaded with `node --require ./instrument.js app.js`.
-const Sentry = require('@sentry/node')
-const { nodeProfilingIntegration } = require('@sentry/profiling-node')
-const pkg = require('./package.json')
-const config = require('./config.js')
+// Loaded with `node --import ./instrument.js app.js`.
+import * as Sentry from '@sentry/node'
+import { nodeProfilingIntegration } from '@sentry/profiling-node'
+import config from './config.js'
+import pkg from './package.json' with { type: 'json' }
 
 if (config.get('sentry.dsn')) {
   Sentry.init({

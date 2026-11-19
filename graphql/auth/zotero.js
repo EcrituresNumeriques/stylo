@@ -1,7 +1,7 @@
-const OAuthStrategy = require('passport-oauth1').Strategy
+import { Strategy as OAuthStrategy } from 'passport-oauth1'
 
-const config = require('../config.js')
-const User = require('../models/user.js')
+import config from '../config.js'
+import User from '../models/user.js'
 
 const strategy = new OAuthStrategy(
   {
@@ -71,8 +71,4 @@ async function verify(req, token, _tokenSecret, _profile, _params, done) {
   )
 }
 
-module.exports = {
-  getProfileFromToken,
-  strategy,
-  verify,
-}
+export { getProfileFromToken, strategy, verify }

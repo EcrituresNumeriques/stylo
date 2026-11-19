@@ -1,11 +1,11 @@
-require('./env.js')
-const convict = require('convict')
-const assert = require('node:assert/strict')
+import './env.js'
+import assert from 'node:assert/strict'
+import ospath from 'node:path'
+import convict from 'convict'
+import { url } from 'convict-format-with-validator'
+import isURL from 'validator/lib/isURL.js'
 
-const isURL = require('validator/lib/isURL')
-const ospath = require('node:path')
-
-convict.addFormat(require('convict-format-with-validator').url)
+convict.addFormat(url)
 
 convict.addFormat({
   name: 'cors-origins',
@@ -96,7 +96,7 @@ convict.addFormat({
  *  }
  * }>}
  */
-module.exports = convict({
+export default convict({
   env: {
     format: ['dev', 'prod'],
     env: 'SENTRY_ENVIRONMENT',
@@ -266,13 +266,13 @@ module.exports = convict({
     editingSessionDataDirectory: {
       format: String,
       env: 'COLLABORATION_EDITING_SESSION_PERSISTENCE_DATA_DIR',
-      default: ospath.join(__dirname, 'yeditingsession'),
+      default: ospath.join(import.meta.dirname, 'yeditingsession'),
       nullable: false,
     },
     persistenceDataDirectory: {
       format: String,
       env: 'COLLABORATION_PERSISTENCE_DATA_DIR',
-      default: ospath.join(__dirname, 'ydata'),
+      default: ospath.join(import.meta.dirname, 'ydata'),
       nullable: false,
     },
   },

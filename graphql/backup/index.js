@@ -1,12 +1,11 @@
-const mongoose = require('mongoose')
-
-const { zip } = require('./zip')
-const { json } = require('./json')
-const Article = require('../models/article')
-const { createLoaders } = require('../loaders')
-const Workspace = require('../models/workspace')
-const Version = require('../models/version')
-const { WorkingVersion } = require('../resolvers/articleResolver')
+import mongoose from 'mongoose'
+import { createLoaders } from '../loaders.js'
+import Article from '../models/article.js'
+import Version from '../models/version.js'
+import Workspace from '../models/workspace.js'
+import { WorkingVersion } from '../resolvers/articleResolver.js'
+import { json } from './json.js'
+import { zip } from './zip.js'
 
 /**
  * Error thrown when the backup request contains invalid parameters.
@@ -308,6 +307,4 @@ async function getArticles(config) {
   })
 }
 
-module.exports = {
-  requestHandler,
-}
+export { requestHandler }

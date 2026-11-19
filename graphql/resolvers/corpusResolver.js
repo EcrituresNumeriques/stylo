@@ -1,10 +1,13 @@
-const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors.js')
-const Corpus = require('../models/corpus')
-const Workspace = require('../models/workspace')
-const { logger } = require('../logger')
-const { NotAuthorizedError } = require('../helpers/errors')
-const { diff } = require('../helpers/diff')
-const { requireArgument } = require('../helpers/arguments.js')
+import { requireArgument } from '../helpers/arguments.js'
+import { diff } from '../helpers/diff.js'
+import {
+  NotAuthenticatedError,
+  NotAuthorizedError,
+  NotFoundError,
+} from '../helpers/errors.js'
+import { logger } from '../logger.js'
+import Corpus from '../models/corpus.js'
+import Workspace from '../models/workspace.js'
 
 async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin) {
@@ -102,266 +105,262 @@ function articleRefId(article) {
   return String(article?._id ?? article)
 }
 
-module.exports = {
-  Mutation: {
-    /**
-     * Create a new corpus.
-     *
-     * @param _
-     * @param { createCorpusInput } args
-     * @param { user } user
-     * @returns {Promise<*>}
-     */
-    async createCorpus(_, args, { user }) {
-      if (!user) {
-        throw new NotAuthenticatedError()
-      }
-      const createCorpusInput = requireArgument(
-        'input',
-        args.input,
-        args.createCorpusInput
-      )
+export const Mutation = {
+  /**
+   * Create a new corpus.
+   *
+   * @param _
+   * @param { createCorpusInput } args
+   * @param { user } user
+   * @returns {Promise<*>}
+   */
+  async createCorpus(_, args, { user }) {
+    if (!user) {
+      throw new NotAuthenticatedError()
+    }
+    const createCorpusInput = requireArgument(
+      'input',
+      args.input,
+      args.createCorpusInput
+    )
 
-      // any user can create a corpus
-      const newCorpus = new Corpus({
-        name: createCorpusInput.name,
-        type: createCorpusInput.type,
-        description: createCorpusInput.description,
-        articles: [],
-        metadata: createCorpusInput.metadata,
-        workspace: createCorpusInput.workspaceId ?? createCorpusInput.workspace,
-        creator: user._id,
-      })
-      return newCorpus.save()
-    },
-
-    /**
-     * Get a corpus for a given id.
-     *
-     * @param _root
-     * @param corpusId: string
-     * @param {{ user: User, token: {}, userId: String }} context
-     * @returns {Promise<*>}
-     */
-    async corpus(_root, { corpusId }, context) {
-      return getCorpusByContext(corpusId, context)
-    },
-
-    async setCorpusArticles(_, args, context) {
-      const input = requireArgument(
-        'input',
-        args.input,
-        args.setCorpusArticlesInput
-      )
-      const corpusId = requireArgument(
-        'corpusId',
-        args.corpusId,
-        input.corpusId
-      )
-      const { articleIds } = input
-      const corpus = await getCorpusByContext(corpusId, context)
-      const initialArticleIds = corpus.articles.map((a) =>
-        a.article._id.toString()
-      )
-      const { toAdd, toDelete } = diff(initialArticleIds, articleIds)
-      if (toAdd.size > 0 || toDelete.size > 0) {
-        corpus.articles = [
-          ...corpus.articles.filter((a) => !toDelete.has(a.article.toString())),
-          ...Array.from(toAdd).map((addition) => ({
-            article: { _id: addition },
-            order: 0,
-          })),
-        ]
-        return corpus.save()
-      }
-      return corpus
-    },
-
-    async deleteCorpus(_, { corpusId }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      await corpus.deleteOne()
-      return corpus
-    },
-
-    async renameCorpus(_, { corpusId, name }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.rename(name)
-    },
-
-    async updateCorpusMetadata(_, { corpusId, metadata }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.updateMetadata(metadata)
-    },
-
-    async updateCorpus(_, args, context) {
-      const { corpusId } = args
-      const updateCorpusInput = requireArgument(
-        'input',
-        args.input,
-        args.updateCorpusInput
-      )
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.update(updateCorpusInput)
-    },
-
-    async addCorpusArticle(_, { corpusId, articleId }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.addArticleById(articleId)
-    },
-
-    async removeCorpusArticle(_, { corpusId, articleId }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.removeArticleById(articleId)
-    },
-
-    async moveCorpusArticle(_, { corpusId, articleId, order }, context) {
-      const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.moveArticle(articleId, order)
-    },
-
-    async updateCorpusArticlesOrder(_, args, context) {
-      const articlesOrder = requireArgument(
-        'input',
-        args.input?.articles,
-        args.articlesOrderInput
-      )
-      const corpus = await getCorpusByContext(args.corpusId, context)
-      return corpus.updateArticlesOrder(articlesOrder)
-    },
+    // any user can create a corpus
+    const newCorpus = new Corpus({
+      name: createCorpusInput.name,
+      type: createCorpusInput.type,
+      description: createCorpusInput.description,
+      articles: [],
+      metadata: createCorpusInput.metadata,
+      workspace: createCorpusInput.workspaceId ?? createCorpusInput.workspace,
+      creator: user._id,
+    })
+    return newCorpus.save()
   },
 
-  Query: {
-    /**
-     * Get a list of corpus.
-     * @deprecated Use corpora to get a list of corpus.
-     *
-     * @param _
-     * @param args
-     * @param context
-     * @returns {Promise<[Corpus]>}
-     */
-    async corpus(_, args, context) {
-      const { user, userId, token } = context
-      const filter = args?.filter
+  /**
+   * Get a corpus for a given id.
+   *
+   * @param _root
+   * @param corpusId: string
+   * @param {{ user: User, token: {}, userId: String }} context
+   * @returns {Promise<*>}
+   */
+  async corpus(_root, { corpusId }, context) {
+    return getCorpusByContext(corpusId, context)
+  },
 
-      const workspaceIdFilter = filter?.workspaceId
-      const corpusIdFilter = filter?.corpusId
+  async setCorpusArticles(_, args, context) {
+    const input = requireArgument(
+      'input',
+      args.input,
+      args.setCorpusArticlesInput
+    )
+    const corpusId = requireArgument('corpusId', args.corpusId, input.corpusId)
+    const { articleIds } = input
+    const corpus = await getCorpusByContext(corpusId, context)
+    const initialArticleIds = corpus.articles.map((a) =>
+      a.article._id.toString()
+    )
+    const { toAdd, toDelete } = diff(initialArticleIds, articleIds)
+    if (toAdd.size > 0 || toDelete.size > 0) {
+      corpus.articles = [
+        ...corpus.articles.filter((a) => !toDelete.has(a.article.toString())),
+        ...Array.from(toAdd).map((addition) => ({
+          article: { _id: addition },
+          order: 0,
+        })),
+      ]
+      return corpus.save()
+    }
+    return corpus
+  },
 
-      if (corpusIdFilter) {
-        const corpus = await Corpus.findOne({ _id: corpusIdFilter }).orFail(
-          new NotFoundError('Corpus', corpusIdFilter)
-        )
+  async deleteCorpus(_, { corpusId }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    await corpus.deleteOne()
+    return corpus
+  },
 
-        // permission: admin token can access any corpus!
-        if (token?.admin === true) {
-          return [corpus]
-        }
+  async renameCorpus(_, { corpusId, name }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.rename(name)
+  },
 
-        if (corpus.workspace) {
-          // permission: make sure that the user belongs to the corpus workspace
-          await Workspace.getWorkspaceById(corpus.workspace, user).orFail(
-            new NotAuthorizedError()
-          )
-        } else {
-          // permission: make sure that the corpus belongs to the user
-          if (corpus.creator.toString() !== userId) {
-            throw new NotAuthorizedError()
-          }
-        }
+  async updateCorpusMetadata(_, { corpusId, metadata }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.updateMetadata(metadata)
+  },
 
+  async updateCorpus(_, args, context) {
+    const { corpusId } = args
+    const updateCorpusInput = requireArgument(
+      'input',
+      args.input,
+      args.updateCorpusInput
+    )
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.update(updateCorpusInput)
+  },
+
+  async addCorpusArticle(_, { corpusId, articleId }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.addArticleById(articleId)
+  },
+
+  async removeCorpusArticle(_, { corpusId, articleId }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.removeArticleById(articleId)
+  },
+
+  async moveCorpusArticle(_, { corpusId, articleId, order }, context) {
+    const corpus = await getCorpusByContext(corpusId, context)
+    return corpus.moveArticle(articleId, order)
+  },
+
+  async updateCorpusArticlesOrder(_, args, context) {
+    const articlesOrder = requireArgument(
+      'input',
+      args.input?.articles,
+      args.articlesOrderInput
+    )
+    const corpus = await getCorpusByContext(args.corpusId, context)
+    return corpus.updateArticlesOrder(articlesOrder)
+  },
+}
+
+export const Query = {
+  /**
+   * Get a list of corpus.
+   * @deprecated Use corpora to get a list of corpus.
+   *
+   * @param _
+   * @param args
+   * @param context
+   * @returns {Promise<[Corpus]>}
+   */
+  async corpus(_, args, context) {
+    const { user, userId, token } = context
+    const filter = args?.filter
+
+    const workspaceIdFilter = filter?.workspaceId
+    const corpusIdFilter = filter?.corpusId
+
+    if (corpusIdFilter) {
+      const corpus = await Corpus.findOne({ _id: corpusIdFilter }).orFail(
+        new NotFoundError('Corpus', corpusIdFilter)
+      )
+
+      // permission: admin token can access any corpus!
+      if (token?.admin === true) {
         return [corpus]
       }
 
-      return listCorpora(workspaceIdFilter, context)
-    },
+      if (corpus.workspace) {
+        // permission: make sure that the user belongs to the corpus workspace
+        await Workspace.getWorkspaceById(corpus.workspace, user).orFail(
+          new NotAuthorizedError()
+        )
+      } else {
+        // permission: make sure that the corpus belongs to the user
+        if (corpus.creator.toString() !== userId) {
+          throw new NotAuthorizedError()
+        }
+      }
 
-    /**
-     * Get the corpora of a workspace, or the personal corpora of the authenticated user.
-     *
-     * @param _
-     * @param args
-     * @param context
-     * @returns {Promise<[Corpus]>}
-     */
-    async corpora(_, args, context) {
-      return listCorpora(args?.filter?.workspaceId, context)
-    },
+      return [corpus]
+    }
 
-    async sharedCorpus(_, args) {
-      return getCorpus(args.corpusId)
-    },
+    return listCorpora(workspaceIdFilter, context)
   },
 
-  Corpus: {
-    workspaceId(corpus) {
-      const workspaceId = corpus.workspace?._id ?? corpus.workspace
-      return workspaceId ? workspaceId.toString() : null
-    },
+  /**
+   * Get the corpora of a workspace, or the personal corpora of the authenticated user.
+   *
+   * @param _
+   * @param args
+   * @param context
+   * @returns {Promise<[Corpus]>}
+   */
+  async corpora(_, args, context) {
+    return listCorpora(args?.filter?.workspaceId, context)
+  },
 
-    async articles(corpus, _args, context) {
-      const articles = (
-        await Promise.all(
-          corpus.articles
-            .map(async (article) => {
-              const articleLoaded = await context.loaders.articles.load(
-                article.article
-              )
-              if (articleLoaded === undefined) {
-                logger.warn(
-                  `Unable to find article ${article.article} on corpus ${corpus._id}`
-                )
-                return undefined
-              }
-              return {
-                _id: article._id,
-                order: article.order,
-                article: articleLoaded,
-              }
-            })
-            .filter((a) => a)
-        )
-      ).filter((a) => a)
-      articles.sort((a, b) => (a.order < b.order ? -1 : 1))
-      return articles
-    },
-
-    async article(corpus, { articleId }) {
-      const article = corpus.articles.find(({ article }) =>
-        article.equals(articleId)
-      )
-      return new CorpusArticle(corpus, article)
-    },
-
-    /** @deprecated Use renameCorpus root mutation instead. */
-    async rename(corpus, { name }) {
-      return corpus.rename(name)
-    },
-
-    /** @deprecated Use updateCorpusMetadata root mutation instead. */
-    async updateMetadata(corpus, { metadata }) {
-      return corpus.updateMetadata(metadata)
-    },
-
-    /** @deprecated Use addCorpusArticle root mutation instead. */
-    async addArticle(corpus, { articleId, order }) {
-      return corpus.addArticleById(articleId, order)
-    },
-
-    /** @deprecated Use deleteCorpus root mutation instead. */
-    async delete(corpus) {
-      await corpus.deleteOne()
-
-      return corpus
-    },
-
-    /** @deprecated Use updateCorpus root mutation instead. */
-    async update(corpus, { updateCorpusInput }) {
-      return corpus.update(updateCorpusInput)
-    },
-
-    /** @deprecated Use updateCorpusArticlesOrder root mutation instead. */
-    async updateArticlesOrder(corpus, { articlesOrderInput }) {
-      return corpus.updateArticlesOrder(articlesOrderInput)
-    },
+  async sharedCorpus(_, args) {
+    return getCorpus(args.corpusId)
   },
 }
+
+const CorpusResolver = {
+  workspaceId(corpus) {
+    const workspaceId = corpus.workspace?._id ?? corpus.workspace
+    return workspaceId ? workspaceId.toString() : null
+  },
+
+  async articles(corpus, _args, context) {
+    const articles = (
+      await Promise.all(
+        corpus.articles
+          .map(async (article) => {
+            const articleLoaded = await context.loaders.articles.load(
+              article.article
+            )
+            if (articleLoaded === undefined) {
+              logger.warn(
+                `Unable to find article ${article.article} on corpus ${corpus._id}`
+              )
+              return undefined
+            }
+            return {
+              _id: article._id,
+              order: article.order,
+              article: articleLoaded,
+            }
+          })
+          .filter((a) => a)
+      )
+    ).filter((a) => a)
+    articles.sort((a, b) => (a.order < b.order ? -1 : 1))
+    return articles
+  },
+
+  async article(corpus, { articleId }) {
+    const article = corpus.articles.find(({ article }) =>
+      article.equals(articleId)
+    )
+    return new CorpusArticle(corpus, article)
+  },
+
+  /** @deprecated Use renameCorpus root mutation instead. */
+  async rename(corpus, { name }) {
+    return corpus.rename(name)
+  },
+
+  /** @deprecated Use updateCorpusMetadata root mutation instead. */
+  async updateMetadata(corpus, { metadata }) {
+    return corpus.updateMetadata(metadata)
+  },
+
+  /** @deprecated Use addCorpusArticle root mutation instead. */
+  async addArticle(corpus, { articleId, order }) {
+    return corpus.addArticleById(articleId, order)
+  },
+
+  /** @deprecated Use deleteCorpus root mutation instead. */
+  async delete(corpus) {
+    await corpus.deleteOne()
+
+    return corpus
+  },
+
+  /** @deprecated Use updateCorpus root mutation instead. */
+  async update(corpus, { updateCorpusInput }) {
+    return corpus.update(updateCorpusInput)
+  },
+
+  /** @deprecated Use updateCorpusArticlesOrder root mutation instead. */
+  async updateArticlesOrder(corpus, { articlesOrderInput }) {
+    return corpus.updateArticlesOrder(articlesOrderInput)
+  },
+}
+
+export { CorpusResolver as Corpus }

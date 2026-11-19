@@ -1,15 +1,17 @@
-const {
-  Query: VersionQuery,
-  Mutation: VersionMutation,
-  Version: VersionResolver,
-} = require('./versionResolver')
-const Version = require('../models/version')
+import Version from '../models/version.js'
+import {
+  Mutation as VersionMutation,
+  Query as VersionQuery,
+  Version as VersionResolver,
+} from './versionResolver.js'
 // registers the User model used by populate('owner')
-require('../models/user')
-const { ObjectId } = require('mongoose').Types
-const { before, after, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness')
+import '../models/user.js'
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import mongoose from 'mongoose'
+import { setup, teardown } from '../tests/harness.js'
+
+const { ObjectId } = mongoose.Types
 
 describe('Version resolver', () => {
   let container

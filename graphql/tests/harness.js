@@ -1,6 +1,6 @@
-const { GenericContainer, Wait } = require('testcontainers')
-const mongoose = require('mongoose')
-const migrate = require('db-migrate')
+import migrate from 'db-migrate'
+import mongoose from 'mongoose'
+import { GenericContainer, Wait } from 'testcontainers'
 
 const MONGODB_PORT = 27017
 
@@ -44,7 +44,4 @@ async function teardown(container) {
   await container.stop()
 }
 
-module.exports = {
-  teardown,
-  setup,
-}
+export { setup, teardown }

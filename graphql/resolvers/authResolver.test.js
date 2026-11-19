@@ -1,9 +1,8 @@
-const { checkCredentials } = require('./authResolver')
-const User = require('../models/user')
-const { describe, test, before, after } = require('node:test')
-const assert = require('node:assert')
-
-const { setup, teardown } = require('../tests/harness')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import User from '../models/user.js'
+import { setup, teardown } from '../tests/harness.js'
+import { checkCredentials } from './authResolver.js'
 
 describe('auth resolver', () => {
   let container

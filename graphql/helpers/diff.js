@@ -27,6 +27,4 @@ function diff(initial, latest) {
   return { toDelete, toAdd }
 }
 
-module.exports = {
-  diff,
-}
+export { diff }

@@ -1,8 +1,7 @@
-const YAML = require('js-yaml')
-const { YAMLException } = require('js-yaml')
-const removeMd = require('remove-markdown')
-const { logger } = require('../logger')
-const config = require('../config.js')
+import YAML, { YAMLException } from 'js-yaml'
+import removeMd from 'remove-markdown'
+import config from '../config.js'
+import { logger } from '../logger.js'
 
 const canonicalBaseUrl = config.get('export.baseUrl')
 const FORMATTED_FIELD_RE = /_f$/
@@ -600,9 +599,4 @@ function toLegacyPerson(p) {
   return p
 }
 
-module.exports = {
-  reformat,
-  toObject,
-  toLegacyFormat,
-  fromLegacyFormat,
-}
+export { fromLegacyFormat, reformat, toLegacyFormat, toObject }

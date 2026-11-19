@@ -1,6 +1,6 @@
-const { describe, test } = require('node:test')
-const assert = require('node:assert')
-const { requireArgument } = require('./arguments.js')
+import assert from 'node:assert'
+import { describe, test } from 'node:test'
+import { requireArgument } from './arguments.js'
 
 describe('requireArgument', () => {
   test('returns the new form when given', () => {

@@ -1,10 +1,9 @@
-const { onSuccess } = require('./local.js')
-const User = require('../models/user.js')
-const config = require('../config.js')
-
-const { after, before, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness.js')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import config from '../config.js'
+import User from '../models/user.js'
+import { setup, teardown } from '../tests/harness.js'
+import { onSuccess } from './local.js'
 
 describe('local authentication', () => {
   let container

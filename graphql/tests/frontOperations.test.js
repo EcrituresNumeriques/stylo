@@ -1,17 +1,23 @@
-const fs = require('node:fs')
-const path = require('node:path')
-const { describe, test } = require('node:test')
-const assert = require('node:assert')
-const {
+import assert from 'node:assert'
+import fs from 'node:fs'
+import path from 'node:path'
+import { describe, test } from 'node:test'
+import {
   Kind,
   NoDeprecatedCustomRule,
   parse,
   specifiedRules,
   validate,
-} = require('graphql')
-const schema = require('../schema.js')
+} from 'graphql'
+import schema from '../schema.js'
 
-const frontSourceDir = path.join(__dirname, '..', '..', 'front', 'src')
+const frontSourceDir = path.join(
+  import.meta.dirname,
+  '..',
+  '..',
+  'front',
+  'src'
+)
 
 /**
  * Deprecated fields that the front is still allowed to use, with the issue that will remove them.

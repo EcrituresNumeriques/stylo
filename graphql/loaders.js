@@ -1,8 +1,8 @@
-const Tag = require('./models/tag')
-const User = require('./models/user')
-const Article = require('./models/article')
-const Version = require('./models/version')
-const DataLoader = require('dataloader')
+import DataLoader from 'dataloader'
+import Article from './models/article.js'
+import Tag from './models/tag.js'
+import User from './models/user.js'
+import Version from './models/version.js'
 
 /**
  * @typedef {Object} Loaders
@@ -38,13 +38,11 @@ async function findByIds(ids, model) {
   return ids.map((id) => itemByIds[id])
 }
 
-module.exports = {
-  createLoaders() {
-    return {
-      tags: new DataLoader(getTags),
-      users: new DataLoader(getUsers),
-      articles: new DataLoader(getArticles),
-      versions: new DataLoader(getVersions),
-    }
-  },
+export function createLoaders() {
+  return {
+    tags: new DataLoader(getTags),
+    users: new DataLoader(getUsers),
+    articles: new DataLoader(getArticles),
+    versions: new DataLoader(getVersions),
+  }
 }

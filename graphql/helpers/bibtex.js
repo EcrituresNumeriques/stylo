@@ -1,4 +1,4 @@
-const BibLatexParser = require('biblatex-csl-converter').BibLatexParser
+import { BibLatexParser } from 'biblatex-csl-converter'
 
 /**
  * @typedef BibTeXParseResult
@@ -86,4 +86,4 @@ const flatten = (entryTitle) => {
   return ''
 }
 
-module.exports = { toEntries }
+export { toEntries }

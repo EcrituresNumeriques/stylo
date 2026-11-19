@@ -1,8 +1,7 @@
-module.exports = {
-  article: {
-    title: 'How to Stylo',
-    zoteroLink: 'https://www.zotero.org/groups/2464757/collections/PLXDF42M',
-    md: `## Introduction
+export const article = {
+  title: 'How to Stylo',
+  zoteroLink: 'https://www.zotero.org/groups/2464757/collections/PLXDF42M',
+  md: `## Introduction
 
 Stylo est un éditeur de texte scientifique. Pour faire vos premiers pas sur Stylo, commencez par éditer cet article.
 
@@ -83,8 +82,8 @@ Les références sont ensuite insérées dans le texte grâce à leur _clé bibt
 
 Pour résumer :
 
-  1. clic sur la référence: copier la clé
-  2. coller ou CTRL+V : colle la clé dans le texte où est positionné le curseur [@petit_sue-_1999, @pitavy_au_2006].
+1. clic sur la référence: copier la clé
+2. coller ou CTRL+V : colle la clé dans le texte où est positionné le curseur [@petit_sue-_1999, @pitavy_au_2006].
 
 Il est également possible d'ajouter une référence ainsi : « Comme le dit @petit_sue-_1999, le pronom réfléchi ... »
 
@@ -169,8 +168,8 @@ Produira en HTML:
 \`\`\`html
 
 <div class="maclasse">
-  <p>Ici un paragraphe.</p>
-  <p>Ici un autre paragraphe.</p>
+<p>Ici un paragraphe.</p>
+<p>Ici un autre paragraphe.</p>
 </div>
 
 \`\`\`
@@ -185,8 +184,8 @@ Pour plus d'informations, consultez la documentation.
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
-    /* eslint-disable no-useless-escape */
-    bib: `
+  /* eslint-disable no-useless-escape */
+  bib: `
 @book{petit_sue-_1999,
 	title = {*{Sue}- en grec ancien: la famille du pronom réfléchi : linguistique grecque et comparaison indo-européenne},
 	isbn = {978-90-429-0776-8},
@@ -212,73 +211,72 @@ Pour plus d'informations, consultez la documentation.
 	year = {2006},
 	pages = {227--242},
 }`,
-    metadata: {
-      type: 'article',
-      '@version': '1.0',
-      id: 'SP1711',
-      publicationDate: '2024-05-12',
-      license: 'CC BY-SA 4.0',
-      acknowledgements: '',
-      lang: 'fr',
-      title: 'Stylo',
-      subtitle: 'Un article type',
-      abstract: `C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est un éditeur d'article scientifique dédié aux sciences humaines.
+  metadata: {
+    type: 'article',
+    '@version': '1.0',
+    id: 'SP1711',
+    publicationDate: '2024-05-12',
+    license: 'CC BY-SA 4.0',
+    acknowledgements: '',
+    lang: 'fr',
+    title: 'Stylo',
+    subtitle: 'Un article type',
+    abstract: `C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est un éditeur d'article scientifique dédié aux sciences humaines.
 Vous pouvez éditer cet article pour vous entraîner. Une documentation plus complète est accessible en cliquant sur le lien documentation.`,
-      keywords: ['édition', 'bac-à-sable'],
-      localizedContent: [
-        {
-          lang: 'en',
-          abstract: '',
-          keywords: ['publishing', 'sandbox'],
-        },
-      ],
-      controlledKeywords: [
-        {
-          idRameau: 'FRBNF13318593',
-          label: 'Édition',
-          uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f',
-        },
-      ],
-      authors: [
-        {
-          affiliations: '',
-          biography: '',
-          email: '',
-          foaf: '',
-          forename: 'Marcello',
-          isni: '',
-          orcid: '0000-0001-6424-3229',
-          surname: 'Vitali-Rosati',
-          viaf: '',
-          wikidata: '',
-        },
-        {
-          affiliations: '',
-          biography: '',
-          email: '',
-          foaf: '',
-          forename: 'Nicolas',
-          isni: '',
-          orcid: '0000-0001-7516-3427',
-          surname: 'Sauret',
-          viaf: '',
-          wikidata: '',
-        },
-      ],
-      issueDirectors: [],
-      reviewers: [],
-      translators: [],
-      journalDirectors: [],
-      issue: {},
-      production: {
-        issn: '',
-        entities: [],
+    keywords: ['édition', 'bac-à-sable'],
+    localizedContent: [
+      {
+        lang: 'en',
+        abstract: '',
+        keywords: ['publishing', 'sandbox'],
       },
-      funder: {
-        organization: '',
-        id: '',
+    ],
+    controlledKeywords: [
+      {
+        idRameau: 'FRBNF13318593',
+        label: 'Édition',
+        uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f',
       },
-      journal: {},
+    ],
+    authors: [
+      {
+        affiliations: '',
+        biography: '',
+        email: '',
+        foaf: '',
+        forename: 'Marcello',
+        isni: '',
+        orcid: '0000-0001-6424-3229',
+        surname: 'Vitali-Rosati',
+        viaf: '',
+        wikidata: '',
+      },
+      {
+        affiliations: '',
+        biography: '',
+        email: '',
+        foaf: '',
+        forename: 'Nicolas',
+        isni: '',
+        orcid: '0000-0001-7516-3427',
+        surname: 'Sauret',
+        viaf: '',
+        wikidata: '',
+      },
+    ],
+    issueDirectors: [],
+    reviewers: [],
+    translators: [],
+    journalDirectors: [],
+    issue: {},
+    production: {
+      issn: '',
+      entities: [],
     },
+    funder: {
+      organization: '',
+      id: '',
+    },
+    journal: {},
   },
 }

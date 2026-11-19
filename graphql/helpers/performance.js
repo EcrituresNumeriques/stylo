@@ -1,4 +1,4 @@
-const { logger } = require('../logger')
+import { logger } from '../logger.js'
 
 async function logElapsedTime(action, actionName) {
   const startTime = performance.now()
@@ -11,4 +11,4 @@ async function logElapsedTime(action, actionName) {
   return result
 }
 
-module.exports.logElapsedTime = logElapsedTime
+export { logElapsedTime }

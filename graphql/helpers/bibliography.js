@@ -53,4 +53,4 @@ function previewEntries(bibtex, count = 2) {
     .join('\n')
 }
 
-module.exports = { previewEntries }
+export { previewEntries }

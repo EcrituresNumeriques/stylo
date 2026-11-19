@@ -1,4 +1,4 @@
-module.exports = (req) => {
+export default (req) => {
   if (req.user) {
     if (req.user.admin === true) {
       return true

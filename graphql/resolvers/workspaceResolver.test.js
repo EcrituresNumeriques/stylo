@@ -1,16 +1,17 @@
-const { ObjectId } = require('mongoose').Types
-const {
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import mongoose from 'mongoose'
+import Article from '../models/article.js'
+import User from '../models/user.js'
+import Workspace from '../models/workspace.js'
+import { setup, teardown } from '../tests/harness.js'
+import {
   Query,
-  Mutation: RootMutation,
-  Workspace: WorkspaceMutation,
-} = require('./workspaceResolver')
-const Workspace = require('../models/workspace')
-const User = require('../models/user')
-const Article = require('../models/article')
+  Mutation as RootMutation,
+  Workspace as WorkspaceMutation,
+} from './workspaceResolver.js'
 
-const { after, before, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness.js')
+const { ObjectId } = mongoose.Types
 
 describe('workspace resolver', () => {
   let container

@@ -1,7 +1,7 @@
-const { toEntries } = require('./bibtex.js')
+import assert from 'node:assert'
 
-const { describe, test } = require('node:test')
-const assert = require('node:assert')
+import { describe, test } from 'node:test'
+import { toEntries } from './bibtex.js'
 
 describe('toEntries', () => {
   test('it should create entries', async () => {

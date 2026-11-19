@@ -1,12 +1,11 @@
-const Article = require('./article.js')
-const Corpus = require('./corpus.js')
-const User = require('./user.js')
-const Version = require('./version.js')
-const Workspace = require('./workspace.js')
-
-const { after, before, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness.js')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import { setup, teardown } from '../tests/harness.js'
+import Article from './article.js'
+import Corpus from './corpus.js'
+import User from './user.js'
+import Version from './version.js'
+import Workspace from './workspace.js'
 
 describe('remove', () => {
   let container

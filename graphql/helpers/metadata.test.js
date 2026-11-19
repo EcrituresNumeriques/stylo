@@ -1,12 +1,15 @@
-const { reformat, toLegacyFormat, fromLegacyFormat } = require('./metadata')
-const YAML = require('js-yaml')
-const fs = require('node:fs/promises')
-const path = require('node:path')
+import assert from 'node:assert'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { test } from 'node:test'
+import YAML from 'js-yaml'
+import { fromLegacyFormat, reformat, toLegacyFormat } from './metadata.js'
 
-const inputFilename = path.join(__dirname, '__fixtures__', 'psp1515.input.yml')
-
-const { test } = require('node:test')
-const assert = require('node:assert')
+const inputFilename = path.join(
+  import.meta.dirname,
+  '__fixtures__',
+  'psp1515.input.yml'
+)
 
 test('nocite always appears last', () => {
   assert.equal(
@@ -268,7 +271,7 @@ year: "2020"
 
 test('should convert to legacy format', async () => {
   const inputFilename = path.join(
-    __dirname,
+    import.meta.dirname,
     '__fixtures__',
     'article-uploaded-to-the-cloud-v1.json'
   )
@@ -397,7 +400,7 @@ test('should convert to legacy format', async () => {
 
 test('should convert from legacy format', async () => {
   const inputFilename = path.join(
-    __dirname,
+    import.meta.dirname,
     '__fixtures__',
     'article-uploaded-to-the-cloud-v0.json'
   )
@@ -528,7 +531,7 @@ test('should convert from legacy format', async () => {
 
 test('should not throw an exception when converting legacy keywords', async () => {
   const inputFilename = path.join(
-    __dirname,
+    import.meta.dirname,
     '__fixtures__',
     'article-keywords-legacy.json'
   )

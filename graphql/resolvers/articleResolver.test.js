@@ -1,21 +1,22 @@
-const { ObjectId } = require('mongoose').Types
-const {
-  Article: ArticleResolver,
-  Query: ArticleQuery,
-  Mutation: ArticleMutation,
-} = require('./articleResolver')
-const Workspace = require('../models/workspace')
-const Article = require('../models/article')
-const Version = require('../models/version')
-const User = require('../models/user.js')
-const Tag = require('../models/tag.js')
-const Corpus = require('../models/corpus.js')
-const { createLoaders } = require('../loaders.js')
-const { NotFoundError } = require('../helpers/errors.js')
+import assert from 'node:assert'
+import { after, before, beforeEach, describe, test } from 'node:test'
+import mongoose from 'mongoose'
+import { NotFoundError } from '../helpers/errors.js'
+import { createLoaders } from '../loaders.js'
+import Article from '../models/article.js'
+import Corpus from '../models/corpus.js'
+import Tag from '../models/tag.js'
+import User from '../models/user.js'
+import Version from '../models/version.js'
+import Workspace from '../models/workspace.js'
+import { setup, teardown } from '../tests/harness.js'
+import {
+  Mutation as ArticleMutation,
+  Query as ArticleQuery,
+  Article as ArticleResolver,
+} from './articleResolver.js'
 
-const { after, before, beforeEach, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness.js')
+const { ObjectId } = mongoose.Types
 
 describe('article resolver', () => {
   let container

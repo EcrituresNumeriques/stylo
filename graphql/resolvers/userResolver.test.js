@@ -1,10 +1,12 @@
-const { ObjectId } = require('mongoose').Types
-const { Mutation, User: UserResolver } = require('./userResolver.js')
-const { createLoaders } = require('../loaders.js')
-const User = require('../models/user.js')
-const { before, beforeEach, after, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness')
+import assert from 'node:assert'
+import { after, before, beforeEach, describe, test } from 'node:test'
+import mongoose from 'mongoose'
+import { createLoaders } from '../loaders.js'
+import User from '../models/user.js'
+import { setup, teardown } from '../tests/harness.js'
+import { Mutation, User as UserResolver } from './userResolver.js'
+
+const { ObjectId } = mongoose.Types
 
 describe('user resolver', () => {
   let container

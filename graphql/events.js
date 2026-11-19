@@ -1,4 +1,5 @@
-const crypto = require('node:crypto')
+import crypto from 'node:crypto'
+
 let clients = []
 
 const handleEvents = (request, response) => {
@@ -20,6 +21,4 @@ const handleEvents = (request, response) => {
   })
 }
 
-module.exports = {
-  handleEvents,
-}
+export { handleEvents }

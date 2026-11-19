@@ -1,5 +1,5 @@
-const archiver = require('archiver')
-const { logger } = require('../logger')
+import archiver from 'archiver'
+import { logger } from '../logger.js'
 
 /**
  * Creates a zip Buffer from a list of structured articles.
@@ -70,4 +70,4 @@ async function zip(articles) {
   })
 }
 
-module.exports = { zip }
+export { zip }

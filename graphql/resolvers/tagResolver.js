@@ -1,12 +1,10 @@
-const mongoose = require('mongoose')
-const User = require('../models/user')
-const Tag = require('../models/tag')
-const Article = require('../models/article')
-
-const isUser = require('../policies/isUser')
-
-const { BadRequestError, NotFoundError } = require('../helpers/errors')
-const { requireArgument } = require('../helpers/arguments.js')
+import mongoose from 'mongoose'
+import { requireArgument } from '../helpers/arguments.js'
+import { BadRequestError, NotFoundError } from '../helpers/errors.js'
+import Article from '../models/article.js'
+import Tag from '../models/tag.js'
+import User from '../models/user.js'
+import isUser from '../policies/isUser.js'
 
 /**
  * Tag fields given inline (deprecated) rather than in the input argument.
@@ -23,95 +21,91 @@ function deprecatedTagInput(args) {
   return Object.fromEntries(fields.map((field) => [field, args[field]]))
 }
 
-module.exports = {
-  Mutation: {
-    async createTag(_, args, context) {
-      const { userId } = isUser(args, context)
-      const thisUser = await User.findById(userId)
-      if (!thisUser) {
-        throw new Error('This user does not exist')
-      }
-      const input = requireArgument(
-        'input',
-        args.input,
-        deprecatedTagInput(args)
+export const Mutation = {
+  async createTag(_, args, context) {
+    const { userId } = isUser(args, context)
+    const thisUser = await User.findById(userId)
+    if (!thisUser) {
+      throw new Error('This user does not exist')
+    }
+    const input = requireArgument('input', args.input, deprecatedTagInput(args))
+    if (!input.name || !input.color) {
+      throw new BadRequestError(
+        'INVALID_INPUT',
+        'The name and the color of a tag are required.'
       )
-      if (!input.name || !input.color) {
-        throw new BadRequestError(
-          'INVALID_INPUT',
-          'The name and the color of a tag are required.'
-        )
-      }
-      return await Tag.create({
-        name: input.name,
-        description: input.description,
-        color: input.color,
-        owner: thisUser,
-      })
-    },
-
-    async deleteTag(_, args, context) {
-      const { userId } = isUser(args, context)
-      const tag = await Tag.findOne({ _id: args.tagId, owner: userId })
-      if (!tag) {
-        throw new Error('Unable to find tag')
-      }
-      await tag.deleteOne()
-      return tag
-    },
-
-    async updateTag(_, args, context) {
-      const { userId } = isUser(args, context)
-      const tagId = requireArgument('tagId', args.tagId, args.tag)
-      const input = args.input ?? deprecatedTagInput(args) ?? {}
-      const thisTag = await Tag.findOne({ _id: tagId, owner: userId })
-      if (!thisTag) {
-        throw new Error('Unable to find tag')
-      }
-      ;['name', 'description', 'color'].forEach((field) => {
-        if (Object.hasOwn(input, field)) {
-          /* eslint-disable security/detect-object-injection */
-          thisTag.set(field, input[field])
-        }
-      })
-      return thisTag.save()
-    },
+    }
+    return await Tag.create({
+      name: input.name,
+      description: input.description,
+      color: input.color,
+      owner: thisUser,
+    })
   },
 
-  Query: {
-    async tag(_, args, context) {
-      const { userId } = isUser(args, context)
-      const tagId = requireArgument('tagId', args.tagId, args.tag)
-      const query = context.token.admin
-        ? { _id: tagId }
-        : { _id: tagId, owner: userId }
-
-      const tag = await Tag.findOne(query)
-      if (!tag) {
-        throw new NotFoundError('Tag', tagId)
-      }
-      return tag
-    },
-
-    async tags(_root, args, context) {
-      const { userId } = isUser(args, context)
-      return Tag.find({ owner: userId })
-    },
+  async deleteTag(_, args, context) {
+    const { userId } = isUser(args, context)
+    const tag = await Tag.findOne({ _id: args.tagId, owner: userId })
+    if (!tag) {
+      throw new Error('Unable to find tag')
+    }
+    await tag.deleteOne()
+    return tag
   },
 
-  Tag: {
-    async creator(tag, _args, context) {
-      if (!tag.owner) {
-        return null
+  async updateTag(_, args, context) {
+    const { userId } = isUser(args, context)
+    const tagId = requireArgument('tagId', args.tagId, args.tag)
+    const input = args.input ?? deprecatedTagInput(args) ?? {}
+    const thisTag = await Tag.findOne({ _id: tagId, owner: userId })
+    if (!thisTag) {
+      throw new Error('Unable to find tag')
+    }
+    ;['name', 'description', 'color'].forEach((field) => {
+      if (Object.hasOwn(input, field)) {
+        /* eslint-disable security/detect-object-injection */
+        thisTag.set(field, input[field])
       }
-      if (tag instanceof mongoose.Document && tag.populated('owner')) {
-        return tag.owner
-      }
-      return context.loaders.users.load(tag.owner._id ?? tag.owner)
-    },
-
-    async articles(tag) {
-      return Article.find({ tags: tag._id }, null, null).populate('versions')
-    },
+    })
+    return thisTag.save()
   },
 }
+
+export const Query = {
+  async tag(_, args, context) {
+    const { userId } = isUser(args, context)
+    const tagId = requireArgument('tagId', args.tagId, args.tag)
+    const query = context.token.admin
+      ? { _id: tagId }
+      : { _id: tagId, owner: userId }
+
+    const tag = await Tag.findOne(query)
+    if (!tag) {
+      throw new NotFoundError('Tag', tagId)
+    }
+    return tag
+  },
+
+  async tags(_root, args, context) {
+    const { userId } = isUser(args, context)
+    return Tag.find({ owner: userId })
+  },
+}
+
+const TagResolver = {
+  async creator(tag, _args, context) {
+    if (!tag.owner) {
+      return null
+    }
+    if (tag instanceof mongoose.Document && tag.populated('owner')) {
+      return tag.owner
+    }
+    return context.loaders.users.load(tag.owner._id ?? tag.owner)
+  },
+
+  async articles(tag) {
+    return Article.find({ tags: tag._id }, null, null).populate('versions')
+  },
+}
+
+export { TagResolver as Tag }

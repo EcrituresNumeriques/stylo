@@ -10,7 +10,4 @@ function computeMinorVersion(versionObject = { version: 0, revision: 0 }) {
   return { revision: revision + 1, version }
 }
 
-module.exports = {
-  computeMajorVersion,
-  computeMinorVersion,
-}
+export { computeMajorVersion, computeMinorVersion }

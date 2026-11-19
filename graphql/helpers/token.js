@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
-const Sentry = require('@sentry/node')
+import * as Sentry from '@sentry/node'
+import jwt from 'jsonwebtoken'
+import User from '../models/user.js'
 
 /**
  * @typedef {Object} RequestContext
@@ -18,10 +18,7 @@ const Sentry = require('@sentry/node')
  * @param {string} params.jwtSecret
  * @returns {Promise<string>}
  */
-module.exports.createJWTToken = async function createJWTToken({
-  user,
-  jwtSecret,
-}) {
+export async function createJWTToken({ user, jwtSecret }) {
   const payload = {
     email: user.email,
     _id: user._id,
@@ -36,9 +33,7 @@ module.exports.createJWTToken = async function createJWTToken({
   )
 }
 
-module.exports.populateUserFromJWT = function populateUserFromJWT({
-  jwtSecret,
-}) {
+export function populateUserFromJWT({ jwtSecret }) {
   return async function populateUserFromJWTMiddleware(req, _res, next) {
     const jwtToken = req.headers.authorization?.replace(/^Bearer\s+/, '')
 

@@ -1,12 +1,12 @@
-const { Query, Mutation, Corpus: CorpusMutation } = require('./corpusResolver')
-const Corpus = require('../models/corpus')
-const User = require('../models/user')
-const Article = require('../models/article')
-const Workspace = require('../models/workspace')
-const { NotAuthenticatedError, NotFoundError } = require('../helpers/errors')
-const { before, after, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('../tests/harness')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import { NotAuthenticatedError, NotFoundError } from '../helpers/errors.js'
+import Article from '../models/article.js'
+import Corpus from '../models/corpus.js'
+import User from '../models/user.js'
+import Workspace from '../models/workspace.js'
+import { setup, teardown } from '../tests/harness.js'
+import { Corpus as CorpusMutation, Mutation, Query } from './corpusResolver.js'
 
 describe('corpus resolver', () => {
   let container

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+
 const Schema = mongoose.Schema
 
 const CorpusArticleSchema = new Schema({
@@ -181,4 +182,4 @@ corpusSchema.methods.updateArticlesOrder = async function updateArticlesOrder(
   return this.save()
 }
 
-module.exports = mongoose.model('Corpus', corpusSchema)
+export default mongoose.model('Corpus', corpusSchema)

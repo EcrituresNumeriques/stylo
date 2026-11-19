@@ -1,49 +1,45 @@
-const Sentry = require('@sentry/node')
-const pkg = require('./package.json')
-const debounce = require('lodash.debounce')
-const config = require('./config.js')
-const proxy = require('express-http-proxy')
-const bodyParser = require('body-parser')
+import * as Sentry from '@sentry/node'
+import bodyParser from 'body-parser'
+import { MongoStore } from 'connect-mongo'
+import cors from 'cors'
+import express from 'express'
+import proxy from 'express-http-proxy'
+import session from 'express-session'
+import { createHandler } from 'graphql-http/lib/use/express'
+import debounce from 'lodash.debounce'
+import mongoose from 'mongoose'
+import passport from 'passport'
+import pinoHttp from 'pino-http'
+import WebSocket from 'ws'
+import {
+  humanidAuth,
+  hypothesisAuth,
+  localAuth,
+  onAuthFailure,
+  onAuthSuccess,
+  stampAuth,
+  zoteroAuth,
+} from './auth/index.js'
+import { requestHandler as backupRequestHandler } from './backup/index.js'
+import config from './config.js'
+import { handleEvents } from './events.js'
+import { populateUserFromJWT } from './helpers/token.js'
+import * as yjsUtils from './helpers/yjs-utils.mjs'
+import { createLoaders } from './loaders.js'
+import { logger } from './logger.js'
+import User from './models/user.js'
+import pkg from './package.json' with { type: 'json' }
+import schema from './schema.js'
 
 config.validate({ allowed: 'strict' })
 
-const express = require('express')
-const { createHandler } = require('graphql-http/lib/use/express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-
-const session = require('express-session')
-const { MongoStore } = require('connect-mongo')
-const passport = require('passport')
-const { logger } = require('./logger')
-const pino = require('pino-http')({
+const pino = pinoHttp({
   logger,
 })
 
-const schema = require('./schema')
-
-const { populateUserFromJWT } = require('./helpers/token.js')
-
-const User = require('./models/user')
-const {
-  stampAuth,
-  onAuthSuccess,
-  onAuthFailure,
-  localAuth,
-  humanidAuth,
-  hypothesisAuth,
-  zoteroAuth,
-} = require('./auth/index.js')
-
-const { createLoaders } = require('./loaders.js')
-
-const yjsUtils = require('./helpers/yjs-utils.mjs')
 // Reuse the single (ESM) Yjs instance exposed by yjs-utils instead of
 // require('yjs') (CJS build) to avoid loading Yjs twice. See yjs#438.
 const Y = yjsUtils.Y
-const WebSocket = require('ws')
-const { handleEvents } = require('./events')
-const { requestHandler: backupRequestHandler } = require('./backup')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')

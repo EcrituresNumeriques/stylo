@@ -1,5 +1,5 @@
-const logger = require('pino')()
+import pino from 'pino'
 
-module.exports = {
-  logger,
-}
+const logger = pino()
+
+export { logger }

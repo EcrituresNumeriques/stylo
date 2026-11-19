@@ -2,11 +2,10 @@
  * @typedef {import('express').Request} Request
  * @typedef {import('express').Response} Response
  */
-const LocalStrategy = require('passport-local').Strategy
-
-const { createJWTToken } = require('../helpers/token.js')
-const { checkCredentials } = require('../resolvers/authResolver.js')
-const config = require('../config.js')
+import { Strategy as LocalStrategy } from 'passport-local'
+import config from '../config.js'
+import { createJWTToken } from '../helpers/token.js'
+import { checkCredentials } from '../resolvers/authResolver.js'
 
 const strategy = new LocalStrategy({ session: false }, verify)
 
@@ -69,9 +68,4 @@ async function verify(username, password, done) {
   }
 }
 
-module.exports = {
-  onFailure,
-  onSuccess,
-  strategy,
-  verify,
-}
+export { onFailure, onSuccess, strategy, verify }

@@ -1,6 +1,6 @@
-const User = require('../models/user')
-const isUser = require('../policies/isUser')
-const { requireArgument } = require('../helpers/arguments.js')
+import { requireArgument } from '../helpers/arguments.js'
+import User from '../models/user.js'
+import isUser from '../policies/isUser.js'
 
 async function checkCredentials({ username, password }) {
   if (!username || username.trim().length === 0) {
@@ -28,38 +28,37 @@ async function checkCredentials({ username, password }) {
   return user
 }
 
-module.exports = {
-  checkCredentials,
-  Mutation: {
-    async changePassword(_, args, context) {
-      const { userId } = isUser(args, context)
-      const currentPassword = requireArgument(
-        'input',
-        args.input?.currentPassword,
-        args.old
-      )
-      const newPassword = requireArgument(
-        'input',
-        args.input?.newPassword,
-        args.new
-      )
+export const Mutation = {
+  async changePassword(_, args, context) {
+    const { userId } = isUser(args, context)
+    const currentPassword = requireArgument(
+      'input',
+      args.input?.currentPassword,
+      args.old
+    )
+    const newPassword = requireArgument(
+      'input',
+      args.input?.newPassword,
+      args.new
+    )
 
-      // find User
-      const user = await User.findOne({ _id: userId })
-      if (!user) {
-        throw new Error('Could not find user')
-      }
+    // find User
+    const user = await User.findOne({ _id: userId })
+    if (!user) {
+      throw new Error('Could not find user')
+    }
 
-      // check old password
-      if (!(await user.comparePassword(currentPassword))) {
-        throw new Error('Old password is incorrect')
-      }
+    // check old password
+    if (!(await user.comparePassword(currentPassword))) {
+      throw new Error('Old password is incorrect')
+    }
 
-      // set new password
-      user.set('password', newPassword)
-      await user.save()
+    // set new password
+    user.set('password', newPassword)
+    await user.save()
 
-      return user
-    },
+    return user
   },
 }
+
+export { checkCredentials }

@@ -35,4 +35,4 @@ function json(articles) {
   }
 }
 
-module.exports = { json }
+export { json }

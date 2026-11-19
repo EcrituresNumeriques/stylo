@@ -1,4 +1,4 @@
-const { BadRequestError } = require('./errors.js')
+import { BadRequestError } from './errors.js'
 
 /**
  * Return the first defined value among the candidates of a required argument.
@@ -27,4 +27,4 @@ function requireArgument(name, ...candidates) {
   return value
 }
 
-module.exports = { requireArgument }
+export { requireArgument }

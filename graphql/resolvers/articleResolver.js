@@ -1,30 +1,27 @@
-const { NotFoundError } = require('../helpers/errors.js')
-const YAML = require('js-yaml')
-const { Y, getTextFromYjsDoc } = require('../helpers/yjs-utils.mjs')
-
-const Article = require('../models/article.js')
-const User = require('../models/user.js')
-const Corpus = require('../models/corpus.js')
-const Workspace = require('../models/workspace.js')
-const Version = require('../models/version.js')
-
-const isUser = require('../policies/isUser.js')
-const { requireArgument } = require('../helpers/arguments.js')
-const { getWorkspace } = require('./workspaceResolver.js')
-const { reformat } = require('../helpers/metadata.js')
-const {
+import * as Sentry from '@sentry/node'
+import YAML from 'js-yaml'
+import { requireArgument } from '../helpers/arguments.js'
+import { previewEntries } from '../helpers/bibliography.js'
+import { toEntries } from '../helpers/bibtex.js'
+import {
+  BadRequestError,
+  NotAuthenticatedError,
+  NotFoundError,
+} from '../helpers/errors.js'
+import { reformat, toLegacyFormat } from '../helpers/metadata.js'
+import {
   computeMajorVersion,
   computeMinorVersion,
-} = require('../helpers/versions.js')
-const { previewEntries } = require('../helpers/bibliography.js')
-const { logger } = require('../logger.js')
-const { toLegacyFormat } = require('../helpers/metadata.js')
-const Sentry = require('@sentry/node')
-const {
-  NotAuthenticatedError,
-  BadRequestError,
-} = require('../helpers/errors.js')
-const { toEntries } = require('../helpers/bibtex')
+} from '../helpers/versions.js'
+import { getTextFromYjsDoc, Y } from '../helpers/yjs-utils.mjs'
+import { logger } from '../logger.js'
+import Article from '../models/article.js'
+import Corpus from '../models/corpus.js'
+import User from '../models/user.js'
+import Version from '../models/version.js'
+import Workspace from '../models/workspace.js'
+import isUser from '../policies/isUser.js'
+import { getWorkspace } from './workspaceResolver.js'
 
 async function getUser(userId) {
   const user = await User.findById(userId)
@@ -164,560 +161,556 @@ function eqSet(a, b) {
   return a.size === b.size && a.intersection(b).size === a.size
 }
 
-module.exports = {
-  Mutation: {
-    /**
-     * Update an article as the current user
-     * @param {null} _root
-     * @param {*} args
-     * @param {{ userId, token }} context
-     */
-    async updateArticle(_root, args, context) {
-      const input = requireArgument(
-        'input',
-        args.input,
-        args.updateArticleInput
+export const Mutation = {
+  /**
+   * Update an article as the current user
+   * @param {null} _root
+   * @param {*} args
+   * @param {{ userId, token }} context
+   */
+  async updateArticle(_root, args, context) {
+    const input = requireArgument('input', args.input, args.updateArticleInput)
+    const id = requireArgument('articleId', args.articleId, input.id)
+    const { title, tags, workspaces } = input
+    const article = await getArticleByContext(id, context)
+    if (title) {
+      article.title = title
+    }
+    if (Array.isArray(tags)) {
+      article.tags = tags
+    }
+    if (Array.isArray(workspaces)) {
+      const currentWorkspaces = await Workspace.findByArticleId(id)
+      const currentWorkspacesSet = new Set(
+        currentWorkspaces.map((w) => w._id.toString())
       )
-      const id = requireArgument('articleId', args.articleId, input.id)
-      const { title, tags, workspaces } = input
-      const article = await getArticleByContext(id, context)
-      if (title) {
-        article.title = title
-      }
-      if (Array.isArray(tags)) {
-        article.tags = tags
-      }
-      if (Array.isArray(workspaces)) {
-        const currentWorkspaces = await Workspace.findByArticleId(id)
-        const currentWorkspacesSet = new Set(
-          currentWorkspaces.map((w) => w._id.toString())
-        )
-        const workspacesSet = new Set(workspaces)
-        if (!eqSet(workspacesSet, currentWorkspacesSet)) {
-          const additions = workspacesSet.difference(currentWorkspacesSet)
-          for (const additionWorkspaceId of additions) {
-            await Workspace.addArticle(additionWorkspaceId, article._id)
-          }
-          const deletions = currentWorkspacesSet.difference(workspacesSet)
-          for (const deletionWorkspaceId of deletions) {
-            await Workspace.deleteArticle(deletionWorkspaceId, article._id)
-          }
+      const workspacesSet = new Set(workspaces)
+      if (!eqSet(workspacesSet, currentWorkspacesSet)) {
+        const additions = workspacesSet.difference(currentWorkspacesSet)
+        for (const additionWorkspaceId of additions) {
+          await Workspace.addArticle(additionWorkspaceId, article._id)
+        }
+        const deletions = currentWorkspacesSet.difference(workspacesSet)
+        for (const deletionWorkspaceId of deletions) {
+          await Workspace.deleteArticle(deletionWorkspaceId, article._id)
         }
       }
-      await article.save()
-      return article.populate('tags')
-    },
+    }
+    await article.save()
+    return article.populate('tags')
+  },
 
-    /**
-     * Create an article as the current user
-     * @param {null} _root
-     * @param {*} args
-     * @param {{ userId, token }} context
-     */
-    async createArticle(_root, args, context) {
-      const user = await getUser(context.userId)
-      const { title, tags, workspaces } = requireArgument(
-        'input',
-        args.input,
-        args.createArticleInput
-      )
+  /**
+   * Create an article as the current user
+   * @param {null} _root
+   * @param {*} args
+   * @param {{ userId, token }} context
+   */
+  async createArticle(_root, args, context) {
+    const user = await getUser(context.userId)
+    const { title, tags, workspaces } = requireArgument(
+      'input',
+      args.input,
+      args.createArticleInput
+    )
 
-      //Add default article + default version
-      const yDoc = new Y.Doc({ gc: false })
+    //Add default article + default version
+    const yDoc = new Y.Doc({ gc: false })
+    const yText = yDoc.getText('main')
+    yText.insert(0, '')
+    const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
+    const newArticle = await Article.create({
+      title,
+      owner: user,
+      workingVersion: {
+        md: '',
+        bib: '',
+        metadata: {},
+        ydoc: Buffer.from(documentState).toString('base64'),
+      },
+    })
+
+    if (Array.isArray(tags) && tags.length) {
+      await newArticle.addTags(...tags)
+    }
+
+    if (Array.isArray(workspaces) && workspaces.length) {
+      for await (const id of workspaces) {
+        const workspace = await Workspace.getWorkspaceById(id, user)
+
+        if (!workspace) {
+          throw new NotFoundError('Workspace', id)
+        }
+
+        workspace.articles.push(newArticle)
+        await workspace.save()
+      }
+    }
+
+    return newArticle
+  },
+
+  async article(_root, { articleId }, context) {
+    return getArticleByContext(articleId, context)
+  },
+
+  /**
+   * Share an article as the current user
+   *
+   * @param {*} _root
+   * @param {*} args
+   * @param {{ userId, token }} context
+   * @returns
+   */
+  async shareArticle(_root, args, context) {
+    const withUser = await getUser(
+      requireArgument('userId', args.userId, args.to)
+    )
+    const article = await getArticleByContext(
+      requireArgument('articleId', args.articleId, args.article),
+      context
+    )
+    await article.shareWith(withUser)
+    return article
+  },
+
+  /**
+   * Unshare an article as the current user
+   *
+   * @param {null} _root
+   * @param {*} args
+   * @param {{ userId, token }} context
+   * @returns
+   */
+  async unshareArticle(_root, args, context) {
+    const withUser = await getUser(
+      requireArgument('userId', args.userId, args.to)
+    )
+    const article = await getArticleByContext(
+      requireArgument('articleId', args.articleId, args.article),
+      context
+    )
+    await article.unshareWith(withUser)
+    return article
+  },
+
+  /**
+   * Duplicate an article as the current user
+   *
+   * @param {null} _root
+   * @param {*} args
+   * @param {{ userId, token }} context
+   * @returns {Promise<import('./article')>}
+   */
+  async duplicateArticle(_root, args, context) {
+    const recipientId = requireArgument('userId', args.userId, args.to)
+    const withUser = await getUser(recipientId)
+    const article = await getArticleByContext(
+      requireArgument('articleId', args.articleId, args.article),
+      context
+    )
+    const userId = context.userId
+    const prefix = userId === recipientId ? '[Copy] ' : '[Sent] '
+
+    const newArticle = new Article({
+      ...article.toObject(),
+      _id: undefined,
+      owner: withUser.id,
+      contributors: [],
+      versions: [],
+      createdAt: null,
+      updatedAt: null,
+      title: prefix + article.title,
+    })
+
+    newArticle.isNew = true
+    await newArticle.save()
+
+    // Maintain links
+    await Corpus.updateMany(
+      { 'articles.article': article._id },
+      { $push: { articles: { article: newArticle._id } } }
+    )
+
+    await Workspace.updateMany(
+      { articles: article },
+      { $push: { articles: [newArticle._id] } }
+    )
+
+    return newArticle
+  },
+
+  /**
+   * Update the bibliography of an article's working copy from a BibTeX string.
+   * Replaces workingVersion.bib and returns the parsed bibliography as structured entries.
+   * Requires authentication with access to the article (as owner, contributor, or via a workspace).
+   *
+   * @param {null} _root
+   * @param {{ articleId?: string, input: { articleId?: string, bib: string } }} args
+   * @param {{ userId: string, token: object }} context
+   * @returns {Promise<Array<object>>} Parsed bibliography entries
+   */
+  async updateArticleBibliography(_root, args, context) {
+    const { bib } = args.input
+    const articleId = requireArgument(
+      'articleId',
+      args.articleId,
+      args.input.articleId
+    )
+    const article = await getArticleByContext(articleId, context)
+    article.set('workingVersion.bib', bib)
+    await article.save()
+    return toEntries(bib)
+  },
+
+  /**
+   * Update the metadata of an article's working copy.
+   * Replaces the entire metadata object stored in workingVersion.metadata.
+   * Requires authentication with access to the article (as owner, contributor, or via a workspace).
+   *
+   * @param {null} _root
+   * @param {{ articleId?: string, input: { articleId?: string, metadata: object } }} args
+   * @param {{ userId: string, token: object }} context
+   * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+   */
+  async updateArticleMetadata(_root, args, context) {
+    const { metadata } = args.input
+    const articleId = requireArgument(
+      'articleId',
+      args.articleId,
+      args.input.articleId
+    )
+    const article = await getArticleByContext(articleId, context)
+    article.set('workingVersion.metadata', metadata)
+    return await article.save()
+  },
+
+  /**
+   * Import an article from external content as the current user.
+   * Creates a new article with the provided title, Markdown body, BibTeX bibliography,
+   * and YAML metadata stored in the working version.
+   *
+   * @param {null} _root
+   * @param {{ input: { title: string, content?: string, bibliography?: string, metadata?: object } }} args
+   * @param {{ user?: object, userId: string|null, token?: object }} context
+   * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+   */
+  async importArticle(_root, args, context) {
+    const user = await getUser(context.userId)
+    const { title, content, bibliography, metadata } = args.input
+
+    const yDoc = new Y.Doc({ gc: false })
+    try {
       const yText = yDoc.getText('main')
-      yText.insert(0, '')
+      const text = content || ''
+      yText.insert(0, text)
       const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
-      const newArticle = await Article.create({
+      return await Article.create({
         title,
         owner: user,
         workingVersion: {
-          md: '',
-          bib: '',
-          metadata: {},
+          bib: bibliography || '',
+          metadata: metadata || {},
           ydoc: Buffer.from(documentState).toString('base64'),
         },
       })
-
-      if (Array.isArray(tags) && tags.length) {
-        await newArticle.addTags(...tags)
-      }
-
-      if (Array.isArray(workspaces) && workspaces.length) {
-        for await (const id of workspaces) {
-          const workspace = await Workspace.getWorkspaceById(id, user)
-
-          if (!workspace) {
-            throw new NotFoundError('Workspace', id)
-          }
-
-          workspace.articles.push(newArticle)
-          await workspace.save()
-        }
-      }
-
-      return newArticle
-    },
-
-    async article(_root, { articleId }, context) {
-      return getArticleByContext(articleId, context)
-    },
-
-    /**
-     * Share an article as the current user
-     *
-     * @param {*} _root
-     * @param {*} args
-     * @param {{ userId, token }} context
-     * @returns
-     */
-    async shareArticle(_root, args, context) {
-      const withUser = await getUser(
-        requireArgument('userId', args.userId, args.to)
-      )
-      const article = await getArticleByContext(
-        requireArgument('articleId', args.articleId, args.article),
-        context
-      )
-      await article.shareWith(withUser)
-      return article
-    },
-
-    /**
-     * Unshare an article as the current user
-     *
-     * @param {null} _root
-     * @param {*} args
-     * @param {{ userId, token }} context
-     * @returns
-     */
-    async unshareArticle(_root, args, context) {
-      const withUser = await getUser(
-        requireArgument('userId', args.userId, args.to)
-      )
-      const article = await getArticleByContext(
-        requireArgument('articleId', args.articleId, args.article),
-        context
-      )
-      await article.unshareWith(withUser)
-      return article
-    },
-
-    /**
-     * Duplicate an article as the current user
-     *
-     * @param {null} _root
-     * @param {*} args
-     * @param {{ userId, token }} context
-     * @returns {Promise<import('./article')>}
-     */
-    async duplicateArticle(_root, args, context) {
-      const recipientId = requireArgument('userId', args.userId, args.to)
-      const withUser = await getUser(recipientId)
-      const article = await getArticleByContext(
-        requireArgument('articleId', args.articleId, args.article),
-        context
-      )
-      const userId = context.userId
-      const prefix = userId === recipientId ? '[Copy] ' : '[Sent] '
-
-      const newArticle = new Article({
-        ...article.toObject(),
-        _id: undefined,
-        owner: withUser.id,
-        contributors: [],
-        versions: [],
-        createdAt: null,
-        updatedAt: null,
-        title: prefix + article.title,
-      })
-
-      newArticle.isNew = true
-      await newArticle.save()
-
-      // Maintain links
-      await Corpus.updateMany(
-        { 'articles.article': article._id },
-        { $push: { articles: { article: newArticle._id } } }
-      )
-
-      await Workspace.updateMany(
-        { articles: article },
-        { $push: { articles: [newArticle._id] } }
-      )
-
-      return newArticle
-    },
-
-    /**
-     * Update the bibliography of an article's working copy from a BibTeX string.
-     * Replaces workingVersion.bib and returns the parsed bibliography as structured entries.
-     * Requires authentication with access to the article (as owner, contributor, or via a workspace).
-     *
-     * @param {null} _root
-     * @param {{ articleId?: string, input: { articleId?: string, bib: string } }} args
-     * @param {{ userId: string, token: object }} context
-     * @returns {Promise<Array<object>>} Parsed bibliography entries
-     */
-    async updateArticleBibliography(_root, args, context) {
-      const { bib } = args.input
-      const articleId = requireArgument(
-        'articleId',
-        args.articleId,
-        args.input.articleId
-      )
-      const article = await getArticleByContext(articleId, context)
-      article.set('workingVersion.bib', bib)
-      await article.save()
-      return toEntries(bib)
-    },
-
-    /**
-     * Update the metadata of an article's working copy.
-     * Replaces the entire metadata object stored in workingVersion.metadata.
-     * Requires authentication with access to the article (as owner, contributor, or via a workspace).
-     *
-     * @param {null} _root
-     * @param {{ articleId?: string, input: { articleId?: string, metadata: object } }} args
-     * @param {{ userId: string, token: object }} context
-     * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
-     */
-    async updateArticleMetadata(_root, args, context) {
-      const { metadata } = args.input
-      const articleId = requireArgument(
-        'articleId',
-        args.articleId,
-        args.input.articleId
-      )
-      const article = await getArticleByContext(articleId, context)
-      article.set('workingVersion.metadata', metadata)
-      return await article.save()
-    },
-
-    /**
-     * Import an article from external content as the current user.
-     * Creates a new article with the provided title, Markdown body, BibTeX bibliography,
-     * and YAML metadata stored in the working version.
-     *
-     * @param {null} _root
-     * @param {{ input: { title: string, content?: string, bibliography?: string, metadata?: object } }} args
-     * @param {{ user?: object, userId: string|null, token?: object }} context
-     * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
-     */
-    async importArticle(_root, args, context) {
-      const user = await getUser(context.userId)
-      const { title, content, bibliography, metadata } = args.input
-
-      const yDoc = new Y.Doc({ gc: false })
-      try {
-        const yText = yDoc.getText('main')
-        const text = content || ''
-        yText.insert(0, text)
-        const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
-        return await Article.create({
-          title,
-          owner: user,
-          workingVersion: {
-            bib: bibliography || '',
-            metadata: metadata || {},
-            ydoc: Buffer.from(documentState).toString('base64'),
-          },
-        })
-      } finally {
-        yDoc.destroy()
-      }
-    },
-
-    async deleteArticle(_root, { articleId, dryRun }, context) {
-      const article = await getArticleByContext(articleId, context)
-      if (dryRun) return article
-      await article.deleteOne()
-      return article
-    },
-
-    async renameArticle(_root, { articleId, title }, context) {
-      const article = await getArticleByContext(articleId, context)
-      return article.rename(title)
-    },
-
-    async setArticleZoteroLink(_root, { articleId, zotero }, context) {
-      const article = await getArticleByContext(articleId, context)
-      return article.setZoteroLink(zotero)
-    },
-
-    async setArticleNakalaLink(_root, { articleId, nakala }, context) {
-      const article = await getArticleByContext(articleId, context)
-      return article.setNakalaLink(nakala)
-    },
-
-    async addArticleTags(_root, { articleId, tags }, context) {
-      const article = await getArticleByContext(articleId, context)
-      await article.addTags(...tags)
-      return article.tags
-    },
-
-    async removeArticleTags(_root, { articleId, tags }, context) {
-      const article = await getArticleByContext(articleId, context)
-      await article.removeTags(...tags)
-      return article.tags
-    },
-
-    async setArticlePreviewSettings(_root, args, context) {
-      const settings = requireArgument('input', args.input, args.settings)
-      const article = await getArticleByContext(args.articleId, context)
-      return article.setPreviewSettings(settings)
-    },
-
-    async updateArticleWorkingVersion(_root, args, context) {
-      const content = requireArgument('input', args.input, args.content)
-      const article = await getArticleByContext(args.articleId, context)
-      return article.updateWorkingVersion(content)
-    },
-
-    async addArticleContributor(_root, { articleId, userId }, context) {
-      const article = await getArticleByContext(articleId, context)
-      const contributorUser = await User.findById(userId)
-      if (!contributorUser) {
-        throw new Error(`Unable to find user with id: ${userId}`)
-      }
-      await article.shareWith(contributorUser)
-      return article
-    },
-
-    async removeArticleContributor(_root, { articleId, userId }, context) {
-      const article = await getArticleByContext(articleId, context)
-      const contributorUser = await getUser(userId)
-      await article.unshareWith(contributorUser)
-      return article
-    },
-
-    async createArticleVersion(_root, args, context) {
-      const { major, message } = requireArgument(
-        'input',
-        args.input,
-        args.articleVersionInput
-      )
-      const article = await getArticleByContext(args.articleId, context)
-      // the author is the authenticated user: ArticleVersionInput.userId is ignored
-      const result = await createVersion(article, {
-        major,
-        message,
-        userId: context.userId,
-        type: 'userAction',
-      })
-      if (result === false) {
-        throw new BadRequestError(
-          'NO_CHANGE',
-          'Unable to create a new version since there is no change'
-        )
-      }
-      await article.save()
-      return article
-    },
+    } finally {
+      yDoc.destroy()
+    }
   },
 
-  Query: {
-    /**
-     * Fetch an article as the current user
-     *
-     * @param {null} _root
-     * @param {{ articleId?: string, article?: string }} args
-     * @param {{ loaders: { article }, userId, token }} context
-     * @returns
-     */
-    async article(_root, args, context) {
-      return await getArticleByContext(
-        requireArgument('articleId', args.articleId, args.article),
-        context
-      )
-    },
-
-    async sharedArticle(_root, args) {
-      return getArticle(
-        requireArgument('articleId', args.articleId, args.article)
-      )
-    },
-
-    /**
-     * Fetch all the articles related to the authenticated user.
-     * The user is only derived from the JWT token (context.user).
-     *
-     * We list:
-     * - their articles
-     * - their directly shared articles
-     * - BUT not the granted account shared articles — we switch into their view for this
-     *
-     * @param {null} _root
-     * @param {{ filter?: { workspaceId?: string, corpusId?: string } }} args
-     * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
-     * @returns {Promise<import('./article')[]>}
-     */
-    async articles(_root, args, context) {
-      const { userId } = isUser(args, context)
-      let filterIds = null
-
-      // prefilter by articles contained in a workspace or corpus
-      if (args.filter?.workspaceId) {
-        // permission: make sure that the user belongs to the workspace
-        const workspace = await getWorkspace(
-          args.filter.workspaceId,
-          context.token,
-          context.user
-        )
-        filterIds = [...workspace.articles]
-      }
-
-      return Article.getArticles({
-        filter: !Array.isArray(filterIds)
-          ? {
-              $or: [
-                { owner: userId },
-                { contributors: { $elemMatch: { user: userId } } },
-              ],
-            }
-          : {
-              _id: { $in: filterIds },
-            },
-        loaders: context.loaders,
-      })
-    },
+  async deleteArticle(_root, { articleId, dryRun }, context) {
+    const article = await getArticleByContext(articleId, context)
+    if (dryRun) return article
+    await article.deleteOne()
+    return article
   },
 
-  Article: {
-    async workspaces(article, _, { user, token }) {
-      if (token.admin) {
-        return Workspace.find({ articles: article._id })
-      }
-      return Workspace.find({
-        $and: [{ articles: article._id }, { 'members.user': user._id }],
-      })
-    },
-
-    /** @deprecated Use removeArticleContributor root mutation instead. */
-    async removeContributor(article, { userId }) {
-      const contributorUser = await getUser(userId)
-      await article.unshareWith(contributorUser)
-      return article
-    },
-
-    /** @deprecated Use addArticleContributor root mutation instead. */
-    async addContributor(article, { userId }) {
-      const contributorUser = await User.findById(userId)
-      if (!contributorUser) {
-        throw new Error(`Unable to find user with id: ${userId}`)
-      }
-      await article.shareWith(contributorUser)
-      return article
-    },
-
-    async versions(article, _args, context) {
-      const versions = (
-        await Promise.all(
-          article.versions.map(
-            async (versionId) => await context.loaders.versions.load(versionId)
-          )
-        )
-      ).filter((v) => v) // ignore unresolved versions
-      versions.sort((a, b) => b.createdAt - a.createdAt)
-      return versions
-    },
-
-    /**
-     * @deprecated Use deleteArticle root mutation instead.
-     * @param {import('mongoose').Document<ObjectId, any, Article>} article
-     * @returns {boolean} true if the article was deleted, false otherwise
-     */
-    async delete(article) {
-      await article.deleteOne()
-      return true
-    },
-
-    /** @deprecated Use renameArticle root mutation instead. */
-    async rename(article, { title }) {
-      await article.rename(title)
-      return true
-    },
-
-    /** @deprecated Use setArticleZoteroLink root mutation instead. */
-    async setZoteroLink(article, { zotero }) {
-      await article.setZoteroLink(zotero)
-      return true
-    },
-
-    /** @deprecated Use setArticleNakalaLink root mutation instead. */
-    async setNakalaLink(article, { nakala }) {
-      await article.setNakalaLink(nakala)
-      return true
-    },
-
-    /** @deprecated Use addArticleTags root mutation instead. */
-    async addTags(article, { tags }) {
-      await article.addTags(...tags)
-      return article.tags
-    },
-
-    /** @deprecated Use removeArticleTags root mutation instead. */
-    async removeTags(article, { tags }) {
-      await article.removeTags(...tags)
-      return article.tags
-    },
-
-    /** @deprecated Use setArticlePreviewSettings root mutation instead. */
-    async setPreviewSettings(article, { settings }) {
-      return article.setPreviewSettings(settings)
-    },
-
-    /** @deprecated Use updateArticleWorkingVersion root mutation instead. */
-    async updateWorkingVersion(article, { content }) {
-      return article.updateWorkingVersion(content)
-    },
-
-    /** @deprecated Use createArticleVersion root mutation instead. */
-    async createVersion(article, { articleVersionInput }, context) {
-      const { major, message } = articleVersionInput
-      // the author is the authenticated user: ArticleVersionInput.userId is ignored
-      const result = await createVersion(article, {
-        major,
-        message,
-        userId: context.userId,
-        type: 'userAction',
-      })
-      if (result === false) {
-        throw new BadRequestError(
-          'NO_CHANGE',
-          'Unable to create a new version since there is no change'
-        )
-      }
-      await article.save()
-      return article
-    },
+  async renameArticle(_root, { articleId, title }, context) {
+    const article = await getArticleByContext(articleId, context)
+    return article.rename(title)
   },
 
-  WorkingVersion: {
-    md({ ydoc = '' }, { articleId } = {}) {
-      try {
-        return getTextFromYjsDoc(ydoc)
-      } catch (err) {
-        Sentry.captureException(err)
-        logger.error(
-          { err, articleId },
-          'Unable to load text content (Markdown) from the Y.js document on the working version'
-        )
-        return ''
-      }
-    },
-    bibPreview({ bib }) {
-      return previewEntries(bib)
-    },
-    bibliography({ bib }) {
-      // the bibliography may be null: the field is non-nullable, return an empty list
-      return toEntries(bib ?? '')
-    },
-    yaml({ metadata = {} }, { options }) {
-      const legacyMetadata = toLegacyFormat(metadata)
-      const yaml = YAML.dump(legacyMetadata)
-      return options?.strip_markdown
-        ? reformat(yaml, { replaceBibliography: false })
-        : yaml
-    },
+  async setArticleZoteroLink(_root, { articleId, zotero }, context) {
+    const article = await getArticleByContext(articleId, context)
+    return article.setZoteroLink(zotero)
+  },
+
+  async setArticleNakalaLink(_root, { articleId, nakala }, context) {
+    const article = await getArticleByContext(articleId, context)
+    return article.setNakalaLink(nakala)
+  },
+
+  async addArticleTags(_root, { articleId, tags }, context) {
+    const article = await getArticleByContext(articleId, context)
+    await article.addTags(...tags)
+    return article.tags
+  },
+
+  async removeArticleTags(_root, { articleId, tags }, context) {
+    const article = await getArticleByContext(articleId, context)
+    await article.removeTags(...tags)
+    return article.tags
+  },
+
+  async setArticlePreviewSettings(_root, args, context) {
+    const settings = requireArgument('input', args.input, args.settings)
+    const article = await getArticleByContext(args.articleId, context)
+    return article.setPreviewSettings(settings)
+  },
+
+  async updateArticleWorkingVersion(_root, args, context) {
+    const content = requireArgument('input', args.input, args.content)
+    const article = await getArticleByContext(args.articleId, context)
+    return article.updateWorkingVersion(content)
+  },
+
+  async addArticleContributor(_root, { articleId, userId }, context) {
+    const article = await getArticleByContext(articleId, context)
+    const contributorUser = await User.findById(userId)
+    if (!contributorUser) {
+      throw new Error(`Unable to find user with id: ${userId}`)
+    }
+    await article.shareWith(contributorUser)
+    return article
+  },
+
+  async removeArticleContributor(_root, { articleId, userId }, context) {
+    const article = await getArticleByContext(articleId, context)
+    const contributorUser = await getUser(userId)
+    await article.unshareWith(contributorUser)
+    return article
+  },
+
+  async createArticleVersion(_root, args, context) {
+    const { major, message } = requireArgument(
+      'input',
+      args.input,
+      args.articleVersionInput
+    )
+    const article = await getArticleByContext(args.articleId, context)
+    // the author is the authenticated user: ArticleVersionInput.userId is ignored
+    const result = await createVersion(article, {
+      major,
+      message,
+      userId: context.userId,
+      type: 'userAction',
+    })
+    if (result === false) {
+      throw new BadRequestError(
+        'NO_CHANGE',
+        'Unable to create a new version since there is no change'
+      )
+    }
+    await article.save()
+    return article
   },
 }
+
+export const Query = {
+  /**
+   * Fetch an article as the current user
+   *
+   * @param {null} _root
+   * @param {{ articleId?: string, article?: string }} args
+   * @param {{ loaders: { article }, userId, token }} context
+   * @returns
+   */
+  async article(_root, args, context) {
+    return await getArticleByContext(
+      requireArgument('articleId', args.articleId, args.article),
+      context
+    )
+  },
+
+  async sharedArticle(_root, args) {
+    return getArticle(
+      requireArgument('articleId', args.articleId, args.article)
+    )
+  },
+
+  /**
+   * Fetch all the articles related to the authenticated user.
+   * The user is only derived from the JWT token (context.user).
+   *
+   * We list:
+   * - their articles
+   * - their directly shared articles
+   * - BUT not the granted account shared articles — we switch into their view for this
+   *
+   * @param {null} _root
+   * @param {{ filter?: { workspaceId?: string, corpusId?: string } }} args
+   * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
+   * @returns {Promise<import('./article')[]>}
+   */
+  async articles(_root, args, context) {
+    const { userId } = isUser(args, context)
+    let filterIds = null
+
+    // prefilter by articles contained in a workspace or corpus
+    if (args.filter?.workspaceId) {
+      // permission: make sure that the user belongs to the workspace
+      const workspace = await getWorkspace(
+        args.filter.workspaceId,
+        context.token,
+        context.user
+      )
+      filterIds = [...workspace.articles]
+    }
+
+    return Article.getArticles({
+      filter: !Array.isArray(filterIds)
+        ? {
+            $or: [
+              { owner: userId },
+              { contributors: { $elemMatch: { user: userId } } },
+            ],
+          }
+        : {
+            _id: { $in: filterIds },
+          },
+      loaders: context.loaders,
+    })
+  },
+}
+
+const ArticleResolver = {
+  async workspaces(article, _, { user, token }) {
+    if (token.admin) {
+      return Workspace.find({ articles: article._id })
+    }
+    return Workspace.find({
+      $and: [{ articles: article._id }, { 'members.user': user._id }],
+    })
+  },
+
+  /** @deprecated Use removeArticleContributor root mutation instead. */
+  async removeContributor(article, { userId }) {
+    const contributorUser = await getUser(userId)
+    await article.unshareWith(contributorUser)
+    return article
+  },
+
+  /** @deprecated Use addArticleContributor root mutation instead. */
+  async addContributor(article, { userId }) {
+    const contributorUser = await User.findById(userId)
+    if (!contributorUser) {
+      throw new Error(`Unable to find user with id: ${userId}`)
+    }
+    await article.shareWith(contributorUser)
+    return article
+  },
+
+  async versions(article, _args, context) {
+    const versions = (
+      await Promise.all(
+        article.versions.map(
+          async (versionId) => await context.loaders.versions.load(versionId)
+        )
+      )
+    ).filter((v) => v) // ignore unresolved versions
+    versions.sort((a, b) => b.createdAt - a.createdAt)
+    return versions
+  },
+
+  /**
+   * @deprecated Use deleteArticle root mutation instead.
+   * @param {import('mongoose').Document<ObjectId, any, Article>} article
+   * @returns {boolean} true if the article was deleted, false otherwise
+   */
+  async delete(article) {
+    await article.deleteOne()
+    return true
+  },
+
+  /** @deprecated Use renameArticle root mutation instead. */
+  async rename(article, { title }) {
+    await article.rename(title)
+    return true
+  },
+
+  /** @deprecated Use setArticleZoteroLink root mutation instead. */
+  async setZoteroLink(article, { zotero }) {
+    await article.setZoteroLink(zotero)
+    return true
+  },
+
+  /** @deprecated Use setArticleNakalaLink root mutation instead. */
+  async setNakalaLink(article, { nakala }) {
+    await article.setNakalaLink(nakala)
+    return true
+  },
+
+  /** @deprecated Use addArticleTags root mutation instead. */
+  async addTags(article, { tags }) {
+    await article.addTags(...tags)
+    return article.tags
+  },
+
+  /** @deprecated Use removeArticleTags root mutation instead. */
+  async removeTags(article, { tags }) {
+    await article.removeTags(...tags)
+    return article.tags
+  },
+
+  /** @deprecated Use setArticlePreviewSettings root mutation instead. */
+  async setPreviewSettings(article, { settings }) {
+    return article.setPreviewSettings(settings)
+  },
+
+  /** @deprecated Use updateArticleWorkingVersion root mutation instead. */
+  async updateWorkingVersion(article, { content }) {
+    return article.updateWorkingVersion(content)
+  },
+
+  /** @deprecated Use createArticleVersion root mutation instead. */
+  async createVersion(article, { articleVersionInput }, context) {
+    const { major, message } = articleVersionInput
+    // the author is the authenticated user: ArticleVersionInput.userId is ignored
+    const result = await createVersion(article, {
+      major,
+      message,
+      userId: context.userId,
+      type: 'userAction',
+    })
+    if (result === false) {
+      throw new BadRequestError(
+        'NO_CHANGE',
+        'Unable to create a new version since there is no change'
+      )
+    }
+    await article.save()
+    return article
+  },
+}
+
+export const WorkingVersion = {
+  md({ ydoc = '' }, { articleId } = {}) {
+    try {
+      return getTextFromYjsDoc(ydoc)
+    } catch (err) {
+      Sentry.captureException(err)
+      logger.error(
+        { err, articleId },
+        'Unable to load text content (Markdown) from the Y.js document on the working version'
+      )
+      return ''
+    }
+  },
+  bibPreview({ bib }) {
+    return previewEntries(bib)
+  },
+  bibliography({ bib }) {
+    // the bibliography may be null: the field is non-nullable, return an empty list
+    return toEntries(bib ?? '')
+  },
+  yaml({ metadata = {} }, { options }) {
+    const legacyMetadata = toLegacyFormat(metadata)
+    const yaml = YAML.dump(legacyMetadata)
+    return options?.strip_markdown
+      ? reformat(yaml, { replaceBibliography: false })
+      : yaml
+  },
+}
+
+export { ArticleResolver as Article }

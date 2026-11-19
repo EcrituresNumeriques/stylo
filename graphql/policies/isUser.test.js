@@ -1,8 +1,7 @@
-const isUser = require('./isUser.js')
-const UserModel = require('../models/user.js')
-
-const { describe, test } = require('node:test')
-const assert = require('node:assert')
+import assert from 'node:assert'
+import { describe, test } from 'node:test'
+import UserModel from '../models/user.js'
+import isUser from './isUser.js'
 
 const user = '63977de2f83aa77c5f92cb1c'
 const sameUserObject = new UserModel({ _id: user })

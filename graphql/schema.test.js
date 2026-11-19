@@ -1,16 +1,15 @@
-const { graphql } = require('graphql')
-const schema = require('./schema.js')
-const Article = require('./models/article.js')
-const Corpus = require('./models/corpus.js')
-const Tag = require('./models/tag.js')
-const User = require('./models/user.js')
-const Version = require('./models/version.js')
-const Workspace = require('./models/workspace.js')
-const { createLoaders } = require('./loaders.js')
-
-const { after, before, describe, test } = require('node:test')
-const assert = require('node:assert')
-const { setup, teardown } = require('./tests/harness.js')
+import assert from 'node:assert'
+import { after, before, describe, test } from 'node:test'
+import { graphql } from 'graphql'
+import { createLoaders } from './loaders.js'
+import Article from './models/article.js'
+import Corpus from './models/corpus.js'
+import Tag from './models/tag.js'
+import User from './models/user.js'
+import Version from './models/version.js'
+import Workspace from './models/workspace.js'
+import schema from './schema.js'
+import { setup, teardown } from './tests/harness.js'
 
 describe('schema', () => {
   let container

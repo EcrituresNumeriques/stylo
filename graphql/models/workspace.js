@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
-const toHex = require('colornames')
+import toHex from 'colornames'
+import mongoose from 'mongoose'
+
 const Schema = mongoose.Schema
 
 const WorkspaceMemberSchema = new Schema({
@@ -196,4 +197,4 @@ workspaceSchema.methods.removeArticleById = async function removeArticleById(
   return this
 }
 
-module.exports = mongoose.model('Workspace', workspaceSchema)
+export default mongoose.model('Workspace', workspaceSchema)

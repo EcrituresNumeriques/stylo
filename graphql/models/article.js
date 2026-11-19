@@ -1,18 +1,18 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+import { prefixRulesWith, sanitizeTemplate } from '../helpers/preview.js'
+import {
+  computeMajorVersion,
+  computeMinorVersion,
+} from '../helpers/versions.js'
+import Tag from './tag.js'
+import Version from './version.js'
+
 const Schema = mongoose.Schema
 
 /*
   This is required to avoid loaders to crash because
   they have not seen these models before.
 */
-const Tag = require('./tag.js')
-const Version = require('./version.js')
-
-const {
-  computeMajorVersion,
-  computeMinorVersion,
-} = require('../helpers/versions.js')
-const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -281,4 +281,4 @@ articleSchema.pre(
   }
 )
 
-module.exports = mongoose.model('Article', articleSchema)
+export default mongoose.model('Article', articleSchema)

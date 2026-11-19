@@ -1,6 +1,5 @@
 // copied/pasted from https://github.com/taion/graphql-type-json/blob/10418fa03875947140d1c0bd8b8de51926252e35/src/index.js
-const { GraphQLScalarType } = require('graphql')
-const { Kind, print } = require('graphql/language')
+import { GraphQLScalarType, Kind, print } from 'graphql'
 
 function identity(value) {
   return value
@@ -46,33 +45,32 @@ function parseLiteral(typeName, ast, variables) {
   }
 }
 
-module.exports = {
-  GraphQLJSON: new GraphQLScalarType({
-    name: 'JSON',
-    description:
-      'The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
-    specifiedByUrl:
-      'https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
-    serialize: identity,
-    parseValue: identity,
-    parseLiteral: (ast, variables) => parseLiteral('JSON', ast, variables),
-  }),
-  GraphQLJSONObject: new GraphQLScalarType({
-    name: 'JSONObject',
-    description:
-      'The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
-    specifiedByUrl:
-      'https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
-    serialize: ensureObject,
-    parseValue: ensureObject,
-    parseLiteral: (ast, variables) => {
-      if (ast.kind !== Kind.OBJECT) {
-        throw new TypeError(
-          `JSONObject cannot represent non-object value: ${print(ast)}`
-        )
-      }
+export const GraphQLJSON = new GraphQLScalarType({
+  name: 'JSON',
+  description:
+    'The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
+  specifiedByUrl:
+    'https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
+  serialize: identity,
+  parseValue: identity,
+  parseLiteral: (ast, variables) => parseLiteral('JSON', ast, variables),
+})
 
-      return parseObject('JSONObject', ast, variables)
-    },
-  }),
-}
+export const GraphQLJSONObject = new GraphQLScalarType({
+  name: 'JSONObject',
+  description:
+    'The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
+  specifiedByUrl:
+    'https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
+  serialize: ensureObject,
+  parseValue: ensureObject,
+  parseLiteral: (ast, variables) => {
+    if (ast.kind !== Kind.OBJECT) {
+      throw new TypeError(
+        `JSONObject cannot represent non-object value: ${print(ast)}`
+      )
+    }
+
+    return parseObject('JSONObject', ast, variables)
+  },
+})
