@@ -62,7 +62,7 @@
     "passport-openidconnect": "~0.1",
     "pino": "~10.3",
     "pino-http": "~11.0",
-    "remove-markdown": "~0.6",
+    "remove-markdown": "^0.8.0",
     "ws": "~8.21.0",
     "y-leveldb": "^0.2.0",
     "y-protocols": "^1.0.5",
