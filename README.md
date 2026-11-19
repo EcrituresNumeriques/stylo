@@ -61,7 +61,7 @@ npm run dev
 Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :
 
 ```bash
-docker compose run -ti --build --rm graphql-stylo npm run generate-service-token --silent
+docker compose run -ti --build --rm graphql-stylo node bin/generate-service-token.js
 ```
 
 Ensuite, ainsi que le reste du temps :

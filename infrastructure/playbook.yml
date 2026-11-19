@@ -131,7 +131,7 @@
     - name: Generate Shared GraphQL Token
       register: graphql_token
       ansible.builtin.shell:
-        cmd: "docker compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
+        cmd: "docker compose run --no-deps --rm graphql-stylo node bin/generate-service-token.js"
         chdir: ~/stylo
       run_once: true
       no_log: true
