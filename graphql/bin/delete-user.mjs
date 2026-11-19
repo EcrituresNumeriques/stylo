@@ -26,10 +26,7 @@ if (!email) {
   throw RangeError('email argument is missing.')
 }
 
-const dbClient = await mongoose.connect(config.get('mongo.databaseUrl'), {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+const dbClient = await mongoose.connect(config.get('mongo.databaseUrl'))
 
 const u = await User.findOne(
   {
