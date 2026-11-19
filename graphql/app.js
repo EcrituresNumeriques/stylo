@@ -1,5 +1,4 @@
 const Sentry = require('@sentry/node')
-const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const pkg = require('./package.json')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
@@ -7,31 +6,6 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
-
-if (config.get('sentry.dsn')) {
-  Sentry.init({
-    dsn: config.get('sentry.dsn'),
-    environment: config.get('env'),
-    release: `stylo-graphql@${pkg.version}`,
-    attachStacktrace: true,
-    includeLocalVariables: true,
-    integrations: [
-      nodeProfilingIntegration(),
-      Sentry.dedupeIntegration(),
-      Sentry.mongooseIntegration(),
-      Sentry.graphqlIntegration(),
-      Sentry.dataloaderIntegration(),
-      Sentry.consoleIntegration(),
-      Sentry.extraErrorDataIntegration(),
-      Sentry.onUncaughtExceptionIntegration(),
-      Sentry.onUnhandledRejectionIntegration(),
-      Sentry.linkedErrorsIntegration(),
-      Sentry.rewriteFramesIntegration(),
-    ],
-    tracesSampleRate: 1.0,
-    profilesSampleRate: 1.0,
-  })
-}
 
 const express = require('express')
 const { createHandler } = require('graphql-http/lib/use/express')

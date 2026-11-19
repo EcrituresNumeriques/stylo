@@ -17,9 +17,9 @@
     "lint:fix": "biome check --write .",
     "posttest": "npm run lint",
     "prestart": "npm run migrations",
-    "start": "node app.js",
+    "start": "node --require ./instrument.js app.js",
     "preprod": "npm run migrations",
-    "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
+    "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 --require ./instrument.js app.js"
   },
   "author": "",
   "license": "ISC",
