@@ -37,7 +37,7 @@ npm run build -w front
 Before the first start, set the `SE_GRAPHQL_TOKEN` variable in `.env` with the value produced by this command:
 
 ```bash
-docker compose run --rm --no-deps graphql-stylo npm run generate-service-token --silent
+docker compose run --rm --no-deps graphql-stylo node bin/generate-service-token.js
 ```
 
 Then start Stylo:
