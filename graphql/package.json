@@ -29,7 +29,6 @@
     "@sentry/node": "~10.56.0",
     "@sentry/profiling-node": "~10.56.0",
     "archiver": "^7.0.1",
-    "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "biblatex-csl-converter": "^3.2.2",
     "body-parser": "^2.2.2",
