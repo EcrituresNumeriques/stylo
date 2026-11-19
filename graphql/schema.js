@@ -242,36 +242,133 @@ type ArticleContributor {
   roles: [String]
 }
 
+"Usage statistics of the instance, computed at most once a day."
 type InstanceUsageStats {
   version: String
-  users: InstanceUserStats
-  articles: InstanceArticleStats
+  "When the statistics were computed."
+  computedAt: DateTime!
+  users: InstanceUserStats!
+  articles: InstanceArticleStats!
+  "Active users per year: users who created or wrote in an article (at least one week after their signup), contributed to an article, or are members of a workspace in which an article was created that year."
+  activity: [InstanceActivityYearlyStats!]!
+  "Per signup year: time between the signup and the last known activity of the accounts."
+  retention: [InstanceRetentionCohort!]!
+  corpora: InstanceCorpusStats!
+  workspaces: InstanceWorkspaceStats!
 }
 
-interface InstanceObjectUsageStats {
+"Distribution of a value: mean and percentiles."
+type InstanceDistribution {
+  mean: Float
+  p10: Float
+  median: Float
+  p90: Float
+}
+
+type InstanceUserStats {
   total: Int!
-  # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Accounts by authentication method available on the account (a linked service is counted even if it is not used to log in)."
+  authentication: InstanceAuthenticationStats!
+  years: [InstanceUserYearlyStats!]!
 }
 
-type InstanceObjectUsageYearlyStats {
-  year: Int
-  count: Int
-  # variation: Int
+type InstanceAuthenticationStats {
+  password: Int!
+  humanid: Int!
+  zotero: Int!
+  hypothesis: Int!
+  "Accounts with more than one authentication method."
+  multiple: Int!
 }
 
-type InstanceUserStats implements InstanceObjectUsageStats {
+type InstanceUserYearlyStats {
+  year: Int!
+  created: Int!
+  deleted: Int!
+  "Accounts whose last connection happened that year (recorded since 2025)."
+  lastConnected: Int!
+}
+
+type InstanceArticleStats {
   total: Int!
-  # currentYear: Int!
-  local: Int
-  openid: Int
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Articles with at least one contributor."
+  shared: Int!
+  inCorpus: Int!
+  inWorkspace: Int!
+  years: [InstanceArticleYearlyStats!]!
 }
 
-type InstanceArticleStats implements InstanceObjectUsageStats {
+type InstanceArticleYearlyStats {
+  year: Int!
+  created: Int!
+  "Articles last updated that year."
+  lastUpdated: Int!
+  "Articles created that year which are now in a workspace."
+  inWorkspace: Int!
+}
+
+type InstanceActivityYearlyStats {
+  year: Int!
+  activeUsers: Int!
+  "Active users of that year who are also active the next year (null while the next year is not over)."
+  retainedNextYear: Int
+}
+
+type InstanceRetentionCohort {
+  "Signup year."
+  year: Int!
+  accounts: Int!
+  "Days between the signup and the last known activity."
+  lifespanDays: InstanceDistribution!
+  "Accounts with no activity after their first day."
+  oneDayOnly: Int!
+  returnedAfter30Days: InstanceRetentionRate!
+  returnedAfter1Year: InstanceRetentionRate!
+}
+
+type InstanceRetentionRate {
+  "Accounts old enough to be counted."
+  eligible: Int!
+  "Accounts still active after the delay."
+  returned: Int!
+}
+
+type InstanceCorpusStats {
   total: Int!
-  # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Number of articles per corpus."
+  articles: InstanceDistribution!
+  types: [InstanceCorpusTypeStats!]!
+  years: [InstanceCorpusYearlyStats!]!
+}
+
+type InstanceCorpusTypeStats {
+  type: String!
+  count: Int!
+}
+
+type InstanceCorpusYearlyStats {
+  year: Int!
+  created: Int!
+  "Current number of articles per corpus created that year."
+  articles: InstanceDistribution!
+}
+
+type InstanceWorkspaceStats {
+  total: Int!
+  "Users who are members of at least one workspace."
+  distinctMembers: Int!
+  "Number of members per workspace."
+  members: InstanceDistribution!
+  "Number of articles per workspace."
+  articles: InstanceDistribution!
+  years: [InstanceWorkspaceYearlyStats!]!
+}
+
+type InstanceWorkspaceYearlyStats {
+  year: Int!
+  created: Int!
+  members: InstanceDistribution!
+  articles: InstanceDistribution!
 }
 
 "Deprecated: use UpdateArticleWorkingVersionInput with the input argument of updateArticleWorkingVersion instead."
@@ -551,8 +648,8 @@ type Query {
   "Fetch version info"
   version(versionId: ID, version: ID @deprecated(reason: "Use versionId instead.")): Version
 
-  "Fetch instance stats"
-  stats: InstanceUsageStats
+  "Usage statistics of the instance, computed at most once a day. Public."
+  stats: InstanceUsageStats!
 
   "Get a given workspace"
   workspace(workspaceId: ID): Workspace
