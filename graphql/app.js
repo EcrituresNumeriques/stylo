@@ -20,7 +20,12 @@ if (config.get('sentry.dsn')) {
       nodeProfilingIntegration(),
       Sentry.dedupeIntegration(),
       Sentry.mongooseIntegration(),
-      Sentry.graphqlIntegration(),
+      // one span per resolver, to see where the time goes (not for the
+      // resolvers that only read a property)
+      Sentry.graphqlIntegration({
+        ignoreResolveSpans: false,
+        ignoreTrivialResolveSpans: true,
+      }),
       Sentry.dataloaderIntegration(),
       Sentry.consoleIntegration(),
       Sentry.extraErrorDataIntegration(),
