@@ -32,6 +32,12 @@
           - docker-compose-plugin
         state: present
 
+    - name: Install NGINX
+      become: yes
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
     - name: Update NGINX settings
       become: yes
       ansible.builtin.copy:
