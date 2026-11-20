@@ -229,6 +229,7 @@ export function useAccount() {
     versions = 'latest',
     format = 'zip',
     workspaceId,
+    destination,
   } = {}) {
     const response = await fetch(
       applicationConfig.backendEndpoint + '/backup',
@@ -240,13 +241,23 @@ export function useAccount() {
           'Content-Type': 'application/json',
           ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
         },
-        body: JSON.stringify({ scope, versions, format, workspaceId }),
+        body: JSON.stringify({
+          scope,
+          versions,
+          format,
+          workspaceId,
+          destination,
+        }),
       }
     )
 
     if (!response.ok) {
       const error = await response.json()
       throw new Error(error.message ?? 'Backup request failed')
+    }
+
+    if (destination === 'storage') {
+      return response.json()
     }
 
     const filename = format === 'zip' ? 'backup.zip' : 'backup.json'

@@ -40,5 +40,12 @@
       },
       "title": "Télécharger mes données"
     }
+  },
+  "data": {
+    "saveToStorage": "Sauvegarder sur stockage externe",
+    "saveToStorageSuccess": "Sauvegarde déposée sur le stockage externe.",
+    "saveToStorageBrowse": "Voir le dossier",
+    "saveToStorageError": "La sauvegarde sur le stockage externe a échoué : {{ errMessage }}",
+    "browseBackups": "Accéder aux sauvegardes"
   }
 }
