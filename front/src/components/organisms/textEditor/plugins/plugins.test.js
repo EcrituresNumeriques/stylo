@@ -72,7 +72,7 @@ describe('plugins', () => {
       'bibliographyCompletion',
       (disposable) => bibliographyCompletion({ register: () => disposable }),
     ],
-    ['imageDrop', () => imageDrop()],
+    ['imageDrop', () => imageDrop({ getContext: () => ({}) })],
   ])('%s is disposed with the editor', (_name, create) => {
     const disposable = { dispose: vi.fn() }
     const editor = { onDropIntoEditor: () => disposable }

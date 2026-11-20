@@ -118,6 +118,8 @@ export default function CollaborativeTextEditor({
   const editorRef = useRef(null)
   const [isEditorMounted, setIsEditorMounted] = useState(false)
   const hasInitialFocusRef = useRef(false)
+  const uploadContextRef = useRef(null)
+  uploadContextRef.current = { articleId }
   const onEditorReadyRef = useRef(onEditorReady)
   onEditorReadyRef.current = onEditorReady
   const {
@@ -173,7 +175,7 @@ export default function CollaborativeTextEditor({
               namespace: 'metopes',
               types: [actionTypes.DELIMITED_BLOCK, actionTypes.INLINE],
             }),
-            imageDrop(),
+            imageDrop({ getContext: () => uploadContextRef.current }),
             ...(yText && awareness ? [realtime({ yText, awareness })] : []),
           ],
     [
