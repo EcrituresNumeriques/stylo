@@ -1,0 +1,59 @@
+---
+# Dépôt APT officiel de Docker, au format deb822 avec une clé dédiée (Signed-By).
+# Utilisé par playbook.yml et par os.yml (réactivation après
+# do-release-upgrade, qui désactive les dépôts tiers).
+#
+# apt-key et le module apt_key ne fonctionnent plus à partir d'Ubuntu 25.04 (apt 3).
+
+- name: Install deb822_repository requirements
+  become: true
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+# Anciennes déclarations du dépôt (module apt_repository, add-apt-repository ou
+# installation manuelle) : elles entreraient en conflit avec le Signed-By du
+# fichier deb822 (« Conflicting values set for option Signed-By »).
+- name: Find legacy Docker sources
+  become: true
+  ansible.builtin.find:
+    paths: /etc/apt/sources.list.d
+    patterns: "*.list"
+    contains: ".*download\\.docker\\.com.*"
+  register: legacy_docker_sources
+
+- name: Remove legacy Docker sources
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ legacy_docker_sources.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Comment out Docker entries in /etc/apt/sources.list
+  become: true
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb(-src)?\s.*download\.docker\.com.*)$'
+    replace: '# \1'
+  failed_when: false
+
+- name: Add Docker repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}"
+    suites: ["{{ ansible_facts['distribution_release'] }}"]
+    components: [stable]
+    signed_by: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}/gpg"
+    enabled: true
+    state: present
+
+- name: Update APT cache with the Docker repository
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
