@@ -40,5 +40,12 @@
       },
       "title": "Download my data"
     }
+  },
+  "data": {
+    "saveToStorage": "Save to external storage",
+    "saveToStorageSuccess": "Backup saved to the external storage.",
+    "saveToStorageBrowse": "Browse the folder",
+    "saveToStorageError": "Saving to the external storage failed: {{ errMessage }}",
+    "browseBackups": "Browse backups"
   }
 }
