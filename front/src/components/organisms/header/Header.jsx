@@ -43,7 +43,7 @@ export default function Header() {
     id: menuId,
     isComponentVisible: isMainMenuVisible,
     toggleComponentIsVisible: toggleMainMenu,
-  } = useComponentVisible({ namespace: 'header', ref: headerRef })
+  } = useComponentVisible({ ref: headerRef })
 
   useEffect(() => {
     document.body.classList[isMainMenuVisible ? 'add' : 'remove']('modal-open')
