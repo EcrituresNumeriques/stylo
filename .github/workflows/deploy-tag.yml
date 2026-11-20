@@ -7,11 +7,18 @@ on:
       release-version:
         description: Release version to deploy
         required: true
+      os-upgrade:
+        description: Upgrade Ubuntu if ubuntu_version changed (VM snapshot taken, downtime announced)
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       release-version:
         required: true
         type: string
+      os-upgrade:
+        type: boolean
+        default: false
 
 env:
   FRONT_BACKEND_ENDPOINT: https://stylo.huma-num.fr
@@ -99,6 +106,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+
+      # Vérifie la version d'Ubuntu. Si ubuntu_version a changé dans l'inventaire,
+      # échoue avant de rien modifier, sauf si « os-upgrade » est coché : la montée
+      # de version a alors lieu (jusqu'à une heure, deux redémarrages).
+      - name: Run OS playbook
+        working-directory: ./infrastructure
+        timeout-minutes: 150
+        run: |
+          ansible-playbook -v -i inventories/prod \
+            --extra-vars "@vault-prod.yml" \
+            --extra-vars "os_upgrade=${{ inputs.os-upgrade }}" \
+            --private-key ~/.ssh/id_ed25519 \
+            --vault-password-file ./.ansible-vault-password \
+            os.yml
 
       - name: Run deployment playbook
         working-directory: ./infrastructure

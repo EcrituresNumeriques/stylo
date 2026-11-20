@@ -9,6 +9,14 @@ on:
       - master
     types:
       - completed
+  # Changement d'infrastructure seul (inventaire, ubuntu_version, playbooks) :
+  # le build Docker ne se déclenche pas, on déploie quand même.
+  push:
+    branches:
+      - master
+    paths:
+      - 'infrastructure/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 env:
@@ -62,7 +70,7 @@ jobs:
       name: staging
       url: https://stylo-dev.huma-num.fr
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
 
     steps:
       - name: 'GitHub Runner IP'
@@ -98,6 +106,19 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+
+      # Vérifie la version d'Ubuntu ; si ubuntu_version a changé dans
+      # l'inventaire, fait monter le serveur (jusqu'à une heure, deux redémarrages).
+      - name: Run OS playbook
+        working-directory: ./infrastructure
+        timeout-minutes: 150
+        run: |
+          ansible-playbook -v -i inventories/dev \
+            --extra-vars "@vault-dev.yml" \
+            --extra-vars "os_upgrade=true" \
+            --private-key ~/.ssh/id_ed25519 \
+            --vault-password-file ./.ansible-vault-password \
+            os.yml
 
       - name: Run playbook
         working-directory: ./infrastructure
