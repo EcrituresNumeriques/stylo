@@ -16,11 +16,15 @@
 # Anciennes déclarations du dépôt (module apt_repository, add-apt-repository ou
 # installation manuelle) : elles entreraient en conflit avec le Signed-By du
 # fichier deb822 (« Conflicting values set for option Signed-By »).
+# Pendant do-release-upgrade, Ubuntu convertit aussi les *.list en *.sources
+# désactivés (download_docker_com_linux_ubuntu.sources, third-party.sources…) :
+# seul docker.sources, géré ci-dessous, est gardé.
 - name: Find legacy Docker sources
   become: true
   ansible.builtin.find:
     paths: /etc/apt/sources.list.d
-    patterns: "*.list"
+    patterns: ["*.list", "*.sources"]
+    excludes: ["docker.sources"]
     contains: ".*download\\.docker\\.com.*"
   register: legacy_docker_sources
 
