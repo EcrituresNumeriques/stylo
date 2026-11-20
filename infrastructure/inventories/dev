@@ -1,5 +1,8 @@
 [stylo:vars]
 env=dev
+# Version d'Ubuntu attendue sur le serveur : os.yml la vérifie et y fait monter
+# le serveur si elle est plus récente (voir SERVER.md).
+ubuntu_version="24.04"
 ansible_become_pass='{{ stylo_become_pass }}'
 site=stylo-dev.huma-num.fr
 https=true

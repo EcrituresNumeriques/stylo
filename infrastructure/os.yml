@@ -1,0 +1,50 @@
+---
+# Version d'Ubuntu du serveur, déclarée par `ubuntu_version` dans l'inventaire.
+# À lancer avant playbook.yml.
+#
+#   ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --ask-vault-pass os.yml
+
+- name: Check the Ubuntu version
+  hosts: stylo
+  serial: 1
+  gather_facts: true
+
+  vars:
+    ubuntu_lts_codenames:
+      "22.04": jammy
+      "24.04": noble
+      "26.04": resolute
+
+  tasks:
+    - name: Check the declared Ubuntu version
+      ansible.builtin.assert:
+        that:
+          - ubuntu_version is defined
+          - ubuntu_version | string in ubuntu_lts_codenames
+        fail_msg: >-
+          ubuntu_version must be set in the inventory to one of
+          {{ ubuntu_lts_codenames.keys() | list | join(', ') }}
+          (got {{ ubuntu_version | default('nothing') }}).
+        quiet: true
+
+    - name: Check that the server runs Ubuntu
+      ansible.builtin.assert:
+        that: ansible_facts['distribution'] == "Ubuntu"
+        fail_msg: "{{ inventory_hostname }} runs {{ ansible_facts['distribution'] }}, not Ubuntu."
+        quiet: true
+
+    - name: Check that the server is not ahead of the declared version
+      ansible.builtin.assert:
+        that: ansible_facts['distribution_version'] is version(ubuntu_version | string, '<=')
+        fail_msg: >-
+          {{ inventory_hostname }} runs Ubuntu {{ ansible_facts['distribution_version'] }},
+          newer than ubuntu_version ({{ ubuntu_version }}): update the inventory.
+        quiet: true
+
+    - name: Check that the server runs the declared version
+      ansible.builtin.assert:
+        that: ansible_facts['distribution_version'] is version(ubuntu_version | string, '==')
+        fail_msg: >-
+          {{ inventory_hostname }} runs Ubuntu {{ ansible_facts['distribution_version'] }},
+          older than ubuntu_version ({{ ubuntu_version }}): the server must be upgraded.
+        success_msg: "{{ inventory_hostname }} runs Ubuntu {{ ansible_facts['distribution_version'] }}, as declared."
