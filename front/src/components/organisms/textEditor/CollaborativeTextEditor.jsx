@@ -4,6 +4,7 @@ import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
@@ -18,7 +19,7 @@ import { useStyloExportPreview } from '../../../hooks/stylo-export.js'
 import { useMarkdownValidator } from '../../../hooks/useMarkdownValidator.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
 import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
-import { onDropIntoEditor } from '../bibliography/support.js'
+import { onDropIntoEditor } from '../attachments/dropIntoEditor.js'
 import defaultEditorOptions from '../monaco/options.js'
 import {
   actions,
@@ -112,6 +113,9 @@ export default function CollaborativeTextEditor({
   const validationContext = useMemo(() => ({ metadata }), [metadata])
 
   const editorRef = useRef(null)
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const uploadContextRef = useRef(null)
+  uploadContextRef.current = { articleId, sessionToken }
   const onEditorReadyRef = useRef(onEditorReady)
   onEditorReadyRef.current = onEditorReady
   const {
@@ -161,7 +165,9 @@ export default function CollaborativeTextEditor({
     ) => {
       editorRef.current = editor
 
-      editor.onDropIntoEditor(onDropIntoEditor(editor))
+      editor.onDropIntoEditor(
+        onDropIntoEditor(editor, () => uploadContextRef.current)
+      )
 
       const contextMenu = editor.getContribution('editor.contrib.contextmenu')
       const originalMenuActions = contextMenu._getMenuActions(
