@@ -25,7 +25,7 @@ export default function DropdownMenu({ title, toggleButton, children }) {
     ref: actionsRef,
     isComponentVisible: areActionsVisible,
     toggleComponentIsVisible: toggleActions,
-  } = useComponentVisible(false, 'actions')
+  } = useComponentVisible()
 
   const button = toggleButton ?? DropdownEllipsisToggleButton
 

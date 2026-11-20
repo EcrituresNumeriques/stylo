@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 /**
  * @see https://zellwk.com/blog/keyboard-focusable-elements/
@@ -15,7 +15,6 @@ function findToggleableElements(node) {
 
 export default function useComponentVisible({
   initialVisible = false,
-  namespace = 'default',
   ref: baseRef,
   track = [],
   trapNavigation = true,
@@ -23,49 +22,53 @@ export default function useComponentVisible({
   const [isComponentVisible, setIsComponentVisible] = useState(initialVisible)
   const uniqueId = useId()
   const selfRef = useRef(null)
-  const clickOutsideRefs = [baseRef, selfRef, ...track].filter(
-    (d) => d?.current
-  )
   const rotorRef = baseRef ?? selfRef
+  // `track` is usually a new array on each render, keep the latest one in a ref
+  // so that event handlers stay stable
+  const trackRef = useRef(track)
+  trackRef.current = track
 
   const handleClickOutside = useCallback(
     (event) => {
-      if (!isComponentVisible) {
-        return
-      }
+      // refs are resolved when the event occurs, since elements may have been unmounted
+      const elements = [baseRef, selfRef, ...trackRef.current]
+        .map((r) => r?.current)
+        .filter(Boolean)
 
-      const hasClickedOutside =
-        clickOutsideRefs.some((r) => r.current.contains(event.target)) === false
+      const hasClickedOutside = elements.every(
+        (element) => !element.contains(event.target)
+      )
 
       if (
-        (clickOutsideRefs.length && hasClickedOutside) ||
+        (elements.length && hasClickedOutside) ||
         (event.target.nodeName === 'A' && event.target.getAttribute('href'))
       ) {
         setIsComponentVisible(false)
       }
     },
-    [isComponentVisible, clickOutsideRefs]
+    [baseRef]
   )
 
   const handleEscapeKey = useCallback(
-    function componenteVisibleHandleEscapeKey(event) {
+    function componentVisibleHandleEscapeKey(event) {
       if (event.key === 'Escape') {
         setIsComponentVisible(false)
-        const first = findToggleableElements(rotorRef.current).at(0)
-        first?.focus()
+        if (rotorRef.current) {
+          const first = findToggleableElements(rotorRef.current).at(0)
+          first?.focus()
+        }
       }
     },
     [rotorRef]
   )
 
-  /*
-   * It is acceptable not to have rotorRef otherwise unregistering the event does not work
-   * (therefore, it blocks shift+tab navigation when menu is closed)
-   */
   const handleTabulation = useCallback(
-    function componenteVisibleTabulationRotor(event) {
-      if (event.key === 'Tab') {
+    function componentVisibleTabulationRotor(event) {
+      if (event.key === 'Tab' && rotorRef.current) {
         const all = findToggleableElements(rotorRef.current)
+        if (all.length === 0) {
+          return
+        }
         const index = all.indexOf(event.target)
 
         // out of range, we rotate back
@@ -85,32 +88,38 @@ export default function useComponentVisible({
     [rotorRef]
   )
 
-  // uninstall on keyup if element was inside ref.current[aria-controls]
-
   const toggleComponentIsVisible = useCallback(() => {
-    setIsComponentVisible(!isComponentVisible)
-  }, [isComponentVisible])
+    setIsComponentVisible((visible) => !visible)
+  }, [])
 
-  const uninstallListeners = useCallback(() => {
-    document.removeEventListener('click', handleClickOutside, true)
-    document.removeEventListener('keyup', handleEscapeKey)
-    trapNavigation && document.removeEventListener('keydown', handleTabulation)
-  }, [rotorRef])
-
+  // listeners are only installed while the component is visible,
+  // and are always removed when it gets hidden or unmounted
   useEffect(() => {
-    if (isComponentVisible) {
-      document.addEventListener('click', handleClickOutside, true)
-      document.addEventListener('keyup', handleEscapeKey)
-      trapNavigation && document.addEventListener('keydown', handleTabulation)
-    } else {
-      uninstallListeners()
+    if (!isComponentVisible) {
+      return
     }
-  }, [isComponentVisible, uniqueId])
+    document.addEventListener('click', handleClickOutside, true)
+    document.addEventListener('keyup', handleEscapeKey)
+    if (trapNavigation) {
+      document.addEventListener('keydown', handleTabulation)
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true)
+      document.removeEventListener('keyup', handleEscapeKey)
+      document.removeEventListener('keydown', handleTabulation)
+    }
+  }, [
+    isComponentVisible,
+    trapNavigation,
+    handleClickOutside,
+    handleEscapeKey,
+    handleTabulation,
+  ])
 
   return {
     id: uniqueId,
     isComponentVisible,
-    ref: baseRef ?? selfRef,
+    ref: rotorRef,
     setIsComponentVisible,
     toggleComponentIsVisible,
   }
