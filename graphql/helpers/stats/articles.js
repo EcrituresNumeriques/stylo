@@ -77,21 +77,18 @@ const perArticle = {
   bibliographyEntries: {
     $cond: [
       { $eq: [{ $type: BIBLIOGRAPHY }, 'string'] },
+      // a line break is put before the first entry (once the leading blanks are removed)
       {
-        $add: [
-          { $subtract: [{ $size: { $split: [BIBLIOGRAPHY, '\n@'] } }, 1] },
+        $subtract: [
           {
-            $cond: [
-              {
-                $eq: [
-                  { $substrCP: [{ $ltrim: { input: BIBLIOGRAPHY } }, 0, 1] },
-                  '@',
-                ],
-              },
-              1,
-              0,
-            ],
+            $size: {
+              $split: [
+                { $concat: ['\n', { $ltrim: { input: BIBLIOGRAPHY } }] },
+                '\n@',
+              ],
+            },
           },
+          1,
         ],
       },
       0,

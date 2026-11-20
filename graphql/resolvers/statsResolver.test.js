@@ -278,6 +278,25 @@ describe('stats resolver', () => {
       ])
     })
 
+    test('counts the bibliography entries whatever blanks precede the first one', async () => {
+      const [owner] = await insert(User, [{}])
+      await insert(Article, [
+        { owner, workingVersion: { bib: '\n@book{a}\n@book{b}' } },
+        { owner, workingVersion: { bib: '\r\n  @misc{c}' } },
+      ])
+
+      const { articles } = await getStats()
+
+      assert.equal(articles.withBibliography, 2)
+      assert.deepEqual(articles.bibliographyEntries, {
+        mean: 1.5,
+        p10: 1,
+        median: 1,
+        p90: 2,
+        max: 2,
+      })
+    })
+
     test('counts the articles with a bibliography, with metadata, and the articles per owner', async () => {
       const [writer, other] = await insert(User, [{}, {}])
       const emptyMetadata = {
