@@ -58,10 +58,26 @@ type AuthProvider {
   updatedAt: DateTime
 }
 
+"""
+Storage account where dropped images are uploaded. The password is never exposed.
+"""
+type WebdavAccount {
+  url: String!
+  username: String!
+  "Detected server (nextcloud, filerun, seafile), null when unknown"
+  kind: String
+  "Web interface of the storage, null when the server is unknown"
+  webUrl: String
+  "Folder of the Stylo backups in the web interface, null when the server is unknown"
+  backupsUrl: String
+  updatedAt: DateTime
+}
+
 type AuthProvidersMap {
   humanid: AuthProvider
   hypothesis: AuthProvider
   zotero: AuthProvider
+  webdav: WebdavAccount
 }
 
 type User {
@@ -339,6 +355,14 @@ input UserProfileInput {
   institution: String
 }
 
+input SetWebdavAccountInput {
+  "Base URL of the storage, e.g. https://sharedocs.huma-num.fr/dav.php/@Home/"
+  url: String!
+  username: String!
+  "Password or application password"
+  password: String!
+}
+
 input UpdateUserInput {
   displayName: String
   email: String
@@ -612,6 +636,18 @@ type Mutation {
   Requires authentication.
   """
   unsetAuthToken(service: AuthTokenService!): User!
+
+  """
+  Set the WebDAV storage account of the current user, after checking the credentials.
+  Requires authentication.
+  """
+  setWebdavAccount(input: SetWebdavAccountInput!): User!
+
+  """
+  Remove the WebDAV storage account of the current user.
+  Requires authentication.
+  """
+  unsetWebdavAccount: User!
 
   """
   Add a user to your contacts list by their user ID.
