@@ -323,13 +323,16 @@
 
         # Les autres dépôts tiers restent désactivés : à réactiver à la main, avec
         # le nom de code de la nouvelle version, s'ils sont encore utiles.
+        # ubuntu.sources (dépôts d'Ubuntu) n'est pas un dépôt tiers : ses sections
+        # désactivées viennent d'anciennes versions et n'ont pas à être réactivées.
         - name: Find third-party sources still disabled by the upgrade
           tags: [post]
           become: true
           ansible.builtin.shell:
             cmd: >-
               set -o pipefail;
-              grep -lE '^# .*disabled on upgrade to|^Enabled: no' /etc/apt/sources.list.d/* || true
+              grep -lE '^# .*disabled on upgrade to|^Enabled: no'
+              --exclude=ubuntu.sources /etc/apt/sources.list.d/* || true
             executable: /bin/bash
           register: disabled_sources
           changed_when: false
