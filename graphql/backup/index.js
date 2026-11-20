@@ -7,6 +7,7 @@ const { createLoaders } = require('../loaders')
 const Workspace = require('../models/workspace')
 const Version = require('../models/version')
 const { WorkingVersion } = require('../resolvers/articleResolver')
+const { browseUrl, createWebdavClient } = require('../helpers/webdav.js')
 
 /**
  * Error thrown when the backup request contains invalid parameters.
@@ -57,27 +58,39 @@ async function requestHandler(req, res) {
   }
   try {
     const format = validateFormat(config)
+    const account = user.authProviders?.get('webdav')
+    if (config.destination === 'storage' && !account?.url) {
+      throw new BackupValidationError('No storage account is configured.')
+    }
+
     const articles = await getArticles({
       userId: user._id,
       ...config,
     })
-    if (format === 'json') {
-      const body = JSON.stringify(json(articles))
-      res.set({
-        'Content-Type': 'application/json',
-        'Content-Disposition': 'attachment; filename="backup.json"',
-        'Content-Length': Buffer.byteLength(body),
-      })
-      res.status(200).send(body)
-    } else {
-      const buffer = await zip(articles)
-      res.set({
-        'Content-Type': 'application/zip',
-        'Content-Disposition': 'attachment; filename="backup.zip"',
-        'Content-Length': buffer.length,
-      })
-      res.send(buffer)
+    const content =
+      format === 'json'
+        ? Buffer.from(JSON.stringify(json(articles)))
+        : await zip(articles)
+    const contentType =
+      format === 'json' ? 'application/json' : 'application/zip'
+
+    if (config.destination === 'storage') {
+      const folder = user.attachmentPath('backups')
+      const path = `${folder}/backup-${new Date().toISOString().replace(/[:.]/g, '-')}.${format}`
+      const client = createWebdavClient(account)
+      await client.ensureCollection(folder)
+      await client.put(path, content, contentType)
+      return res
+        .status(201)
+        .json({ path, browseUrl: browseUrl(account, folder) })
     }
+
+    res.set({
+      'Content-Type': contentType,
+      'Content-Disposition': `attachment; filename="backup.${format}"`,
+      'Content-Length': content.length,
+    })
+    res.status(200).send(content)
   } catch (error) {
     const status = error instanceof BackupValidationError ? 400 : 500
     const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
