@@ -1,10 +1,18 @@
 ---
 # Version d'Ubuntu du serveur, déclarée par `ubuntu_version` dans l'inventaire.
-# À lancer avant playbook.yml.
+# À lancer avant playbook.yml. Mode d'emploi : SERVER.md, « Ubuntu version ».
 #
 #   ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --ask-vault-pass os.yml
+#
+# - Serveur à la version déclarée : rien à faire.
+# - Serveur plus récent : échec, l'inventaire est à mettre à jour.
+# - Serveur plus ancien : montée de version vers la LTS suivante, une LTS par
+#   exécution (22.04 → 24.04 → 26.04), seulement avec `-e os_upgrade=true`.
+#   Sans cette variable, os.yml échoue avant de rien modifier.
+#
+# Tags : precheck (vérifications seules, sans rien modifier), update, upgrade, post.
 
-- name: Check the Ubuntu version
+- name: Ubuntu version
   hosts: stylo
   serial: 1
   gather_facts: true
@@ -14,9 +22,29 @@
       "22.04": jammy
       "24.04": noble
       "26.04": resolute
+    # Espace libre minimal (en octets) pour do-release-upgrade.
+    min_free_root: "{{ 5 * 1024 ** 3 }}"
+    min_free_boot: "{{ 300 * 1024 ** 2 }}"
+    # Durée maximale de do-release-upgrade, en secondes.
+    upgrade_timeout: 7200
+    stylo_services:
+      - ssh
+      - cron
+      - docker
+      - containerd
+      - nginx
+      - nagios-nrpe-server
+      - docker-compose-stylo
+    stylo_containers:
+      - mongodb-stylo
+      - graphql-stylo
+      - front-stylo
+      - export-stylo
+      - pandoc-api
 
-  tasks:
+  pre_tasks:
     - name: Check the declared Ubuntu version
+      tags: [always]
       ansible.builtin.assert:
         that:
           - ubuntu_version is defined
@@ -28,12 +56,14 @@
         quiet: true
 
     - name: Check that the server runs Ubuntu
+      tags: [always]
       ansible.builtin.assert:
         that: ansible_facts['distribution'] == "Ubuntu"
         fail_msg: "{{ inventory_hostname }} runs {{ ansible_facts['distribution'] }}, not Ubuntu."
         quiet: true
 
     - name: Check that the server is not ahead of the declared version
+      tags: [always]
       ansible.builtin.assert:
         that: ansible_facts['distribution_version'] is version(ubuntu_version | string, '<=')
         fail_msg: >-
@@ -41,10 +71,324 @@
           newer than ubuntu_version ({{ ubuntu_version }}): update the inventory.
         quiet: true
 
-    - name: Check that the server runs the declared version
-      ansible.builtin.assert:
-        that: ansible_facts['distribution_version'] is version(ubuntu_version | string, '==')
-        fail_msg: >-
-          {{ inventory_hostname }} runs Ubuntu {{ ansible_facts['distribution_version'] }},
-          older than ubuntu_version ({{ ubuntu_version }}): the server must be upgraded.
-        success_msg: "{{ inventory_hostname }} runs Ubuntu {{ ansible_facts['distribution_version'] }}, as declared."
+    - name: Compute the upgrade path
+      tags: [always]
+      ansible.builtin.set_fact:
+        ubuntu_current_version: "{{ ansible_facts['distribution_version'] }}"
+        ubuntu_next_version: "{{ (ansible_facts['distribution_major_version'] | int + 2) | string }}.04"
+        ubuntu_upgrade_needed: "{{ ansible_facts['distribution_version'] is version(ubuntu_version | string, '<') }}"
+
+    - name: Report the Ubuntu version
+      tags: [always]
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }} runs Ubuntu {{ ubuntu_current_version }},
+          {{ ('upgrade to ' ~ ubuntu_next_version ~ ' needed (declared ' ~ ubuntu_version ~ ').')
+             if ubuntu_upgrade_needed | bool else 'as declared.' }}
+
+    - name: Stop when the server runs the declared version
+      tags: [always]
+      ansible.builtin.meta: end_host
+      when: not ubuntu_upgrade_needed | bool
+
+  tasks:
+    - name: Upgrade to the next LTS release
+      when: ubuntu_upgrade_needed | bool
+      block:
+        - name: Check that the next LTS release is known
+          tags: [precheck, update, upgrade]
+          ansible.builtin.assert:
+            that: ubuntu_next_version in ubuntu_lts_codenames
+            fail_msg: "Ubuntu {{ ubuntu_next_version }} is not in ubuntu_lts_codenames."
+            quiet: true
+
+        # ------------------------------------------------------------ precheck
+        - name: Check free space on /
+          tags: [precheck]
+          vars:
+            root_mount: "{{ ansible_facts['mounts'] | selectattr('mount', 'equalto', '/') | first }}"
+          ansible.builtin.assert:
+            that: root_mount.size_available | int >= min_free_root | int
+            fail_msg: "Only {{ root_mount.size_available | ansible.builtin.human_readable }} free on /, {{ min_free_root | int | ansible.builtin.human_readable }} required."
+            quiet: true
+
+        - name: Check free space on /boot
+          tags: [precheck]
+          vars:
+            boot_mounts: "{{ ansible_facts['mounts'] | selectattr('mount', 'equalto', '/boot') | list }}"
+          ansible.builtin.assert:
+            that: boot_mounts | length == 0 or boot_mounts[0].size_available | int >= min_free_boot | int
+            fail_msg: "Not enough free space on /boot, {{ min_free_boot | int | ansible.builtin.human_readable }} required."
+            quiet: true
+
+        # Le dépôt Docker est désactivé pendant la montée de version puis réactivé
+        # avec le nom de code de la nouvelle version : il doit déjà exister.
+        - name: Check that Docker publishes packages for the next release
+          tags: [precheck]
+          ansible.builtin.uri:
+            url: "https://download.docker.com/linux/ubuntu/dists/{{ ubuntu_lts_codenames[ubuntu_next_version] }}/Release"
+          register: docker_release
+          failed_when: docker_release.status != 200
+
+        - name: List third-party APT sources
+          tags: [precheck]
+          ansible.builtin.find:
+            paths: /etc/apt/sources.list.d
+            patterns: ["*.list", "*.sources"]
+            excludes: ["ubuntu.sources"]
+          register: third_party_sources
+
+        - name: Show third-party APT sources (disabled during the upgrade)
+          tags: [precheck]
+          ansible.builtin.debug:
+            msg: "{{ third_party_sources.files | map(attribute='path') | list }}"
+
+        - name: Check that no package is held
+          tags: [precheck]
+          ansible.builtin.command:
+            cmd: apt-mark showhold
+          register: held_packages
+          changed_when: false
+          failed_when: held_packages.stdout | length > 0
+
+        # Verrou : la CI passe os_upgrade=true en dev ; en prod, il faut cocher
+        # « os-upgrade » au lancement de la release, une fois le snapshot fait.
+        - name: Require os_upgrade=true to upgrade
+          tags: [update, upgrade]
+          ansible.builtin.assert:
+            that: os_upgrade | default(false) | bool
+            fail_msg: >-
+              {{ inventory_hostname }} runs Ubuntu {{ ubuntu_current_version }} and
+              ubuntu_version is {{ ubuntu_version }}: the server must be upgraded to
+              {{ ubuntu_next_version }}. Nothing was changed. Stylo will be down for up
+              to an hour: take a snapshot of the VM (production), announce the downtime,
+              then run again with os_upgrade=true (CI: tick « os-upgrade »).
+            quiet: true
+
+        # -------------------------------------------------------------- update
+        - name: Create the backup folder
+          tags: [update]
+          ansible.builtin.file:
+            path: "{{ mongo_backup_path }}"
+            state: directory
+            mode: "0750"
+
+        - name: Back up the database
+          tags: [update]
+          ansible.builtin.shell:
+            cmd: >-
+              docker exec mongodb-stylo sh -c 'mongodump --quiet --gzip --archive --db {{ mongo_server_db }}'
+              > "{{ mongo_backup_path }}/{{ mongo_server_db }}-before-ubuntu-{{ ubuntu_next_version }}.bson.gz"
+          changed_when: true
+
+        - name: Upgrade all packages of the current release
+          tags: [update]
+          become: true
+          ansible.builtin.apt:
+            upgrade: dist
+            update_cache: true
+            autoremove: true
+            autoclean: true
+          environment:
+            DEBIAN_FRONTEND: noninteractive
+
+        - name: Check if a reboot is required
+          tags: [update]
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+          register: reboot_required
+
+        # do-release-upgrade refuse de démarrer tant qu'un redémarrage est en attente.
+        - name: Reboot before the release upgrade
+          tags: [update]
+          become: true
+          ansible.builtin.reboot:
+            reboot_timeout: 900
+          when: reboot_required.stat.exists
+
+        # ------------------------------------------------------------- upgrade
+        - name: Install the release upgrader
+          tags: [upgrade]
+          become: true
+          ansible.builtin.apt:
+            name: ubuntu-release-upgrader-core
+            state: present
+
+        - name: Only offer LTS releases
+          tags: [upgrade]
+          become: true
+          ansible.builtin.lineinfile:
+            path: /etc/update-manager/release-upgrades
+            regexp: '^Prompt='
+            line: Prompt=lts
+
+        # Échoue si la LTS suivante n'est pas encore proposée : les montées de
+        # version LTS → LTS ne sont ouvertes qu'à la première version ponctuelle (xx.04.1).
+        - name: Check that the next LTS release is offered
+          tags: [upgrade]
+          become: true
+          ansible.builtin.command:
+            cmd: do-release-upgrade --check-dist-upgrade-only
+          register: release_check
+          changed_when: false
+          failed_when: ubuntu_next_version not in release_check.stdout
+
+        # Garde les fichiers de configuration modifiés localement plutôt que de
+        # poser une question (ou de les remplacer) pendant la montée de version.
+        - name: Keep local configuration files during the upgrade
+          tags: [upgrade]
+          become: true
+          ansible.builtin.copy:
+            dest: /etc/apt/apt.conf.d/90stylo-dist-upgrade
+            content: |
+              // Posé par os.yml pendant la montée de version, retiré ensuite.
+              Dpkg::Options { "--force-confdef"; "--force-confold"; };
+            mode: "0644"
+
+        - name: Stop Stylo
+          tags: [upgrade]
+          become: true
+          ansible.builtin.systemd:
+            name: docker-compose-stylo
+            state: stopped
+
+        - name: Run do-release-upgrade (logs in /var/log/dist-upgrade/)
+          tags: [upgrade]
+          become: true
+          ansible.builtin.command:
+            cmd: do-release-upgrade -f DistUpgradeViewNonInteractive
+          environment:
+            DEBIAN_FRONTEND: noninteractive
+          async: "{{ upgrade_timeout }}"
+          poll: 0
+          register: release_upgrade
+          changed_when: true
+
+        - name: Wait for do-release-upgrade to finish
+          tags: [upgrade]
+          become: true
+          ansible.builtin.async_status:
+            jid: "{{ release_upgrade.ansible_job_id }}"
+          register: release_upgrade_result
+          until: release_upgrade_result.finished
+          retries: "{{ (upgrade_timeout | int / 30) | int }}"
+          delay: 30
+
+        - name: Reboot on the new release
+          tags: [upgrade]
+          become: true
+          ansible.builtin.reboot:
+            reboot_timeout: 1800
+
+        # ---------------------------------------------------------------- post
+        - name: Refresh facts
+          tags: [post]
+          ansible.builtin.setup:
+            gather_subset: [min]
+
+        - name: Check the new Ubuntu version
+          tags: [post]
+          ansible.builtin.assert:
+            that: ansible_facts['distribution_version'] is version(ubuntu_next_version, '==')
+            fail_msg: "Expected Ubuntu {{ ubuntu_next_version }}, got {{ ansible_facts['distribution_version'] }}."
+            success_msg: "{{ inventory_hostname }} now runs Ubuntu {{ ansible_facts['distribution_version'] }}."
+
+        - name: Remove the upgrade APT options
+          tags: [post]
+          become: true
+          ansible.builtin.file:
+            path: /etc/apt/apt.conf.d/90stylo-dist-upgrade
+            state: absent
+
+        - name: Re-enable the Docker repository
+          tags: [post]
+          ansible.builtin.include_tasks:
+            file: tasks/docker-apt-repository.yml
+            apply:
+              tags: [post]
+
+        - name: Upgrade Docker from its repository
+          tags: [post]
+          become: true
+          ansible.builtin.apt:
+            name:
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
+              - docker-buildx-plugin
+              - docker-compose-plugin
+            state: latest  # noqa package-latest
+          environment:
+            DEBIAN_FRONTEND: noninteractive
+
+        # Les autres dépôts tiers restent désactivés : à réactiver à la main, avec
+        # le nom de code de la nouvelle version, s'ils sont encore utiles.
+        - name: Find third-party sources still disabled by the upgrade
+          tags: [post]
+          become: true
+          ansible.builtin.shell:
+            cmd: >-
+              set -o pipefail;
+              grep -lE '^# .*disabled on upgrade to|^Enabled: no' /etc/apt/sources.list.d/* || true
+            executable: /bin/bash
+          register: disabled_sources
+          changed_when: false
+
+        - name: Report third-party sources still disabled
+          tags: [post]
+          ansible.builtin.debug:
+            msg: "{{ disabled_sources.stdout_lines if disabled_sources.stdout_lines else 'none' }}"
+
+        - name: Start Stylo
+          tags: [post]
+          become: true
+          ansible.builtin.systemd:
+            name: docker-compose-stylo
+            state: started
+            enabled: true
+
+        - name: Collect service states
+          tags: [post]
+          ansible.builtin.service_facts:
+
+        - name: Check that the services are running
+          tags: [post]
+          ansible.builtin.assert:
+            that: ansible_facts.services[item ~ '.service'].state | default('missing') == 'running'
+            fail_msg: "{{ item }} is {{ ansible_facts.services[item ~ '.service'].state | default('missing') }}"
+            quiet: true
+          loop: "{{ stylo_services }}"
+
+        - name: Wait for the Stylo containers
+          tags: [post]
+          ansible.builtin.command:
+            cmd: docker inspect --format '{{ "{{" }}.State.Running{{ "}}" }}' {{ stylo_containers | join(' ') }}
+          register: containers_state
+          changed_when: false
+          until: containers_state.rc == 0 and 'false' not in containers_state.stdout_lines
+          retries: 20
+          delay: 15
+
+        - name: Check that the NGINX configuration is valid
+          tags: [post]
+          become: true
+          ansible.builtin.command:
+            cmd: nginx -t
+          changed_when: false
+
+        - name: Check that Stylo answers over HTTPS
+          tags: [post]
+          ansible.builtin.uri:
+            url: "https://{{ site }}/"
+          register: stylo_http
+          until: stylo_http is succeeded
+          retries: 10
+          delay: 15
+
+        - name: Remind the remaining hops
+          tags: [post]
+          ansible.builtin.debug:
+            msg: >-
+              {{ 'Ubuntu ' ~ ubuntu_version ~ ' reached.'
+                 if ansible_facts['distribution_version'] is version(ubuntu_version | string, '>=')
+                 else 'Run os.yml again to reach Ubuntu ' ~ ubuntu_version ~ '.' }}
