@@ -16,7 +16,8 @@ const {
 const { setup, teardown } = require('../tests/harness.js')
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000
-const CURRENT_YEAR = new Date().getFullYear()
+// MongoDB computes the years in UTC
+const CURRENT_YEAR = new Date().getUTCFullYear()
 
 /**
  * Inserts documents as is (bypassing Mongoose timestamps), to control their dates.
@@ -660,6 +661,47 @@ describe('stats resolver', () => {
         activeUsers: 1,
         retainedNextYear: null,
       })
+    })
+
+    test('does not count the users retained after last year, whose next year is not over', async () => {
+      const [user] = await insert(User, [{ createdAt: signedUpAt }])
+      const lastYear = new Date(Date.UTC(CURRENT_YEAR - 1, 5, 1))
+      await insert(Article, [
+        { owner: user, createdAt: lastYear, updatedAt: lastYear },
+        { owner: user, createdAt: new Date(), updatedAt: new Date() },
+      ])
+
+      const activity = withoutBreakdowns((await getStats()).activity)
+
+      assert.deepEqual(activity, [
+        { year: CURRENT_YEAR - 1, activeUsers: 1, retainedNextYear: null },
+        { year: CURRENT_YEAR, activeUsers: 1, retainedNextYear: null },
+      ])
+    })
+
+    test('never counts a user active before their signup, even through sharing or a workspace', async () => {
+      const [owner, newcomer] = await insert(User, [
+        { createdAt: new Date('2015-01-01') },
+        { createdAt: new Date('2023-01-01') },
+      ])
+      const [article] = await insert(Article, [
+        {
+          owner,
+          contributors: [{ user: newcomer }],
+          createdAt: new Date('2019-05-01'),
+          updatedAt: new Date('2019-05-01'),
+        },
+      ])
+      await insert(Workspace, [
+        { members: [{ user: newcomer }], articles: [article] },
+      ])
+
+      const activity = withoutBreakdowns((await getStats()).activity)
+
+      // only the owner is active in 2019
+      assert.deepEqual(activity, [
+        { year: 2019, activeUsers: 1, retainedNextYear: 0 },
+      ])
     })
 
     test('counts the active users by years since their signup', async () => {

@@ -147,7 +147,14 @@ const perUser = [
               input: '$events',
               cond: {
                 $or: [
-                  { $in: ['$$this.kind', ['shared', 'workspace']] },
+                  // shared with them, or in their workspace: from their signup
+                  {
+                    $and: [
+                      { $in: ['$$this.kind', ['shared', 'workspace']] },
+                      { $gte: ['$$this.at', '$signedUpAt'] },
+                    ],
+                  },
+                  // their own articles: from one week after their signup
                   { $gte: ['$$this.at', '$oneWeekAfterSignup'] },
                 ],
               },
@@ -203,7 +210,8 @@ const LAST_TWELVE_MONTHS = [
  * - an article they own or which is shared with them was last updated,
  *   at least one week after their signup (the writer is not recorded);
  * - they are a contributor of an article created that year;
- * - they are a member of a workspace in which an article was created that year.
+ * - they are a member of a workspace in which an article was created that year;
+ * never before their signup.
  * The week after the signup ignores the default article, created with the account.
  * Versions are not used: automatic versions (signup, editing sessions) make them noisy.
  * Also: the same over the last 12 months, and the 12 months before.
@@ -241,7 +249,7 @@ module.exports = [
             // the next year is not over (or has not started) yet
             retainedNextYear: {
               $cond: [
-                { $gte: ['$_id', { $year: '$$NOW' }] },
+                { $gte: ['$_id', { $subtract: [{ $year: '$$NOW' }, 1] }] },
                 null,
                 '$retainedNextYear',
               ],
