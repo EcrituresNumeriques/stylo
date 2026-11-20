@@ -18,6 +18,7 @@ Pour rappel, l'ensemble des changements qui arrivent sur la branche principale (
 - Laisser la branche principale (i.e., `master`) sélectionnée et renseigner une version (sans suffixe).
   Par exemple : `3.4.5`.
 - Décocher « Trigger deploy? » si vous ne souhaitez pas déployer cette version en production tout de suite.
+- Laisser « os-upgrade » décochée, sauf si cette version change `ubuntu_version` dans `infrastructure/inventories/prod` : voir [« Ubuntu version » dans SERVER.md](SERVER.md#ubuntu-version).
 - Cliquer sur le bouton vert "Run workflow"
 
 Une nouvelle ligne va s'afficher dans la liste. Vous pouvez voir le détail en cliquant sur la ligne : 
