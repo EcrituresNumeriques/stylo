@@ -9,6 +9,12 @@ const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
 const { resolveFeatures } = require('../helpers/features.js')
 const { createAccess } = require('../helpers/accesses.js')
+const {
+  browseUrl,
+  createWebdavClient,
+  detectServer,
+} = require('../helpers/webdav.js')
+const { logger } = require('../logger.js')
 
 const config = require('../config.js')
 
@@ -201,6 +207,65 @@ module.exports = {
       return await user.save()
     },
 
+    /**
+     * @param {*} _
+     * @param {{ input: { url: string, username: string, password: string } }} args
+     * @param {RequestContext} context
+     * @returns {Promise<User>}
+     */
+    async setWebdavAccount(_, { input }, { token, user }) {
+      isUser({}, { token, user })
+
+      const account = {
+        url: input.url.trim(),
+        username: input.username.trim(),
+        token: input.password,
+      }
+
+      let writableRoot = null
+      try {
+        writableRoot = await createWebdavClient(account).findWritableRoot()
+      } catch (error) {
+        // invalid URL, unsupported protocol or unreachable host
+        logger.warn({ err: error }, 'webdav connection failed')
+      }
+
+      if (!writableRoot) {
+        throw new BadRequestError(
+          'WEBDAV_CONNECTION_FAILED',
+          'Unable to connect to the storage with these credentials'
+        )
+      }
+
+      // the backups folder exists from the start, so that its link never leads to a 404
+      await createWebdavClient({ ...account, url: writableRoot })
+        .ensureCollection(user.attachmentPath('backups'))
+        .catch((error) =>
+          logger.warn({ err: error }, 'webdav backups folder not created')
+        )
+
+      user.set('authProviders.webdav', {
+        ...account,
+        url: writableRoot,
+        ...(await detectServer(writableRoot)),
+        updatedAt: Date.now(),
+      })
+      return await user.save()
+    },
+
+    /**
+     * @param {*} _
+     * @param {*} _args
+     * @param {RequestContext} context
+     * @returns {Promise<User>}
+     */
+    async unsetWebdavAccount(_, _args, { token, user }) {
+      isUser({}, { token, user })
+
+      user.set('authProviders.webdav', null)
+      return await user.save()
+    },
+
     async addContact(_, { contactUserId }, context) {
       const { userId } = isUser({}, context)
 
@@ -365,6 +430,17 @@ module.exports = {
         humanid: sanitize(user.get('authProviders.humanid')),
         hypothesis: sanitize(user.get('authProviders.hypothesis')),
         zotero: sanitize(user.get('authProviders.zotero')),
+        // the storage account (URL, username) is private too
+        webdav:
+          isOwner && user.get('authProviders.webdav')
+            ? {
+                ...user.get('authProviders.webdav').toObject(),
+                backupsUrl: browseUrl(
+                  user.get('authProviders.webdav'),
+                  user.attachmentPath('backups')
+                ),
+              }
+            : null,
       }
     },
 
