@@ -1,5 +1,6 @@
 const { Y } = require('../helpers/yjs-utils.mjs')
 const mongoose = require('mongoose')
+const attachable = require('./plugins/attachable.js')
 const bcrypt = require('bcryptjs')
 const { randomUUID } = require('node:crypto')
 
@@ -18,6 +19,18 @@ const AuthProviderSchema = new Schema({
     type: String,
   },
   token: {
+    type: String,
+  },
+  // WebDAV storage only
+  // TODO encrypt tokens at rest (AES-256-GCM)
+  url: {
+    type: String,
+  },
+  // detected server, e.g. nextcloud, and its web interface
+  kind: {
+    type: String,
+  },
+  webUrl: {
     type: String,
   },
   updatedAt: Date,
@@ -120,6 +133,7 @@ const userSchema = new Schema(
         return bcrypt.compare(password, oldPassword)
       },
 
+      // TODO exclude `webdav`, which is a storage and not a login method
       getAuthProvidersCount() {
         return Array.from(this.authProviders.values()).filter((d) => d).length
       },
@@ -177,6 +191,7 @@ userSchema.virtual('authTypes').get(function authTypes() {
     types.add('local')
   }
 
+  // TODO exclude `webdav`, which is a storage and not a login method
   const hasRemoteAuth = Object.entries(this.authProviders ?? {}).some(
     ([, { id, email, token }]) => id || email || token
   )
@@ -187,5 +202,7 @@ userSchema.virtual('authTypes').get(function authTypes() {
 
   return Array.from(types)
 })
+
+userSchema.plugin(attachable)
 
 module.exports = mongoose.model('User', userSchema)
