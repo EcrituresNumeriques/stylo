@@ -301,7 +301,7 @@ const SNAPSHOT = [
   ),
 ]
 
-const PER_OWNER = [distributionOf('articles', '$articles')]
+const ARTICLES_PER_OWNER = distributionOf('articles', '$articles')
 
 /**
  * Collection: articles.
@@ -322,7 +322,7 @@ module.exports = [
       perOwner: [
         { $match: { isExample: false, owner: { $type: 'objectId' } } },
         { $group: { _id: '$owner', articles: { $sum: 1 } } },
-        ...snapshotFacet(PER_OWNER),
+        ...snapshotFacet([ARTICLES_PER_OWNER]),
       ],
       years: yearlyCounts(
         [
@@ -349,7 +349,7 @@ module.exports = [
   {
     $project: {
       ...fromSnapshot('snapshot', SNAPSHOT),
-      perOwner: fieldOfFacet('perOwner', 'articles', PER_OWNER[0].empty),
+      perOwner: fieldOfFacet('perOwner', 'articles', ARTICLES_PER_OWNER.empty),
       years: 1,
     },
   },

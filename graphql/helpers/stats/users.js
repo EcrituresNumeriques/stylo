@@ -9,8 +9,7 @@ const {
 
 const AUTHENTICATION_METHODS = ['password', 'humanid', 'zotero', 'hypothesis']
 
-const SNAPSHOT = [
-  count('total'),
+const AUTHENTICATION = [
   ...AUTHENTICATION_METHODS.map((method) => count(method, `$${method}`)),
   count('multiple', {
     $gt: [
@@ -19,6 +18,7 @@ const SNAPSHOT = [
     ],
   }),
 ]
+const SNAPSHOT = [count('total'), ...AUTHENTICATION]
 
 /**
  * Collection: users.
@@ -58,7 +58,7 @@ module.exports = [
   {
     $project: {
       total: fieldOfFacet('snapshot', 'total', 0),
-      authentication: fromSnapshot('snapshot', SNAPSHOT.slice(1)),
+      authentication: fromSnapshot('snapshot', AUTHENTICATION),
       years: 1,
     },
   },

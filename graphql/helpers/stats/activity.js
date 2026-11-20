@@ -59,13 +59,15 @@ const events = [
   },
   { $unwind: '$events' },
   { $replaceWith: '$events' },
-  // starts from the (few) workspaces, and fetches the article dates by _id
+  // one document per member and article of each workspace (a single one without articles):
+  // starts from the (few) workspaces, and fetches the article dates by _id.
+  // The membership is not dated: every member counts as a current member.
   {
     $unionWith: {
       coll: 'workspaces',
       pipeline: [
         { $project: { members: '$members.user', articles: 1 } },
-        { $unwind: '$articles' },
+        { $unwind: { path: '$articles', preserveNullAndEmptyArrays: true } },
         {
           $lookup: {
             from: 'articles',
@@ -87,22 +89,14 @@ const events = [
       ],
     },
   },
-  // current members of a workspace (the membership is not dated)
-  {
-    $unionWith: {
-      coll: 'workspaces',
-      pipeline: [
-        { $project: { _id: 0, who: '$members.user' } },
-        { $unwind: '$who' },
-        { $set: { kind: 'member' } },
-      ],
-    },
-  },
   unionWithUsers({ who: '$_id', signedUpAt: '$createdAt', kind: 'signup' }),
   {
     $match: {
       who: { $type: 'objectId' },
-      $or: [{ at: { $type: 'date' } }, { kind: { $in: ['member', 'signup'] } }],
+      $or: [
+        { at: { $type: 'date' } },
+        { kind: { $in: ['workspace', 'signup'] } },
+      ],
     },
   },
 ]
@@ -115,16 +109,17 @@ const perUser = [
   {
     $group: {
       _id: '$who',
+      // the dated events (not the signup, nor a membership without article)
       events: {
         $push: {
           $cond: [
-            { $in: ['$kind', ['member', 'signup']] },
-            '$$REMOVE',
+            { $eq: [{ $type: '$at' }, 'date'] },
             { at: '$at', kind: '$kind' },
+            '$$REMOVE',
           ],
         },
       },
-      isMember: { $max: { $eq: ['$kind', 'member'] } },
+      isMember: { $max: { $eq: ['$kind', 'workspace'] } },
       exists: { $max: { $eq: ['$kind', 'signup'] } },
       signedUpAt: { $max: '$signedUpAt' },
     },
@@ -217,6 +212,15 @@ module.exports = [
   ...events,
   ...perUser,
   {
+    $project: {
+      years: 1,
+      signedUpAt: 1,
+      isMember: 1,
+      last: activeAtSome(ONE_YEAR_AGO),
+      previous: activeAtSome(TWO_YEARS_AGO, ONE_YEAR_AGO),
+    },
+  },
+  {
     $facet: {
       years: [
         { $set: { year: '$years' } },
@@ -245,15 +249,7 @@ module.exports = [
           },
         },
       ],
-      rolling: [
-        {
-          $set: {
-            last: activeAtSome(ONE_YEAR_AGO),
-            previous: activeAtSome(TWO_YEARS_AGO, ONE_YEAR_AGO),
-          },
-        },
-        ...snapshotFacet(LAST_TWELVE_MONTHS),
-      ],
+      rolling: snapshotFacet(LAST_TWELVE_MONTHS),
     },
   },
   {

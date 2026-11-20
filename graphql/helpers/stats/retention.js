@@ -13,9 +13,11 @@ const returnedAfter = (days) => ({
   $and: [{ $gte: ['$ageInDays', days] }, { $gte: ['$lifespanDays', days] }],
 })
 
+const LIFESPAN = distributionOf('lifespanDays', '$lifespanDays')
+
 const COHORT = [
   count('accounts'),
-  distributionOf('lifespanDays', '$lifespanDays'),
+  LIFESPAN,
   count('oneDayOnly', { $lt: ['$lifespanHours', ONE_DAY_IN_HOURS] }),
   count('eligibleAfter30Days', { $gte: ['$ageInDays', 30] }),
   count('returnedAfter30Days', returnedAfter(30)),
@@ -23,10 +25,7 @@ const COHORT = [
   count('returnedAfter1Year', returnedAfter(365)),
 ]
 
-const OVERALL = [
-  count('accounts'),
-  distributionOf('lifespanDays', '$lifespanDays'),
-]
+const OVERALL = [count('accounts'), LIFESPAN]
 
 /**
  * Collection: articles.
@@ -85,7 +84,7 @@ module.exports = [
             _id: 0,
             year: '$_id',
             accounts: '$accounts',
-            lifespanDays: COHORT[1].output,
+            lifespanDays: LIFESPAN.output,
             oneDayOnly: '$oneDayOnly',
             returnedAfter30Days: {
               eligible: '$eligibleAfter30Days',
