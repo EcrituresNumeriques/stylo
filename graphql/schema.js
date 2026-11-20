@@ -251,8 +251,12 @@ type InstanceUsageStats {
   articles: InstanceArticleStats!
   "Active users per year: users who created or wrote in an article (at least one week after their signup), contributed to an article, or are members of a workspace in which an article was created that year."
   activity: [InstanceActivityYearlyStats!]!
+  "Active users (same definition) over the last 12 months and the 12 months before, and the articles and corpora created over the last 12 months."
+  lastTwelveMonths: InstanceRollingActivityStats!
   "Per signup year: time between the signup and the last known activity of the accounts."
   retention: [InstanceRetentionCohort!]!
+  "All the accounts used after their first day: time between the signup and the last known activity."
+  lifespan: InstanceLifespanStats!
   corpora: InstanceCorpusStats!
   workspaces: InstanceWorkspaceStats!
 }
@@ -263,6 +267,7 @@ type InstanceDistribution {
   p10: Float
   median: Float
   p90: Float
+  max: Float
 }
 
 type InstanceUserStats {
@@ -295,6 +300,34 @@ type InstanceArticleStats {
   shared: Int!
   inCorpus: Int!
   inWorkspace: Int!
+  "Articles with at least one bibliographic reference."
+  withBibliography: Int!
+  "Number of bibliographic references per article with a bibliography."
+  bibliographyEntries: InstanceDistribution!
+  "Articles with authors, an abstract or keywords."
+  withMetadata: Int!
+  "Articles with a bibliography and a Zotero link."
+  bibliographiesFromZotero: Int!
+  "Articles with at least one tag."
+  withTags: Int!
+  "Articles by number of filled metadata fields: none, 1 to 4, 5 to 9, 10 or more."
+  metadataLevels: InstanceMetadataLevelStats!
+  "Number of tags per article with tags."
+  tags: InstanceDistribution!
+  "Days between the creation and the last update, of the articles modified after their first minute."
+  writingDays: InstanceDistribution!
+  "Articles by time between their creation and their last update."
+  writingDurations: InstanceWritingDurationStats!
+  "Number of filled metadata fields (whatever the type of document) per article with metadata."
+  metadataFields: InstanceDistribution!
+  "Number of people (the author included) per shared article."
+  collaborators: InstanceDistribution!
+  "Number of members of the workspaces of each article in a workspace."
+  workspaceMembers: InstanceDistribution!
+  "Number of articles of the (largest) corpus of each article in a corpus."
+  corpusSize: InstanceDistribution!
+  "Number of articles per user owning at least one article."
+  perOwner: InstanceDistribution!
   years: [InstanceArticleYearlyStats!]!
 }
 
@@ -312,6 +345,19 @@ type InstanceActivityYearlyStats {
   activeUsers: Int!
   "Active users of that year who are also active the next year (null while the next year is not over)."
   retainedNextYear: Int
+  "Active users of that year who are currently members of a workspace (the membership is not dated)."
+  inWorkspace: Int!
+  "Active users of that year, by years since their signup."
+  seniority: InstanceActivitySeniorityStats!
+}
+
+"Active users by calendar years between their signup and the year of activity."
+type InstanceActivitySeniorityStats {
+  "Signed up that year."
+  sameYear: Int!
+  oneToTwoYears: Int!
+  threeToFiveYears: Int!
+  moreThanFiveYears: Int!
 }
 
 type InstanceRetentionCohort {
@@ -339,6 +385,7 @@ type InstanceCorpusStats {
   articles: InstanceDistribution!
   types: [InstanceCorpusTypeStats!]!
   years: [InstanceCorpusYearlyStats!]!
+  months: [InstanceMonthlyStats!]!
 }
 
 type InstanceCorpusTypeStats {
@@ -362,6 +409,51 @@ type InstanceWorkspaceStats {
   "Number of articles per workspace."
   articles: InstanceDistribution!
   years: [InstanceWorkspaceYearlyStats!]!
+  months: [InstanceMonthlyStats!]!
+}
+
+type InstanceMetadataLevelStats {
+  none: Int!
+  few: Int!
+  several: Int!
+  many: Int!
+}
+
+type InstanceWritingDurationStats {
+  underAMinute: Int!
+  underAnHour: Int!
+  underADay: Int!
+  underAMonth: Int!
+  underAYear: Int!
+  moreThanAYear: Int!
+}
+
+type InstanceRollingActivityStats {
+  "Active users over the last 12 months."
+  activeUsers: Int!
+  "Active users over the 12 months before."
+  previousActiveUsers: Int!
+  "Users active over both periods."
+  retained: Int!
+  "Articles created over the last 12 months (the example articles excluded)."
+  articlesCreated: Int!
+  "Corpora created over the last 12 months."
+  corporaCreated: Int!
+}
+
+type InstanceLifespanStats {
+  accounts: Int!
+  "Days between the signup and the last known activity."
+  lifespanDays: InstanceDistribution!
+}
+
+"Creations of a month, from the first to the last month with a creation."
+type InstanceMonthlyStats {
+  "Month, as YYYY-MM (UTC)."
+  month: String!
+  created: Int!
+  "Running total at the end of the month."
+  total: Int!
 }
 
 type InstanceWorkspaceYearlyStats {

@@ -38,7 +38,17 @@ function daysAfter(date, days) {
   return new Date(date.getTime() + days * ONE_DAY_IN_MS)
 }
 
-const EMPTY_DISTRIBUTION = { mean: null, p10: null, median: null, p90: null }
+const EMPTY_DISTRIBUTION = {
+  mean: null,
+  p10: null,
+  median: null,
+  p90: null,
+  max: null,
+}
+
+// the breakdowns of the active users are tested on their own
+const withoutBreakdowns = (activity) =>
+  activity.map(({ seniority, inWorkspace, ...yearly }) => yearly)
 
 describe('stats resolver', () => {
   let container
@@ -80,15 +90,48 @@ describe('stats resolver', () => {
         shared: 0,
         inCorpus: 0,
         inWorkspace: 0,
+        withBibliography: 0,
+        bibliographyEntries: EMPTY_DISTRIBUTION,
+        withMetadata: 0,
+        perOwner: EMPTY_DISTRIBUTION,
+        metadataFields: EMPTY_DISTRIBUTION,
+        collaborators: EMPTY_DISTRIBUTION,
+        bibliographiesFromZotero: 0,
+        withTags: 0,
+        metadataLevels: { none: 0, few: 0, several: 0, many: 0 },
+        tags: EMPTY_DISTRIBUTION,
+        writingDays: EMPTY_DISTRIBUTION,
+        writingDurations: {
+          underAMinute: 0,
+          underAnHour: 0,
+          underADay: 0,
+          underAMonth: 0,
+          underAYear: 0,
+          moreThanAYear: 0,
+        },
+        workspaceMembers: EMPTY_DISTRIBUTION,
+        corpusSize: EMPTY_DISTRIBUTION,
         years: [],
       })
       assert.deepEqual(stats.activity, [])
+      assert.deepEqual(stats.lastTwelveMonths, {
+        activeUsers: 0,
+        previousActiveUsers: 0,
+        retained: 0,
+        articlesCreated: 0,
+        corporaCreated: 0,
+      })
       assert.deepEqual(stats.retention, [])
+      assert.deepEqual(stats.lifespan, {
+        accounts: 0,
+        lifespanDays: EMPTY_DISTRIBUTION,
+      })
       assert.deepEqual(stats.corpora, {
         total: 0,
         articles: EMPTY_DISTRIBUTION,
         types: [],
         years: [],
+        months: [],
       })
       assert.deepEqual(stats.workspaces, {
         total: 0,
@@ -96,6 +139,7 @@ describe('stats resolver', () => {
         members: EMPTY_DISTRIBUTION,
         articles: EMPTY_DISTRIBUTION,
         years: [],
+        months: [],
       })
     })
 
@@ -108,9 +152,11 @@ describe('stats resolver', () => {
             users { total authentication { multiple } years { year } }
             articles { total years { year } }
             activity { year retainedNextYear }
+            lastTwelveMonths { activeUsers }
             retention { year lifespanDays { median } returnedAfter30Days { eligible } }
-            corpora { total articles { median } types { type } years { year } }
-            workspaces { distinctMembers members { median } years { year } }
+            lifespan { accounts lifespanDays { median } }
+            corpora { total articles { median } types { type } years { year } months { month } }
+            workspaces { distinctMembers members { median } years { year } months { total } }
           }
         }`,
         contextValue: {},
@@ -231,6 +277,240 @@ describe('stats resolver', () => {
         { year: 2022, created: 1, lastUpdated: 2, inWorkspace: 0 },
       ])
     })
+
+    test('counts the articles with a bibliography, with metadata, and the articles per owner', async () => {
+      const [writer, other] = await insert(User, [{}, {}])
+      const emptyMetadata = {
+        title: null,
+        authors: null,
+        abstract: null,
+        keywords: [],
+      }
+      await insert(Article, [
+        {
+          owner: writer,
+          workingVersion: {
+            bib: '@book{a,\n  title={A}\n}\n@article{b,\n  title={B}\n}',
+            metadata: { ...emptyMetadata, authors: [{ forename: 'Ada' }] },
+          },
+        },
+        {
+          owner: writer,
+          // an indented entry, and keywords as a string
+          workingVersion: {
+            bib: '  @misc{c}',
+            metadata: { ...emptyMetadata, keywords: 'stylo' },
+          },
+        },
+        {
+          owner: writer,
+          // the metadata skeleton alone is not counted
+          workingVersion: {
+            bib: '',
+            metadata: { ...emptyMetadata, title: 'T' },
+          },
+        },
+        // no working version at all
+        { owner: other },
+      ])
+
+      const { articles } = await getStats()
+
+      assert.equal(articles.withBibliography, 2)
+      assert.deepEqual(articles.bibliographyEntries, {
+        mean: 1.5,
+        p10: 1,
+        median: 1,
+        p90: 2,
+        max: 2,
+      })
+      assert.equal(articles.withMetadata, 2)
+      // one filled field (authors, then keywords) in each article with metadata
+      assert.deepEqual(articles.metadataFields, {
+        mean: 1,
+        p10: 1,
+        median: 1,
+        p90: 1,
+        max: 1,
+      })
+      assert.deepEqual(articles.perOwner, {
+        mean: 2,
+        p10: 1,
+        median: 1,
+        p90: 3,
+        max: 3,
+      })
+    })
+
+    test('measures how widely the articles are shared, in workspaces and in corpora', async () => {
+      const [owner, a, b, c] = await insert(User, [{}, {}, {}, {}])
+      const [solo, pair, inBoth, inCorpus] = await insert(Article, [
+        { owner, contributors: [{ user: a }] },
+        { owner, contributors: [{ user: a }, { user: b }] },
+        { owner },
+        { owner },
+      ])
+      await insert(Workspace, [
+        // the members of all the workspaces of an article add up
+        { articles: [inBoth], members: [{ user: a }, { user: b }] },
+        { articles: [inBoth, solo], members: [{ user: c }] },
+      ])
+      await insert(Corpus, [
+        // the largest corpus of an article counts
+        { name: 'Small', articles: [{ article: inBoth, order: 0 }] },
+        {
+          name: 'Large',
+          articles: [inBoth, inCorpus, pair].map((article, order) => ({
+            article,
+            order,
+          })),
+        },
+      ])
+
+      const { articles } = await getStats()
+
+      // the author is counted along with the contributors
+      assert.deepEqual(articles.collaborators, {
+        mean: 2.5,
+        p10: 2,
+        median: 2,
+        p90: 3,
+        max: 3,
+      })
+      assert.deepEqual(articles.workspaceMembers, {
+        mean: 2,
+        p10: 1,
+        median: 1,
+        p90: 3,
+        max: 3,
+      })
+      assert.deepEqual(articles.corpusSize, {
+        mean: 3,
+        p10: 3,
+        median: 3,
+        p90: 3,
+        max: 3,
+      })
+    })
+
+    test('counts the filled metadata fields, nested ones included', async () => {
+      const [owner] = await insert(User, [{}])
+      await insert(Article, [
+        {
+          owner,
+          workingVersion: {
+            metadata: {
+              // set by Stylo: not counted
+              type: 'article',
+              '@version': '1.0',
+              // filled: counted
+              authors: [{ forename: 'Ada' }],
+              journal: { name: 'Revue', publisher: null },
+              localizedContent: [{ lang: 'en', title: 'Title' }],
+              // empty skeletons: not counted
+              abstract: '',
+              issue: { title: null, number: null },
+              production: { issn: null, entities: [] },
+              funder: [{ organization: null }],
+            },
+          },
+        },
+      ])
+
+      const { articles } = await getStats()
+
+      assert.equal(articles.metadataFields.max, 3)
+      assert.deepEqual(articles.metadataLevels, {
+        none: 0,
+        few: 1,
+        several: 0,
+        many: 0,
+      })
+    })
+
+    test('counts the bibliographies from Zotero, the tags and the writing durations', async () => {
+      const [owner] = await insert(User, [{}])
+      const created = new Date('2022-01-01')
+      const after = (ms) => new Date(created.getTime() + ms)
+      const minute = 60 * 1000
+      const day = 24 * 60 * minute
+      const bib = '@book{a}'
+      const tag = () => new Types.ObjectId()
+      const article = (ms, extra = {}) => ({
+        owner,
+        createdAt: created,
+        updatedAt: after(ms),
+        ...extra,
+      })
+      await insert(Article, [
+        // a bibliography from Zotero
+        article(0, { zoteroLink: 'abc', workingVersion: { bib } }),
+        // a Zotero link without bibliography, and a bibliography without Zotero
+        article(30 * minute, { zoteroLink: 'abc', tags: [tag()] }),
+        article(2 * 60 * minute, {
+          workingVersion: { bib },
+          tags: [tag(), tag(), tag()],
+        }),
+        article(2 * day),
+        article(60 * day),
+        article(400 * day),
+      ])
+
+      const { articles } = await getStats()
+
+      assert.equal(articles.bibliographiesFromZotero, 1)
+      assert.equal(articles.withTags, 2)
+      assert.deepEqual(articles.tags, {
+        mean: 2,
+        p10: 1,
+        median: 1,
+        p90: 3,
+        max: 3,
+      })
+      assert.deepEqual(articles.writingDurations, {
+        underAMinute: 1,
+        underAnHour: 1,
+        underADay: 1,
+        underAMonth: 1,
+        underAYear: 1,
+        moreThanAYear: 1,
+      })
+      // the article never modified is not counted
+      assert.equal(articles.writingDays.max, 400)
+      assert.equal(articles.writingDays.p10, 0)
+    })
+
+    test('ignores the example article created with the account, until it is modified', async () => {
+      const signedUpAt = new Date('2021-01-01T10:00:00Z')
+      const after = (ms) => new Date(signedUpAt.getTime() + ms)
+      const [untouched, modified, writer] = await insert(User, [
+        { createdAt: signedUpAt },
+        { createdAt: signedUpAt },
+        { createdAt: signedUpAt },
+      ])
+      await insert(Article, [
+        // example article, never modified: not counted at all
+        { owner: untouched, createdAt: after(200), updatedAt: after(200) },
+        // example article, modified a year later: only counted as last updated
+        {
+          owner: modified,
+          createdAt: after(500),
+          updatedAt: new Date('2022-03-01'),
+        },
+        // first article of an account, created 10 seconds after the signup
+        { owner: writer, createdAt: after(10_000), updatedAt: after(10_000) },
+        // second article of an account, even right after the signup
+        { owner: modified, createdAt: after(800), updatedAt: after(800) },
+      ])
+
+      const { articles } = await getStats()
+
+      assert.equal(articles.total, 2)
+      assert.deepEqual(articles.years, [
+        { year: 2021, created: 2, lastUpdated: 2, inWorkspace: 0 },
+        { year: 2022, created: 0, lastUpdated: 1, inWorkspace: 0 },
+      ])
+    })
   })
 
   describe('activity', () => {
@@ -246,7 +526,7 @@ describe('stats resolver', () => {
         },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity, [])
     })
@@ -261,7 +541,7 @@ describe('stats resolver', () => {
         },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity, [
         { year: 2021, activeUsers: 1, retainedNextYear: 0 },
@@ -282,7 +562,7 @@ describe('stats resolver', () => {
         },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(
         activity.find(({ year }) => year === 2022),
@@ -304,7 +584,7 @@ describe('stats resolver', () => {
         },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity, [
         { year: 2021, activeUsers: 2, retainedNextYear: 0 },
@@ -327,7 +607,7 @@ describe('stats resolver', () => {
         { articles: [article], members: [{ user: owner }, { user: member }] },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity, [
         { year: 2023, activeUsers: 2, retainedNextYear: 0 },
@@ -350,7 +630,7 @@ describe('stats resolver', () => {
         { owner: user, createdAt: new Date(), updatedAt: new Date() },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity.slice(0, 2), [
         { year: 2022, activeUsers: 1, retainedNextYear: 1 },
@@ -363,6 +643,122 @@ describe('stats resolver', () => {
       })
     })
 
+    test('counts the active users by years since their signup', async () => {
+      const users = await insert(User, [
+        { createdAt: new Date('2015-06-01') },
+        { createdAt: new Date('2018-06-01') },
+        { createdAt: new Date('2021-06-01') },
+        { createdAt: new Date('2022-01-01') },
+      ])
+      await insert(
+        Article,
+        users.map((owner) => ({
+          owner,
+          createdAt: new Date('2022-03-01'),
+          updatedAt: new Date('2022-03-01'),
+        }))
+      )
+
+      const { activity } = await getStats()
+
+      assert.deepEqual(activity, [
+        {
+          year: 2022,
+          activeUsers: 4,
+          retainedNextYear: 0,
+          inWorkspace: 0,
+          seniority: {
+            sameYear: 1,
+            oneToTwoYears: 1,
+            threeToFiveYears: 1,
+            moreThanFiveYears: 1,
+          },
+        },
+      ])
+    })
+
+    test('counts the active users who are members of a workspace, even an empty one', async () => {
+      const [member, loner, inactive] = await insert(User, [
+        { createdAt: signedUpAt },
+        { createdAt: signedUpAt },
+        { createdAt: signedUpAt },
+      ])
+      await insert(
+        Article,
+        [member, loner].map((owner) => ({
+          owner,
+          createdAt: new Date('2022-03-01'),
+          updatedAt: new Date('2022-03-01'),
+        }))
+      )
+      // a workspace without articles, whose members are not active because of it
+      await insert(Workspace, [
+        { members: [{ user: member }, { user: inactive }], articles: [] },
+      ])
+
+      const { activity } = await getStats()
+
+      assert.equal(activity.length, 1)
+      assert.equal(activity[0].activeUsers, 2)
+      assert.equal(activity[0].inWorkspace, 1)
+    })
+
+    test('counts the active users of the last 12 months and of the 12 months before', async () => {
+      const now = new Date()
+      const ago = (days) => daysAfter(now, -days)
+      const [recent, former, regular] = await insert(User, [
+        { createdAt: ago(1000) },
+        { createdAt: ago(1000) },
+        { createdAt: ago(1000) },
+      ])
+      const article = (owner, at) => ({ owner, createdAt: at, updatedAt: at })
+      await insert(Article, [
+        article(recent, ago(30)),
+        article(former, ago(500)),
+        article(regular, ago(30)),
+        article(regular, ago(500)),
+        // more than two years ago: not counted
+        article(former, ago(900)),
+      ])
+
+      const { lastTwelveMonths } = await getStats()
+
+      assert.deepEqual(lastTwelveMonths, {
+        activeUsers: 2,
+        previousActiveUsers: 2,
+        retained: 1,
+        articlesCreated: 2,
+        corporaCreated: 0,
+      })
+    })
+
+    test('counts the articles and corpora created over the last 12 months, the example articles excluded', async () => {
+      const now = new Date()
+      const ago = (days) => daysAfter(now, -days)
+      const [author, newcomer] = await insert(User, [
+        { createdAt: ago(1000) },
+        { createdAt: ago(10) },
+      ])
+      await insert(Article, [
+        { owner: author, createdAt: ago(30), updatedAt: ago(30) },
+        // more than 12 months ago: not counted
+        { owner: author, createdAt: ago(400), updatedAt: ago(400) },
+        // example article, even once modified: not counted
+        { owner: newcomer, createdAt: ago(10), updatedAt: ago(5) },
+      ])
+      await insert(Corpus, [
+        { name: 'A', createdAt: ago(30) },
+        { name: 'B', createdAt: ago(400) },
+        // a corpus without a date is not counted
+        { name: 'C' },
+      ])
+
+      const { lastTwelveMonths } = await getStats()
+
+      assert.equal(lastTwelveMonths.articlesCreated, 1)
+      assert.equal(lastTwelveMonths.corporaCreated, 1)
+    })
+
     test('ignores the users who no longer exist', async () => {
       await insert(Article, [
         {
@@ -372,7 +768,7 @@ describe('stats resolver', () => {
         },
       ])
 
-      const { activity } = await getStats()
+      const activity = withoutBreakdowns((await getStats()).activity)
 
       assert.deepEqual(activity, [])
     })
@@ -401,18 +797,29 @@ describe('stats resolver', () => {
       // the article of `connected` was last updated 400 days later as well
       // (the writer is not recorded): both accounts are counted after a year
 
-      const { retention } = await getStats()
+      const { retention, lifespan } = await getStats()
 
       assert.deepEqual(retention, [
         {
           year: 2020,
           accounts: 3,
-          lifespanDays: { mean: 266.7, p10: 0, median: 400, p90: 400 },
+          lifespanDays: {
+            mean: 266.7,
+            p10: 0,
+            median: 400,
+            p90: 400,
+            max: 400,
+          },
           oneDayOnly: 1,
           returnedAfter30Days: { eligible: 3, returned: 2 },
           returnedAfter1Year: { eligible: 3, returned: 2 },
         },
       ])
+      // the account used during its first day only is not counted
+      assert.deepEqual(lifespan, {
+        accounts: 2,
+        lifespanDays: { mean: 400, p10: 400, median: 400, p90: 400, max: 400 },
+      })
     })
 
     test('only counts the accounts old enough for each delay', async () => {
@@ -498,6 +905,7 @@ describe('stats resolver', () => {
         p10: 0,
         median: 0,
         p90: 4,
+        max: 4,
       })
       assert.deepEqual(corpora.types, [
         { type: 'journal', count: 2 },
@@ -508,13 +916,32 @@ describe('stats resolver', () => {
         {
           year: 2024,
           created: 2,
-          articles: { mean: 3, p10: 2, median: 2, p90: 4 },
+          articles: { mean: 3, p10: 2, median: 2, p90: 4, max: 4 },
         },
         {
           year: 2025,
           created: 1,
-          articles: { mean: 0, p10: 0, median: 0, p90: 0 },
+          articles: { mean: 0, p10: 0, median: 0, p90: 0, max: 0 },
         },
+      ])
+    })
+
+    test('counts the corpora created per month, months without creation included', async () => {
+      await insert(Corpus, [
+        { name: 'A', createdAt: new Date('2024-11-03') },
+        { name: 'B', createdAt: new Date('2024-11-28') },
+        { name: 'C', createdAt: new Date('2025-02-10') },
+        // a corpus without a date is not counted in the months
+        { name: 'D' },
+      ])
+
+      const { corpora } = await getStats()
+
+      assert.deepEqual(corpora.months, [
+        { month: '2024-11', created: 2, total: 2 },
+        { month: '2024-12', created: 0, total: 2 },
+        { month: '2025-01', created: 0, total: 2 },
+        { month: '2025-02', created: 1, total: 3 },
       ])
     })
   })
@@ -546,20 +973,26 @@ describe('stats resolver', () => {
         p10: 0,
         median: 1,
         p90: 2,
+        max: 2,
       })
       assert.deepEqual(workspaces.articles, {
         mean: 0.3,
         p10: 0,
         median: 0,
         p90: 1,
+        max: 1,
       })
       assert.deepEqual(workspaces.years, [
         {
           year: 2024,
           created: 2,
-          members: { mean: 1.5, p10: 1, median: 1, p90: 2 },
-          articles: { mean: 0.5, p10: 0, median: 0, p90: 1 },
+          members: { mean: 1.5, p10: 1, median: 1, p90: 2, max: 2 },
+          articles: { mean: 0.5, p10: 0, median: 0, p90: 1, max: 1 },
         },
+      ])
+      assert.deepEqual(workspaces.months, [
+        { month: '2024-01', created: 1, total: 1 },
+        { month: '2024-02', created: 1, total: 2 },
       ])
     })
   })

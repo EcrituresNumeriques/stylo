@@ -27,23 +27,37 @@ function aggregate(model, pipeline) {
  * @returns {Promise<object>} the instance usage stats
  */
 async function computeStats() {
-  const [[users], [articles], activity, retention, [corpora], [workspaces]] =
-    await Promise.all([
-      aggregate(User, pipelines.users),
-      aggregate(Article, pipelines.articles),
-      aggregate(Article, pipelines.activity),
-      aggregate(Article, pipelines.retention),
-      aggregate(Corpus, pipelines.corpora),
-      aggregate(Workspace, pipelines.workspaces),
-    ])
+  const [
+    [users],
+    [articles],
+    [activity],
+    [retention],
+    [corpora],
+    [workspaces],
+  ] = await Promise.all([
+    aggregate(User, pipelines.users),
+    aggregate(Article, pipelines.articles),
+    aggregate(Article, pipelines.activity),
+    aggregate(Article, pipelines.retention),
+    aggregate(Corpus, pipelines.corpora),
+    aggregate(Workspace, pipelines.workspaces),
+  ])
+  const { createdLastTwelveMonths: articlesCreated, ...articleStats } = articles
+  const { createdLastTwelveMonths: corporaCreated, ...corpusStats } = corpora
   return {
     version,
     computedAt: new Date(),
     users,
-    articles,
-    activity,
-    retention,
-    corpora,
+    articles: articleStats,
+    activity: activity.years,
+    lastTwelveMonths: {
+      ...activity.lastTwelveMonths,
+      articlesCreated,
+      corporaCreated,
+    },
+    retention: retention.cohorts,
+    lifespan: retention.overall,
+    corpora: corpusStats,
     workspaces,
   }
 }
