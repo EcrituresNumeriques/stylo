@@ -46,6 +46,12 @@ type ArticlePreviewSettings {
   template: String
 }
 
+type ArticleSearchResult {
+  article: Article!
+  "Relevance computed by the text index (results are sorted by decreasing score)"
+  score: Float
+}
+
 type AuthProvider {
   id: String
   token: String
@@ -97,6 +103,12 @@ type CorpusArticle {
   move(order: Int): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
   order: Int
   remove: Corpus! @deprecated(reason: "Use removeCorpusArticle mutation at the root instead.")
+}
+
+type CorpusSearchResult {
+  corpus: Corpus!
+  "Relevance computed by the text index (results are sorted by decreasing score)"
+  score: Float
 }
 
 type InstanceActivityYearlyStats {
@@ -629,6 +641,22 @@ type Query {
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!] @deprecated(reason: "Use corpora to get a list of corpus. In the next major version, corpus will return a single corpus given its corpusId.")
   getUser(filter: UserFilter): User
+  """
+
+  Search the titles, contents and metadata of the articles and corpora the authenticated user has access to.
+  Results contain at least one of the words (or the exact phrase when quoted), sorted by relevance, at most 20 per type by default.
+  Words are stemmed and stop words ignored (by MongoDB), case and diacritics too.
+  The content searched is the Markdown of the working copy stored in the database (workingVersion.md).
+  Requires authentication (and membership of the workspace when filtering by workspace).
+  """
+  search(
+    "Language of the documents to search (ISO 639-1 code, such as fr or en): query words are stemmed in this language, so documents in other languages may not match, and results in this language rank higher. French when omitted; a language unknown to MongoDB is an error."
+    documentLanguage: String
+    filter: SearchFilterInput
+    "Maximum number of results per type (20 by default)"
+    limit: Int
+    query: String!
+  ): SearchResults!
   "Fetch an article [with an access key]"
   sharedArticle(accessKey: JWT, article: ID @deprecated(reason: "Use articleId instead."), articleId: ID): Article
   "Get a corpus [with an access key]"
@@ -647,6 +675,13 @@ type Query {
   workspace(workspaceId: ID): Workspace
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]!
+}
+
+type SearchResults {
+  "Matching articles, most relevant first (see limit)"
+  articles: [ArticleSearchResult!]!
+  "Matching corpora, most relevant first (see limit)"
+  corpora: [CorpusSearchResult!]!
 }
 
 type Tag {
@@ -950,6 +985,11 @@ input NewUserWithAuthInput {
   firstName: String
   institution: String
   lastName: String
+}
+
+input SearchFilterInput {
+  "Search only the articles and corpora of this workspace (everything the authenticated user has access to when omitted)"
+  workspaceId: ID
 }
 
 input SetArticlePreviewSettingsInput {

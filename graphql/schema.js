@@ -652,6 +652,30 @@ input CorpusFilterInput {
   workspaceId: ID
 }
 
+input SearchFilterInput {
+  "Search only the articles and corpora of this workspace (everything the authenticated user has access to when omitted)"
+  workspaceId: ID
+}
+
+type ArticleSearchResult {
+  article: Article!
+  "Relevance computed by the text index (results are sorted by decreasing score)"
+  score: Float
+}
+
+type CorpusSearchResult {
+  corpus: Corpus!
+  "Relevance computed by the text index (results are sorted by decreasing score)"
+  score: Float
+}
+
+type SearchResults {
+  "Matching articles, most relevant first (see limit)"
+  articles: [ArticleSearchResult!]!
+  "Matching corpora, most relevant first (see limit)"
+  corpora: [CorpusSearchResult!]!
+}
+
 input ImportArticleInput {
   title: String!
   content: String
@@ -704,6 +728,22 @@ type Query {
 
   "Get a corpus [with an access key]"
   sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
+
+  """
+  Search the titles, contents and metadata of the articles and corpora the authenticated user has access to.
+  Results contain at least one of the words (or the exact phrase when quoted), sorted by relevance, at most 20 per type by default.
+  Words are stemmed and stop words ignored (by MongoDB), case and diacritics too.
+  The content searched is the Markdown of the working copy stored in the database (workingVersion.md).
+  Requires authentication (and membership of the workspace when filtering by workspace).
+  """
+  search(
+    query: String!
+    filter: SearchFilterInput
+    "Language of the documents to search (ISO 639-1 code, such as fr or en): query words are stemmed in this language, so documents in other languages may not match, and results in this language rank higher. French when omitted; a language unknown to MongoDB is an error."
+    documentLanguage: String
+    "Maximum number of results per type (20 by default)"
+    limit: Int
+  ): SearchResults!
 }
 
 type Mutation {
