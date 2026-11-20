@@ -2,7 +2,7 @@ const Article = require('../models/article.js')
 const Corpus = require('../models/corpus.js')
 const User = require('../models/user.js')
 const Workspace = require('../models/workspace.js')
-const pipelines = require('../helpers/statsPipelines.js')
+const pipelines = require('../helpers/stats/index.js')
 
 // incorrect, because we also inject it at runtime, based on Git tag
 const { version } = require('../package.json')
