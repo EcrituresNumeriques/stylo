@@ -54,6 +54,7 @@ const pino = require('pino-http')({
 const schema = require('./schema')
 
 const { populateUserFromJWT } = require('./helpers/token.js')
+const { authorizeUpgrade } = require('./helpers/websocket-auth.js')
 
 const User = require('./models/user')
 const {
@@ -381,10 +382,15 @@ const server = app.listen(config.get('port'), (err) => {
   logger.info('Listening on http://localhost:%s', config.get('port'))
 })
 
-server.on('upgrade', (request, socket, head) => {
+server.on('upgrade', async (request, socket, head) => {
+  const authorized = await authorizeUpgrade(request, jwtSecret)
+  if (!authorized) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
+    socket.destroy()
+    return
+  }
+
   wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-    // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-    // TODO: check token and permissions
     wss.emit('connection', ws, request)
   })
 })

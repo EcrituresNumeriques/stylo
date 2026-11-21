@@ -42,6 +42,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
+  const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector(
     (state) => ({
       id: state.activeUser.id,
@@ -106,6 +107,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
     } = collaborating.connect({
       roomName: articleId,
       websocketEndpoint,
+      sessionToken,
       user: writerInfo,
       onChange: handleWritersUpdated,
       onStatusUpdated: handleWebsocketStatusUpdated,
@@ -121,7 +123,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
         wsProvider.destroy()
       }
     }
-  }, [articleId, websocketEndpoint])
+  }, [articleId, websocketEndpoint, sessionToken])
 
   return {
     websocketStatus,
