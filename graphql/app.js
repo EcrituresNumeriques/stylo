@@ -5,6 +5,7 @@ const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
+const migrate = require('db-migrate')
 const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
@@ -372,19 +373,31 @@ yjsUtils.setPersistence({
 })
 wss.on('connection', yjsUtils.setupWSConnection)
 
-const server = app.listen(config.get('port'), (err) => {
-  if (err) {
-    logger.error({ err }, 'Unable to connect to MongoDB.')
-    throw err
-  }
+async function runMigrations() {
+  const migrateInstance = migrate.getInstance(true, { cwd: __dirname })
+  await migrateInstance.up()
+}
 
-  logger.info('Listening on http://localhost:%s', config.get('port'))
-})
+runMigrations()
+  .then(() => {
+    const server = app.listen(config.get('port'), (err) => {
+      if (err) {
+        logger.error({ err }, 'Unable to connect to MongoDB.')
+        throw err
+      }
 
-server.on('upgrade', (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-    // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-    // TODO: check token and permissions
-    wss.emit('connection', ws, request)
+      logger.info('Listening on http://localhost:%s', config.get('port'))
+    })
+
+    server.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
+        // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
+        // TODO: check token and permissions
+        wss.emit('connection', ws, request)
+      })
+    })
   })
-})
+  .catch((err) => {
+    logger.error({ err }, 'Unable to run database migrations.')
+    process.exit(1)
+  })

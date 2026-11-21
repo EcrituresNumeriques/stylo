@@ -10,15 +10,13 @@
   },
   "scripts": {
     "delete-user": "node bin/delete-user.mjs",
-    "generate-service-token": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} DOTENV_CONFIG_QUIET=true node -r dotenv/config -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
+    "generate-service-token": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} DOTENV_CONFIG_QUIET=true node -r dotenv/config bin/generate-service-token.js",
     "test": "c8 --reporter=lcov node --test '**/*.test.js'",
     "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config ../node_modules/.bin/db-migrate up",
     "lint": "biome ci .",
     "lint:fix": "biome check --write .",
     "posttest": "npm run lint",
-    "prestart": "npm run migrations",
     "start": "node app.js",
-    "preprod": "npm run migrations",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",

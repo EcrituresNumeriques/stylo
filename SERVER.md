@@ -92,5 +92,5 @@ To run them manually:
 
 ```bash
 cd ~/stylo
-docker compose exec graphql-stylo npm run migrations
+docker compose exec graphql-stylo node ../node_modules/db-migrate/bin/db-migrate up
 ```
