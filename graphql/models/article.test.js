@@ -90,3 +90,22 @@ describe('remove', () => {
     assert.notStrictEqual(chapter2Version, null)
   })
 })
+
+describe('searchLanguage', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
+  test('is computed when an article is saved', async () => {
+    const article = await Article.create({
+      title: 'Langue',
+      workingVersion: { metadata: { lang: 'en' } },
+    })
+    assert.equal((await Article.findById(article.id)).searchLanguage, 'en')
+  })
+})

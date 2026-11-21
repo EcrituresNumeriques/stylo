@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const { searchable } = require('../plugins/search.js')
+
+/** @typedef {import('./corpus')} Corpus */
+/** @typedef {import('./user')} User */
+/** @typedef {import('mongoose').Types.ObjectId} ObjectId */
+
 const CorpusArticleSchema = new Schema({
   article: {
     type: mongoose.Schema.Types.ObjectId,
@@ -43,12 +49,30 @@ const corpusSchema = new Schema(
     timestamps: true,
     statics: {
       /**
+       * Filter of the corpora a user has access to: their own corpora outside
+       * workspaces or the corpora of the workspaces; only the latter without user.
+       *
+       * @param {{ _id: ObjectId }[]} workspaces
+       * @param {User} [user]
+       * @returns {import('mongoose').FilterQuery<Corpus>}
+       */
+      accessFilter(workspaces, user) {
+        const inWorkspaces = {
+          workspace: { $in: workspaces.map(({ _id }) => _id) },
+        }
+        if (!user) {
+          return inWorkspaces
+        }
+        return { $or: [{ creator: user._id, workspace: null }, inWorkspaces] }
+      },
+
+      /**
        * Retrieves corpuses owned by a given user in a given workspace.
        *
        * @param {object} params
-       * @param {import('./user')} params.user
+       * @param {User} params.user
        * @param {import('./workspace')} [params.workspace]
-       * @returns {mongoose.Query<import('./corpus')[], import('./corpus')>} corpuses
+       * @returns {mongoose.Query<Corpus[], Corpus>} corpuses
        */
       findByUser({ user, workspace = null }) {
         return this.find({ creator: user._id, workspace }).sort([
@@ -59,7 +83,7 @@ const corpusSchema = new Schema(
       /**
        * Removes an article from all corpuses where it appears.
        *
-       * @param {import('mongoose').Types.ObjectId | string} articleId article unique identifier
+       * @param {ObjectId | string} articleId article unique identifier
        * @param {string} [workspaceId] optional workspace identifier
        * @returns {Promise<import('mongodb').UpdateResult>}
        */
@@ -83,6 +107,8 @@ const corpusSchema = new Schema(
     },
   }
 )
+
+corpusSchema.plugin(searchable, { langPath: 'metadata.lang' })
 
 corpusSchema.methods.rename = async function rename(name) {
   this.name = name
