@@ -241,7 +241,6 @@ Vous pouvez éditer cet article pour vous entraîner. Une documentation plus com
       ],
       authors: [
         {
-          affiliations: '',
           biography: '',
           email: '',
           foaf: '',
@@ -253,7 +252,6 @@ Vous pouvez éditer cet article pour vous entraîner. Une documentation plus com
           wikidata: '',
         },
         {
-          affiliations: '',
           biography: '',
           email: '',
           foaf: '',
