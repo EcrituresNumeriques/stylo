@@ -11,6 +11,10 @@ on:
         description: Trigger deploy?
         type: boolean
         default: true
+      os-upgrade:
+        description: Upgrade Ubuntu if ubuntu_version changed (VM snapshot taken, downtime announced)
+        type: boolean
+        default: false
 
 jobs:
   release:
@@ -51,6 +55,7 @@ jobs:
     uses: EcrituresNumeriques/stylo/.github/workflows/deploy-tag.yml@master
     with:
       release-version: ${{ inputs.version }}
+      os-upgrade: ${{ inputs.os-upgrade }}
     secrets: inherit
     if: ${{ inputs.trigger-deploy }}
     needs: [call-build-deploy-docker]
