@@ -6,6 +6,40 @@ const { createJWTToken } = require('../helpers/token.js')
 const config = require('../config.js')
 
 /**
+ * Resolves the origin to redirect back to after authentication, from the
+ * `Origin` or `Referer` request header.
+ *
+ * The header is attacker-controlled (a third-party page linking to
+ * `/login/<service>` sets its own `Referer`), so the resulting origin is
+ * only trusted when it exactly matches one of the configured CORS origins
+ * (`security.cors.origin`) — the same allow-list used to decide whether a
+ * cross-origin request is allowed to read the session cookie.
+ *
+ * @param {import('express').Request} req
+ * @return {string|null} the allowed origin, or `null` if the header is
+ *   missing, malformed, or not in the allow-list
+ */
+function resolveAllowedOrigin(req) {
+  const headerValue = req.header('origin') || req.header('referer')
+  if (!headerValue) {
+    return null
+  }
+
+  let candidate
+  try {
+    const url = new URL(headerValue)
+    candidate = `${url.protocol}//${url.host}`
+  } catch {
+    return null
+  }
+
+  const allowedOrigins = config.get('security.cors.origin')
+  const isAllowed = allowedOrigins.some((origin) => origin.test(candidate))
+
+  return isAllowed ? candidate : null
+}
+
+/**
  * Help auth handler recognize if we are in an account creation
  * or in an account linking process.
  *
@@ -15,11 +49,14 @@ const config = require('../config.js')
  * @return {import('express').RequestHandler}
  */
 function stampAuth(service, { alreadyLoggedIn = false } = {}) {
-  return function handler(req, _res, next) {
-    // enables dynamic redirect based on the Styll instance which originated the request
+  return function handler(req, res, next) {
+    // enables dynamic redirect based on the Stylo instance which originated the request
     // this way it also works on dynamic netlify deployments
-    const origin = new URL(req.header('origin') || req.header('referer'))
-    req.session.origin = `${origin.protocol}//${origin.host}`
+    const origin = resolveAllowedOrigin(req)
+    if (!origin) {
+      return res.status(400).send('Invalid or disallowed Origin/Referer header.')
+    }
+    req.session.origin = origin
 
     delete req.session.fromAccount
 
@@ -73,6 +110,7 @@ async function onAuthSuccess(req, res) {
 }
 
 module.exports = {
+  resolveAllowedOrigin,
   stampAuth,
   onAuthFailure,
   onAuthSuccess,
