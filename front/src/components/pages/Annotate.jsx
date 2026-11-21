@@ -9,7 +9,6 @@ import { getCorpusPreview } from '../../hooks/Corpus.graphql'
 import useFetchData from '../../hooks/graphql.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import { Loading } from '../molecules/index.js'
-import { toYaml } from '../organisms/metadata/yaml.js'
 
 import './Annotate.scss'
 
@@ -40,7 +39,7 @@ const strategies = new Map([
         const root = data.version ?? data.sharedArticle?.workingVersion
         return {
           md_content: root?.md,
-          yaml_content: root?.yaml,
+          metadata: root?.metadata,
           bib_content: root?.bib,
         }
       },
@@ -65,23 +64,24 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        return data.sharedCorpus?.articles?.reduce(
-          (obj, { article }, index) => ({
-            md_content: `${obj.md_content}\n\n\n${article.workingVersion.md}`,
-            yaml_content:
-              index === 0
-                ? toYaml(data.sharedCorpus?.metadata) +
-                  '\n\n' +
-                  article.workingVersion.yaml
-                : `${obj.yaml_content}\n\n${article.workingVersion.yaml}`,
-            bib_content: `${obj.bib_content}\n\n${article.workingVersion.bib}`,
-          }),
-          {
-            md_content: '',
-            yaml_content: '',
-            bib_content: '',
-          }
-        )
+        const articles = data.sharedCorpus?.articles
+        if (!articles) {
+          return {}
+        }
+        return {
+          md_content: articles
+            .map(({ article }) => `\n\n\n${article.workingVersion.md}`)
+            .join(''),
+          // les métadonnées du corpus priment, puis celles des articles dans l'ordre
+          // (comme le faisait auparavant la concaténation des blocs YAML)
+          metadata: [
+            data.sharedCorpus.metadata,
+            ...articles.map(({ article }) => article.workingVersion.metadata),
+          ].reduceRight((merged, metadata) => ({ ...merged, ...metadata }), {}),
+          bib_content: articles
+            .map(({ article }) => `\n\n${article.workingVersion.bib}`)
+            .join(''),
+        }
       },
       title(data) {
         return data.sharedCorpus?.name

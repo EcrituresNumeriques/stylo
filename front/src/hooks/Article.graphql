@@ -236,10 +236,15 @@ query getArticlePreview($id: ID!, $version: ID!, $hasVersion: Boolean!) {
     ...basicArticleFields
     ...editableArticleFields
     ...previewArticleFields
+
+    workingVersion {
+      metadata
+    }
   }
 
   version(versionId: $version) @include(if: $hasVersion) {
     ...articleVersionFields
+    metadata
   }
 }
 

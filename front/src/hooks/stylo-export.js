@@ -59,7 +59,7 @@ export default function useStyloExport({ bibliography_style, bib: excerpt }) {
  * @param {{
  *   md_content: string,
  *   bib_content: string,
- *   yaml_content: string,
+ *   metadata?: object,
  *   with_toc?: boolean,
  *   with_nocite?: boolean,
  *   with_link_citations?: boolean
@@ -69,7 +69,7 @@ export default function useStyloExport({ bibliography_style, bib: excerpt }) {
 export function useStyloExportPreview({
   md_content,
   bib_content,
-  yaml_content,
+  metadata,
   with_toc = false,
   with_nocite = false,
   with_link_citations = false,
@@ -87,7 +87,8 @@ export function useStyloExportPreview({
         {
           bibliography_style: 'chicagomodified',
           md_content,
-          yaml_content,
+          // le service d'export attend les métadonnées au format JSON
+          json_content: JSON.stringify(metadata ?? {}),
           bib_content,
           with_toc,
           with_nocite,
