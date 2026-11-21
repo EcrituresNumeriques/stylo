@@ -93,13 +93,13 @@ export default function CollaborativeTextEditor({
     'article'
   )
 
+  const { metadata } = useArticleMetadata({ articleId, versionId })
+
   const { html: __html, isLoading: isPreviewLoading } = useStyloExportPreview({
     ...(mode === 'preview'
       ? {
           md_content: versionId ? version.md : yText?.toString(),
-          yaml_content: versionId
-            ? version.yaml
-            : article?.workingVersion?.yaml,
+          metadata,
           bib_content: versionId ? version.bib : article?.workingVersion?.bib,
         }
       : {}),
@@ -108,7 +108,6 @@ export default function CollaborativeTextEditor({
     with_link_citations: true,
   })
 
-  const { metadata } = useArticleMetadata({ articleId, versionId })
   const validationContext = useMemo(() => ({ metadata }), [metadata])
 
   const editorRef = useRef(null)

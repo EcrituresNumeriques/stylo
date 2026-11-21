@@ -72,7 +72,7 @@ npm run dev
 ```
 
 L'[interface web de Stylo](./front) est alors disponible sur ([`localhost:3000`](http://localhost:3000)).<br>
-L'[API GraphQL](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/), le service d'export sur [`localhost:3080`](http://localhost:3080/) et l'API Pandoc sur [`localhost:3090`](http://localhost:3090/).
+L'[API GraphQL](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/), le [service d'export](https://gitlab.huma-num.fr/ecrinum/stylo/stylo-export) sur [`localhost:3080`](http://localhost:3080/) et l'[API Pandoc](https://gitlab.huma-num.fr/ecrinum/stylo/pandoc-api) sur [`localhost:3090`](http://localhost:3090/).
 
 ## Gérer les dépendances
 

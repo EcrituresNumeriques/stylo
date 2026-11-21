@@ -13,11 +13,10 @@ export default function Preview({ preview, metadata, text, bibliography }) {
   const [isLoading, setIsLoading] = useState(true)
   const { template, stylesheet } = preview
   const md_content = text
-  const yaml_content = metadata
   const bib_content = bibliography
   const { html } = useStyloExportPreview({
     md_content,
-    yaml_content,
+    metadata,
     bib_content,
   })
 

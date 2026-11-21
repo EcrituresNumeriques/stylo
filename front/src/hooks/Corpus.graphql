@@ -94,7 +94,7 @@ query getCorpusPreview(
         workingVersion {
           md
           bib
-          yaml(options: { strip_markdown: true })
+          metadata
         }
       }
     }
