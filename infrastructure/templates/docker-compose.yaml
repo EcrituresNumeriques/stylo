@@ -54,6 +54,9 @@ services:
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_BASE_URLS={{ export_allowed_instance_base_urls }}
+      # Not a secret (same value as in the stylo-export image); `environment`
+      # takes precedence over `.env`, where `SENTRY_DSN` is the front's DSN.
+      - SENTRY_EXPORT_DSN=https://c29235b58268cacf9a64e32d68431307@o4507130700496896.ingest.de.sentry.io/4512470314975312
     ports:
       - 127.0.0.1:3080:8001
     extra_hosts:
