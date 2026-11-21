@@ -65,5 +65,9 @@ services:
   pandoc-api:
     image: 'davidbgk/pandoc-api:{{pandoc_api_version}}'
     container_name: 'pandoc-api'
+    environment:
+      # The service receives no `.env` (no `env_file`), so `SENTRY_ENVIRONMENT`
+      # (dev/prod, from the inventory) must be set here for the Sentry SDK.
+      - SENTRY_ENVIRONMENT={{env}}
     ports:
       - 127.0.0.1:3090:8000
