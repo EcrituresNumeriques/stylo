@@ -1,13 +1,10 @@
-const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 
 const Version = require('../models/version')
 const Article = require('../models/article')
 const { NotFoundError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
-const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
-const { toLegacyFormat } = require('../helpers/metadata')
 const { toEntries } = require('../helpers/bibtex')
 
 module.exports = {
@@ -59,14 +56,6 @@ module.exports = {
     bibliography({ bib }) {
       // the bibliography may be null: the field is non-nullable, return an empty list
       return toEntries(bib ?? '')
-    },
-
-    yaml({ metadata = {} }, { options }) {
-      const legacyMetadata = toLegacyFormat(metadata)
-      const yaml = YAML.dump(legacyMetadata)
-      return options?.strip_markdown
-        ? reformat(yaml, { replaceBibliography: false })
-        : yaml
     },
 
     async article(version, _args, context) {

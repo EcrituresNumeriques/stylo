@@ -93,7 +93,7 @@ query articles {
 }
 ```
 
-Para este tercero ejemplo, una vez más necesitas introducir el identificador de tu artículo en el espacio apropiado. Esta vez GraphQL te mostrará el título de tu artículo, quienes contribuyeron a él, ¡y también el Markdown, Yaml y BibTex que contiene! 
+Para este tercero ejemplo, una vez más necesitas introducir el identificador de tu artículo en el espacio apropiado. Esta vez GraphQL te mostrará el título de tu artículo, quienes contribuyeron a él, ¡y también el Markdown, los metadatos (en JSON) y el BibTeX que contiene! 
 
 **Ejemplo 3:**
 
@@ -102,7 +102,7 @@ query {
     article(articleId: "ID ARTÍCULO"){
     title
     contributors{user{displayName}}
-    workingVersion{md yaml bib}
+    workingVersion{md metadata bib}
     }
 }
 ```

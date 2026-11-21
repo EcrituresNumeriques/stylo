@@ -1,5 +1,4 @@
 const { NotFoundError } = require('../helpers/errors.js')
-const YAML = require('js-yaml')
 const { Y, getTextFromYjsDoc } = require('../helpers/yjs-utils.mjs')
 
 const Article = require('../models/article.js')
@@ -11,14 +10,12 @@ const Version = require('../models/version.js')
 const isUser = require('../policies/isUser.js')
 const { requireArgument } = require('../helpers/arguments.js')
 const { getWorkspace } = require('./workspaceResolver.js')
-const { reformat } = require('../helpers/metadata.js')
 const {
   computeMajorVersion,
   computeMinorVersion,
 } = require('../helpers/versions.js')
 const { previewEntries } = require('../helpers/bibliography.js')
 const { logger } = require('../logger.js')
-const { toLegacyFormat } = require('../helpers/metadata.js')
 const Sentry = require('@sentry/node')
 const {
   NotAuthenticatedError,
@@ -397,7 +394,7 @@ module.exports = {
     /**
      * Import an article from external content as the current user.
      * Creates a new article with the provided title, Markdown body, BibTeX bibliography,
-     * and YAML metadata stored in the working version.
+     * and JSON metadata stored in the working version.
      *
      * @param {null} _root
      * @param {{ input: { title: string, content?: string, bibliography?: string, metadata?: object } }} args
@@ -728,13 +725,6 @@ module.exports = {
     bibliography({ bib }) {
       // the bibliography may be null: the field is non-nullable, return an empty list
       return toEntries(bib ?? '')
-    },
-    yaml({ metadata = {} }, { options }) {
-      const legacyMetadata = toLegacyFormat(metadata)
-      const yaml = YAML.dump(legacyMetadata)
-      return options?.strip_markdown
-        ? reformat(yaml, { replaceBibliography: false })
-        : yaml
     },
   },
 }

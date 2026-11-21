@@ -280,7 +280,7 @@ module.exports = {
         thisUser.set('email', email)
       }
 
-      ;['displayName', 'firstName', 'lastName', 'institution', 'yaml'].forEach(
+      ;['displayName', 'firstName', 'lastName', 'institution'].forEach(
         (field) => {
           if (Object.hasOwn(details, field)) {
             /* eslint-disable security/detect-object-injection */

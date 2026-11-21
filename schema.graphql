@@ -555,7 +555,6 @@ type Version {
   type: String
   updatedAt: DateTime
   version: Int
-  yaml(options: YamlFormattingInput): String
 }
 
 type WorkingVersion {
@@ -565,7 +564,6 @@ type WorkingVersion {
   md: String
   metadata: JSON
   metadataFormType: String
-  yaml(options: YamlFormattingInput): String
 }
 
 type Workspace {
@@ -867,8 +865,4 @@ input WorkingVersionInput {
   md: String
   metadata: JSON
   metadataFormType: String
-}
-
-input YamlFormattingInput {
-  strip_markdown: Boolean
 }

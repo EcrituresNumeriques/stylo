@@ -127,7 +127,6 @@ type WorkingVersion {
   md: String
   metadata: JSON
   metadataFormType: String
-  yaml (options: YamlFormattingInput): String
 }
 
 type Version {
@@ -140,7 +139,6 @@ type Version {
   type: String
   metadata: JSON
   metadataFormType: String
-  yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
   bibliography: [BibliographyEntry!]!
@@ -287,10 +285,6 @@ input UpdateArticleWorkingVersionInput {
   md: String
   metadata: JSON
   metadataFormType: String
-}
-
-input YamlFormattingInput {
-  strip_markdown: Boolean
 }
 
 "Deprecated: use CreateUserInput with the input argument of createUser instead."

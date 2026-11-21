@@ -117,7 +117,7 @@ Chaque version de votre texte peut être prévisualisée et annotée avec l'outi
 Plusieurs types d'exports sont disponibles :
 
 - XML Erudit : exporte un fichier xml compatible avec le schéma Erudit
-- Zip : comprend les trois sources de l'article : yaml (métadonnées), bibtex (bibliographie), md (corps de texte)
+- Zip : comprend les trois sources de l'article : json (métadonnées), bibtex (bibliographie), md (corps de texte)
 - ...
 
 ## Annotations sémantiques
