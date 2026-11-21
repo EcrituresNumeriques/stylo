@@ -83,6 +83,66 @@ describe('schema', () => {
     assert.deepEqual(data.corpora, [{ id: corpus.id, _id: corpus.id }])
   })
 
+  test('returns the metadata as JSON or YAML', async () => {
+    const user = await User.create({ email: 'schema-metadata@huma-num.fr' })
+    const metadata = { title: 'Stylo', keywords: ['édition'] }
+    const version = await Version.create({ owner: user._id, metadata })
+    const article = await Article.create({
+      title: 'Article',
+      owner: user._id,
+      versions: [version._id],
+      workingVersion: { metadata },
+    })
+    await Corpus.create({
+      name: 'Corpus',
+      creator: user._id,
+      articles: [],
+      metadata,
+    })
+
+    const { data, errors } = await graphql({
+      schema,
+      source: `query ($articleId: ID!, $versionId: ID!) {
+        article(articleId: $articleId) {
+          workingVersion {
+            json: metadata
+            explicitJson: metadata(format: json)
+            yaml: metadata(format: yaml)
+          }
+        }
+        version(versionId: $versionId) {
+          json: metadata
+          yaml: metadata(format: yaml)
+        }
+        corpora {
+          json: metadata
+          yaml: metadata(format: yaml)
+        }
+      }`,
+      variableValues: { articleId: article.id, versionId: version.id },
+      contextValue: {
+        user,
+        userId: user.id,
+        token: { _id: user.id },
+        loaders: createLoaders(),
+      },
+    })
+
+    const yaml = `---
+keywords:
+  - édition
+title: Stylo
+---`
+    assert.equal(errors, undefined)
+    assert.deepEqual(data.article.workingVersion, {
+      json: metadata,
+      explicitJson: metadata,
+      yaml,
+    })
+    assert.deepEqual(data.version, { json: metadata, yaml })
+    assert.deepEqual(data.corpora, [{ json: metadata, yaml }])
+  })
+
   test('resolves the non-null lists and mutation results', async () => {
     const user = await User.create({ email: 'schema-non-null@huma-num.fr' })
     // an article without bibliography, tag, version, contributor or workspace

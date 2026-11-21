@@ -15,6 +15,7 @@ const {
   computeMinorVersion,
 } = require('../helpers/versions.js')
 const { previewEntries } = require('../helpers/bibliography.js')
+const { formatMetadata } = require('../helpers/yaml.js')
 const { logger } = require('../logger.js')
 const Sentry = require('@sentry/node')
 const {
@@ -699,6 +700,9 @@ module.exports = {
   },
 
   WorkingVersion: {
+    metadata({ metadata }, { format }) {
+      return formatMetadata(metadata, format)
+    },
     md({ ydoc = '', articleId }) {
       try {
         return getTextFromYjsDoc(ydoc)

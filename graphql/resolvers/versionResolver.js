@@ -5,6 +5,7 @@ const Article = require('../models/article')
 const { NotFoundError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 const { previewEntries } = require('../helpers/bibliography')
+const { formatMetadata } = require('../helpers/yaml.js')
 const { toEntries } = require('../helpers/bibtex')
 
 module.exports = {
@@ -47,6 +48,10 @@ module.exports = {
     async rename(version, { name }) {
       await version.rename(name)
       return true
+    },
+
+    metadata({ metadata }, { format }) {
+      return formatMetadata(metadata, format)
     },
 
     bibPreview({ bib }) {

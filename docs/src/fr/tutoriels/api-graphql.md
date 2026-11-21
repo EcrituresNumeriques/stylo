@@ -107,6 +107,8 @@ query {
 }
 ```
 
+Pour obtenir les métadonnées au format YAML plutôt qu'en JSON, remplacez `metadata` par `metadata(format: yaml)`.
+
 Un dernier exemple pour la route, qui peut vous être utile dans le cadre des données de Stylo et de leurs organisations en "corpus" : une requête pour avoir les noms de tous les articles d'un corpus, avec leurs id et les dernières versions de leurs contenus. Vous pouvez trouver l'ID d'un corpus sur son URL de « prévisualisation », sur l'application Stylo.
 
 **Exemple 4 :**

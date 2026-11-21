@@ -82,7 +82,8 @@ type Corpus {
   delete: Corpus! @deprecated(reason: "Use deleteCorpus mutation at the root instead.")
   description: String
   id: ID!
-  metadata: JSON
+  "Metadata of the corpus, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   name: String!
   rename(name: String!): Corpus @deprecated(reason: "Use updateCorpus mutation at the root instead.")
   type: CorpusType!
@@ -546,7 +547,8 @@ type Version {
   id: ID!
   md: String
   message: String
-  metadata: JSON
+  "Metadata of the version, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   metadataFormType: String
   name: String
   owner: User
@@ -562,7 +564,8 @@ type WorkingVersion {
   bibPreview: String
   bibliography: [BibliographyEntry!]!
   md: String
-  metadata: JSON
+  "Metadata of the working version, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   metadataFormType: String
 }
 
@@ -636,6 +639,14 @@ enum CorpusType {
   journal
   neutral
   thesis
+}
+
+"Format of the metadata returned by the metadata field of a version or a corpus"
+enum MetadataFormat {
+  "Metadata as a JSON object"
+  json
+  "Metadata as a YAML metadata block (delimited by ---), or an empty string when there is no metadata"
+  yaml
 }
 
 "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
