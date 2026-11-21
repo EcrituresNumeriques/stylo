@@ -59,6 +59,28 @@ describe('user resolver', () => {
     })
   })
 
+  describe('User.authProviders', () => {
+    test('exposes the access token only to the owner of the account', async () => {
+      const user = await User.create({
+        email: 'user@example.com',
+        authProviders: {
+          zotero: { id: 'remote-id', token: 'secret-token' },
+        },
+      })
+
+      const ownView = UserResolver.authProviders(user, {}, {
+        userId: user._id.toString(),
+      })
+      assert.strictEqual(ownView.zotero.token, 'secret-token')
+
+      const otherView = UserResolver.authProviders(user, {}, {
+        userId: new ObjectId().toString(),
+      })
+      assert.strictEqual(otherView.zotero.token, null)
+      assert.strictEqual(otherView.zotero.id, 'remote-id')
+    })
+  })
+
   describe('setAuthToken', () => {
     test('throws an error when no pendingRegistration data in session', async () => {
       const user = new User({ email: 'user1@example.com' })
