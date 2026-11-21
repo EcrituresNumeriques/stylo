@@ -334,11 +334,24 @@ module.exports = {
       return contacts.filter(Boolean)
     },
 
-    authProviders(user) {
+    authProviders(user, _args, context) {
+      // the access token to a third-party service (Zotero, Hypothesis, HumanID) must never
+      // leak to another user: only the owner of the account may read it back
+      const isOwner = context.userId === user._id.toString()
+      const sanitize = (provider) => {
+        if (!provider) {
+          return provider
+        }
+        return {
+          id: provider.id,
+          updatedAt: provider.updatedAt,
+          token: isOwner ? provider.token : null,
+        }
+      }
       return {
-        humanid: user.get('authProviders.humanid'),
-        hypothesis: user.get('authProviders.hypothesis'),
-        zotero: user.get('authProviders.zotero'),
+        humanid: sanitize(user.get('authProviders.humanid')),
+        hypothesis: sanitize(user.get('authProviders.hypothesis')),
+        zotero: sanitize(user.get('authProviders.zotero')),
       }
     },
 
