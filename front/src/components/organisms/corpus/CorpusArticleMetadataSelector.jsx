@@ -20,7 +20,7 @@ export default function CorpusArticleMetadataSelector({
   const { t } = useTranslation('corpus', { useSuspense: false })
   const { corpus, error, isLoading } = useCorpusArticles({ corpusId })
   const articles =
-    corpus?.[0]?.articles?.map((item) => {
+    corpus?.articles?.map((item) => {
       const article = item.article
       return { ...article }
     }) ?? []
