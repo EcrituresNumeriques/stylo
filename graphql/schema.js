@@ -127,6 +127,7 @@ type WorkingVersion {
   md: String
   metadata: JSON
   metadataFormType: String
+  metadataFormSchemas: [WorkspaceFormMetadata]
   yaml (options: YamlFormattingInput): String
 }
 
