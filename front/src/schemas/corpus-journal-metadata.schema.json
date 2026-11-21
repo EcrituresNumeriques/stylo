@@ -16,7 +16,10 @@
           "title": "First name"
         },
         "affiliations": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "Affiliations"
         },
         "biography": {

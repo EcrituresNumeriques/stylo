@@ -35,7 +35,13 @@
           "ui:title": "people.forename"
         },
         "affiliations": {
-          "ui:title": "people.affiliations"
+          "ui:title": "people.affiliations",
+          "ui:add-item-title": "people.affiliations.itemAdd",
+          "ui:className": "affiliations",
+          "items": {
+            "ui:label": false,
+            "ui:className": "affiliations"
+          }
         },
         "biography": {
           "ui:title": "people.biography",
