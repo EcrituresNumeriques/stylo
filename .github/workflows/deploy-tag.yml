@@ -123,16 +123,31 @@ jobs:
         env:
           LATEST_COMMIT_MESSAGE:
 
-      - name: Record stylo-export deploy in Sentry
+      - name: Record companion service deploys in Sentry
         run: |
-          VERSION=$(grep -E '^stylo_export_version=' infrastructure/inventories/prod | cut -d= -f2)
-          echo "Recording stylo-export v${VERSION} production deploy"
-          # The release was already cut in the stylo-export repository (`make
-          # sentry-release`); recreate it defensively, then finalize it and
-          # record the deploy (sentry-cli 3.x: `releases deploys new`).
-          sentry-cli releases new "${VERSION}" -p stylo-export || true
-          sentry-cli releases finalize "${VERSION}" -p stylo-export
-          sentry-cli releases deploys new "${VERSION}" --env production -p stylo-export
+          # The deployed versions are pinned in the prod inventory, the same
+          # values the compose file uses to pull the images. Releases are cut
+          # in each repository (`make sentry-release`); recreate them
+          # defensively, then finalize and record the deploy (sentry-cli 3.x:
+          # `releases deploys new`).
+          EXPORT_VERSION=$(grep -E '^stylo_export_version=' infrastructure/inventories/prod | cut -d= -f2)
+          PANDOC_VERSION=$(grep -E '^pandoc_api_version=' infrastructure/inventories/prod | cut -d= -f2)
+          if [ -n "${EXPORT_VERSION}" ]; then
+            echo "Recording stylo-export v${EXPORT_VERSION} production deploy"
+            sentry-cli releases new "${EXPORT_VERSION}" -p stylo-export || true
+            sentry-cli releases finalize "${EXPORT_VERSION}" -p stylo-export
+            sentry-cli releases deploys new "${EXPORT_VERSION}" --env production -p stylo-export
+          else
+            echo "No stylo_export_version in inventory; skipping stylo-export"
+          fi
+          if [ -n "${PANDOC_VERSION}" ]; then
+            echo "Recording pandoc-api v${PANDOC_VERSION} production deploy"
+            sentry-cli releases new "${PANDOC_VERSION}" -p pandoc-api || true
+            sentry-cli releases finalize "${PANDOC_VERSION}" -p pandoc-api
+            sentry-cli releases deploys new "${PANDOC_VERSION}" --env production -p pandoc-api
+          else
+            echo "No pandoc_api_version in inventory; skipping pandoc-api"
+          fi
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
