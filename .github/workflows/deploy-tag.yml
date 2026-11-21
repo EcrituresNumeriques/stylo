@@ -123,6 +123,20 @@ jobs:
         env:
           LATEST_COMMIT_MESSAGE:
 
+      - name: Record stylo-export deploy in Sentry
+        run: |
+          VERSION=$(grep -E '^stylo_export_version=' infrastructure/inventories/prod | cut -d= -f2)
+          echo "Recording stylo-export v${VERSION} production deploy"
+          # The release was already cut in the stylo-export repository (`make
+          # sentry-release`); recreate it defensively, then finalize it and
+          # record the deploy (sentry-cli 3.x: `releases deploys new`).
+          sentry-cli releases new "${VERSION}" -p stylo-export || true
+          sentry-cli releases finalize "${VERSION}" -p stylo-export
+          sentry-cli releases deploys new "${VERSION}" --env production -p stylo-export
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+
   # Passe en « Fini·e » et ferme les issues « Validé » du projet « Backlog Stylo »
   # dont les PR sont incluses dans la version déployée.
   backlog:
