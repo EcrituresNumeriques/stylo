@@ -26,7 +26,7 @@ const {
   Mutation: CorpusMutation,
 } = require('./corpusResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
-const { InstanceUsageStats, Query: StatsQuery } = require('./statsResolver')
+const { Query: StatsQuery } = require('./statsResolver')
 const {
   EmailAddressResolver,
   JWTResolver,
@@ -61,7 +61,6 @@ module.exports = {
   Article: withId(Article),
   Tag: withId(Tag),
   Version: withId(Version),
-  InstanceUsageStats,
   WorkingVersion,
   Workspace: withId(Workspace),
   Corpus: withId(Corpus),

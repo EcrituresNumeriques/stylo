@@ -1,60 +1,100 @@
 const Article = require('../models/article.js')
+const Corpus = require('../models/corpus.js')
 const User = require('../models/user.js')
+const Workspace = require('../models/workspace.js')
+const pipelines = require('../helpers/stats/index.js')
 
 // incorrect, because we also inject it at runtime, based on Git tag
 const { version } = require('../package.json')
 
+const CACHE_DURATION_IN_MS = 24 * 60 * 60 * 1000
+
+/** @type {{ expiresAt: number, stats: Promise<object> }|null} */
+let cache = null
+
+/**
+ * @param {import('mongoose').Model} model
+ * @param {object[]} pipeline
+ * @returns {Promise<object[]>} the documents returned by the pipeline
+ */
+function aggregate(model, pipeline) {
+  return model.aggregate(pipeline).allowDiskUse(true).exec()
+}
+
+/**
+ * Computes the instance usage stats: every computation happens in MongoDB.
+ *
+ * @returns {Promise<object>} the instance usage stats
+ */
+async function computeStats() {
+  const [
+    [users],
+    [articles],
+    [activity],
+    [retention],
+    [corpora],
+    [workspaces],
+  ] = await Promise.all([
+    aggregate(User, pipelines.users),
+    aggregate(Article, pipelines.articles),
+    aggregate(Article, pipelines.activity),
+    aggregate(Article, pipelines.retention),
+    aggregate(Corpus, pipelines.corpora),
+    aggregate(Workspace, pipelines.workspaces),
+  ])
+  const { createdLastTwelveMonths: articlesCreated, ...articleStats } = articles
+  const { createdLastTwelveMonths: corporaCreated, ...corpusStats } = corpora
+  return {
+    version,
+    computedAt: new Date(),
+    users,
+    articles: articleStats,
+    activity: activity.years,
+    lastTwelveMonths: {
+      ...activity.lastTwelveMonths,
+      articlesCreated,
+      corporaCreated,
+    },
+    retention: retention.cohorts,
+    lifespan: retention.overall,
+    corpora: corpusStats,
+    workspaces,
+  }
+}
+
+/**
+ * Returns the instance usage stats, computed at most once a day.
+ * Concurrent calls share the same computation; a failed computation is not cached.
+ *
+ * @param {number} [now]
+ * @returns {Promise<object>} the instance usage stats
+ */
+function getStats(now = Date.now()) {
+  if (cache === null || cache.expiresAt <= now) {
+    const entry = { expiresAt: now + CACHE_DURATION_IN_MS, stats: null }
+    entry.stats = computeStats().catch((error) => {
+      if (cache === entry) {
+        cache = null
+      }
+      throw error
+    })
+    cache = entry
+  }
+  return cache.stats
+}
+
+function clearStatsCache() {
+  cache = null
+}
+
 module.exports = {
+  CACHE_DURATION_IN_MS,
+  clearStatsCache,
+  getStats,
+
   Query: {
-    async stats() {
-      return {
-        version,
-      }
-    },
-  },
-
-  InstanceUsageStats: {
-    async articles() {
-      const [total, years] = await Promise.all([
-        Article.estimatedDocumentCount(),
-        Article.aggregate([
-          { $project: { createdYear: { $year: '$createdAt' } } },
-          { $group: { _id: '$createdYear', count: { $sum: 1 } } },
-        ]),
-      ])
-
-      return {
-        total,
-        years: years.map(({ _id: year, count }) => ({ year, count })),
-      }
-    },
-
-    async users() {
-      // a user can authenticate both with a password and with an OpenID Connect provider:
-      // it is then counted in both
-      const [total, local, openid, years] = await Promise.all([
-        User.estimatedDocumentCount(),
-        // authentication with a password
-        User.countDocuments({ password: { $type: 'string', $ne: '' } }),
-        // authentication with an OpenID Connect provider (Huma-Num HumanID)
-        User.countDocuments({
-          $or: [
-            { 'authProviders.humanid.id': { $nin: [null, ''] } },
-            { 'authProviders.humanid.email': { $nin: [null, ''] } },
-          ],
-        }),
-        User.aggregate([
-          { $project: { createdYear: { $year: '$createdAt' } } },
-          { $group: { _id: '$createdYear', count: { $sum: 1 } } },
-        ]),
-      ])
-
-      return {
-        total,
-        local,
-        openid,
-        years: years.map(({ _id: year, count }) => ({ year, count })),
-      }
+    stats() {
+      return getStats()
     },
   },
 }
