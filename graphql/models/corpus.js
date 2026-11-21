@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const attachable = require('./plugins/attachable.js')
 const Schema = mongoose.Schema
 
 const CorpusArticleSchema = new Schema({
@@ -180,5 +181,7 @@ corpusSchema.methods.updateArticlesOrder = async function updateArticlesOrder(
   })
   return this.save()
 }
+
+corpusSchema.plugin(attachable, { folder: 'corpora' })
 
 module.exports = mongoose.model('Corpus', corpusSchema)

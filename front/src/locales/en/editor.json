@@ -136,5 +136,9 @@
     "title": "Validation",
     "warningSummary_one": "{{count}} warning",
     "warningSummary_other": "{{count}} warnings"
+  },
+  "attachments": {
+    "noStorage": "To drop images, connect a WebDAV storage in your profile.",
+    "uploadError": "Uploading {{ name }} failed."
   }
 }

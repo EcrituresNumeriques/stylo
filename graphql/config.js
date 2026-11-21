@@ -38,6 +38,10 @@ convict.addFormat({
 /**
  * @type {convict.Config<{
  *  env: 'dev' | 'prod',
+ *  attachments: {
+ *    baseUrl: string,
+ *    instance: string
+ *  },
  *  export: {
  *    baseUrl: string,
  *    urlEndpoint: string
@@ -101,6 +105,20 @@ module.exports = convict({
     format: ['dev', 'prod'],
     env: 'SENTRY_ENVIRONMENT',
     default: 'dev',
+  },
+  attachments: {
+    // public URL of this API, used to build attachment URLs
+    baseUrl: {
+      format: String,
+      env: 'SNOWPACK_PUBLIC_BACKEND_ENDPOINT',
+      default: 'http://localhost:3030',
+    },
+    // folder name of this Stylo instance on storage accounts
+    instance: {
+      format: String,
+      env: 'STYLO_INSTANCE_NAME',
+      default: 'localhost',
+    },
   },
   export: {
     baseUrl: {

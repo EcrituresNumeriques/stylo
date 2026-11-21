@@ -720,4 +720,6 @@ module.exports = {
         : yaml
     },
   },
+
+  getArticleByUser,
 }

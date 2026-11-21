@@ -75,6 +75,10 @@ const Y = yjsUtils.Y
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
+const {
+  readHandler: attachmentReadHandler,
+  uploadHandler: attachmentUploadHandler,
+} = require('./attachments')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -260,6 +264,15 @@ app.post(
   bodyParser.json(),
   backupRequestHandler
 )
+
+/* Attachments, under /graphql to go through the existing reverse proxies */
+app.post(
+  '/graphql/attachments',
+  populateUserFromJWT({ jwtSecret }),
+  express.raw({ type: 'image/*', limit: '10mb' }),
+  attachmentUploadHandler
+)
+app.get('/graphql/attachments/:attachmentId', attachmentReadHandler)
 
 /*
  * GraphQL interface

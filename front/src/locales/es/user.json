@@ -40,5 +40,12 @@
       },
       "title": "Descargar mis datos"
     }
+  },
+  "data": {
+    "saveToStorage": "Guardar en almacenamiento externo",
+    "saveToStorageSuccess": "Copia de seguridad guardada en el almacenamiento externo.",
+    "saveToStorageBrowse": "Ver la carpeta",
+    "saveToStorageError": "El guardado en el almacenamiento externo falló: {{ errMessage }}",
+    "browseBackups": "Acceder a las copias de seguridad"
   }
 }
