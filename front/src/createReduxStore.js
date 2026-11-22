@@ -299,7 +299,22 @@ export default function createReduxStore(state = {}) {
     }),
     composeEnhancers(
       applyMiddleware(persistStateIntoLocalStorage),
-      createSentryReduxEnhancer()
+      createSentryReduxEnhancer({ stateTransformer: sentryStateTransformer })
     )
   )
+}
+
+/**
+ * Only send non-personal state to Sentry.
+ * activeUser (contacts, emails, workspaces), articleWriters, articleStructure (headings)
+ * and articleFilters (search text) must not leave the browser.
+ */
+function sentryStateTransformer(state) {
+  return {
+    articlePreferences: state.articlePreferences,
+    articleStats: state.articleStats,
+    articleWorkingCopy: state.articleWorkingCopy,
+    exportPreferences: state.exportPreferences,
+    userPreferences: state.userPreferences,
+  }
 }
