@@ -6,12 +6,15 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useRouteLoaderData } from 'react-router'
+import { toast } from 'react-toastify'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'
 
 import Component from './Login.jsx'
 import RedirectIfAuth from './RedirectIfAuth.jsx'
+
+vi.mock('react-toastify', () => ({ toast: vi.fn() }))
 
 vi.mock('../../../config.js', () => ({
   applicationConfig: {
@@ -51,6 +54,18 @@ describe('Login', () => {
     })
 
     expect(redirectCalled).to.toHaveBeenCalledOnce()
+  })
+
+  test('displays an error when the external authentication failed', () => {
+    renderWithProviders(<Component />, { route: '/test#auth-error' })
+
+    expect(toast).toHaveBeenCalledWith(expect.any(String), { type: 'error' })
+  })
+
+  test('does not display an error otherwise', () => {
+    renderWithProviders(<Component />)
+
+    expect(toast).not.toHaveBeenCalled()
   })
 
   test('does not save when both fields are missing', async () => {

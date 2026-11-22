@@ -3,7 +3,10 @@ const zoteroAuth = require('./zotero.js')
 const hypothesisAuth = require('./hypothesis.js')
 const humanidAuth = require('./humanid.js')
 const { createJWTToken } = require('../helpers/token.js')
+const Sentry = require('@sentry/node')
+
 const config = require('../config.js')
+const { logger } = require('../logger.js')
 
 /**
  * Help auth handler recognize if we are in an account creation
@@ -33,12 +36,32 @@ function stampAuth(service, { alreadyLoggedIn = false } = {}) {
 }
 
 /**
- * @type {import('express').RequestHandler}
+ * Handles the errors of the external authentication callbacks (HumanID, Hypothesis, Zotero):
+ * the authentication was refused (`failWithError`) or the verify function failed.
+ * The user is sent back to Stylo instead of being left on a raw error page of the API.
+ *
+ * @type {import('express').ErrorRequestHandler}
  */
-function onAuthFailure(error, _req, res) {
-  res.statusCode = 401
+function onAuthFailure(error, req, res, _next) {
+  // authentication refused by the service (or cancelled by the user) is expected,
+  // any other error is not
+  if (error?.name !== 'AuthenticationError') {
+    Sentry.captureException(error)
+  }
+  logger.warn({ err: error }, 'External authentication failed')
 
-  res.redirect(`${res.session.origin}/login#error&message=${error.message}`)
+  const origin = req.session?.origin
+  if (!origin) {
+    res.status(401).send('Authentication failed')
+    return
+  }
+
+  // the error message stays in the logs, it may contain internal details
+  res.redirect(
+    req.session.fromAccount
+      ? `${origin}/credentials/auth-callback/${req.session.fromAccount}`
+      : `${origin}/login#auth-error`
+  )
 }
 
 /**
