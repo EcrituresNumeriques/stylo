@@ -54,7 +54,14 @@ if (SENTRY_DSN) {
       }),
       Sentry.replayIntegration(),
       Sentry.replayCanvasIntegration(),
-      Sentry.captureConsoleIntegration({ levels: ['warn', 'error', 'assert'] }),
+      Sentry.captureConsoleIntegration({ levels: ['error', 'assert'] }),
+    ],
+    ignoreErrors: [
+      // Monaco clipboard (copy/cut) on Safari: the browser denies or cancels
+      // the asynchronous clipboard write, nothing actionable on our side
+      /^Canceled$/,
+      /^NotAllowedError/,
+      /The request is not allowed by the user agent or the platform/,
     ],
     tracesSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,
