@@ -62,6 +62,9 @@ if (SENTRY_DSN) {
       /^Canceled$/,
       /^NotAllowedError/,
       /The request is not allowed by the user agent or the platform/,
+      // Outlook SafeLinks / Microsoft Defender: the link scanner opens Stylo links
+      // received by email in an automated browser, nothing actionable on our side
+      /Object Not Found Matching Id:\d+, MethodName:\w+, ParamCount:\d+/,
     ],
     tracesSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,
