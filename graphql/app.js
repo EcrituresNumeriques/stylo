@@ -53,6 +53,7 @@ const pino = require('pino-http')({
 
 const schema = require('./schema')
 
+const { removeAtomSummaries } = require('./helpers/feed.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
 
 const User = require('./models/user')
@@ -237,6 +238,18 @@ app.use(
     parseReqBody: false,
     proxyReqPathResolver() {
       return '/blog/feed.xml'
+    },
+    proxyReqOptDecorator(proxyReqOpts) {
+      // the response body is decorated: only accept encodings that express-http-proxy can decode
+      proxyReqOpts.headers['accept-encoding'] = 'gzip'
+      return proxyReqOpts
+    },
+    userResHeaderDecorator(headers) {
+      return { ...headers, 'cache-control': 'public, max-age=3600' }
+    },
+    // only used by the home page, which does not display the full text of the posts
+    userResDecorator(_proxyRes, proxyResData) {
+      return removeAtomSummaries(proxyResData.toString('utf8'))
     },
   })
 )
