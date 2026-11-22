@@ -305,12 +305,30 @@ export default function createReduxStore(state = {}) {
 }
 
 /**
- * Only send non-personal state to Sentry.
- * activeUser (contacts, emails, workspaces), articleWriters, articleStructure (headings)
- * and articleFilters (search text) must not leave the browser.
+ * Only send non-personal state to Sentry: the active user is summarized
+ * (id, authentication, counters). Names, emails, contacts, workspace names,
+ * article headings (articleStructure), search text (articleFilters)
+ * and auth provider tokens must not leave the browser.
  */
 function sentryStateTransformer(state) {
+  const activeUser = state.activeUser ?? {}
   return {
+    activeUser: {
+      id: activeUser.id ?? activeUser._id,
+      isLoggedIn: Boolean(state.sessionToken),
+      authTypes: activeUser.authTypes,
+      authProviders: Object.entries(activeUser.authProviders ?? {})
+        .filter(([, provider]) => provider)
+        .map(([name]) => name),
+      permissions: activeUser.permissions?.map(({ scope, roles }) => ({
+        scope,
+        roles,
+      })),
+      workspacesCount: activeUser.workspaces?.length ?? 0,
+      contactsCount:
+        (activeUser.contacts ?? activeUser.acquintances)?.length ?? 0,
+    },
+    articleWritersCount: Object.keys(state.articleWriters ?? {}).length,
     articlePreferences: state.articlePreferences,
     articleStats: state.articleStats,
     articleWorkingCopy: state.articleWorkingCopy,
