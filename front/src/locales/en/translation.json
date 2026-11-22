@@ -185,6 +185,7 @@
   "export.toc.no": "No table of content",
   "export.toc.yes": "With table of content",
   "field.mandatory": "mandatory field",
+  "focusZone.hint": "Press Enter to access the content, then Escape to leave it.",
   "footer.changelog.link": "Changelog of Stylo {{ version }}",
   "footer.community.link": "Community forums",
   "footer.documentation.link": "Documentation",

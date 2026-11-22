@@ -1,6 +1,7 @@
 import { Newspaper, UserPlus, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
+import useFocusZone from '../../../hooks/focusZone.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import { Button } from '../../atoms/index.js'
@@ -91,13 +92,15 @@ import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal
  *   createdAt: string,
  *   updatedAt: string
  * }} workspace
+ * @property {string=} keyboardHintId id of the element describing the keyboard navigation
  */
 
 /**
  * @param {WorkspaceItemProps} props
  * @returns {React.ReactHTMLElement}
  */
-export default function WorkspaceItem({ workspace }) {
+export default function WorkspaceItem({ workspace, keyboardHintId }) {
+  const focusZoneRef = useFocusZone()
   const { t } = useTranslation('workspace', { useSuspense: false })
   const displayName = useDisplayName()
   const workspaceLeaveModal = useModal()
@@ -111,7 +114,14 @@ export default function WorkspaceItem({ workspace }) {
   const membersCount = workspace.personal ? 0 : workspace.stats.membersCount
 
   return (
-    <article className={styles.article}>
+    <article
+      // the personal workspace has no action: no need for a focus zone
+      ref={workspace.personal ? undefined : focusZoneRef}
+      tabIndex={workspace.personal ? undefined : 0}
+      className={styles.article}
+      aria-labelledby={`workspace-${workspace.id}-title`}
+      aria-describedby={workspace.personal ? undefined : keyboardHintId}
+    >
       <header className={styles.header}>
         <div className={styles.heading}>
           <h2 className={styles.title} id={`workspace-${workspace.id}-title`}>
@@ -137,17 +147,23 @@ export default function WorkspaceItem({ workspace }) {
 
             <DropdownMenu title={t('actions.menu.title')}>
               <ul>
-                <li
-                  onClick={() => workspaceUpdateFormMetadataModal.show()}
-                  title={t('actions.metadata.title')}
-                >
-                  {t('actions.metadata.label')}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => workspaceUpdateFormMetadataModal.show()}
+                    title={t('actions.metadata.title')}
+                  >
+                    {t('actions.metadata.label')}
+                  </button>
                 </li>
-                <li
-                  onClick={() => workspaceLeaveModal.show()}
-                  title={t('actions.leave.title')}
-                >
-                  {t('actions.leave.label')}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => workspaceLeaveModal.show()}
+                    title={t('actions.leave.title')}
+                  >
+                    {t('actions.leave.label')}
+                  </button>
                 </li>
               </ul>
             </DropdownMenu>

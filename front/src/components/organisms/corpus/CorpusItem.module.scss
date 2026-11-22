@@ -8,6 +8,12 @@
   padding: 1rem;
   position: relative;
 
+  // focus zone: Enter gives access to its actions
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: -2px;
+  }
+
   .header {
     display: flex;
     flex-wrap: wrap;

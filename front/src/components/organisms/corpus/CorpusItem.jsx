@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
 import { useCorpusActions } from '../../../hooks/corpus.js'
+import useFocusZone from '../../../hooks/focusZone.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import buttonStyles from '../../atoms/Button.module.scss'
@@ -47,10 +48,13 @@ import CorpusMetadata from './CorpusMetadata.jsx'
  */
 
 /**
- * @param {Corpus} corpus
+ * @param {object} props
+ * @param {Corpus} props.corpus
+ * @param {string=} props.keyboardHintId id of the element describing the keyboard navigation
  * @returns {JSX.Element}
  */
-export default function CorpusItem({ corpus }) {
+export default function CorpusItem({ corpus, keyboardHintId }) {
+  const focusZoneRef = useFocusZone()
   const displayName = useDisplayName()
   const { t } = useTranslation('corpus', { useSuspense: false })
   const [, copyToClipboard] = useCopyToClipboard()
@@ -82,8 +86,12 @@ export default function CorpusItem({ corpus }) {
 
   return (
     <article
+      ref={focusZoneRef}
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: focus zone, Enter gives access to its content
+      tabIndex={0}
       className={styles.corpus}
       aria-labelledby={`corpus-${corpus.id}-title`}
+      aria-describedby={keyboardHintId}
       role="listitem"
     >
       <header className={styles.header}>
@@ -117,26 +125,41 @@ export default function CorpusItem({ corpus }) {
 
           <DropdownMenu title={t('actions.menu.title')}>
             <ul>
-              <li
-                onClick={() => metadataCorpusModal.show()}
-                title={t('actions.metadata.title')}
-              >
-                {t('actions.metadata.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => metadataCorpusModal.show()}
+                  title={t('actions.metadata.title')}
+                >
+                  {t('actions.metadata.label')}
+                </button>
               </li>
-              <li
-                onClick={() => updateCorpusModal.show()}
-                title={t('actions.update.title')}
-              >
-                {t('actions.update.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => updateCorpusModal.show()}
+                  title={t('actions.update.title')}
+                >
+                  {t('actions.update.label')}
+                </button>
               </li>
-              <li onClick={handleCopyId} title={t('actions.copyId.title')}>
-                {t('actions.copyId.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={handleCopyId}
+                  title={t('actions.copyId.title')}
+                >
+                  {t('actions.copyId.label')}
+                </button>
               </li>
-              <li
-                onClick={() => deleteCorpusModal.show()}
-                title={t('actions.delete.title')}
-              >
-                {t('actions.delete.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => deleteCorpusModal.show()}
+                  title={t('actions.delete.title')}
+                >
+                  {t('actions.delete.label')}
+                </button>
               </li>
             </ul>
           </DropdownMenu>

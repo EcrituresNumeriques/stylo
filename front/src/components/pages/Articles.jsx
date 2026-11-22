@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import { useParams } from 'react-router'
 
 import etv from '../../helpers/eventTargetValue.js'
 import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
+import useFocusZone from '../../hooks/focusZone.js'
 import useFetchData from '../../hooks/graphql.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaceName } from '../../hooks/workspace.js'
@@ -26,6 +27,8 @@ export default function Articles() {
   )
 
   const createArticleModal = useModal()
+  const tagsFocusZoneRef = useFocusZone()
+  const keyboardHintId = useId()
   const [filter, setFilter] = useState('')
   const { workspaceId: activeWorkspaceId } = useParams()
 
@@ -118,8 +121,12 @@ export default function Articles() {
         </header>
 
         <fieldset
+          ref={tagsFocusZoneRef}
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: focus zone, Enter gives access to its content
+          tabIndex={0}
           className={styles.filtersTags}
           aria-label={t('tag.list.title')}
+          aria-describedby={keyboardHintId}
         >
           <legend>
             <h4 aria-level="2">{t('tag.list.title')}</h4>
@@ -128,6 +135,10 @@ export default function Articles() {
           <TagsList action={TagEditForm} />
         </fieldset>
       </div>
+
+      <p id={keyboardHintId} hidden>
+        {t('focusZone.hint')}
+      </p>
 
       <Modal
         {...createArticleModal.bindings}
@@ -152,6 +163,7 @@ export default function Articles() {
             <Article
               key={`article-${article.id}`}
               article={article}
+              keyboardHintId={keyboardHintId}
               corpus={corpora.filter((c) =>
                 c.articles.map((a) => a.article.id).includes(article.id)
               )}

@@ -5,9 +5,14 @@ import { Button } from '../atoms/index.js'
 
 import styles from './DropdownMenu.module.scss'
 
-function DropdownEllipsisToggleButton({ title, toggleActions }) {
+function DropdownEllipsisToggleButton({ title, toggleActions, isOpen }) {
   return (
-    <Button title={title} onClick={() => toggleActions()} icon>
+    <Button
+      title={title}
+      onClick={() => toggleActions()}
+      aria-expanded={isOpen}
+      icon
+    >
       <EllipsisVertical />
     </Button>
   )
@@ -31,7 +36,7 @@ export default function DropdownMenu({ title, toggleButton, children }) {
 
   return (
     <div className={styles.container} ref={actionsRef}>
-      {button({ title, toggleActions })}
+      {button({ title, toggleActions, isOpen: areActionsVisible })}
 
       <div className={styles.menu} hidden={!areActionsVisible}>
         {children}
