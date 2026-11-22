@@ -1,11 +1,31 @@
+import clsx from 'clsx'
+import { GripVertical } from 'lucide-react'
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import styles from './corpusArticleCard.module.scss'
 
-export default function CorpusArticleCard({ id, article, index, moveCard }) {
+/**
+ * @param {object} props
+ * @param {string} props.id
+ * @param {{id: string, title: string}} props.article
+ * @param {number} props.index
+ * @param {(dragIndex: number, hoverIndex: number) => void} props.moveCard - Called while hovering to reorder the list locally
+ * @param {() => void} props.onDragEnd - Called once the card has been dropped
+ * @returns {JSX.Element}
+ */
+export default function CorpusArticleCard({
+  id,
+  article,
+  index,
+  moveCard,
+  onDragEnd,
+}) {
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const ref = useRef(null)
+  const handleRef = useRef(null)
   const [{ handlerId }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
@@ -23,77 +43,54 @@ export default function CorpusArticleCard({ id, article, index, moveCard }) {
       if (dragIndex === hoverIndex) {
         return
       }
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
-      // Get vertical middle
+      const hoverBoundingRect = ref.current.getBoundingClientRect()
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
       const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
       // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
-      // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return
       }
-      // Time to actually perform the action
       moveCard(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
+      // Mutating the monitor item avoids expensive index searches.
       item.index = hoverIndex
     },
   })
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: 'card',
-    item: () => {
-      return { id, index }
-    },
+    item: () => ({ id, index }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end: () => onDragEnd(),
   })
-  const opacity = isDragging ? 0 : 1
-  drag(drop(ref))
+  // Only the handle starts a drag, the whole row is used as preview and drop target
+  drag(handleRef)
+  preview(drop(ref))
 
   return (
-    <div
-      className={styles.card}
+    <li
+      className={clsx(styles.card, isDragging && styles.dragging)}
       ref={ref}
-      style={{ opacity }}
       data-handler-id={handlerId}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="1.05rem"
-        height="1.05rem"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="tabler-icon tabler-icon-grip-vertical"
+      <span
+        ref={handleRef}
+        className={styles.handle}
+        title={t('actions.reorderArticles.handle')}
       >
-        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-      </svg>
-
+        <GripVertical aria-hidden />
+      </span>
+      <span className={styles.position} aria-hidden>
+        {index + 1}.
+      </span>
       <Link to={`/article/${article.id}`} className={styles.title}>
         {article.title}
       </Link>
-    </div>
+    </li>
   )
 }

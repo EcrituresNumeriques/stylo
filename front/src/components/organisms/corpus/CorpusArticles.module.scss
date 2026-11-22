@@ -1,12 +1,54 @@
+@use '../../../styles/variables' as *;
+
 .container {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.count {
+  margin-left: 0.35em;
+  color: $main-lighter-color;
+  font-weight: normal;
+}
+
+.addButton {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  height: auto;
+
+  svg {
+    width: 1.1em;
+    height: 1.1em;
+  }
+}
+
+.empty {
+  margin: 0;
+  color: $main-lighter-color;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid $muted-color;
+  background-color: $extra-background-color;
+  // Same size as the body text, rather than the smaller corpus details
+  font-size: 1rem;
 }

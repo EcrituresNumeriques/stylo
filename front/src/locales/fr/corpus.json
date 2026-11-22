@@ -69,6 +69,7 @@
     },
     "reorderArticles": {
       "error": "Impossible de mettre à jour lʼordre des articles : {{errorMessage}}",
+      "handle": "Glisser pour changer lʼordre",
       "success": "Lʼordre des articles a été modifié avec succès."
     },
     "update": {
@@ -80,6 +81,7 @@
     }
   },
   "articles": {
+    "empty": "Aucun article dans ce corpus pour lʼinstant.",
     "label": "Articles"
   },
   "description": "Un corpus est une collection dʼarticles triables et exportables en une seule action.",

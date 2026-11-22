@@ -69,6 +69,7 @@
     },
     "reorderArticles": {
       "error": "Unable to update articles order: {{errorMessage}}",
+      "handle": "Drag to reorder",
       "success": "Articles order has been successfully modified."
     },
     "update": {
@@ -80,6 +81,7 @@
     }
   },
   "articles": {
+    "empty": "No articles in this corpus yet.",
     "label": "Articles"
   },
   "description": "A corpus is a collection of articles that can be sorted and exported in one action.",
