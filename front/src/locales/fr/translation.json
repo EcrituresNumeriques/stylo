@@ -242,6 +242,7 @@
     "profileLink": "Modifier mon profil"
   },
   "loading.label": "Chargement…",
+  "main.alerts.dismiss": "Masquer ce message",
   "main.alerts.listTitle": "Messages de service",
   "main.title": "Contenu principal",
   "menu.collapse.text": "Masquer les libellés",

@@ -242,6 +242,7 @@
     "profileLink": "Update my profile"
   },
   "loading.label": "Loading…",
+  "main.alerts.dismiss": "Hide this message",
   "main.alerts.listTitle": "Service messages",
   "main.title": "Main content",
   "menu.collapse.text": "Collapse",

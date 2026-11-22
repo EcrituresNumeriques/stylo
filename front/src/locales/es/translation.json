@@ -241,6 +241,7 @@
     "profileLink": "Actualizar mi perfil"
   },
   "loading.label": "Cargando…",
+  "main.alerts.dismiss": "Ocultar este mensaje",
   "main.alerts.listTitle": "Mensajes de servicio",
   "main.title": "Contenido principal",
   "menu.collapse.text": "Reducir",
