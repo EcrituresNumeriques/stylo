@@ -185,6 +185,7 @@
   "export.toc.no": "Sin tabla de contenido",
   "export.toc.yes": "Con tabla de contenido",
   "field.mandatory": "campo obligatorio",
+  "focusZone.hint": "Pulse Intro para acceder al contenido y luego Escape para salir.",
   "footer.changelog.link": "Registro de modificaciones de Stylo {{ version }}",
   "footer.community.link": "Foro de ayuda",
   "footer.documentation.link": "Documentación",

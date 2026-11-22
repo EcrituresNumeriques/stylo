@@ -20,6 +20,7 @@ import {
   getArticleTags,
 } from '../../../hooks/Article.graphql'
 import { useArticleActions } from '../../../hooks/article.js'
+import useFocusZone from '../../../hooks/focusZone.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
@@ -41,10 +42,12 @@ import ArticleSendCopy from './sharing/ArticleSendCopy.jsx'
  * @param {object} props
  * @param {{title: string, owner: {displayName: string|undefined, username: string}, updatedAt: string, id: string }} props.article
  * @param {{id: string, name: string}[]} props.corpus
+ * @param {string=} props.keyboardHintId id of the element describing the keyboard navigation
  * @returns {JSX.Element}
  * @class
  */
-export default function Article({ article, corpus }) {
+export default function Article({ article, corpus, keyboardHintId }) {
+  const focusZoneRef = useFocusZone()
   const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article.id, [article])
@@ -122,8 +125,12 @@ export default function Article({ article, corpus }) {
   const canDeleteArticle = isArticleOwner && !activeWorkspaceId
   return (
     <article
+      ref={focusZoneRef}
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: focus zone, Enter gives access to its content
+      tabIndex={0}
       className={styles.article}
       aria-labelledby={`article-${article.id}-title`}
+      aria-describedby={keyboardHintId}
       role="listitem"
     >
       <header className={styles.header}>
@@ -161,47 +168,68 @@ export default function Article({ article, corpus }) {
           </Link>
           <DropdownMenu title={t('actions.menu.title')}>
             <ul>
-              <li
-                onClick={() => {
-                  exportModal.show()
-                }}
-                title={t('actions.export.title')}
-              >
-                {t('actions.export.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    exportModal.show()
+                  }}
+                  title={t('actions.export.title')}
+                >
+                  {t('actions.export.label')}
+                </button>
               </li>
-              <li
-                onClick={() => {
-                  updateModal.show()
-                }}
-                title={t('actions.update.title')}
-              >
-                {t('actions.update.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateModal.show()
+                  }}
+                  title={t('actions.update.title')}
+                >
+                  {t('actions.update.label')}
+                </button>
               </li>
-              <li
-                onClick={handleDuplicate}
-                title={t('actions.duplicate.title')}
-              >
-                {t('actions.duplicate.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={handleDuplicate}
+                  title={t('actions.duplicate.title')}
+                >
+                  {t('actions.duplicate.label')}
+                </button>
               </li>
-              <li
-                onClick={() => {
-                  sendCopyModal.show()
-                }}
-                title={t('actions.sendCopy.title')}
-              >
-                {t('actions.sendCopy.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sendCopyModal.show()
+                  }}
+                  title={t('actions.sendCopy.title')}
+                >
+                  {t('actions.sendCopy.label')}
+                </button>
               </li>
-              <li onClick={handleCopyId} title={t('actions.copyId.title')}>
-                {t('actions.copyId.label')}
+              <li>
+                <button
+                  type="button"
+                  onClick={handleCopyId}
+                  title={t('actions.copyId.title')}
+                >
+                  {t('actions.copyId.label')}
+                </button>
               </li>
               {canDeleteArticle && (
-                <li
-                  onClick={() => {
-                    deleteModal.show()
-                  }}
-                  title={t('actions.delete.title')}
-                >
-                  {t('actions.delete.label')}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      deleteModal.show()
+                    }}
+                    title={t('actions.delete.title')}
+                  >
+                    {t('actions.delete.label')}
+                  </button>
                 </li>
               )}
             </ul>

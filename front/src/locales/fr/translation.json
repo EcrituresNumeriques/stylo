@@ -185,6 +185,7 @@
   "export.toc.no": "Sans table des matières",
   "export.toc.yes": "Avec table des matières",
   "field.mandatory": "champ obligatoire",
+  "focusZone.hint": "Appuyez sur Entrée pour accéder au contenu, puis sur Échap pour en sortir.",
   "footer.changelog.link": "Journal des modifications de Stylo {{ version }}",
   "footer.community.link": "Forums d'entraide",
   "footer.documentation.link": "Documentation",

@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -17,6 +17,7 @@ import styles from './Workspaces.module.scss'
 
 export default function Workspaces() {
   const { t } = useTranslation('workspace', { useSuspense: false })
+  const keyboardHintId = useId()
   const activeUser = useSelector((state) => state.activeUser, shallowEqual)
   const [filter, setFilter] = useState('')
   const { workspaces, error, isLoading } = useWorkspaces()
@@ -104,10 +105,14 @@ export default function Workspaces() {
       <CreateWorkspaceModal {...workspaceCreateModal} />
 
       <div className={styles.workspacesList}>
+        <p id={keyboardHintId} hidden>
+          {t('focusZone.hint', { ns: 'translation' })}
+        </p>
         {filteredWorkspaces.map((workspace) => (
           <WorkspaceItem
             key={`workspace-${workspace.id}`}
             workspace={workspace}
+            keyboardHintId={keyboardHintId}
           />
         ))}
       </div>

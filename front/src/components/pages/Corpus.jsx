@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
@@ -16,6 +17,7 @@ import styles from './Corpus.module.scss'
 
 export default function Corpus() {
   const { t } = useTranslation('corpus', { useSuspense: false })
+  const keyboardHintId = useId()
   const { workspaceId } = useParams()
   const { corpus, workspace, isLoading, error } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
@@ -49,8 +51,11 @@ export default function Corpus() {
         <Loading />
       ) : (
         <div className={styles.corpusList}>
+          <p id={keyboardHintId} hidden>
+            {t('focusZone.hint', { ns: 'translation' })}
+          </p>
           {corpus.map((c) => (
-            <CorpusItem key={c.id} corpus={c} />
+            <CorpusItem key={c.id} corpus={c} keyboardHintId={keyboardHintId} />
           ))}
         </div>
       )}

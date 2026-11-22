@@ -27,6 +27,7 @@ export default function Button(props) {
       data-testid={props.testId}
       aria-pressed={props['aria-pressed']}
       aria-controls={props['aria-controls']}
+      aria-expanded={props['aria-expanded']}
     >
       {props.children}
     </button>
