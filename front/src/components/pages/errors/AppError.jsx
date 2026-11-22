@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
+import { GraphQLError } from '../../../helpers/graphQL.js'
 import { Loading } from '../../molecules/index.js'
 
 import Unauthorized from './401.jsx'
@@ -14,12 +15,9 @@ export default function AppError() {
   const error = useRouteError()
 
   useEffect(() => {
-    // client errors (invalid id, not found, unauthenticated…) are expected
-    const status = error?.status
-    if (status >= 400 && status < 500) {
-      return
+    if (!isExpectedError(error)) {
+      captureException(error)
     }
-    captureException(error)
   }, [error])
 
   return (
@@ -27,6 +25,20 @@ export default function AppError() {
       <article className={styles.error}>{getErrorContent(error)}</article>
     </section>
   )
+}
+
+/**
+ * Errors that are part of the normal flow and should not be reported to Sentry.
+ * @param {unknown} error
+ * @returns {boolean}
+ */
+function isExpectedError(error) {
+  // responses thrown on purpose by route loaders (invalid article id, article not found)
+  if (isRouteErrorResponse(error) && [400, 404].includes(error.status)) {
+    return true
+  }
+  // user is not logged in or session has expired
+  return error instanceof GraphQLError && error.code === 'UNAUTHENTICATED'
 }
 
 function getErrorContent(error) {

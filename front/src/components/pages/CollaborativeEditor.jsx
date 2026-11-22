@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
-import { executeQuery } from '../../helpers/graphQL.js'
+import { executeQuery, GraphQLError } from '../../helpers/graphQL.js'
 import { computeTextStats } from '../../helpers/markdown.js'
 import { getArticleInfo } from '../../hooks/Article.graphql'
 import { usePreferenceItem } from '../../hooks/user.js'
@@ -48,11 +48,8 @@ export async function loader({ params }) {
     })
     return { article }
   } catch (err) {
-    const errorMessage = err.messages?.[0]?.message ?? err.message
-    const errorType = err.messages?.[0]?.extensions?.type
-
-    if (errorType === 'NOT_FOUND') {
-      throw new Response(errorMessage, { status: 404 })
+    if (err instanceof GraphQLError && err.code === 'NOT_FOUND') {
+      throw new Response(err.message, { status: 404 })
     }
 
     throw err
