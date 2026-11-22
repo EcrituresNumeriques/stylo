@@ -7,6 +7,7 @@ const noop = () => {}
 export function connect({
   roomName,
   websocketEndpoint,
+  sessionToken,
   user,
   onChange = noop,
   onConnection = noop,
@@ -19,6 +20,8 @@ export function connect({
   const wsProvider = new WebsocketProvider(websocketEndpoint, roomName, doc, {
     // Specify an existing Awareness instance - see https://github.com/yjs/y-protocols
     awareness: awareness,
+    // the server checks the access to the article before accepting the connection
+    params: { token: sessionToken },
   })
 
   awareness.on('change', () => {
