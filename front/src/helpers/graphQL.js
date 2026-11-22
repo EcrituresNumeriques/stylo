@@ -62,7 +62,8 @@ export class ErrorResponse extends Error {
     this.status = status
     this.statusText = statusText
     this.data = data
-    this.message = statusText
+    // statusText is always empty with HTTP/2
+    this.message = statusText || `HTTP ${status}`
   }
 }
 

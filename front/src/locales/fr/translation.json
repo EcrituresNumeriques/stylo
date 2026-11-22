@@ -244,6 +244,7 @@
   "menu.expand.title": "Afficher les libellés du menu",
   "metadata.readonly.multiUserActive": "Les métadonnées sont éditables uniquement quand vous êtes seul·e sur l'article.",
   "metadata.readonly.versionView": "Les métadonnées sont éditables uniquement sur la copie de travail.",
+  "metadata.saveError": "Impossible d'enregistrer les métadonnées : {{errMessage}}",
   "metadata.showYaml": "Mode YAML",
   "metadata.showYaml_checked": "Désactiver le mode YAML",
   "metadata.showYaml_unchecked": "Activer le mode YAML",

@@ -244,6 +244,7 @@
   "menu.expand.title": "Show menu labels",
   "metadata.readonly.multiUserActive": "Metadata are editable only when you are the only one working on the article.",
   "metadata.readonly.versionView": "Metadata are editable only when you are on the working copy.",
+  "metadata.saveError": "Unable to save metadata: {{errMessage}}",
   "metadata.showYaml": "YAML mode",
   "metadata.showYaml_checked": "Disable YAML mode",
   "metadata.showYaml_unchecked": "Enable YAML mode",
