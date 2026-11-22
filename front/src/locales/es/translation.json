@@ -247,6 +247,7 @@
   "menu.expand.title": "Mostrar las etiquetas del menú",
   "metadata.readonly.multiUserActive": "Los metadatos son editables solo cuando eres el único trabajando en el artículo.",
   "metadata.readonly.versionView": "Los metadatos son editables solo cuando se está en la copia de trabajo.",
+  "metadata.saveError": "No se pueden guardar los metadatos: {{errMessage}}",
   "metadata.showYaml": "Modo YAML",
   "metadata.showYaml_checked": "Dectivar el modo YAML",
   "metadata.showYaml_unchecked": "Activar el modo YAML",

@@ -1,6 +1,8 @@
 import YAML from 'js-yaml'
-import { useCallback, useMemo, useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 import { useArticleMetadata } from '../../../hooks/article.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
@@ -9,6 +11,9 @@ import { Alert, Loading, Toggle } from '../../molecules/index.js'
 import ArticleEditorMetadataForm from './ArticleEditorMetadataForm.jsx'
 import styles from './articleEditorMetadata.module.scss'
 import MonacoYamlEditor from './YamlEditor.jsx'
+
+// metadata are saved once the user stops typing, instead of on every keystroke
+const SAVE_METADATA_DELAY_MS = 500
 
 /**
  * @param {object} props
@@ -46,14 +51,36 @@ export default function ArticleMetadata({
     'article'
   )
 
+  // updateMetadata changes on every render: keep the latest one in a ref
+  // so that the debounced function is created only once
+  const updateMetadataRef = useRef(updateMetadata)
+  updateMetadataRef.current = updateMetadata
+
+  const saveMetadata = useMemo(
+    () =>
+      debounce(async (metadata) => {
+        try {
+          await updateMetadataRef.current(metadata)
+        } catch (err) {
+          toast(t('metadata.saveError', { errMessage: err.message }), {
+            type: 'error',
+          })
+        }
+      }, SAVE_METADATA_DELAY_MS),
+    [t]
+  )
+
+  // save pending changes when leaving the metadata panel
+  useEffect(() => () => saveMetadata.flush(), [saveMetadata])
+
   const handleFormUpdate = useCallback(
-    async (metadata) => {
+    (metadata) => {
       if (readOnly) {
         return
       }
-      await updateMetadata(metadata)
+      saveMetadata(metadata)
     },
-    [readOnly, updateMetadata]
+    [readOnly, saveMetadata]
   )
 
   const handleFormTypeUpdate = useCallback(
@@ -66,15 +93,18 @@ export default function ArticleMetadata({
     [readOnly, updateMetadataFormType]
   )
 
-  const handleYamlChange = useCallback(async (yaml) => {
-    try {
-      const [metadata = {}] = YAML.loadAll(yaml)
-      setError('')
-      await updateMetadata(metadata)
-    } catch (err) {
-      setError(err.message)
-    }
-  }, [])
+  const handleYamlChange = useCallback(
+    (yaml) => {
+      try {
+        const [metadata = {}] = YAML.loadAll(yaml)
+        setError('')
+        saveMetadata(metadata)
+      } catch (err) {
+        setError(err.message)
+      }
+    },
+    [saveMetadata]
+  )
 
   if (isLoading) {
     return <Loading />
