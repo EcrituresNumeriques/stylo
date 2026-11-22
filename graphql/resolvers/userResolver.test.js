@@ -68,14 +68,22 @@ describe('user resolver', () => {
         },
       })
 
-      const ownView = UserResolver.authProviders(user, {}, {
-        userId: user._id.toString(),
-      })
+      const ownView = UserResolver.authProviders(
+        user,
+        {},
+        {
+          userId: user._id.toString(),
+        }
+      )
       assert.strictEqual(ownView.zotero.token, 'secret-token')
 
-      const otherView = UserResolver.authProviders(user, {}, {
-        userId: new ObjectId().toString(),
-      })
+      const otherView = UserResolver.authProviders(
+        user,
+        {},
+        {
+          userId: new ObjectId().toString(),
+        }
+      )
       assert.strictEqual(otherView.zotero.token, null)
       assert.strictEqual(otherView.zotero.id, 'remote-id')
     })
