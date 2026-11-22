@@ -17,7 +17,11 @@ export default function Publication({ entry }) {
 
   const itemId = useId()
   const title = entry.querySelector('title').textContent
-  const author = entry.querySelector('author > name').textContent
+  // an entry may have several authors, or none at all
+  const authors = Array.from(entry.querySelectorAll('author > name'))
+    .map((name) => name.textContent.trim())
+    .filter(Boolean)
+    .join(', ')
   const link = entry.querySelector('link').getAttribute('href')
   const date = dateFormat.format(
     new Date(entry.querySelector('updated').textContent)
@@ -28,14 +32,16 @@ export default function Publication({ entry }) {
       <h3 id={itemId} dangerouslySetInnerHTML={{ __html: title }}></h3>
 
       <ul className={styles.articleMetadata}>
-        <li>
-          <CircleUserIcon
-            role="img"
-            className="icon"
-            aria-label={t('publication.author')}
-          />
-          {author}
-        </li>
+        {authors && (
+          <li>
+            <CircleUserIcon
+              role="img"
+              className="icon"
+              aria-label={t('publication.author')}
+            />
+            {authors}
+          </li>
+        )}
         <li>
           <CalendarDaysIcon
             role="img"
