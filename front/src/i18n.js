@@ -13,6 +13,8 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
+    // normalize detected languages (fr-FR, en-US@POSIX…) to a supported one
+    supportedLngs: ['fr', 'en', 'es'],
     interpolation: {
       escapeValue: false,
       skipOnVariables: false,
