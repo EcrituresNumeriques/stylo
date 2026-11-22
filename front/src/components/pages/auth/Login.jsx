@@ -26,7 +26,13 @@ export default function Login() {
 
   // Scenario: auth callback return
   useEffect(() => {
-    const token = new URLSearchParams(location.hash).get('#auth-token')
+    const params = new URLSearchParams(location.hash)
+    const token = params.get('#auth-token')
+
+    // the external authentication service (HumanID, Hypothesis, Zotero) failed
+    if (params.has('#auth-error')) {
+      toast(t('authentication.externalError.message'), { type: 'error' })
+    }
 
     if (token) {
       // will trigger a store subscription and profile to be loaded there (hooks mainly)

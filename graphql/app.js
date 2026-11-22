@@ -201,21 +201,21 @@ app.post(
 
 app.use(
   '/authorization-code/hypothesis/callback',
-  passport.authorize('hypothesis'),
+  passport.authorize('hypothesis', { failWithError: true }),
   onAuthSuccess,
   onAuthFailure
 )
 
 app.use(
   '/authorization-code/zotero/callback',
-  passport.authorize('zotero'),
+  passport.authorize('zotero', { failWithError: true }),
   onAuthSuccess,
   onAuthFailure
 )
 
 app.use(
   '/authorization-code/callback',
-  passport.authorize('humanid'),
+  passport.authorize('humanid', { failWithError: true }),
   onAuthSuccess,
   onAuthFailure
 )
