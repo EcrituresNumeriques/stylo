@@ -17,7 +17,9 @@
  */
 
 .fullscreen {
+  position: relative;
   justify-content: center;
+  padding-inline: 2.5rem;
 
   &.warning {
     font-weight: bold;
@@ -50,4 +52,14 @@
   background-color: hsl(359 100% 95%);
   border-color: hsl(359 100% 90%);
   color: hsl(359deg 100% 20%);
+}
+
+.alert .dismiss {
+  position: absolute;
+  inset-inline-end: 0.25rem;
+  top: 50%;
+  translate: 0 -50%;
+  margin: 0;
+  padding: 0.15rem;
+  line-height: 1;
 }
