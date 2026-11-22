@@ -109,7 +109,9 @@ export function useArticlesActions({ activeWorkspaceId }) {
       sessionToken,
     })
     await mutateArticles(async (data) => {
-      console.log({ data })
+      if (!data) {
+        return data
+      }
       return {
         ...data,
         articles: [createdArticle, ...data.articles],
@@ -185,8 +187,11 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
       sessionToken,
     })
     await mutateArticles(async (data) => {
+      if (!data) {
+        return data
+      }
       const updatedArticles =
-        data?.articles?.filter((article) => article.id !== articleId) ?? []
+        data.articles?.filter((article) => article.id !== articleId) ?? []
       return {
         ...data,
         articles: updatedArticles,
@@ -216,6 +221,9 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     }
     await mutateArticleWorkspaces()
     await mutateArticles(async (data) => {
+      if (!data) {
+        return data
+      }
       const updatedArticles = data.articles.map((article) =>
         article.id === updatedArticle.id ? updatedArticle : article
       )
@@ -279,6 +287,9 @@ export function useArticleMetadata({ articleId, versionId }) {
     // TODO use a common query for all mutations
     await mutate(
       async (data) => {
+        if (!data?.article) {
+          return data
+        }
         return {
           article: {
             ...data.article,
@@ -307,6 +318,9 @@ export function useArticleMetadata({ articleId, versionId }) {
     })
     await mutate(
       async (data) => {
+        if (!data?.article) {
+          return data
+        }
         return {
           article: {
             ...data.article,
@@ -404,6 +418,9 @@ export function useEditableArticle({ articleId, versionId }) {
     const bibliography = result.updateArticleBibliography
     await mutate(
       async (data) => {
+        if (!data?.article) {
+          return data
+        }
         return {
           article: {
             ...data.article,
@@ -430,6 +447,9 @@ export function useEditableArticle({ articleId, versionId }) {
     })
     await mutate(
       async (data) => {
+        if (!data?.article) {
+          return data
+        }
         return {
           article: {
             ...data.article,
@@ -452,6 +472,9 @@ export function useEditableArticle({ articleId, versionId }) {
     })
     await mutate(
       async (data) => {
+        if (!data?.article) {
+          return data
+        }
         return {
           article: {
             ...data.article,
