@@ -1,0 +1,13 @@
+.leaveHint {
+  margin: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: #222;
+  color: #fff;
+  font-size: 0.875rem;
+  pointer-events: none;
+
+  &:empty {
+    display: none;
+  }
+}

@@ -50,6 +50,12 @@
     },
     "save-version": "Save new version"
   },
+  "keyboard": {
+    "leave": {
+      "action": "Leave the editor (Escape then Tab)",
+      "hint": "Press Tab or Shift+Tab to leave the editor"
+    }
+  },
   "stylo": {
     "markdown": {
       "headings": "Titles",
