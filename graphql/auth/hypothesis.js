@@ -1,4 +1,5 @@
 const OAuth2Strategy = require('passport-oauth2')
+const { registrationUrl } = require('./redirect.js')
 
 const User = require('../models/user.js')
 const config = require('../config.js')
@@ -66,7 +67,7 @@ async function verify(req, accessToken, _refreshToken, _, done) {
   return this.redirect(
     req.session.fromAccount
       ? `${req.session.origin}/credentials/auth-callback/hypothesis`
-      : `${req.session.origin}/register/hypothesis?name=${displayName}`
+      : registrationUrl(req.session.origin, 'hypothesis', displayName)
   )
 }
 

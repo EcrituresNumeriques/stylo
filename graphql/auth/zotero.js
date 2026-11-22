@@ -1,4 +1,5 @@
 const OAuthStrategy = require('passport-oauth1').Strategy
+const { registrationUrl } = require('./redirect.js')
 
 const config = require('../config.js')
 const User = require('../models/user.js')
@@ -67,7 +68,7 @@ async function verify(req, token, _tokenSecret, _profile, _params, done) {
   return this.redirect(
     req.session.fromAccount
       ? `${req.session.origin}/credentials/auth-callback/zotero`
-      : `${req.session.origin}/register/zotero?name=${username}`
+      : registrationUrl(req.session.origin, 'zotero', username)
   )
 }
 

@@ -1,4 +1,5 @@
 const User = require('../models/user.js')
+const { registrationUrl } = require('./redirect.js')
 const config = require('../config.js')
 const OidcStrategy = require('passport-openidconnect').Strategy
 
@@ -87,7 +88,7 @@ async function verify(
   return this.redirect(
     req.session.fromAccount
       ? `${req.session.origin}/credentials/auth-callback/humanid`
-      : `${req.session.origin}/register/humanid?name=${displayName}`
+      : registrationUrl(req.session.origin, 'humanid', displayName)
   )
 }
 
