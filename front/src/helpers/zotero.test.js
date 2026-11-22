@@ -4,6 +4,7 @@ import {
   fetchBibliographyFromCollectionHref,
   prefixLegacyUrl,
   toApiUrl,
+  ZoteroUrlError,
 } from './zotero'
 
 describe('fetchBibliographyFromCollection', () => {
@@ -278,6 +279,14 @@ describe('toApiUrl', () => {
         'https://www.example.com/groups/2373533/article_durassavoie-bernard/collections/FYFFI3VG/items/V4H7CRG5/collection'
       )
     ).rejects.toThrowError('This is not a Zotero URL')
+  })
+
+  test('throws a ZoteroUrlError with a code for an invalid URL', async () => {
+    const error = await toApiUrl('https://www.example.com/library').catch(
+      (err) => err
+    )
+    expect(error).toBeInstanceOf(ZoteroUrlError)
+    expect(error.code).toBe('invalidUrl')
   })
 })
 

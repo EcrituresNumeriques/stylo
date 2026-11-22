@@ -94,6 +94,10 @@
     "e404": "Esta colección no existe o no es pública.",
     "e500": "Hay un problema con el servicio Zotero. Por favor, inténtalo más tarde.",
     "e503": "Hay un problema con el servicio Zotero. Por favor, inténtalo más tarde.",
+    "invalidUrl": "Esta dirección no es una dirección de Zotero. Copia la dirección de una biblioteca o de una colección desde zotero.org.",
+    "tokenRequired": "Conecta tu cuenta de Zotero para importar una colección de tu biblioteca personal.",
+    "tagUnsupported": "No se admite la importación de una colección filtrada por etiqueta.",
+    "otherMemberLibrary": "No se puede importar la biblioteca personal de otra persona.",
     "generic": "No pudimos importar la colección de Zotero. Investigaremos el problema."
   },
   "bibliography.importZotero.success": "Importación completada con éxito.",
