@@ -1,5 +1,6 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .section {
   @extend .wrapped-center;
@@ -15,8 +16,8 @@
     margin-bottom: 1rem;
   }
 
-  article:nth-of-type(2n + 1) {
-    background-color: $alternate-row-color;
+  article {
+    @include striped-item;
   }
 }
 
