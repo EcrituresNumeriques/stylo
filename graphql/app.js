@@ -54,6 +54,7 @@ const pino = require('pino-http')({
 const schema = require('./schema')
 
 const { removeAtomSummaries } = require('./helpers/feed.js')
+const { isArticleRoomUrl } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
 
 const User = require('./models/user')
@@ -401,6 +402,11 @@ const server = app.listen(config.get('port'), (err) => {
 })
 
 server.on('upgrade', (request, socket, head) => {
+  // the room name contains the article id, used as a MongoDB ObjectId when loading the document
+  if (!isArticleRoomUrl(request.url)) {
+    socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n')
+    return
+  }
   wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
     // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
     // TODO: check token and permissions
