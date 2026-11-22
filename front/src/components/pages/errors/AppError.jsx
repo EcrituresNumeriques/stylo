@@ -14,6 +14,11 @@ export default function AppError() {
   const error = useRouteError()
 
   useEffect(() => {
+    // client errors (invalid id, not found, unauthenticated…) are expected
+    const status = error?.status
+    if (status >= 400 && status < 500) {
+      return
+    }
     captureException(error)
   }, [error])
 
