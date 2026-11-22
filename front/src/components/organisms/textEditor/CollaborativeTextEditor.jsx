@@ -1,12 +1,13 @@
 import { DiffEditor } from '@monaco-editor/react'
 import clsx from 'clsx'
 import throttle from 'lodash.throttle'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { MonacoBinding } from 'y-monaco'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
+import { isFocusLost } from '../../../helpers/focus.js'
 import {
   useArticleMetadata,
   useArticleVersion,
@@ -67,9 +68,8 @@ export default function CollaborativeTextEditor({
   onValidatorReady,
   onEditorReady,
 }) {
-  const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
-    { articleId, versionId, onWritersChange }
-  )
+  const { yText, awareness, websocketStatus, isSynced, dynamicStyles } =
+    useCollaboration({ articleId, versionId, onWritersChange })
   const { t } = useTranslation('editor')
 
   const {
@@ -111,6 +111,8 @@ export default function CollaborativeTextEditor({
   const validationContext = useMemo(() => ({ metadata }), [metadata])
 
   const editorRef = useRef(null)
+  const [isEditorMounted, setIsEditorMounted] = useState(false)
+  const hasInitialFocusRef = useRef(false)
   const onEditorReadyRef = useRef(onEditorReady)
   onEditorReadyRef.current = onEditorReady
   const {
@@ -197,6 +199,7 @@ export default function CollaborativeTextEditor({
         new MonacoBinding(yText, model, new Set([editor]), awareness)
       }
 
+      setIsEditorMounted(true)
       onEditorReadyRef.current?.()
     },
     [yText, awareness]
@@ -204,6 +207,7 @@ export default function CollaborativeTextEditor({
 
   const handleEditorDidMount = useCallback((editor) => {
     editorRef.current = editor
+    setIsEditorMounted(true)
     onEditorReadyRef.current?.()
   }, [])
 
@@ -256,6 +260,35 @@ export default function CollaborativeTextEditor({
     navigateTo,
     onValidatorReady,
   ])
+
+  // Gives the focus to the editor once, when the article opens and its
+  // content has been received (otherwise the text would be inserted before
+  // the cursor), unless the user has already moved it.
+  // Reconnections must not steal the focus back.
+  useEffect(() => {
+    if (hasInitialFocusRef.current || !isEditorMounted || mode !== 'write') {
+      return
+    }
+    if (!hasVersion && !isSynced) {
+      return
+    }
+    hasInitialFocusRef.current = true
+    const editor = editorRef.current
+    if (editor && isFocusLost()) {
+      // the cursor must be visible, otherwise nothing shows that the editor
+      // has the focus
+      const start = { lineNumber: 1, column: 1 }
+      editor.setPosition(start)
+      editor.revealPosition(start)
+      editor.focus()
+      // the first line sits at the top of the editor: bring it into view
+      const container = editor.getContainerDomNode()
+      const { top } = container.getBoundingClientRect()
+      if (top < 0 || top > window.innerHeight - 40) {
+        container.scrollIntoView({ block: 'start' })
+      }
+    }
+  }, [isEditorMounted, mode, hasVersion, isSynced])
 
   useEffect(() => {
     if (!cursorPosition) return

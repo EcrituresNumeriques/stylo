@@ -50,6 +50,12 @@
     },
     "save-version": "Enregistrer une nouvelle version"
   },
+  "keyboard": {
+    "leave": {
+      "action": "Quitter l'éditeur (Échap puis Tab)",
+      "hint": "Appuyez sur Tab ou Maj+Tab pour quitter l'éditeur"
+    }
+  },
   "stylo": {
     "markdown": {
       "headings": "Titres",

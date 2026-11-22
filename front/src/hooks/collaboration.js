@@ -39,6 +39,8 @@ export function useCollaboration({ articleId, onWritersChange }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
+  // true once the document has been received from the server
+  const [isSynced, setIsSynced] = useState(false)
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
@@ -111,12 +113,14 @@ export function useCollaboration({ articleId, onWritersChange }) {
       user: writerInfo,
       onChange: handleWritersUpdated,
       onStatusUpdated: handleWebsocketStatusUpdated,
+      onConnection: () => setIsSynced(true),
     })
     const yText = yDocument.getText('main')
     setAwareness(awareness)
     setYText(yText)
     return () => {
       connectingRef.current = false
+      setIsSynced(false)
       awareness.destroy()
       if (wsProvider.wsconnected) {
         wsProvider.disconnect()
@@ -127,6 +131,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
 
   return {
     websocketStatus,
+    isSynced,
     awareness,
     yText,
     dynamicStyles,

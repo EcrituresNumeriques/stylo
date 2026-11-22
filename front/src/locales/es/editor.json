@@ -50,6 +50,12 @@
     },
     "save-version": "Guardar nueva versión"
   },
+  "keyboard": {
+    "leave": {
+      "action": "Salir del editor (Escape y luego Tab)",
+      "hint": "Pulse Tab o Mayús+Tab para salir del editor"
+    }
+  },
   "stylo": {
     "markdown": {
       "headings": "Títulos",
