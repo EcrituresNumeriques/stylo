@@ -84,6 +84,10 @@ npm install <paquet> -w front
 npm install <paquet> -w graphql
 ```
 
+## Contribuer
+
+Les conventions de contribution (messages de commit, titres de pull request, formatage et tests) sont décrites dans le fichier [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 # Installation
 
 Pour installer une instance Stylo en tant que service à disposition d'utilisateur·ices, veuillez suivre la documentation dédiée dans le fichier [`HOWTO.md`](HOWTO.md).
