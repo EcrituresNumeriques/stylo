@@ -187,9 +187,15 @@ export function useLogout() {
   const { query } = useGraphQLClient()
 
   return useCallback(async () => {
-    await query({ query: logoutMutation })
-
-    dispatch({ type: 'LOGOUT' })
+    try {
+      await query({ query: logoutMutation })
+    } catch (err) {
+      // the user must be logged out locally even if the server session
+      // could not be destroyed (network error, server unavailable…)
+      console.error('Unable to destroy the server session on logout', err)
+    } finally {
+      dispatch({ type: 'LOGOUT' })
+    }
   }, [])
 }
 

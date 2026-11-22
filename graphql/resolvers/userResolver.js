@@ -93,13 +93,17 @@ module.exports = {
       })
     },
 
-    async logout(_, _args, { token, user, session }) {
-      isUser({}, { token, user })
-
-      delete session.fromAccount
-      delete session.pendingRegistration
-
-      session.destroy()
+    /**
+     * Destroys the server session (pending registration, linked account).
+     * It does not require an authenticated user: logging out with an expired
+     * or already removed token must succeed.
+     */
+    async logout(_, _args, { session }) {
+      if (session) {
+        delete session.fromAccount
+        delete session.pendingRegistration
+        session.destroy()
+      }
 
       return null
     },

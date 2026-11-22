@@ -605,4 +605,37 @@ describe('user resolver', () => {
       )
     })
   })
+
+  describe('logout', () => {
+    test('destroys the session of an authenticated user', async () => {
+      const user = await User.create({ email: 'user@example.com' })
+      let destroyed = false
+      const session = {
+        fromAccount: 'zotero',
+        destroy: () => {
+          destroyed = true
+        },
+      }
+      const result = await Mutation.logout(
+        {},
+        {},
+        { token: { _id: user.id }, user, session }
+      )
+      assert.equal(result, null)
+      assert.equal(destroyed, true)
+      assert.equal(session.fromAccount, undefined)
+    })
+
+    test('succeeds without an authenticated user', async () => {
+      let destroyed = false
+      const session = {
+        destroy: () => {
+          destroyed = true
+        },
+      }
+      const result = await Mutation.logout({}, {}, { token: {}, session })
+      assert.equal(result, null)
+      assert.equal(destroyed, true)
+    })
+  })
 })
