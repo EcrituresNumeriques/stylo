@@ -128,6 +128,11 @@ export class WSSharedDoc extends Y.Doc {
     }
     this.awareness.on('update', awarenessChangeHandler)
     this.on('update', /** @type {any} */ (updateHandler))
+    /**
+     * Resolved once the persisted state has been loaded into the document.
+     * @type {Promise<void>}
+     */
+    this.whenInitialized = Promise.resolve()
   }
 }
 
@@ -162,7 +167,13 @@ export const getYDoc = (docname, gc = true) =>
     const doc = new WSSharedDoc(docname)
     doc.gc = gc
     if (persistence !== null) {
-      persistence.bindState(docname, doc)
+      // the synchronization must wait for the persisted state, otherwise the
+      // clients receive an empty document, then its content in a later update
+      doc.whenInitialized = Promise.resolve(
+        persistence.bindState(docname, doc)
+      ).catch((err) => {
+        console.error(`Unable to load the document state of ${docname}`, err)
+      })
     }
     docs.set(docname, doc)
     return doc
@@ -271,11 +282,19 @@ export const setupWSConnection = (
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)
   doc.conns.set(conn, new Set())
-  // listen and reply to events
+  // listen and reply to events, once the document is loaded: the messages
+  // received in the meantime (sync step 1 of the client…) are queued
+  /** @type {ArrayBuffer[]|null} */
+  let pendingMessages = []
   conn.on(
     'message',
-    /** @param {ArrayBuffer} message */ (message) =>
-      messageListener(conn, doc, new Uint8Array(message))
+    /** @param {ArrayBuffer} message */ (message) => {
+      if (pendingMessages === null) {
+        messageListener(conn, doc, new Uint8Array(message))
+      } else {
+        pendingMessages.push(message)
+      }
+    }
   )
 
   // Check if connection is still alive
@@ -303,9 +322,13 @@ export const setupWSConnection = (
   conn.on('pong', () => {
     pongReceived = true
   })
-  // put the following in a variables in a block so the interval handlers don't keep in in
-  // scope
-  {
+  doc.whenInitialized.then(() => {
+    const messages = pendingMessages ?? []
+    pendingMessages = null
+    if (!doc.conns.has(conn)) {
+      // closed while the document was loading
+      return
+    }
     // send sync step 1
     const encoder = encoding.createEncoder()
     encoding.writeVarUint(encoder, messageSync)
@@ -324,5 +347,8 @@ export const setupWSConnection = (
       )
       send(doc, conn, encoding.toUint8Array(encoder))
     }
-  }
+    for (const message of messages) {
+      messageListener(conn, doc, new Uint8Array(message))
+    }
+  })
 }
