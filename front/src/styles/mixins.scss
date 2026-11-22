@@ -1,0 +1,15 @@
+@use './variables' as *;
+
+// Élément d'une liste d'objets (articles, corpus, espaces de travail…) :
+// chaque élément est un bloc séparé et bordé, avec une alternance gris/blanc
+@mixin striped-item($gap: 0.75rem) {
+  border: 1px solid $striped-row-border-color;
+
+  &:not(:last-of-type) {
+    margin-bottom: $gap;
+  }
+
+  &:nth-of-type(2n + 1) {
+    background-color: $striped-row-color;
+  }
+}
