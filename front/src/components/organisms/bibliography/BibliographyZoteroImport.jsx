@@ -10,6 +10,7 @@ import {
   isApiUrl,
   prefixLegacyUrl,
   toApiUrl,
+  ZoteroUrlError,
 } from '../../../helpers/zotero.js'
 import { useEditableArticle } from '../../../hooks/article.js'
 import { useSetAuthToken } from '../../../hooks/user.js'
@@ -145,7 +146,9 @@ export default function BibliographyZoteroImport({
         toast(
           t(
             [
-              `bibliography.importZotero.error.e${err.statusCode}`,
+              err instanceof ZoteroUrlError
+                ? `bibliography.importZotero.error.${err.code}`
+                : `bibliography.importZotero.error.e${err.statusCode}`,
               'bibliography.importZotero.error.generic',
             ],
             { message: err.message }
@@ -156,7 +159,11 @@ export default function BibliographyZoteroImport({
         )
 
         // bubble errors we're responsible of to Sentry
-        if ([403, undefined].includes(err.statusCode)) {
+        // (an invalid URL entered by the user is not one of them)
+        if (
+          !(err instanceof ZoteroUrlError) &&
+          [403, undefined].includes(err.statusCode)
+        ) {
           throw err
         }
       } finally {

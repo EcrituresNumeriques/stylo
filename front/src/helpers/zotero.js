@@ -247,6 +247,22 @@ export async function fetchBibliographyFromCollectionHref({
 }
 
 /**
+ * Error caused by the URL entered by the user (not a Zotero URL, unsupported URL…).
+ * It is displayed to the user but not reported to Sentry.
+ */
+export class ZoteroUrlError extends Error {
+  /**
+   * @param {'invalidUrl' | 'tokenRequired' | 'tagUnsupported' | 'otherMemberLibrary'} code
+   * @param {string} message
+   */
+  constructor(code, message) {
+    super(message)
+    this.name = 'ZoteroUrlError'
+    this.code = code
+  }
+}
+
+/**
  * Converts a Zotero Web URL (group, collection, etc.) into a Zotero API URL
  * If a token is provided, it does its best to translate userIds and groupIds.
  * @see https://github.com/EcrituresNumeriques/stylo/issues/816#issuecomment-1419418761
@@ -278,7 +294,7 @@ export async function toApiUrl(plainUrl, token) {
   } else if (isWebUrl(plainUrl)) {
     strategy = 'WEB'
   } else {
-    throw new Error('This is not a Zotero URL')
+    throw new ZoteroUrlError('invalidUrl', 'This is not a Zotero URL')
   }
 
   if (
@@ -286,7 +302,10 @@ export async function toApiUrl(plainUrl, token) {
     !plainUrl.startsWith('https://www.zotero.org/groups/') &&
     !token
   ) {
-    throw new Error('A token is required to fetch personal items.')
+    throw new ZoteroUrlError(
+      'tokenRequired',
+      'A token is required to fetch personal items.'
+    )
   }
 
   const result = plainUrl.match(strategy === 'WEB' ? GROUP_RE : API_RE)
@@ -302,14 +321,20 @@ export async function toApiUrl(plainUrl, token) {
   } = result.groups
 
   if (tag) {
-    throw new Error('Cannot fetch items associated to a tag.')
+    throw new ZoteroUrlError(
+      'tagUnsupported',
+      'Cannot fetch items associated to a tag.'
+    )
   }
 
   if (strategy === 'WEB' && username) {
     const user = await fetchUserFromToken(token)
 
     if (user.username !== username) {
-      throw new Error('Cannot fetch another member personal library')
+      throw new ZoteroUrlError(
+        'otherMemberLibrary',
+        'Cannot fetch another member personal library'
+      )
     }
 
     userId = user.userID
