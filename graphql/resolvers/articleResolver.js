@@ -583,6 +583,14 @@ module.exports = {
   },
 
   Article: {
+    workingVersion(article) {
+      if (!article.workingVersion) {
+        return article.workingVersion
+      }
+      // keep the article id so that WorkingVersion resolvers can report it in errors
+      return { ...article.workingVersion, articleId: article._id }
+    },
+
     async workspaces(article, _, { user, token }) {
       if (token.admin) {
         return Workspace.find({ articles: article._id })
@@ -693,11 +701,19 @@ module.exports = {
   },
 
   WorkingVersion: {
-    md({ ydoc = '' }, { articleId } = {}) {
+    md({ ydoc = '', articleId }) {
       try {
         return getTextFromYjsDoc(ydoc)
       } catch (err) {
-        Sentry.captureException(err)
+        // lib0 throws errors created once when the module is loaded, so their stack trace
+        // only shows the module loading: wrap the error to know where it was thrown
+        Sentry.captureException(
+          new Error(
+            'Unable to load text content (Markdown) from the Y.js document',
+            { cause: err }
+          ),
+          { tags: { articleId: articleId?.toString() } }
+        )
         logger.error(
           { err, articleId },
           'Unable to load text content (Markdown) from the Y.js document on the working version'

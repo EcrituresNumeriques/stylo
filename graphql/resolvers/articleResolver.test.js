@@ -3,6 +3,7 @@ const {
   Article: ArticleResolver,
   Query: ArticleQuery,
   Mutation: ArticleMutation,
+  WorkingVersion: WorkingVersionResolver,
 } = require('./articleResolver')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
@@ -934,6 +935,28 @@ describe('article resolver', () => {
           { input: { title: 'Unauthorized article' } },
           { user: {}, userId: null, token: {} }
         )
+      )
+    })
+  })
+
+  describe('working version', () => {
+    test('exposes the article id to the WorkingVersion resolvers', async () => {
+      const article = await Article.create({
+        title: 'Working version',
+        owner: user2._id,
+        workingVersion: { bib: '', md: '' },
+      })
+      const workingVersion = ArticleResolver.workingVersion(article)
+      assert.equal(workingVersion.articleId, article._id)
+      assert.equal(workingVersion.bib, '')
+    })
+
+    test('returns an empty text when the Y.js document is truncated', () => {
+      // a varUint that announces more bytes than available: "Unexpected end of array"
+      const ydoc = Buffer.from([0x01, 0xff]).toString('base64')
+      assert.equal(
+        WorkingVersionResolver.md({ ydoc, articleId: new ObjectId() }),
+        ''
       )
     })
   })

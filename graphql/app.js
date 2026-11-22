@@ -308,7 +308,13 @@ yjsUtils.setPersistence({
           )
           Y.applyUpdate(ydoc, documentState)
         } catch (error) {
-          Sentry.captureException(error)
+          // lib0 errors have a meaningless stack trace (see WorkingVersion.md resolver)
+          Sentry.captureException(
+            new Error('Unable to load document state from the working copy', {
+              cause: error,
+            }),
+            { tags: { articleId } }
+          )
           console.error(
             `Unable to load document state from the working copy on article: ${articleId}`,
             error
