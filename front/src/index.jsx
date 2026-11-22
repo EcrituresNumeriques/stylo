@@ -1,5 +1,7 @@
 import './wdyr.js'
 
+// Iterator helpers (Map.entries().toArray()…): Chrome < 122, Safari < 18.4
+import 'core-js/stable/iterator'
 import 'core-js/modules/web.structured-clone'
 
 import * as Sentry from '@sentry/react'
