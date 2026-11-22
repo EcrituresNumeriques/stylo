@@ -54,7 +54,10 @@ const pino = require('pino-http')({
 const schema = require('./schema')
 
 const { removeAtomSummaries } = require('./helpers/feed.js')
-const { isArticleRoomUrl } = require('./helpers/collaboration.js')
+const {
+  canJoinArticleRoom,
+  isArticleRoomUrl,
+} = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
 
 const User = require('./models/user')
@@ -407,9 +410,20 @@ server.on('upgrade', (request, socket, head) => {
     socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n')
     return
   }
-  wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-    // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-    // TODO: check token and permissions
-    wss.emit('connection', ws, request)
-  })
+  canJoinArticleRoom(request.url, { jwtSecret })
+    .then((allowed) => {
+      if (!allowed) {
+        socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n')
+        return
+      }
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request)
+      })
+    })
+    .catch((error) => {
+      Sentry.captureException(error)
+      socket.end(
+        'HTTP/1.1 500 Internal Server Error\r\nConnection: close\r\n\r\n'
+      )
+    })
 })

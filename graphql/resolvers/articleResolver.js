@@ -165,6 +165,7 @@ function eqSet(a, b) {
 }
 
 module.exports = {
+  getArticleByUser,
   Mutation: {
     /**
      * Update an article as the current user
