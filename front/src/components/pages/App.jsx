@@ -1,6 +1,6 @@
 import { setUser as setSentryUser } from '@sentry/react'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import {
@@ -12,6 +12,7 @@ import {
 } from 'react-router'
 import { ToastContainer } from 'react-toastify'
 
+import { focusPageStart, shouldFocusPageStart } from '../../helpers/focus.js'
 import { getUserProfile } from '../../helpers/user.js'
 import { useDiscourseFeed } from '../../hooks/feed.js'
 import { usePreferenceItem } from '../../hooks/user.js'
@@ -76,6 +77,21 @@ export default function StyloApp() {
       _paq.push(['forgetConsentGiven'])
     }
   }, [hasTrackingConsent])
+
+  // After a page change, the focus stays on the menu link that was followed,
+  // or falls back on <body> when that link is removed from the DOM: bring it
+  // to the start of the new page.
+  // Pages that focus an element themselves (autoFocus field, editor) keep it.
+  const isFirstPage = useRef(true)
+  useEffect(() => {
+    if (isFirstPage.current) {
+      isFirstPage.current = false
+      return
+    }
+    if (!location.hash && shouldFocusPageStart()) {
+      return focusPageStart()
+    }
+  }, [location.pathname])
 
   // Track location change
   useEffect(() => {
