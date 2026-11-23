@@ -123,28 +123,50 @@ jobs:
         env:
           LATEST_COMMIT_MESSAGE:
 
+      # `continue-on-error`: a Sentry hiccup (expired token, API down) must not
+      # fail the deployment job — prod is already live — nor block the
+      # `backlog` job, which needs `deployment`.
       - name: Record companion service deploys in Sentry
+        continue-on-error: true
         run: |
           # The deployed versions are pinned in the prod inventory, the same
           # values the compose file uses to pull the images. Releases are cut
-          # in each repository (`make sentry-release`); recreate them
-          # defensively, then finalize and record the deploy (sentry-cli 3.x:
-          # `releases deploys new`).
-          EXPORT_VERSION=$(grep -E '^stylo_export_version=' infrastructure/inventories/prod | cut -d= -f2)
-          PANDOC_VERSION=$(grep -E '^pandoc_api_version=' infrastructure/inventories/prod | cut -d= -f2)
+          # in each repository (`make sentry-release`) as `<project>@<version>`
+          # — release names are org-wide in Sentry, so the project prefix keeps
+          # stylo-export and pandoc-api releases from clashing. Recreate them
+          # defensively, then finalize and record the deploy. The environment
+          # must match the one the SDKs send (`SENTRY_ENVIRONMENT`, set from
+          # the inventory `env` var in the deployed `.env`), or Sentry won't
+          # link the errors to this deploy.
+          INVENTORY_JSON=$(ansible-inventory -i infrastructure/inventories/prod --list)
+          HOST=$(echo "${INVENTORY_JSON}" | jq -r '.stylo.hosts[0] // empty')
+          # Group vars may live in hostvars or in the group, depending on the
+          # ansible version: check both.
+          inventory_var() {
+            echo "${INVENTORY_JSON}" | jq -r --arg h "${HOST}" --arg v "$1" \
+              '._meta.hostvars[$h][$v] // .stylo.vars[$v] // empty'
+          }
+          ENVIRONMENT=$(inventory_var env)
+          [ -n "${ENVIRONMENT}" ] || ENVIRONMENT="prod"
+          EXPORT_VERSION=$(inventory_var stylo_export_version)
+          PANDOC_VERSION=$(inventory_var pandoc_api_version)
           if [ -n "${EXPORT_VERSION}" ]; then
-            echo "Recording stylo-export v${EXPORT_VERSION} production deploy"
-            sentry-cli releases new "${EXPORT_VERSION}" -p stylo-export || true
-            sentry-cli releases finalize "${EXPORT_VERSION}" -p stylo-export
-            sentry-cli releases deploys new "${EXPORT_VERSION}" --env production -p stylo-export
+            RELEASE="stylo-export@${EXPORT_VERSION}"
+            echo "Recording ${RELEASE} deploy to ${ENVIRONMENT}"
+            # `|| true`: the release may already exist (cut by `make release`);
+            # `finalize` and `deploys new` below still apply to it.
+            sentry-cli releases new "${RELEASE}" -p stylo-export || true
+            sentry-cli releases finalize "${RELEASE}" -p stylo-export
+            sentry-cli releases deploys new --env "${ENVIRONMENT}" -p stylo-export -r "${RELEASE}"
           else
             echo "No stylo_export_version in inventory; skipping stylo-export"
           fi
           if [ -n "${PANDOC_VERSION}" ]; then
-            echo "Recording pandoc-api v${PANDOC_VERSION} production deploy"
-            sentry-cli releases new "${PANDOC_VERSION}" -p pandoc-api || true
-            sentry-cli releases finalize "${PANDOC_VERSION}" -p pandoc-api
-            sentry-cli releases deploys new "${PANDOC_VERSION}" --env production -p pandoc-api
+            RELEASE="pandoc-api@${PANDOC_VERSION}"
+            echo "Recording ${RELEASE} deploy to ${ENVIRONMENT}"
+            sentry-cli releases new "${RELEASE}" -p pandoc-api || true
+            sentry-cli releases finalize "${RELEASE}" -p pandoc-api
+            sentry-cli releases deploys new --env "${ENVIRONMENT}" -p pandoc-api -r "${RELEASE}"
           else
             echo "No pandoc_api_version in inventory; skipping pandoc-api"
           fi
