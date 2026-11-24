@@ -35,7 +35,9 @@ From the `infrastructure` folder:
 ## Build the front-end and deploy
 
 The front-end assets are built on your machine and copied to the server by the playbook.
-From the root of the repository, set the `SNOWPACK_*` variables of your instance (for instance in `.env`, see [`stylo-example.env`](stylo-example.env)), then build:
+From the root of the repository, set the `FRONT_*`, `PANDOC_EXPORT_ENDPOINT` and `ANNOTATIONS_CANONICAL_BASE_URL` variables of your instance (for instance in `.env`, see [`stylo-example.env`](stylo-example.env)).
+The former `SNOWPACK_*` names are still read, with a deprecation warning, but will be removed in a future version.
+Then build:
 
 ```bash
 npm clean-install

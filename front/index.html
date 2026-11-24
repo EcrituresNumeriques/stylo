@@ -37,7 +37,7 @@
       content="Stylo, online text editor for scholars"
     />
     <meta name="twitter:image" content="/favicon.ico" />
-    {{#if SNOWPACK_MATOMO}}
+    {{#if MATOMO}}
     <!-- Matomo -->
     <script>
       var _paq = (window._paq = window._paq || [])
@@ -47,9 +47,9 @@
       _paq.push(['trackPageView'])
       _paq.push(['enableLinkTracking'])
       ;(() => {
-        var u = '{{ SNOWPACK_MATOMO_URL }}'
+        var u = '{{ MATOMO_URL }}'
         _paq.push(['setTrackerUrl', u + 'piwik.php'])
-        _paq.push(['setSiteId', '{{ SNOWPACK_MATOMO_SITE_ID }}'])
+        _paq.push(['setSiteId', '{{ MATOMO_SITE_ID }}'])
         var d = document,
           g = d.createElement('script'),
           s = d.getElementsByTagName('script')[0]

@@ -9,15 +9,51 @@ import handlebars from 'vite-plugin-handlebars'
 import { configDefaults, coverageConfigDefaults } from 'vitest/config'
 import pkg from './package.json' with { type: 'json' }
 
+/**
+ * Variables d'environnement renommées : nouveau nom → ancien nom (préfixe
+ * SNOWPACK_, hérité de Snowpack). L'ancien nom reste lu en repli pour ne pas
+ * casser les instances existantes.
+ */
+const legacyEnvNames = {
+  FRONT_BACKEND_ENDPOINT: 'SNOWPACK_PUBLIC_BACKEND_ENDPOINT',
+  FRONT_GRAPHQL_ENDPOINT: 'SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT',
+  FRONT_IMGUR_CLIENT_ID: 'SNOWPACK_IMGUR_CLIENT_ID',
+  FRONT_MATOMO_SITE_ID: 'SNOWPACK_MATOMO_SITE_ID',
+  FRONT_MATOMO_URL: 'SNOWPACK_MATOMO_URL',
+  FRONT_PANDOC_EXPORT_HOST: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_HOST',
+  ANNOTATIONS_CANONICAL_BASE_URL:
+    'SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL',
+  PANDOC_EXPORT_ENDPOINT: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
+}
+
+/**
+ * @param {Record<string, string>} env
+ * @returns {Record<string, string | undefined>}
+ */
+function resolveEnv(env) {
+  return Object.fromEntries(
+    Object.entries(legacyEnvNames).map(([name, legacyName]) => {
+      if (env[name] === undefined && env[legacyName] !== undefined) {
+        console.warn(
+          `[stylo] La variable d'environnement ${legacyName} est obsolète, utilisez ${name} à la place.`
+        )
+        return [name, env[legacyName]]
+      }
+      return [name, env[name]]
+    })
+  )
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const envPrefix = ['SNOWPACK_', 'SENTRY_']
-  const env = loadEnv(
-    mode,
-    fileURLToPath(join(import.meta.url, '..', '..')),
-    envPrefix
-  )
-  const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
+  const envPrefix = ['FRONT_', 'SENTRY_']
+  const env = loadEnv(mode, fileURLToPath(join(import.meta.url, '..', '..')), [
+    ...envPrefix,
+    ...Object.keys(legacyEnvNames),
+    ...Object.values(legacyEnvNames),
+  ])
+  const config = resolveEnv(env)
+  const { FRONT_MATOMO_URL, FRONT_MATOMO_SITE_ID } = config
   const isDevelopment = Boolean(
     mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev'
   )
@@ -75,10 +111,9 @@ export default defineConfig(async ({ mode }) => {
       }),
       handlebars({
         context: {
-          SNOWPACK_MATOMO:
-            Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
-          SNOWPACK_MATOMO_URL,
-          SNOWPACK_MATOMO_SITE_ID,
+          MATOMO: Boolean(FRONT_MATOMO_URL) && Boolean(FRONT_MATOMO_SITE_ID),
+          MATOMO_URL: FRONT_MATOMO_URL,
+          MATOMO_SITE_ID: FRONT_MATOMO_SITE_ID,
         },
       }),
       env.SENTRY_AUTH_TOKEN &&
@@ -109,18 +144,14 @@ export default defineConfig(async ({ mode }) => {
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
       SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
       __ANNOTATIONS_CANONICAL_BASE_URL__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL
+        config.ANNOTATIONS_CANONICAL_BASE_URL
       ),
-      __BACKEND_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT
-      ),
-      __GRAPHQL_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT
-      ),
-      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
-      ),
-      __IMGUR_CLIENT_ID__: JSON.stringify(env.SNOWPACK_IMGUR_CLIENT_ID),
+      __BACKEND_ENDPOINT__: JSON.stringify(config.FRONT_BACKEND_ENDPOINT),
+      __GRAPHQL_ENDPOINT__: JSON.stringify(config.FRONT_GRAPHQL_ENDPOINT),
+      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(config.PANDOC_EXPORT_ENDPOINT),
+      __PANDOC_EXPORT_HOST__: JSON.stringify(config.FRONT_PANDOC_EXPORT_HOST),
+      __MATOMO_URL__: JSON.stringify(FRONT_MATOMO_URL),
+      __IMGUR_CLIENT_ID__: JSON.stringify(config.FRONT_IMGUR_CLIENT_ID),
     },
     server: {
       port: 3000,
