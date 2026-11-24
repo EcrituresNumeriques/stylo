@@ -43,8 +43,8 @@ services:
       labels:
         - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
       args:
-        - SNOWPACK_MATOMO_URL
-        - SNOWPACK_MATOMO_SITE_ID
+        - FRONT_MATOMO_URL
+        - FRONT_MATOMO_SITE_ID
     image: 'ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}'
     container_name: 'front-stylo'
     volumes:

@@ -24,7 +24,7 @@ export default function Privacy() {
 
         <p>Coming soon…</p>
 
-        {import.meta.env.SNOWPACK_MATOMO_URL && (
+        {__MATOMO_URL__ && (
           <p>
             <input
               type="checkbox"

@@ -26,7 +26,7 @@ Copy the configuration file:
 cp stylo-example.env .env
 ```
 
-Edit `.env`: the `SNOWPACK_PUBLIC_*` variables and the callback URLs must use the public URL of your instance (see [Expose Stylo](#expose-stylo)).
+Edit `.env`: the `FRONT_*_ENDPOINT`, `PANDOC_EXPORT_ENDPOINT` and `ANNOTATIONS_CANONICAL_BASE_URL` variables and the callback URLs must use the public URL of your instance (see [Expose Stylo](#expose-stylo)).
 Then build the front-end assets, which are served by the `front-stylo` container from the `front/build` folder:
 
 ```bash

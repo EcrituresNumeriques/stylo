@@ -14,12 +14,12 @@ on:
         type: string
 
 env:
-  SNOWPACK_PUBLIC_BACKEND_ENDPOINT: https://stylo.huma-num.fr
-  SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT: https://stylo.huma-num.fr/graphql
-  SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT: https://export.stylo.huma-num.fr
-  SNOWPACK_MATOMO_URL: https://analyseweb.huma-num.fr/
-  SNOWPACK_MATOMO_SITE_ID: 286
-  SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL: https://stylo.ecrituresnumeriques.ca
+  FRONT_BACKEND_ENDPOINT: https://stylo.huma-num.fr
+  FRONT_GRAPHQL_ENDPOINT: https://stylo.huma-num.fr/graphql
+  PANDOC_EXPORT_ENDPOINT: https://export.stylo.huma-num.fr
+  FRONT_MATOMO_URL: https://analyseweb.huma-num.fr/
+  FRONT_MATOMO_SITE_ID: 286
+  ANNOTATIONS_CANONICAL_BASE_URL: https://stylo.ecrituresnumeriques.ca
   SENTRY_DSN: https://276d5080680a70a3edf98783a2b264d0@o4507130700496896.ingest.de.sentry.io/4507130704560208
   SENTRY_ENVIRONMENT: prod
 
@@ -46,7 +46,7 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: stylo-front
           SENTRY_DEBUG: true
-          SNOWPACK_IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID_PROD }}
+          FRONT_IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID_PROD }}
 
       - name: Store build artifacts for the deploy stage
         uses: actions/upload-artifact@v6

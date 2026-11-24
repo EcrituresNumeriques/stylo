@@ -7,6 +7,28 @@ const ospath = require('node:path')
 
 convict.addFormat(require('convict-format-with-validator').url)
 
+/**
+ * Variables d'environnement renommées : nouveau nom → ancien nom (préfixe
+ * SNOWPACK_, hérité de Snowpack). L'ancien nom reste lu en repli pour ne pas
+ * casser les instances existantes.
+ */
+const legacyEnvNames = {
+  ANNOTATIONS_CANONICAL_BASE_URL:
+    'SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL',
+  PANDOC_EXPORT_ENDPOINT: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
+}
+for (const [name, legacyName] of Object.entries(legacyEnvNames)) {
+  if (
+    process.env[name] === undefined &&
+    process.env[legacyName] !== undefined
+  ) {
+    console.warn(
+      `[stylo] La variable d'environnement ${legacyName} est obsolète, utilisez ${name} à la place.`
+    )
+    process.env[name] = process.env[legacyName]
+  }
+}
+
 convict.addFormat({
   name: 'cors-origins',
   coerce(value) {
@@ -105,12 +127,12 @@ module.exports = convict({
   export: {
     baseUrl: {
       format: String,
-      env: 'SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL',
+      env: 'ANNOTATIONS_CANONICAL_BASE_URL',
       default: 'https://stylo.ecrituresnumeriques.ca',
     },
     urlEndpoint: {
       format: 'url',
-      env: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
+      env: 'PANDOC_EXPORT_ENDPOINT',
       default: 'http://127.0.0.1:3080',
     },
   },

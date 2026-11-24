@@ -11,11 +11,10 @@ command = "npm run build -- --mode production"
 # System env
 NPM_FLAGS = "--no-audit --no-fund"
 
-# App env (new Snowpack)
-SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
-SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
-SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT = "https://export.stylo-dev.huma-num.fr"
-SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+# App env
+FRONT_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
+PANDOC_EXPORT_ENDPOINT = "https://export.stylo-dev.huma-num.fr"
+FRONT_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
 
 
 [[redirects]]

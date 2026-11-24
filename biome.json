@@ -40,6 +40,8 @@
       "__BACKEND_ENDPOINT__",
       "__GRAPHQL_ENDPOINT__",
       "__PANDOC_EXPORT_ENDPOINT__",
+      "__PANDOC_EXPORT_HOST__",
+      "__MATOMO_URL__",
       "__IMGUR_CLIENT_ID__"
     ]
   },
