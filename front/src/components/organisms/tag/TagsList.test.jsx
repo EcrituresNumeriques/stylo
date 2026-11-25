@@ -43,4 +43,29 @@ describe('TagsList', () => {
     expect(dialogs).toHaveLength(1)
     expect(within(dialogs[0]).getByLabelText('Name')).toHaveValue('second tag')
   })
+
+  test('keeps the selected tags in the page address', async () => {
+    const user = userEvent.setup()
+
+    fetch.mockRestore()
+    fetch.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ data: { user: { tags } } }),
+    })
+
+    renderWithProviders(<Component />, { route: '/test?tag=tag-2' })
+
+    const firstTag = await screen.findByRole('checkbox', { name: 'first tag' })
+    const secondTag = screen.getByRole('checkbox', { name: 'second tag' })
+    expect(firstTag).not.toBeChecked()
+    expect(secondTag).toBeChecked()
+
+    await user.click(firstTag)
+    expect(firstTag).toBeChecked()
+    expect(secondTag).toBeChecked()
+
+    await user.click(secondTag)
+    expect(firstTag).toBeChecked()
+    expect(secondTag).not.toBeChecked()
+  })
 })
