@@ -20,9 +20,9 @@ Les types les plus utilisés sont :
 - `test` pour l'ajout ou la modification de tests
 - `docs` pour la documentation
 - `ci` pour les workflows GitHub Actions
-- `chore` pour le reste (outillage, configuration, dépendances, etc.)
+- `maint` pour le reste (outillage, configuration, dépendances, etc.)
 
-La portée est facultative et précise la partie du projet concernée, par exemple `front`, `graphql`, `editor`, `export`, `infra` ou `deps`.
+La portée est facultative et précise le domaine concerné, par exemple `front`, `graphql`, `editor`, `export`, `infra` ou `deps`.
 Un changement non rétrocompatible est signalé par un `!` après le type ou la portée (par exemple `feat(graphql)!: …`).
 
 La description est rédigée en français, commence par un verbe au présent de l'indicatif et ne se termine pas par un point.
@@ -53,8 +53,8 @@ Il évite autant que possible le vocabulaire technique (noms de fichiers, de com
 
 ### Description
 
-La description explique le problème résolu et la solution retenue.
-Si la pull request corrige une issue, mentionnez-la avec un mot-clé (par exemple `Closes #123`) afin de lier les deux.
+La description explique le problème résolu, les chemins de pensées et la solution retenue.
+Si la pull request corrige une issue, mentionnez-la avec un mot-clé (par exemple `closes #123`) afin de lier les deux.
 Indiquez également comment vérifier le changement, en particulier quand il n'est pas couvert par des tests automatisés.
 
 ## Formatage et lint
@@ -83,9 +83,9 @@ Le lint est exécuté automatiquement après les tests (`npm test`), donc une er
 ## Tests
 
 Chaque workspace a ses propres tests, exécutés par l'intégration continue sur chaque pull request.
-Ajoutez ou mettez à jour les tests qui correspondent à votre modification.
+Commencez par ajouter des tests qui correspondent à l'intention de votre modification.
 
-Avant de lancer les tests pour la première fois, créez le fichier `.env` à la racine du dépôt s'il n'existe pas encore :
+Avant de lancer les tests pour la première fois, copiez le fichier `stylo-example.env` vers `.env`, à la racine du dépôt, s'il n'existe pas encore :
 
 ```bash
 cp stylo-example.env .env
