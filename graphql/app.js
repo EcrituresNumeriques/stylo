@@ -4,6 +4,7 @@ const pkg = require('./package.json')
 const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
+const { scrubEvent } = require('./helpers/sentry.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 
@@ -31,6 +32,8 @@ if (config.get('sentry.dsn')) {
     ],
     tracesSampleRate: 1.0,
     profilesSampleRate: 1.0,
+    beforeSend: scrubEvent,
+    beforeSendTransaction: scrubEvent,
   })
 }
 
