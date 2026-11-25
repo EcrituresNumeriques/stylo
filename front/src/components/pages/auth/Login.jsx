@@ -2,12 +2,12 @@ import { HelpCircle } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
 import { toast } from 'react-toastify'
 
 import { applicationConfig } from '../../../config.js'
 import { fromFormData } from '../../../helpers/forms.js'
+import { setSessionToken } from '../../../helpers/sessionToken.js'
 import { useLogout } from '../../../hooks/user.js'
 import buttonStyles from '../../atoms/Button.module.scss'
 import { Button, Field } from '../../atoms/index.js'
@@ -17,7 +17,6 @@ import styles from './Login.module.scss'
 export default function Login() {
   const { t } = useTranslation()
   const [error, setError] = useState('')
-  const dispatch = useDispatch()
   const usernameRef = useRef(null)
   const location = useLocation()
   const revalidator = useRevalidator()
@@ -35,8 +34,7 @@ export default function Login() {
     }
 
     if (token) {
-      // will trigger a store subscription and profile to be loaded there (hooks mainly)
-      dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      setSessionToken(token)
       // will trigger AppLoader to reload data (PrivateRoute etc.)
       revalidator.revalidate()
     }
@@ -63,7 +61,7 @@ export default function Login() {
           : Promise.reject(new Error(t('authentication.error.message')))
       })
       .then((data) => {
-        dispatch({ type: 'LOGIN', ...data })
+        setSessionToken(data.token)
         revalidator.revalidate()
       })
       .catch((error) => {
@@ -196,8 +194,7 @@ export function Logout() {
 
   useEffect(() => {
     ;(async () => {
-      // make sure the sessionToken is removed before navigate is called
-      localStorage.removeItem('sessionToken')
+      // the session token is removed before navigate is called
       await logout()
       await revalidator.revalidate()
       navigate('/', { replace: true })

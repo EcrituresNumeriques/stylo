@@ -9,7 +9,6 @@ import * as Sentry from '@sentry/react'
 import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { Provider as ReduxProvider } from 'react-redux'
 import {
   createBrowserRouter,
   createRoutesFromChildren,
@@ -35,7 +34,6 @@ import NotFound from './components/pages/errors/404.jsx'
 import ErrorBoundary from './components/pages/errors/AppError.jsx'
 import LoadingPage from './components/pages/LoadingPage.jsx'
 import RequireAuth from './components/pages/PrivateRoute.jsx'
-import createStore from './createReduxStore.js'
 
 if (SENTRY_DSN) {
   Sentry.init({
@@ -106,8 +104,6 @@ const Annotate = lazy(() => import('./components/pages/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/pages/Privacy.jsx'))
 const Bye = lazy(() => import('./components/pages/Bye.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
-
-const store = createStore()
 
 const root = createRoot(document.getElementById('root'), {
   onUncaughtError: Sentry.reactErrorHandler(),
@@ -222,9 +218,7 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
-      <ReduxProvider store={store}>
-        <RouterProvider router={router} />
-      </ReduxProvider>
+      <RouterProvider router={router} />
     </HelmetProvider>
   </React.StrictMode>
 )

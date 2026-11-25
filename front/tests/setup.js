@@ -1,7 +1,6 @@
 import React, { Children } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { I18nextProvider } from 'react-i18next'
-import { Provider as ReduxProvider } from 'react-redux'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
@@ -11,9 +10,6 @@ import '../src/i18n.js'
 
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render } from '@testing-library/react'
-import merge from 'lodash.merge'
-
-import createReduxStore, { initialState } from '../src/createReduxStore.js'
 
 // mock queryCommandSupported
 document.queryCommandSupported = () => true
@@ -60,12 +56,10 @@ afterEach(() => {
 export function renderWithProviders(
   ui,
   {
-    preloadedState = {},
     route = '/test',
     path = '/test',
     extraRoutes = [],
     loader,
-    store = createReduxStore(merge({}, initialState, preloadedState)),
     ...renderOptions
   } = {}
 ) {
@@ -82,20 +76,16 @@ export function renderWithProviders(
       ...extraRoutes,
     ])
 
-    /* eslint-disable-next-line react/no-children-prop */
-    return React.createElement(ReduxProvider, {
-      store,
-      children: React.createElement(
-        I18nextProvider,
-        { i18n },
-        React.createElement(
-          HelmetProvider,
-          null,
-          React.createElement(Stub, { initialEntries: [route] })
-        )
-      ),
-    })
+    return React.createElement(
+      I18nextProvider,
+      { i18n },
+      React.createElement(
+        HelmetProvider,
+        null,
+        React.createElement(Stub, { initialEntries: [route] })
+      )
+    )
   }
 
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+  return render(ui, { wrapper: Wrapper, ...renderOptions })
 }

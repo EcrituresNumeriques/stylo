@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Trans, useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import {
   Link,
   useLocation,
@@ -13,6 +12,7 @@ import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
+import { setSessionToken } from '../../../helpers/sessionToken.js'
 import * as queries from '../../../hooks/Credentials.graphql'
 import { Button, Field } from '../../atoms/index.js'
 
@@ -24,7 +24,6 @@ export default function RegisterWithAuthProvider() {
   const { service } = useParams()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
-  const dispatch = useDispatch()
   const { search } = useLocation()
   const { query } = useGraphQLClient()
   const params = new URLSearchParams(search)
@@ -43,7 +42,7 @@ export default function RegisterWithAuthProvider() {
         withCredentials: true,
       })
 
-      dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      setSessionToken(token)
       // reloads the profile (AppLoader) before entering a private route
       await revalidator.revalidate()
 

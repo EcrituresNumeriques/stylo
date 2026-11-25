@@ -1,7 +1,7 @@
 import { print } from 'graphql/language/printer'
-import { useSelector } from 'react-redux'
 
 import { applicationConfig } from '../config.js'
+import { getSessionToken } from './sessionToken.js'
 
 const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
 
@@ -14,15 +14,10 @@ const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
  * @param {string} config.query request query (as string)
  * @param {'omit' | 'same-origin' | 'include'} config.credentials request query (as string)
  * @param {{[string: key]: value}|undefined} config.variables request variables
- * @param {string} config.sessionToken session token (for authentication)
  * @returns {Promise<string|object>}
  */
-async function executeRequest({
-  query,
-  variables,
-  sessionToken,
-  credentials = 'omit',
-}) {
+async function executeRequest({ query, variables, credentials = 'omit' }) {
+  const sessionToken = getSessionToken()
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
@@ -78,13 +73,11 @@ export class GraphQLError extends Error {
 }
 
 export function useGraphQLClient() {
-  const sessionToken = useSelector((state) => state.sessionToken)
   return {
     query: ({ query, variables, withCredentials = false }) =>
       executeQuery({
         query,
         variables,
-        sessionToken,
         credentials: withCredentials === false ? 'omit' : corsStrategy,
       }),
   }
@@ -95,16 +88,14 @@ export function useGraphQLClient() {
  * @param {DocumentNode|string} context.query request query (as AST or string)
  * @param {'omit' | 'same-origin' | 'include'} context.credentials request variables
  * @param {{[key: string]: unknown}|undefined} context.variables request variables
- * @param {string} context.sessionToken session token (for authentication)
  * @returns {Promise<string|{[key: string]: unknown}>}
  * @throws {Error} if something went wrong
  */
 export function executeQuery({
   query: queryOrAST,
   variables,
-  sessionToken,
   credentials = 'omit',
 }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-  return executeRequest({ query, variables, sessionToken, credentials })
+  return executeRequest({ query, variables, credentials })
 }

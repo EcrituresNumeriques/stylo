@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useRouteLoaderData } from 'react-router'
-
 import * as collaborating from '../components/organisms/textEditor/collaborating.js'
 import { applicationConfig } from '../config.js'
+import { getSessionToken } from '../helpers/sessionToken.js'
 
 const colors = [
   // navy
@@ -45,7 +44,7 @@ export function useCollaboration({ articleId, onWritersChange }) {
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const sessionToken = getSessionToken()
   const { user: activeUser } = useRouteLoaderData('app')
 
   const writerInfo = useMemo(

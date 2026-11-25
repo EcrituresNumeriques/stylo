@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useRevalidator } from 'react-router'
 import { toast } from 'react-toastify'
 
+import { removeSessionToken } from '../../../helpers/sessionToken.js'
 import { useAccount, useLogout } from '../../../hooks/user.js'
 import { FormActions } from '../../molecules/index.js'
 
@@ -24,7 +25,7 @@ export default function UserDeleteConfirm({ onCancel }) {
           const success = await deleteAccount()
           if (success === true) {
             // make sure the sessionToken is removed before navigate is called
-            localStorage.removeItem('sessionToken')
+            removeSessionToken()
             await revalidator.revalidate()
             // log out and redirect to the account deletion confirmation page
             await logout()

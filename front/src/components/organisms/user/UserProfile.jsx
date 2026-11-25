@@ -1,12 +1,12 @@
 import { Check, Loader } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useRevalidator, useRouteLoaderData } from 'react-router'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
+import { getSessionToken } from '../../../helpers/sessionToken.js'
 import { updateUser } from '../../../hooks/Credentials.graphql'
 import formStyles from '../../atoms/Field.module.scss'
 import { Button, Field, TimeAgo } from '../../atoms/index.js'
@@ -18,7 +18,6 @@ export default function UserProfile() {
   const { query } = useGraphQLClient()
   const { user: activeUser } = useRouteLoaderData('app')
 
-  const sessionToken = useSelector((state) => state.sessionToken)
   const [isSaving, setIsSaving] = useState(false)
 
   const updateInfo = useCallback(
@@ -115,7 +114,7 @@ export default function UserProfile() {
 
           <dt>{t('user.account.apiKey')}</dt>
           <dd>
-            <code className={styles.apiKeyValue}>{sessionToken}</code>
+            <code className={styles.apiKeyValue}>{getSessionToken()}</code>
           </dd>
 
           <dt>{t('user.account.createdAt')}</dt>
