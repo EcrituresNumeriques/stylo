@@ -54,6 +54,10 @@ services:
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_BASE_URLS={{ export_allowed_instance_base_urls }}
+      # The Sentry DSN is baked into the image (`.envdocker` in stylo-export).
+      # The deployed `.env` must not define `SENTRY_EXPORT_DSN` or `SENTRY_DSN`,
+      # which would take precedence over it. `SENTRY_ENVIRONMENT` comes from
+      # the `.env`.
     ports:
       - 127.0.0.1:3080:8001
     extra_hosts:
@@ -62,5 +66,9 @@ services:
   pandoc-api:
     image: 'davidbgk/pandoc-api:{{pandoc_api_version}}'
     container_name: 'pandoc-api'
+    environment:
+      # The service receives no `.env` (no `env_file`), so `SENTRY_ENVIRONMENT`
+      # (dev/prod, from the inventory) must be set here for the Sentry SDK.
+      - SENTRY_ENVIRONMENT={{env}}
     ports:
       - 127.0.0.1:3090:8000
