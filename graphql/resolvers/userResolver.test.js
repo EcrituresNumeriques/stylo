@@ -480,7 +480,6 @@ describe('user resolver', () => {
 
       assert.match(
         jwt,
-        // eslint-disable-next-line security/detect-unsafe-regex
         /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
       )
     })

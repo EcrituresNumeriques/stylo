@@ -40,7 +40,6 @@ describe('toEntries', () => {
 
     assert.deepEqual(
       toEntries(text).map((e) => {
-        // eslint-disable-next-line no-unused-vars
         const { entry, ...rest } = e
         return rest
       }),
@@ -71,7 +70,6 @@ describe('toEntries', () => {
 
     assert.deepEqual(
       toEntries(text).map((e) => {
-        // eslint-disable-next-line no-unused-vars
         const { entry, ...rest } = e
         return rest
       }),
@@ -95,7 +93,6 @@ describe('toEntries', () => {
 
     assert.deepEqual(
       toEntries(text).map((e) => {
-        // eslint-disable-next-line no-unused-vars
         const { entry, ...rest } = e
         return rest
       }),

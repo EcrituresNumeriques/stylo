@@ -37,7 +37,6 @@ convict.addFormat({
       .map((v) => v.trim())
       .filter((v) => v)
       .map((v) => {
-        // eslint-disable-next-line security/detect-non-literal-regexp
         return new RegExp(v)
       })
   },
