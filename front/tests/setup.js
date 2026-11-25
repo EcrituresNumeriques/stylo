@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
+import { forgetAccountPreferences } from '../src/helpers/preferences.js'
 import i18n from '../src/i18n.js'
 import '../src/i18n.js'
 
@@ -51,6 +52,8 @@ globalThis.alert = console.error
 
 afterEach(() => {
   cleanup()
+  localStorage.clear()
+  forgetAccountPreferences()
   vi.clearAllMocks()
 })
 

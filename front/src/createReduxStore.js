@@ -4,84 +4,18 @@ import { applyMiddleware, compose, createStore } from 'redux'
 
 const sessionTokenName = 'sessionToken'
 
-/**
- * @typedef {object} ExportPreferences
- * @property {string} bibliography_style
- * @property {0 | 1} with_toc
- * @property {0 | 1} link_citations
- * @property {0 | 1} with_nocite
- * @property {'originals' | 'md-ssg' | 'html' | 'tex' | 'pdf' | 'odt' | 'docx' | 'icml' | 'xml-tei' | 'xml-erudit' | 'xml-tei-metopes'} formats
- * @property {0 | 1} unnumbered
- * @property {'part' | 'chapter'} book_division
- */
-
-/**
- * @typedef {object} UserPreferences
- * @property {boolean} trackingConsent
- * @property {string|null} workspaceId
- */
-
-const defaultArticlePreferences = {
-  expandSidebarRight: true,
-  activePanel: null,
-  metadataFormMode: 'basic',
-}
-
-/** @type {UserPreferences} */
-const defaultUserPreferences = {
-  trackingConsent: true /* default value should be false */,
-  workspaceId: null,
-}
-
-/** @type {ExportPreferences} */
-const defaultExportPreferences = {
-  bibliography_style: 'chicagomodified',
-  with_toc: 0,
-  link_citations: 0,
-  with_nocite: 0,
-  formats: 'html',
-  unnumbered: 0,
-  book_division: 'part',
-}
-
 // État d'une session anonyme : ne doit dépendre d'aucune donnée persistée
 const defaultState = {
   sessionToken: null,
-  articlePreferences: defaultArticlePreferences,
-  articleFilters: {
-    tagIds: [],
-    text: '',
-  },
   activeUser: {
     selectedTagIds: [],
   },
-  /** @type {UserPreferences} */
-  userPreferences: defaultUserPreferences,
-  /** @type {ExportPreferences} */
-  exportPreferences: defaultExportPreferences,
-}
-
-function readLocalStorageItem(key, defaultValue) {
-  const value = localStorage.getItem(key)
-  return value ? JSON.parse(value) : defaultValue
 }
 
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
   ...defaultState,
   sessionToken: localStorage.getItem(sessionTokenName),
-  articlePreferences: readLocalStorageItem(
-    'articlePreferences',
-    defaultArticlePreferences
-  ),
-  userPreferences: readLocalStorageItem(
-    'userPreferences',
-    defaultUserPreferences
-  ),
-  exportPreferences: readLocalStorageItem(
-    'exportPreferences',
-    defaultExportPreferences
-  ),
 }
 
 /**
@@ -111,47 +45,13 @@ function createRootReducer(state) {
     UPDATE_SESSION_TOKEN: setSessionToken,
     LOGOUT: logoutUser,
 
-    // user preferences reducers
-    ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
-    CORPUS_PREFERENCES_TOGGLE: toggleCorpusPreferences,
-    USER_PREFERENCES_TOGGLE: toggleUserPreferences,
-
-    SET_ARTICLE_PREFERENCES: setArticlePreferences,
-    SET_CORPUS_PREFERENCES: setCorpusPreferences,
-    SET_EXPORT_PREFERENCES: setExportPreferences,
-    SET_USER_PREFERENCES: setUserPreferences,
-
     UPDATE_SELECTED_TAG: updateSelectedTag,
   })
 }
 
 function persistStateIntoLocalStorage({ getState }) {
-  const actionStateMap = new Map([
-    ['ARTICLE_PREFERENCES_TOGGLE', 'articlePreferences'],
-    ['SET_ARTICLE_PREFERENCES', 'articlePreferences'],
-    ['SET_EXPORT_PREFERENCES', 'exportPreferences'],
-    ['USER_PREFERENCES_TOGGLE', 'userPreferences'],
-    ['SET_USER_PREFERENCES', 'userPreferences'],
-  ])
-
   return (next) => {
     return (action) => {
-      if (actionStateMap.has(action.type)) {
-        const key = actionStateMap.get(action.type)
-        // we run the reducer first
-        next(action)
-        // we fetch the updated state
-        const state = getState()[key]
-
-        // we persist it for a later page reload
-        localStorage.setItem(key, JSON.stringify(state))
-
-        return
-      } else if (action.type === 'LOGOUT') {
-        localStorage.removeItem('articlePreferences')
-        localStorage.removeItem('userPreferences')
-      }
-
       if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
         next(action)
         const { sessionToken } = getState()
@@ -178,52 +78,12 @@ function setSessionToken(state, { token: sessionToken }) {
 
 /**
  * L'état initial a été lu depuis le localStorage au chargement de la page :
- * il peut contenir le jeton ou les préférences (dont l'espace de travail actif)
- * de l'utilisateur qui se déconnecte, on repart donc de l'état par défaut.
+ * il peut contenir le jeton de l'utilisateur qui se déconnecte, on repart
+ * donc de l'état par défaut.
  */
-function logoutUser(state) {
-  return {
-    ...structuredClone(defaultState),
-    // les préférences d'export ne sont pas liées au compte (elles restent dans le localStorage)
-    exportPreferences: state.exportPreferences,
-  }
+function logoutUser() {
+  return structuredClone(defaultState)
 }
-
-function togglePreferences(storeKey) {
-  return function togglePreferencesReducer(state, { key, value }) {
-    const preferences = state[storeKey]
-
-    return {
-      ...state,
-      [storeKey]: {
-        ...preferences,
-        [key]: value === undefined ? !preferences[key] : value,
-      },
-    }
-  }
-}
-
-function setPreferences(storeKey) {
-  return function setPreferencesReducer(state, { key, value }) {
-    const preferences = state[storeKey]
-
-    return {
-      ...state,
-      [storeKey]: {
-        ...preferences,
-        [key]: value,
-      },
-    }
-  }
-}
-
-const toggleArticlePreferences = togglePreferences('articlePreferences')
-const setArticlePreferences = setPreferences('articlePreferences')
-const toggleUserPreferences = togglePreferences('userPreferences')
-const setUserPreferences = setPreferences('userPreferences')
-const toggleCorpusPreferences = togglePreferences('corpusPreferences')
-const setExportPreferences = setPreferences('exportPreferences')
-const setCorpusPreferences = setPreferences('corpusPreferences')
 
 function updateSelectedTag(state, { tagId }) {
   const { selectedTagIds } = state.activeUser
@@ -259,14 +119,11 @@ export default function createReduxStore(state = {}) {
 }
 
 /**
- * Only send non-personal state to Sentry: the session token and the search
- * text (articleFilters) must not leave the browser.
+ * Only send non-personal state to Sentry: the session token must not leave
+ * the browser.
  */
 function sentryStateTransformer(state) {
   return {
     isLoggedIn: Boolean(state.sessionToken),
-    articlePreferences: state.articlePreferences,
-    exportPreferences: state.exportPreferences,
-    userPreferences: state.userPreferences,
   }
 }
