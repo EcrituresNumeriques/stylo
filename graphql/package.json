@@ -5,14 +5,14 @@
   "main": "app.js",
   "private": true,
   "engines": {
-    "node": ">=22",
+    "node": ">=22.9",
     "npm": ">=10"
   },
   "scripts": {
     "delete-user": "node bin/delete-user.mjs",
-    "generate-service-token": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} DOTENV_CONFIG_QUIET=true node -r dotenv/config -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
+    "generate-service-token": "node -p \"try { process.loadEnvFile('../.env') } catch {}; require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "c8 --reporter=lcov node --test '**/*.test.js'",
-    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config ../node_modules/.bin/db-migrate up",
+    "migrations": "node --env-file-if-exists=../.env ../node_modules/.bin/db-migrate up",
     "lint": "biome ci .",
     "lint:fix": "biome check --write .",
     "posttest": "npm run lint",
@@ -41,7 +41,6 @@
     "dataloader": "^2.2.2",
     "db-migrate": "^0.11.14",
     "dompurify": "~3.4.0",
-    "dotenv": "^16.4.5",
     "express": "~5.2",
     "express-http-proxy": "~2.1",
     "express-session": "~1.19",

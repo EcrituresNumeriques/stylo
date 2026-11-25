@@ -1,6 +1,15 @@
 const convict = require('convict')
 const assert = require('node:assert/strict')
-require('dotenv').config({ path: ['.env', '../.env'] })
+
+// Les variables déjà définies ne sont jamais écrasées. L'environnement
+// l'emporte donc sur `.env`, qui l'emporte sur `../.env`.
+for (const path of ['.env', '../.env']) {
+  try {
+    process.loadEnvFile(path)
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+  }
+}
 
 const isURL = require('validator/lib/isURL')
 const ospath = require('node:path')
