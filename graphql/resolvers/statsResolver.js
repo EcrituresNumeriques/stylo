@@ -48,6 +48,7 @@ async function computeStats() {
       articlesCreated,
       corporaCreated,
     },
+    engagement: activity.engagement,
     corpora: corpusStats,
     workspaces,
   }

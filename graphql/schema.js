@@ -253,6 +253,8 @@ type InstanceUsageStats {
   activity: [InstanceActivityYearlyStats!]!
   "Active users (same definition) over the last 12 months, and the articles and corpora created over the last 12 months."
   lastTwelveMonths: InstanceRollingActivityStats!
+  "Accounts by engagement (the deleted accounts and the ones less than a week old excluded), overall and per signup year."
+  engagement: InstanceEngagementStats!
   corpora: InstanceCorpusStats!
   workspaces: InstanceWorkspaceStats!
 }
@@ -371,6 +373,30 @@ type InstanceRollingActivityStats {
   articlesCreated: Int!
   "Corpora created over the last 12 months."
   corporaCreated: Int!
+}
+
+"""
+Accounts by engagement. The activities are the ones of the active users; a connection is not one.
+- idle: did nothing;
+- tried: did something during their first week only (modified or deleted their example article, created another article, contributed to one, or was a member of a workspace in which an article was created);
+- lapsed: active after their first week, but not over the last 12 months;
+- ongoing: active after their first week, and over the last 12 months.
+"""
+type InstanceEngagementStats {
+  idle: Int!
+  tried: Int!
+  lapsed: Int!
+  ongoing: Int!
+  years: [InstanceEngagementYearlyStats!]!
+}
+
+type InstanceEngagementYearlyStats {
+  "Signup year."
+  year: Int!
+  idle: Int!
+  tried: Int!
+  lapsed: Int!
+  ongoing: Int!
 }
 
 "Creations of a month, from the first to the last month with a creation."

@@ -96,6 +96,13 @@ describe('stats resolver', () => {
         articlesCreated: 0,
         corporaCreated: 0,
       })
+      assert.deepEqual(stats.engagement, {
+        idle: 0,
+        tried: 0,
+        lapsed: 0,
+        ongoing: 0,
+        years: [],
+      })
       assert.deepEqual(stats.corpora, {
         total: 0,
         articles: EMPTY_DISTRIBUTION,
@@ -120,6 +127,7 @@ describe('stats resolver', () => {
             articles { total tags { median } metadataLevels { none } writingDurations { underAMinute } }
             activity { year activeUsers inWorkspace seniority { sameYear } }
             lastTwelveMonths { activeUsers articlesCreated corporaCreated }
+            engagement { idle years { year ongoing } }
             corpora { total articles { median } types { type } months { month } }
             workspaces { total members { median } articles { max } months { total } }
           }
@@ -296,6 +304,21 @@ describe('stats resolver', () => {
         articlesCreated: 1,
         corporaCreated: 1,
       })
+    })
+
+    test('counts the accounts by engagement, without the deleted and the new ones', () => {
+      const { years, ...overall } = stats.engagement
+      // idle: emma, whose connection does not count;
+      // tried: chloe, david, farid, gaelle, karim, nora;
+      // lapsed: bob (from his seventh day), hugo, lea, mia, paul; ongoing: ada, omar
+      assert.deepEqual(overall, { idle: 1, tried: 6, lapsed: 5, ongoing: 2 })
+      assert.deepEqual(pastYears(years), [
+        { year: 2015, idle: 0, tried: 0, lapsed: 1, ongoing: 0 },
+        { year: 2019, idle: 0, tried: 0, lapsed: 1, ongoing: 1 },
+        { year: 2020, idle: 0, tried: 1, lapsed: 1, ongoing: 1 },
+        { year: 2021, idle: 1, tried: 4, lapsed: 1, ongoing: 0 },
+        { year: 2022, idle: 0, tried: 0, lapsed: 1, ongoing: 0 },
+      ])
     })
 
     test('counts the corpora by type, their articles, and per month', () => {
