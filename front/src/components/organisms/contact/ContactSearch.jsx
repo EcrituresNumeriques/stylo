@@ -2,7 +2,7 @@ import debounce from 'lodash.debounce'
 import { CheckSquare, Search, Square } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
 import { getUserByEmail } from '../../../hooks/Contacts.graphql'
@@ -31,7 +31,7 @@ export default function ContactSearch({
 }) {
   const { t } = useTranslation()
   const displayName = useDisplayName()
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const activeUserId = activeUser.id
   const { contacts: userContacts, add, remove } = useContactActions()
   const { query } = useGraphQLClient()

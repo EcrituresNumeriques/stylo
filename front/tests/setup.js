@@ -30,7 +30,7 @@ vi.mock('react-router', async (importOriginal) => {
 
   return {
     ...mod,
-    useRouteLoaderData: vi.fn(),
+    useRouteLoaderData: vi.fn(() => ({ user: null })),
   }
 })
 

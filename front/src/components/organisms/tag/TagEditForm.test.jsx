@@ -7,9 +7,6 @@ import { renderWithProviders } from '../../../../tests/setup.js'
 import Component from './TagEditForm.jsx'
 
 describe('TagEditForm', () => {
-  const preloadedState = {
-    activeUser: { id: 'test-user-id' },
-  }
   const emptyTag = {}
 
   const existingTag = {
@@ -36,9 +33,7 @@ describe('TagEditForm', () => {
         }),
     })
 
-    renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
-      preloadedState,
-    })
+    renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />)
 
     expect(screen.getByRole('form')).toBeInTheDocument()
 
@@ -64,9 +59,7 @@ describe('TagEditForm', () => {
         }),
     })
 
-    renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
-      preloadedState,
-    })
+    renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />)
 
     const createdTag = { ...existingTag, name: 'new tag' }
 
@@ -113,9 +106,7 @@ describe('TagEditForm', () => {
       name: 'update tag',
     }
 
-    renderWithProviders(<Component tag={existingTag} onSubmit={onSubmit} />, {
-      preloadedState,
-    })
+    renderWithProviders(<Component tag={existingTag} onSubmit={onSubmit} />)
 
     fetch.mockRestore()
     fetch.mockResolvedValueOnce({

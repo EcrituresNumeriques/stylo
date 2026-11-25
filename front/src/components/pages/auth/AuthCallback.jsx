@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
@@ -12,7 +11,6 @@ import styles from '../Page.module.scss'
 export default function AuthCallbackPopup() {
   const { query } = useGraphQLClient()
   const { service } = useParams()
-  const dispatch = useDispatch()
   const [errorCode, setErrorCode] = useState(null)
   const hasOpener = Boolean(window.opener)
 
@@ -51,11 +49,6 @@ export default function AuthCallbackPopup() {
       variables: { service },
       withCredentials: true,
     }).then(({ setAuthToken }) => {
-      dispatch({
-        type: 'UPDATE_ACTIVE_USER_DETAILS',
-        payload: setAuthToken.authProviders,
-      })
-
       closePopup(setAuthToken.authProviders)
     }, onError)
   }, [])

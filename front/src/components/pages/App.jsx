@@ -2,7 +2,6 @@ import { setUser as setSentryUser } from '@sentry/react'
 
 import { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import {
   Outlet,
   ScrollRestoration,
@@ -42,7 +41,6 @@ export default function StyloApp() {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useLoaderData()
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const { value: hasTrackingConsent } = usePreferenceItem(
     'trackingConsent',
@@ -51,7 +49,6 @@ export default function StyloApp() {
 
   // Setup user session
   useEffect(() => {
-    dispatch({ type: 'PROFILE', user })
     setSentryUser({ id: user?.id })
 
     if (hasTrackingConsent) {

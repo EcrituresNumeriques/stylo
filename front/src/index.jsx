@@ -36,7 +36,6 @@ import ErrorBoundary from './components/pages/errors/AppError.jsx'
 import LoadingPage from './components/pages/LoadingPage.jsx'
 import RequireAuth from './components/pages/PrivateRoute.jsx'
 import createStore from './createReduxStore.js'
-import { getUserProfile } from './helpers/user.js'
 
 if (SENTRY_DSN) {
   Sentry.init({
@@ -109,20 +108,6 @@ const Bye = lazy(() => import('./components/pages/Bye.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
 const store = createStore()
-
-// refresh session profile whenever something happens to the session token
-// maybe there is a better way to do this
-let previousValue = ''
-store.subscribe(() => {
-  const { sessionToken } = store.getState()
-
-  if (sessionToken !== null && sessionToken !== previousValue) {
-    previousValue = sessionToken
-    getUserProfile({ sessionToken }).then((response) =>
-      store.dispatch({ type: 'PROFILE', ...response })
-    )
-  }
-})
 
 const root = createRoot(document.getElementById('root'), {
   onUncaughtError: Sentry.reactErrorHandler(),

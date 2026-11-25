@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
@@ -19,7 +18,6 @@ import styles from './createVersion.module.scss'
 export default function CreateVersion({ articleId, onClose, onSubmit }) {
   const { t } = useTranslation()
   const { create } = useArticleVersionActions({ articleId })
-  const activeUser = useSelector((state) => state.activeUser)
   const [majorVersion, setMajorVersion] = useState(false)
   const handleCreateVersion = useCallback(
     async (event) => {
@@ -41,7 +39,7 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
         })
       }
     },
-    [activeUser, majorVersion]
+    [majorVersion]
   )
 
   return (

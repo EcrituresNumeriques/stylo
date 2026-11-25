@@ -2,7 +2,13 @@ import { useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Trans, useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Link, useLocation, useNavigate, useParams } from 'react-router'
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useRevalidator,
+} from 'react-router'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
@@ -17,6 +23,7 @@ export default function RegisterWithAuthProvider() {
   const { t } = useTranslation()
   const { service } = useParams()
   const navigate = useNavigate()
+  const revalidator = useRevalidator()
   const dispatch = useDispatch()
   const { search } = useLocation()
   const { query } = useGraphQLClient()
@@ -37,6 +44,8 @@ export default function RegisterWithAuthProvider() {
       })
 
       dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      // reloads the profile (AppLoader) before entering a private route
+      await revalidator.revalidate()
 
       // if no error thrown, we can navigate to /
       toast(t('credentials.register.successToast'), {
