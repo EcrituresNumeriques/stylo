@@ -296,6 +296,3 @@ exports.up = async function (db) {
 exports.down = function () {
   return null
 }
-
-// exporté uniquement pour les tests
-exports.fromLegacyFormat = fromLegacyFormat
