@@ -309,7 +309,7 @@ module.exports = {
      * @param {null} _root
      * @param {*} args
      * @param {{ userId, token }} context
-     * @returns {Promise<import('./article')>}
+     * @returns {Promise<import('../models/article')>}
      */
     async duplicateArticle(_root, args, context) {
       const recipientId = requireArgument('userId', args.userId, args.to)
