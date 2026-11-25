@@ -81,6 +81,12 @@ const Y = yjsUtils.Y
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
+const {
+  CACHE_DURATION_IN_MS,
+  getStats,
+} = require('./resolvers/statsResolver.js')
+const { readCharts } = require('./helpers/stats/charts.js')
+const { createStatsSvgHandler } = require('./routes/statsSvg.js')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -179,6 +185,15 @@ app.get('/version', (_req, res) =>
 )
 
 app.get('/events', handleEvents)
+
+app.get(
+  '/stats.svg',
+  createStatsSvgHandler({
+    getStats,
+    cacheDuration: CACHE_DURATION_IN_MS,
+    charts: readCharts(schema),
+  })
+)
 
 config.get('auth.enabledServices').forEach((service) => {
   // used on initial login
