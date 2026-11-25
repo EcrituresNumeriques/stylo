@@ -274,6 +274,8 @@
   "publication.publishedAt": "Publié le",
   "publication.release.details": "Détails de la mise à jour",
   "search.placeholder": "Recherche",
+  "stats.error": "Les statistiques ne sont pas disponibles pour le moment.",
+  "stats.title": "Statistiques d'usage",
   "tag.createAction.buttonText": "ajouter des étiquettes…",
   "tag.createForm.buttonText": "Créer",
   "tag.createForm.buttonTitle": "Créer une nouvelle étiquette",

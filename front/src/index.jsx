@@ -103,6 +103,7 @@ const UserAccount = lazy(() => import('./components/pages/UserAccount.jsx'))
 const Annotate = lazy(() => import('./components/pages/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/pages/Privacy.jsx'))
 const Bye = lazy(() => import('./components/pages/Bye.jsx'))
+const Stats = lazy(() => import('./components/pages/Stats.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
 const root = createRoot(document.getElementById('root'), {
@@ -198,6 +199,7 @@ const router = createBrowserRouter(
 
         {/* Generic pages */}
         <Route path="privacy" element={<Privacy />} />
+        <Route path="stats" element={<Stats />} />
 
         <Route path="bye" element={<Bye />} />
 
