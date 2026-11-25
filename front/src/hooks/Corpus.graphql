@@ -52,7 +52,6 @@ query getCorpus(
         workingVersion @include(if: $includeWorkingVersion) {
           md
           bib
-          yaml(options: { strip_markdown: true })
         }
       }
     }

@@ -221,7 +221,7 @@ const articleSchema = new Schema(
       },
 
       async createNewVersion({ mode, message, user }) {
-        const { bib, yaml, md } = this.workingVersion
+        const { bib, metadata, md } = this.workingVersion
         const mostRecentVersion = this.versions.at(0)
 
         const { revision, version } =
@@ -231,7 +231,7 @@ const articleSchema = new Schema(
 
         const createdVersion = await Version.create({
           md,
-          yaml,
+          metadata,
           bib,
           version,
           revision,

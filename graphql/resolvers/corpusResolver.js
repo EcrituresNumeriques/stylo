@@ -5,6 +5,7 @@ const { logger } = require('../logger')
 const { NotAuthorizedError } = require('../helpers/errors')
 const { diff } = require('../helpers/diff')
 const { requireArgument } = require('../helpers/arguments.js')
+const { formatMetadata } = require('../helpers/yaml.js')
 
 async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin) {
@@ -293,6 +294,10 @@ module.exports = {
   },
 
   Corpus: {
+    metadata({ metadata }, { format }) {
+      return formatMetadata(metadata, format)
+    },
+
     workspaceId(corpus) {
       const workspaceId = corpus.workspace?._id ?? corpus.workspace
       return workspaceId ? workspaceId.toString() : null

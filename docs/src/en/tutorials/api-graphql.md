@@ -93,7 +93,7 @@ query articles {
 }
 ```
 
-For this thrid example, once again, you need to enter your article ID in the appropriate space. This time, GraphQL shows you not only the title of your article and the contributors, but also the Markdown, Yaml and BibTex it contains! 
+For this thrid example, once again, you need to enter your article ID in the appropriate space. This time, GraphQL shows you not only the title of your article and the contributors, but also the Markdown, the metadata (in JSON) and the BibTeX it contains! 
 
 **Example 3:**
 
@@ -102,10 +102,12 @@ query {
     article(articleId: "ARTICLE ID"){
     title
     contributors{user{displayName}}
-    workingVersion{md yaml bib}
+    workingVersion{md metadata bib}
     }
 }
 ```
+
+To get the metadata in YAML instead of JSON, replace `metadata` with `metadata(format: yaml)`.
 
 One last example for the road, which may be useful in the context of Stylo data and its organization by "corpora": a query to obtain the names of all the articles in a corpus, with their ids and the latest versions of their content. You can obtain the ID of a corpus on its "preview" URL, on the Stylo app.
 

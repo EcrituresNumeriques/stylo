@@ -90,3 +90,45 @@ describe('remove', () => {
     assert.notStrictEqual(chapter2Version, null)
   })
 })
+
+describe('createNewVersion', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
+  test('copies the content and metadata of the working version', async () => {
+    const user = await User.create({
+      email: 'b@example.com',
+    })
+    const article = await Article.create({
+      title: 'Chapter 1',
+      owner: user.id,
+      contributors: [],
+      versions: [],
+      tags: [],
+      workingVersion: {
+        md: '# Hello',
+        bib: '@book{a, title={A}}',
+        metadata: { title: 'Chapter 1', keywords: ['stylo'] },
+      },
+    })
+
+    const version = await article.createNewVersion({
+      mode: 'MAJOR',
+      user: user,
+    })
+
+    const storedVersion = await Version.findById(version.id).lean()
+    assert.equal(storedVersion.md, '# Hello')
+    assert.equal(storedVersion.bib, '@book{a, title={A}}')
+    assert.deepEqual(storedVersion.metadata, {
+      title: 'Chapter 1',
+      keywords: ['stylo'],
+    })
+  })
+})

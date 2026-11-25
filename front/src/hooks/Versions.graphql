@@ -35,7 +35,6 @@ query getArticleVersion($versionId: ID!) {
     md
     bib
     bibPreview
-    yaml(options: { strip_markdown: true })
     metadata
   }
 }

@@ -34,6 +34,14 @@ enum AuthTokenService {
   zotero
 }
 
+"Format of the metadata returned by the metadata field of a version or a corpus"
+enum MetadataFormat {
+  "Metadata as a JSON object"
+  json
+  "Metadata as a YAML metadata block (delimited by ---), or an empty string when there is no metadata"
+  yaml
+}
+
 type UserSearch {
   id: ID!
   _id: ID @deprecated(reason: "Use id instead.")
@@ -125,9 +133,9 @@ type WorkingVersion {
   bibPreview: String
   bibliography: [BibliographyEntry!]!
   md: String
-  metadata: JSON
+  "Metadata of the working version, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   metadataFormType: String
-  yaml (options: YamlFormattingInput): String
 }
 
 type Version {
@@ -138,9 +146,9 @@ type Version {
   revision: Int
   md: String
   type: String
-  metadata: JSON
+  "Metadata of the version, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   metadataFormType: String
-  yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
   bibliography: [BibliographyEntry!]!
@@ -287,10 +295,6 @@ input UpdateArticleWorkingVersionInput {
   md: String
   metadata: JSON
   metadataFormType: String
-}
-
-input YamlFormattingInput {
-  strip_markdown: Boolean
 }
 
 "Deprecated: use CreateUserInput with the input argument of createUser instead."
@@ -478,7 +482,8 @@ type Corpus {
   type: CorpusType!
   name: String!
   description: String
-  metadata: JSON
+  "Metadata of the corpus, as a JSON object (default) or as a YAML metadata block."
+  metadata(format: MetadataFormat = json): JSON
   workspace: String @deprecated(reason: "Use workspaceId instead.")
   "Workspace of the corpus (null for a personal corpus)"
   workspaceId: ID

@@ -13,7 +13,6 @@ fragment articleVersionFields on Version {
     title
     type
   }
-  yaml(options: { strip_markdown: true })
 }
 
 fragment basicArticleFields on Article {
@@ -47,7 +46,6 @@ fragment editableArticleFields on Article {
       title
       type
     }
-    yaml(options: { strip_markdown: true })
   }
 
   zoteroLink

@@ -383,7 +383,6 @@ describe('article resolver', () => {
         revision: 0,
         message: 'Fix a few typos',
         md: '# Hello World',
-        yaml: '',
         metadata: {},
         bib: '',
       })
