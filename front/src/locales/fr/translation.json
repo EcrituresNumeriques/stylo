@@ -139,6 +139,7 @@
   "credentials.authentication.unlinkLabel": "Déconnecter votre compte Stylo au service {{ service }}.",
   "credentials.authentication.unlinkedService.description": "Pas de compte connecté.",
   "credentials.changePassword.title": "Mot de passe",
+  "credentials.changePassword.tooManyAttempts": "Trop de tentatives avec un mot de passe actuel incorrect. Merci de réessayer dans quelques minutes.",
   "credentials.confirmNewPassword.label": "Confirmer le nouveau mot de passe",
   "credentials.confirmPassword.label": "Confirmer le mot de passe",
   "credentials.login.confirmButton": "Connexion",

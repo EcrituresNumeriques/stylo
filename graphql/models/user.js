@@ -74,15 +74,17 @@ const userSchema = new Schema(
       /**
        * Compare an existing password against a user input one.
        *
-       * There is a possibility the initial password is not set.
-       * If that's the case, we compare the login password to itself.
+       * Returns false when the account has no password
+       * (for instance an account created with an external service).
        *
        * @param {String} password
        * @returns {Promise<Boolean>}
        */
       async comparePassword(password) {
-        const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
-        return bcrypt.compare(password, oldPassword)
+        if (!this.password || typeof password !== 'string') {
+          return false
+        }
+        return bcrypt.compare(password, this.password)
       },
 
       getAuthProvidersCount() {

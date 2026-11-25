@@ -1,4 +1,8 @@
-const { checkCredentials } = require('./authResolver')
+const {
+  checkCredentials,
+  Mutation,
+  passwordFailures,
+} = require('./authResolver')
 const User = require('../models/user')
 const { describe, test, before, after } = require('node:test')
 const assert = require('node:assert')
@@ -137,5 +141,124 @@ describe('auth resolver', () => {
       password: 'pa$$w0rd',
     })
     // username is unique but not mandatory!
+  })
+  test('refuses to authenticate an account without password', async () => {
+    await User.create({
+      email: 'humanid@domain.org',
+      username: 'humanid',
+      displayName: 'HumanID',
+    })
+    await assert.rejects(
+      checkCredentials({ username: 'humanid', password: '' }),
+      { status: 403 }
+    )
+  })
+
+  describe('changePassword', () => {
+    function context(user) {
+      return { token: { _id: user.id }, user }
+    }
+
+    test('requires the current password', async () => {
+      const user = await User.create({
+        email: 'change@domain.org',
+        password: 'old-pa$$word',
+      })
+      await assert.rejects(
+        Mutation.changePassword(
+          null,
+          { input: { currentPassword: 'wrong', newPassword: 'new-pa$$word' } },
+          context(user)
+        ),
+        { message: 'Old password is incorrect' }
+      )
+      await Mutation.changePassword(
+        null,
+        {
+          input: {
+            currentPassword: 'old-pa$$word',
+            newPassword: 'new-pa$$word',
+          },
+        },
+        context(user)
+      )
+      const updated = await User.findById(user.id)
+      assert.equal(await updated.comparePassword('new-pa$$word'), true)
+    })
+
+    test('blocks the current password check after too many failures', async () => {
+      const user = await User.create({
+        email: 'brute@domain.org',
+        password: 'old-pa$$word',
+      })
+      const change = (currentPassword) =>
+        Mutation.changePassword(
+          null,
+          { input: { currentPassword, newPassword: 'new-pa$$word' } },
+          context(user)
+        )
+      for (let i = 0; i < 10; i++) {
+        await assert.rejects(change('wrong'), {
+          message: 'Old password is incorrect',
+        })
+      }
+      assert.equal(await passwordFailures.isBlocked(user.id), true)
+      await assert.rejects(
+        change('old-pa$$word'),
+        (error) => error.extensions.code === 'TOO_MANY_ATTEMPTS'
+      )
+    })
+
+    test('counts concurrent checks of the current password', async () => {
+      const user = await User.create({
+        email: 'parallel@domain.org',
+        password: 'old-pa$$word',
+      })
+      const results = await Promise.allSettled(
+        Array.from({ length: 15 }, () =>
+          Mutation.changePassword(
+            null,
+            { input: { currentPassword: 'wrong', newPassword: 'x' } },
+            context(user)
+          )
+        )
+      )
+      const tooMany = results.filter(
+        (r) => r.reason?.extensions?.code === 'TOO_MANY_ATTEMPTS'
+      )
+      assert.equal(tooMany.length, 5)
+    })
+
+    test('forgets the failures after a successful change', async () => {
+      const user = await User.create({
+        email: 'typo@domain.org',
+        password: 'old-pa$$word',
+      })
+      const change = (currentPassword, newPassword) =>
+        Mutation.changePassword(
+          null,
+          { input: { currentPassword, newPassword } },
+          context(user)
+        )
+      for (let i = 0; i < 9; i++) {
+        await assert.rejects(change('wrong', 'new-pa$$word'))
+      }
+      await change('old-pa$$word', 'new-pa$$word')
+      await assert.rejects(change('wrong', 'other-pa$$word'), {
+        message: 'Old password is incorrect',
+      })
+      assert.equal(await passwordFailures.isBlocked(user.id), false)
+    })
+
+    test('sets the first password of an account without password', async () => {
+      const user = await User.create({ email: 'first@domain.org' })
+      await Mutation.changePassword(
+        null,
+        { input: { currentPassword: '', newPassword: 'first-pa$$word' } },
+        context(user)
+      )
+      const updated = await User.findById(user.id)
+      assert.equal(await updated.comparePassword('first-pa$$word'), true)
+    })
   })
 })

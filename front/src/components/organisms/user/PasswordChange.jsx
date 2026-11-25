@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
 import { changePassword as changePasswordQuery } from '../../../hooks/Credentials.graphql'
@@ -56,7 +57,13 @@ export default function Credentials() {
       setPasswordO('')
       setPasswordC('')
     } catch (err) {
-      alert(err)
+      if (err.code === 'TOO_MANY_ATTEMPTS') {
+        toast(t('credentials.changePassword.tooManyAttempts'), {
+          type: 'error',
+        })
+      } else {
+        alert(err)
+      }
     } finally {
       setIsUpdating(false)
     }

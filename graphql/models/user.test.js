@@ -19,6 +19,27 @@ describe('user model', () => {
     await teardown(container)
   })
 
+  describe('comparePassword', () => {
+    test('returns true with the right password', async () => {
+      const user = new User({ password: 's$cret!' })
+
+      assert.equal(await user.comparePassword('s$cret!'), true)
+    })
+
+    test('returns false with a wrong password', async () => {
+      const user = new User({ password: 's$cret!' })
+
+      assert.equal(await user.comparePassword('wrong'), false)
+    })
+
+    test('returns false when the account has no password', async () => {
+      const user = new User({})
+
+      assert.equal(await user.comparePassword('anything'), false)
+      assert.equal(await user.comparePassword(''), false)
+    })
+  })
+
   describe('getAuthProvidersCount', () => {
     test('returns 0 when value is missing', async () => {
       const user = new User({})
