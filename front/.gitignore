@@ -8,7 +8,6 @@ yarn-error.log*
 node_modules/
 
 .npm
-.eslintcache
 
 # Mac files
 .DS_Store
