@@ -61,7 +61,6 @@ const {
 const { populateUserFromJWT } = require('./helpers/token.js')
 const { validationRules } = require('./policies/readOnlyToken.js')
 
-const User = require('./models/user')
 const {
   stampAuth,
   onAuthSuccess,
@@ -155,21 +154,13 @@ passport.use('humanid', humanidAuth.strategy)
 passport.use('hypothesis', hypothesisAuth.strategy)
 passport.use(localAuth.strategy)
 
-// mandatory for passport-login/logout
-passport.serializeUser((user, next) => next(null, user.id))
-passport.deserializeUser(async (id, next) => {
-  const user = await User.findById(id)
-  next(null, user)
-})
-
 app.set('trust proxy', true)
 app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
 app.use(express.json({ limit: '50mb' }))
+// the session only serves the external authentication flows (OAuth state, pending registration, account linking)
 app.use(session(sessionOptions))
-
-app.use(passport.session(sessionOptions))
 
 app.get('/version', (_req, res) =>
   res.json({
@@ -198,7 +189,8 @@ config.get('auth.enabledServices').forEach((service) => {
 
 app.post(
   '/login/local',
-  passport.authenticate('local'),
+  // the API identifies the user with the token returned in the response, not with the session
+  passport.authenticate('local', { session: false }),
   localAuth.onSuccess,
   localAuth.onFailure
 )
