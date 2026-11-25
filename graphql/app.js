@@ -289,7 +289,7 @@ app.post(
     schema,
     /**
      * @param {express.Request} req
-     * @returns {import('./token.js').RequestContext}
+     * @returns {import('./helpers/token.js').RequestContext}
      */
     context(req) {
       const token = req.raw.token ?? {}

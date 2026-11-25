@@ -121,25 +121,6 @@ const workspaceSchema = new Schema(
         )
       },
     },
-    methods: {
-      async findMembersByArticle(articleId) {
-        const result = await this.aggregate([
-          { $match: { articles: articleId } },
-          // flatten members in order to create a unique set
-          { $unwind: '$members' },
-          { $group: { _id: null, memberIds: { $addToSet: '$members' } } },
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'memberIds',
-              foreignField: '_id',
-              as: 'members',
-            },
-          },
-        ])
-        return result[0].members
-      },
-    },
   }
 )
 
