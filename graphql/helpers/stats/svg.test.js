@@ -513,7 +513,12 @@ describe('LINES', () => {
       content,
       /<polyline points="48,186 320,136 592,86" [^>]*style="stroke: var\(--stats-1[^>]*><title>Corpus</
     )
-    assert.match(content, /<polyline points="592,196" [^>]*--stats-2/)
+    // every other color, in the legend too
+    assert.match(content, /<polyline points="592,196" [^>]*--stats-3/)
+    assert.match(
+      content,
+      /<rect [^>]*--stats-3[^>]*><\/rect><text [^>]*>Espaces</
+    )
     // a scale of 20: 4 steps
     assert.equal(count(content, /height="1"/g), 5)
     assert.deepEqual(texts(content), [

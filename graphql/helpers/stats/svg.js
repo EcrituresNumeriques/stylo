@@ -92,6 +92,12 @@ const isMonth = (key) => /^\d{4}-\d{2}$/.test(key)
  */
 const colorOf = (index) => `var(--stats-${index + 1}, currentColor)`
 
+/**
+ * @param {number} index of the line, from 0
+ * @returns {string} every other color of the series: close lines need distinct colors
+ */
+const lineColorOf = (index) => colorOf(index * 2)
+
 const round = (value) => Math.round(value * 10) / 10
 
 const sum = (values) => values.reduce((total, value) => total + value, 0)
@@ -200,9 +206,10 @@ function describeShares(parts) {
  * A legend of colored swatches, wrapped on several lines when needed.
  *
  * @param {string[]} labels
+ * @param {(index: number) => string} [colorAt] color of the item at an index
  * @returns {{ content: string, height: number }} the legend, 0 high when there is no label
  */
-function legend(labels) {
+function legend(labels, colorAt = colorOf) {
   let x = 0
   let y = 0
   const items = labels.map((label, index) => {
@@ -219,7 +226,7 @@ function legend(labels) {
           width: SWATCH_SIZE,
           height: SWATCH_SIZE,
         },
-        colorOf(index)
+        colorAt(index)
       ) + text(x + SWATCH_SIZE + GAP / 2, y + ROW_HEIGHT / 2, label)
     x += width + GAP * 2
     return item
@@ -592,7 +599,8 @@ function lines(chart, stats) {
     return empty(chart)
   }
   const { content: legendContent, height: legendHeight } = legend(
-    series.map(({ label }) => label)
+    series.map(({ label }) => label),
+    lineColorOf
   )
   const scale = niceCeil(
     Math.max(...series.flatMap(({ items }) => items.map(({ value }) => value)))
@@ -620,7 +628,7 @@ function lines(chart, stats) {
     const points = items
       .map(({ key, value }) => `${round(x(key))},${round(y(value))}`)
       .join(' ')
-    return `<polyline points="${points}" fill="none" stroke-width="3" stroke-linejoin="round" style="stroke: ${colorOf(index)}"><title>${escapeXml(label)}</title></polyline>`
+    return `<polyline points="${points}" fill="none" stroke-width="3" stroke-linejoin="round" style="stroke: ${lineColorOf(index)}"><title>${escapeXml(label)}</title></polyline>`
   })
   const descriptions = series.map(({ label, items }) => {
     if (items.length === 0) {
