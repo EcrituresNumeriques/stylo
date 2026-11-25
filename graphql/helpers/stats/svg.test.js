@@ -442,7 +442,7 @@ describe('DISTRIBUTION', () => {
     )
     assert.match(
       content,
-      /x="59" y="18" width="2" height="24" style="fill: var\(--stats-median, var\(--stats-on-fill, #fff\)\)"><title>Médiane : 5</
+      /x="59" y="16" width="2" height="28" style="fill: var\(--stats-median, #000\); stroke: var\(--stats-median-outline, #fff\); stroke-width: 4; paint-order: stroke; filter: drop-shadow\(0 0 1px var\(--stats-median-shadow, #777\)\)"><title>Médiane : 5</
     )
     // a narrow range keeps a visible width
     assert.match(content, /width="2" height="20"[^>]*><title>B : de 2 à 2/)
@@ -450,7 +450,7 @@ describe('DISTRIBUTION', () => {
       content,
       /x="0" y="116" width="480"[^>]*><title>Titre : de 0 à 40/
     )
-    assert.match(content, /x="239" y="114"/)
+    assert.match(content, /x="239" y="112"/)
     assert.deepEqual(texts(content).slice(-6), [
       '0',
       '10',

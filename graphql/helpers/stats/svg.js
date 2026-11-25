@@ -6,7 +6,8 @@
  * there is one generator per type of chart.
  *
  * Colors are CSS variables (`--stats-1`, `--stats-2`…, then `currentColor`;
- * `--stats-on-fill` for the texts on the bars, `--stats-median` for the medians):
+ * `--stats-on-fill` for the texts on the bars, `--stats-median`, `--stats-median-outline`
+ * and `--stats-median-shadow` for the medians):
  * they are inherited by the content of `<use>`, so the page keeps control of them.
  * Texts are in French.
  */
@@ -27,6 +28,10 @@ const LINES_HEIGHT = 200
 const AXIS_WIDTH = 48
 const PERCENT_LABEL_WIDTH = 140
 const PERCENT_VALUE_WIDTH = 56
+// the median: a black line, outlined in white (the stroke is drawn under the fill)
+// and slightly shadowed, to stand out on the bars as on the background
+const MEDIAN_FILL =
+  'var(--stats-median, #000); stroke: var(--stats-median-outline, #fff); stroke-width: 4; paint-order: stroke; filter: drop-shadow(0 0 1px var(--stats-median-shadow, #777))'
 // below this share, a segment is too narrow to hold its percentage
 const MIN_LABELLED_SHARE = 0.08
 
@@ -511,8 +516,8 @@ function distributions(chart, stats) {
       `${label} : de ${formatNumber(p10)} à ${formatNumber(p90)}, au plus ${formatNumber(max)}`
     )
     const medianMark = rect(
-      { x: x(median) - 1, y: barY - 2, width: 2, height: ROW_HEIGHT + 4 },
-      'var(--stats-median, var(--stats-on-fill, #fff))',
+      { x: x(median) - 1, y: barY - 4, width: 2, height: ROW_HEIGHT + 8 },
+      MEDIAN_FILL,
       `Médiane : ${formatNumber(median)}`
     )
     return heading + range + medianMark
