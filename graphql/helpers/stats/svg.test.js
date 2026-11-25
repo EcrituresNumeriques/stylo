@@ -440,7 +440,10 @@ describe('DISTRIBUTION', () => {
       content,
       /x="12" y="20" width="444"[^>]*><title>A : de 1 à 38, au plus 5 890</
     )
-    assert.match(content, /x="59" y="18" width="2"[^>]*><title>Médiane : 5</)
+    assert.match(
+      content,
+      /x="59" y="18" width="2" height="24" style="fill: var\(--stats-median, var\(--stats-on-fill, #fff\)\)"><title>Médiane : 5</
+    )
     // a narrow range keeps a visible width
     assert.match(content, /width="2" height="20"[^>]*><title>B : de 2 à 2/)
     assert.match(

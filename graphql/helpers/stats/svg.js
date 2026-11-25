@@ -5,7 +5,8 @@
  * The charts are described by the `@chart` directives of the schema (see `charts.js`):
  * there is one generator per type of chart.
  *
- * Colors are CSS variables (`--stats-1`, `--stats-2`…, then `currentColor`):
+ * Colors are CSS variables (`--stats-1`, `--stats-2`…, then `currentColor`;
+ * `--stats-on-fill` for the texts on the bars, `--stats-median` for the medians):
  * they are inherited by the content of `<use>`, so the page keeps control of them.
  * Texts are in French.
  */
@@ -511,7 +512,7 @@ function distributions(chart, stats) {
     )
     const medianMark = rect(
       { x: x(median) - 1, y: barY - 2, width: 2, height: ROW_HEIGHT + 4 },
-      colorOf(1),
+      'var(--stats-median, var(--stats-on-fill, #fff))',
       `Médiane : ${formatNumber(median)}`
     )
     return heading + range + medianMark
