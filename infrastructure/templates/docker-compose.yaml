@@ -54,9 +54,10 @@ services:
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_BASE_URLS={{ export_allowed_instance_base_urls }}
-      # `SENTRY_EXPORT_DSN` comes from the deployed `.env` (vaulted
-      # `sentry_export_dsn`); the service reads it before `SENTRY_DSN`, which
-      # is the front's DSN in the same file.
+      # The Sentry DSN is baked into the image (`.envdocker` in stylo-export).
+      # The deployed `.env` must not define `SENTRY_EXPORT_DSN` or `SENTRY_DSN`,
+      # which would take precedence over it. `SENTRY_ENVIRONMENT` comes from
+      # the `.env`.
     ports:
       - 127.0.0.1:3080:8001
     extra_hosts:
