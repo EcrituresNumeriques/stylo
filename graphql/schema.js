@@ -20,12 +20,12 @@ Draws the field in the chart \`id\` of /stats.svg: the fields of a same chart ar
 - key, value: for a list, the fields of its items holding the key (year, month…) and the value (the item itself when omitted);
 - of: path, from InstanceUsageStats, of the total the values are a share of (their sum when omitted);
 - labels: enum whose values label the keys.
-The values of an object are its fields with a @chartLabel, shared by name between the series of a chart.
+The values of an object are its fields with a @chartLabel, shared by name between the series of a chart, in the order of the schema unless the labels give one.
 """
 directive @chart(id: String!, type: ChartType!, title: String, label: String, key: String, value: String, of: String, labels: String) repeatable on FIELD_DEFINITION
 
-"Label of a field or an enum value in the charts of /stats.svg (in French)."
-directive @chartLabel(text: String!) on FIELD_DEFINITION | ENUM_VALUE
+"Label of a field or an enum value in the charts of /stats.svg (in French), and position of a field among the values of its chart (the fields without one come last)."
+directive @chartLabel(text: String!, order: Int) on FIELD_DEFINITION | ENUM_VALUE
 
 "Type of a chart of /stats.svg."
 enum ChartType {
@@ -413,10 +413,10 @@ Accounts by engagement. The activities are the ones of the active users; a conne
 - ongoing: active after their first week, and over the last 12 months.
 """
 type InstanceEngagementStats {
-  idle: Int! @chartLabel(text: "Aucune activité")
-  tried: Int! @chartLabel(text: "Essai la première semaine")
-  lapsed: Int! @chartLabel(text: "Usage arrêté")
-  ongoing: Int! @chartLabel(text: "Actifs ces 12 derniers mois")
+  idle: Int! @chartLabel(text: "Aucune activité", order: 4)
+  tried: Int! @chartLabel(text: "Essai la première semaine", order: 3)
+  lapsed: Int! @chartLabel(text: "Usage arrêté", order: 2)
+  ongoing: Int! @chartLabel(text: "Actifs ces 12 derniers mois", order: 1)
   years: [InstanceEngagementYearlyStats!]! @chart(id: "engagement", type: SHARES, label: "Par année d’inscription", key: "year")
 }
 

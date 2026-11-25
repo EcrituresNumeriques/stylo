@@ -88,6 +88,23 @@ describe('readCharts', () => {
     assert.deepEqual(byId.levels.series[1].fields, expected.toReversed())
   })
 
+  test('orders the fields by the order of their labels, the others last', () => {
+    const [chart] = readCharts(
+      schemaOf(`
+        type InstanceUsageStats { a: A! @chart(id: "a", type: SHARES) }
+        type A {
+          first: Int! @chartLabel(text: "Sans ordre")
+          second: Int! @chartLabel(text: "Deux", order: 2)
+          third: Int! @chartLabel(text: "Un", order: 1)
+        }
+      `)
+    )
+    assert.deepEqual(
+      chart.series[0].fields.map(({ label }) => label),
+      ['Un', 'Deux', 'Sans ordre']
+    )
+  })
+
   test('reads the directives of the nested object fields', () => {
     assert.deepEqual(byId.sizes.series[0].path, ['nested', 'size'])
     assert.equal(byId.sizes.series[0].label, 'Taille')

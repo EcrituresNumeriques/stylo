@@ -47,10 +47,20 @@ const nullable = (type) => (isNonNullType(type) ? type.ofType : type)
 /**
  * @param {import('graphql').GraphQLSchema} schema
  * @param {import('graphql').GraphQLField<any, any>|import('graphql').GraphQLEnumValue} node
+ * @returns {{ text: string, order?: number }|undefined} the arguments of its `@chartLabel`
+ */
+const chartLabelOf = (schema, node) =>
+  getDirective(schema, node, 'chartLabel')?.[0]
+
+/**
+ * @param {import('graphql').GraphQLSchema} schema
+ * @param {import('graphql').GraphQLField<any, any>|import('graphql').GraphQLEnumValue} node
  * @returns {string|undefined} the text of its `@chartLabel`
  */
-const labelOf = (schema, node) =>
-  getDirective(schema, node, 'chartLabel')?.[0]?.text
+const labelOf = (schema, node) => chartLabelOf(schema, node)?.text
+
+// the fields without order come after the others
+const orderOf = ({ order }) => order ?? Number.MAX_SAFE_INTEGER
 
 /**
  * @param {import('graphql').GraphQLObjectType} type
@@ -189,7 +199,7 @@ function readCharts(schema) {
       series.flatMap(({ valueType }) =>
         isObjectType(valueType)
           ? Object.values(valueType.getFields())
-              .map((field) => [field.name, labelOf(schema, field)])
+              .map((field) => [field.name, chartLabelOf(schema, field)])
               .filter(([, label]) => label)
           : []
       )
@@ -203,7 +213,10 @@ function readCharts(schema) {
         fields: isObjectType(valueType)
           ? Object.keys(valueType.getFields())
               .filter((name) => labels.has(name))
-              .map((name) => ({ name, label: labels.get(name) }))
+              .toSorted(
+                (a, b) => orderOf(labels.get(a)) - orderOf(labels.get(b))
+              )
+              .map((name) => ({ name, label: labels.get(name).text }))
           : [],
       })),
     }
