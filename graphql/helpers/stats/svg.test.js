@@ -16,6 +16,8 @@ const {
   symbol,
   ticksOf,
 } = require('./svg.js')
+const { readCharts } = require('./charts.js')
+const schema = require('../../schema.js')
 
 const BOX = { x: 0, y: 0, width: 100, height: 10 }
 const count = (svg, pattern) => (svg.match(pattern) ?? []).length
@@ -585,6 +587,15 @@ describe('renderStatsSprite', () => {
       svg,
       /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"><symbol id="c" .*<symbol id="d" .*<\/svg>\n$/
     )
+  })
+
+  test('draws every chart of the schema, even without data', () => {
+    const svg = renderStatsSprite(
+      { users: { total: 0 }, engagement: {} },
+      readCharts(schema)
+    )
+    assert.equal(count(svg, /<symbol /g), 10)
+    assert.equal(count(svg, /<desc>/g), 10)
   })
 
   test('is empty without chart', () => {

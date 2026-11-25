@@ -212,3 +212,23 @@ describe('partsOf', () => {
     assert.deepEqual(partsOf(series, null), [{ label: 'A', value: 0 }])
   })
 })
+
+describe('the charts of the schema', () => {
+  test('are the charts of /stats.svg', () => {
+    assert.deepEqual(
+      readCharts(schema).map(({ id }) => id),
+      [
+        'authentication',
+        'accounts-created',
+        'article-details',
+        'metadata-levels',
+        'writing-durations',
+        'active-seniority',
+        'engagement',
+        'sizes',
+        'corpus-types',
+        'monthly-totals',
+      ]
+    )
+  })
+})
