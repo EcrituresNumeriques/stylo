@@ -5,6 +5,7 @@ const Sentry = require('@sentry/node')
 /**
  * @typedef {Object} RequestContext
  * @property {import('express-session').Session} session
+ * @property {import('../auth/principal.js').Principal} principal
  * @property {string} token
  * @property {import('../models/user.js')} user
  * @property {string?} userId
