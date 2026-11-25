@@ -34,7 +34,6 @@ async function findByIds(ids, model) {
     acc[item._id] = item
     return acc
   }, {})
-  // eslint-disable-next-line security/detect-object-injection
   return ids.map((id) => itemByIds[id])
 }
 

@@ -131,7 +131,6 @@ module.exports = {
       // pending linking account
       // we need to verify if the credentials are not already linked to another account
       if (session.fromAccount) {
-        // eslint-disable-next-line security/detect-object-injection
         const remoteId = session.pendingRegistration.authProviders[service].id
         const existingUser = await User.findOne({
           [`authProviders.${service}.id`]: remoteId,
@@ -150,7 +149,6 @@ module.exports = {
         }
       }
 
-      // eslint-disable-next-line security/detect-object-injection
       const data = session.pendingRegistration.authProviders[service]
 
       // workaround the absence of `merge` option for `MongooseMap.$set()`
@@ -283,7 +281,6 @@ module.exports = {
       ;['displayName', 'firstName', 'lastName', 'institution', 'yaml'].forEach(
         (field) => {
           if (Object.hasOwn(details, field)) {
-            /* eslint-disable security/detect-object-injection */
             thisUser.set(field, details[field])
           }
         }

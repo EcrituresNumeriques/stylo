@@ -70,7 +70,6 @@ module.exports = {
       }
       ;['name', 'description', 'color'].forEach((field) => {
         if (Object.hasOwn(input, field)) {
-          /* eslint-disable security/detect-object-injection */
           thisTag.set(field, input[field])
         }
       })

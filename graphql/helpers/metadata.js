@@ -93,12 +93,10 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
       }
 
       if (Array.isArray(value)) {
-        /* eslint-disable-next-line security/detect-object-injection */
         node[unsuffixedKey] = value
           .filter((item) => typeof item === 'string')
           .map((item) => removeMd(item))
       } else if (value_type === 'string') {
-        /* eslint-disable-next-line security/detect-object-injection */
         node[unsuffixedKey] = removeMd(value)
       } else {
         logger.warn(
