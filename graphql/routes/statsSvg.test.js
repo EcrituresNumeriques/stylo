@@ -1,5 +1,6 @@
 const { after, before, describe, test } = require('node:test')
 const assert = require('node:assert')
+const { get } = require('node:http')
 const express = require('express')
 
 const { createStatsSvgHandler } = require('./statsSvg.js')
@@ -30,6 +31,16 @@ describe('GET /stats.svg', () => {
         getStats: (time) => getStats(time),
         cacheDuration: 60_000,
         charts: CHARTS,
+        now: () => now,
+      })
+    )
+    app.get(
+      '/revalidated.svg',
+      createStatsSvgHandler({
+        getStats: (time) => getStats(time),
+        cacheDuration: 60_000,
+        charts: CHARTS,
+        revalidate: true,
         now: () => now,
       })
     )
@@ -68,6 +79,31 @@ describe('GET /stats.svg', () => {
     getStats = async () => ({ computedAt: COMPUTED_AT, years: [] })
     const response = await fetch(`${baseUrl}/stats.svg`)
     assert.equal(response.headers.get('cache-control'), 'public, max-age=0')
+  })
+
+  test('is cached no longer than the stats, computed after the request', async () => {
+    now = COMPUTED_AT.getTime() - 500
+    getStats = async () => ({ computedAt: COMPUTED_AT, years: [] })
+    const response = await fetch(`${baseUrl}/stats.svg`)
+    assert.equal(response.headers.get('cache-control'), 'public, max-age=60')
+  })
+
+  test('is revalidated on each use when asked, unchanged until computed again', async () => {
+    now = COMPUTED_AT.getTime()
+    getStats = async () => ({ computedAt: COMPUTED_AT, years: [] })
+    const response = await fetch(`${baseUrl}/revalidated.svg`)
+    assert.equal(response.headers.get('cache-control'), 'public, no-cache')
+    const etag = response.headers.get('etag')
+    assert.ok(etag)
+    // fetch would ask for a fresh response (Cache-Control: no-cache), as a reload does
+    const status = await new Promise((resolve, reject) =>
+      get(
+        `${baseUrl}/revalidated.svg`,
+        { headers: { 'If-None-Match': etag } },
+        (revalidated) => resolve(revalidated.resume().statusCode)
+      ).once('error', reject)
+    )
+    assert.equal(status, 304)
   })
 
   test('fails with a 500 when the stats cannot be computed', async () => {

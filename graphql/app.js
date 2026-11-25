@@ -192,6 +192,7 @@ app.get(
     getStats,
     cacheDuration: CACHE_DURATION_IN_MS,
     charts: readCharts(schema),
+    revalidate: config.get('env') === 'dev',
   })
 )
 
