@@ -1,4 +1,6 @@
-const { fromLegacyFormat } = require('./metadata')
+const {
+  fromLegacyFormat,
+} = require('../../migrations/20241127170000-article-metadata.js')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 
