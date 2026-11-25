@@ -64,6 +64,7 @@ export function renderWithProviders(
     route = '/test',
     path = '/test',
     extraRoutes = [],
+    loader,
     store = createReduxStore(merge({}, initialState, preloadedState)),
     ...renderOptions
   } = {}
@@ -73,6 +74,7 @@ export function renderWithProviders(
       {
         path,
         index: true,
+        loader,
         Component() {
           return Children.toArray(children)
         },
