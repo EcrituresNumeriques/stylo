@@ -1,10 +1,16 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRevalidator, useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
+import {
+  forgetAccountPreferences,
+  getPreferences,
+  setPreference,
+  subscribe,
+} from '../helpers/preferences.js'
 import {
   deleteAccount as deleteAccountMutation,
   logoutMutation,
@@ -22,31 +28,25 @@ export function useActiveUserId() {
 }
 
 /**
- * @typedef {import('redux').Dispatch} Dispatch
- */
-
-/**
+ * Préférence conservée dans le localStorage.
  *
  * @param {string} key
  * @param {'article' | 'user' | 'export' | 'corpus' } namespace
- * @returns {{ value: string|boolean|number, setValue: Dispatch, toggleValue: Dispatch }}
+ * @returns {{ value: string|boolean|number, setValue: (value: string|boolean|number) => void, toggleValue: () => void }}
  */
 export function usePreferenceItem(key, namespace = 'article') {
-  const dispatch = useDispatch()
-  const value = useSelector((state) => state[`${namespace}Preferences`]?.[key])
-
-  const ns = namespace.toUpperCase()
+  const value = useSyncExternalStore(
+    subscribe,
+    () => getPreferences(namespace)[key]
+  )
 
   return {
     value,
-    /**
-     * @param {boolean | undefined} value
-     */
     setValue(value) {
-      dispatch({ type: `SET_${ns}_PREFERENCES`, key, value })
+      setPreference(namespace, key, value)
     },
     toggleValue() {
-      dispatch({ type: `${ns}_PREFERENCES_TOGGLE`, key })
+      setPreference(namespace, key, !getPreferences(namespace)[key])
     },
   }
 }
@@ -178,6 +178,7 @@ export function useLogout() {
       console.error('Unable to destroy the server session on logout', err)
     } finally {
       dispatch({ type: 'LOGOUT' })
+      forgetAccountPreferences()
     }
   }, [])
 }

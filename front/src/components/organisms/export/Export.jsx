@@ -1,10 +1,14 @@
 import clsx from 'clsx'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import slugify from 'slugify'
 
 import { applicationConfig } from '../../../config.js'
+import {
+  getPreferences,
+  setPreference as savePreference,
+  subscribe,
+} from '../../../helpers/preferences.js'
 import useStyloExport from '../../../hooks/stylo-export.js'
 import buttonStyles from '../../atoms/Button.module.scss'
 import { Button, Select } from '../../atoms/index.js'
@@ -31,19 +35,14 @@ export default function Export({
   onCancel,
 }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
   const { bibliography_style, with_toc, link_citations, with_nocite, formats } =
-    useSelector((state) => state.exportPreferences, shallowEqual)
+    useSyncExternalStore(subscribe, () => getPreferences('export'))
 
   const setPreference = useCallback(
     (key) => (event) =>
-      dispatch({
-        type: 'SET_EXPORT_PREFERENCES',
-        key,
-        value: event?.target?.value ?? event,
-      }),
+      savePreference('export', key, event?.target?.value ?? event),
     []
   )
 
