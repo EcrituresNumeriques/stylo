@@ -1,6 +1,5 @@
 import { useCallback, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { useRevalidator, useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
@@ -11,6 +10,7 @@ import {
   setPreference,
   subscribe,
 } from '../helpers/preferences.js'
+import { getSessionToken, removeSessionToken } from '../helpers/sessionToken.js'
 import {
   deleteAccount as deleteAccountMutation,
   logoutMutation,
@@ -166,7 +166,6 @@ export function useUserTags() {
 }
 
 export function useLogout() {
-  const dispatch = useDispatch()
   const { query } = useGraphQLClient()
 
   return useCallback(async () => {
@@ -177,7 +176,7 @@ export function useLogout() {
       // could not be destroyed (network error, server unavailable…)
       console.error('Unable to destroy the server session on logout', err)
     } finally {
-      dispatch({ type: 'LOGOUT' })
+      removeSessionToken()
       forgetAccountPreferences()
     }
   }, [])
@@ -206,7 +205,6 @@ export function useDisplayName() {
 }
 
 export function useAccount() {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { query } = useGraphQLClient()
 
   async function deleteAccount() {
@@ -220,6 +218,7 @@ export function useAccount() {
     format = 'zip',
     workspaceId,
   } = {}) {
+    const sessionToken = getSessionToken()
     const response = await fetch(
       applicationConfig.backendEndpoint + '/backup',
       {

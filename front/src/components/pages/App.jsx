@@ -12,6 +12,7 @@ import {
 import { ToastContainer } from 'react-toastify'
 
 import { focusPageStart, shouldFocusPageStart } from '../../helpers/focus.js'
+import { getSessionToken } from '../../helpers/sessionToken.js'
 import { getUserProfile } from '../../helpers/user.js'
 import { useDiscourseFeed } from '../../hooks/feed.js'
 import { usePreferenceItem } from '../../hooks/user.js'
@@ -28,11 +29,8 @@ import {
  * @returns {Promise<{ user: object }>}
  */
 export async function loader() {
-  const sessionToken = localStorage.getItem('sessionToken')
-  if (sessionToken !== null && sessionToken.trim() !== '') {
-    return await getUserProfile({
-      sessionToken,
-    })
+  if (getSessionToken()?.trim()) {
+    return await getUserProfile()
   }
   return { user: null }
 }

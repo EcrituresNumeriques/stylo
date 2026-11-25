@@ -1,5 +1,4 @@
 import { merge } from 'allof-merge'
-import { useSelector } from 'react-redux'
 
 import { toYaml } from '../components/organisms/metadata/yaml.js'
 import { executeQuery } from '../helpers/graphQL.js'
@@ -33,7 +32,6 @@ import {
 import { getArticleWorkspaces } from './Workspaces.graphql'
 
 export function useArticleTagActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
@@ -48,7 +46,6 @@ export function useArticleTagActions({ articleId }) {
         articleId,
         tags: [tagId],
       },
-      sessionToken,
     })
     const tags = result.addArticleTags
     mutate(
@@ -68,7 +65,6 @@ export function useArticleTagActions({ articleId }) {
         articleId,
         tags: [tagId],
       },
-      sessionToken,
     })
     const tags = result.removeArticleTags
     mutate(
@@ -92,7 +88,6 @@ export function useArticleTagActions({ articleId }) {
 }
 
 export function useArticlesActions({ activeWorkspaceId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { mutate: mutateArticles } = useMutateData({
     query: getWorkspaceArticles,
     variables: {
@@ -107,7 +102,6 @@ export function useArticlesActions({ activeWorkspaceId }) {
     const { createArticle: createdArticle } = await executeQuery({
       query: createArticle,
       variables: { input: createInput },
-      sessionToken,
     })
     await mutateArticles(async (data) => {
       if (!data) {
@@ -129,7 +123,6 @@ export function useArticlesActions({ activeWorkspaceId }) {
 }
 
 export function useArticleActions({ articleId, activeWorkspaceId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const activeUserId = useActiveUserId()
   const { mutate: mutateArticleWorkspaces } = useMutateData({
     query: getArticleWorkspaces,
@@ -152,7 +145,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         userId: toUserId,
         articleId,
       },
-      sessionToken,
     })
   }
   const duplicate = async (article) => {
@@ -162,7 +154,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         userId: activeUserId,
         articleId,
       },
-      sessionToken,
     })
     const duplicatedArticle = {
       ...article,
@@ -185,7 +176,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     await executeQuery({
       query: deleteArticle,
       variables: { articleId },
-      sessionToken,
     })
     await mutateArticles(async (data) => {
       if (!data) {
@@ -205,7 +195,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
   }
   const update = async (article, { title, tags, workspaces }) => {
     const response = await executeQuery({
-      sessionToken,
       query: updateArticle,
       variables: {
         articleId,
@@ -251,7 +240,6 @@ const emptyYaml = `---
 ---`
 
 export function useArticleMetadata({ articleId, versionId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const hasVersion = typeof versionId === 'string'
   const { data, error, mutate, isLoading } = useFetchData(
     {
@@ -278,7 +266,6 @@ export function useArticleMetadata({ articleId, versionId }) {
     }
 
     await executeQuery({
-      sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
         articleId: articleId,
@@ -310,7 +297,6 @@ export function useArticleMetadata({ articleId, versionId }) {
       return
     }
     await executeQuery({
-      sessionToken,
       query: updateArticleWorkingVersion,
       variables: {
         articleId: articleId,
@@ -381,7 +367,6 @@ export function useArticleMetadata({ articleId, versionId }) {
 }
 
 export function useEditableArticle({ articleId, versionId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const hasVersion = typeof versionId === 'string'
   const { data, mutate, error, isLoading } = useFetchData(
     {
@@ -407,7 +392,6 @@ export function useEditableArticle({ articleId, versionId }) {
       return
     }
     const result = await executeQuery({
-      sessionToken,
       query: updateArticleBibliography,
       variables: {
         articleId,
@@ -439,7 +423,6 @@ export function useEditableArticle({ articleId, versionId }) {
 
   const updateZoteroLink = async (url) => {
     const response = await executeQuery({
-      sessionToken,
       query: setArticleZoteroLink,
       variables: {
         articleId: articleId,
@@ -464,7 +447,6 @@ export function useEditableArticle({ articleId, versionId }) {
 
   const updateNakalaLink = async (url) => {
     const response = await executeQuery({
-      sessionToken,
       query: setArticleNakalaLink,
       variables: {
         articleId: articleId,
@@ -545,7 +527,6 @@ export function useArticleVersion({ versionId }) {
 }
 
 export function useArticleVersionActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { mutate } = useMutateData({
     query: getArticleVersions,
     variables: { article: articleId },
@@ -558,7 +539,6 @@ export function useArticleVersionActions({ articleId }) {
         major: version.major,
         message: version.description,
       },
-      sessionToken,
     })
     await mutate(async (data) => ({
       article: {
@@ -574,7 +554,6 @@ export function useArticleVersionActions({ articleId }) {
         versionId,
         name: description,
       },
-      sessionToken,
     })
     await mutate(async (data) => ({
       article: {

@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-
 import { executeQuery } from '../helpers/graphQL.js'
 import { getArticleContributors } from './Article.graphql'
 import {
@@ -13,10 +11,8 @@ export function useArticleContributorActions({ articleId }) {
     query: getArticleContributors,
     variables: { articleId },
   })
-  const sessionToken = useSelector((state) => state.sessionToken)
   const addContributor = async (contributorId) => {
     const response = await executeQuery({
-      sessionToken,
       query: addContributorQuery,
       variables: { userId: contributorId, articleId },
     })
@@ -29,7 +25,6 @@ export function useArticleContributorActions({ articleId }) {
 
   const removeContributor = async (contributorId) => {
     const response = await executeQuery({
-      sessionToken,
       query: removeContributorQuery,
       variables: { userId: contributorId, articleId },
     })

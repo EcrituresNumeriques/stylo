@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
 import { executeQuery } from '../helpers/graphQL.js'
@@ -21,7 +20,7 @@ import {
  *
  * In order of priority:
  * - URL
- * - redux store
+ * - user preferences
  * @returns {string|undefined}
  */
 export function useActiveWorkspaceId() {
@@ -36,7 +35,7 @@ export function useActiveWorkspaceId() {
  *
  * In order of priority:
  * - URL
- * - redux store
+ * - user preferences
  * @returns {string|undefined}
  */
 export function useActiveWorkspace() {
@@ -50,7 +49,6 @@ export function useWorkspaceMembersActions(workspaceId) {
   const { mutate: workspacesMutate } = useMutateData({
     query: getWorkspaces,
   })
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getWorkspaceMembers, variables: { workspaceId } },
     {
@@ -82,7 +80,6 @@ export function useWorkspaceMembersActions(workspaceId) {
     await executeQuery({
       query: removeMemberMutation,
       variables: { workspaceId, userId },
-      sessionToken,
     })
     const result = await mutate(
       async (data) => {
@@ -102,7 +99,6 @@ export function useWorkspaceMembersActions(workspaceId) {
     await executeQuery({
       query: inviteMemberMutation,
       variables: { workspaceId, userId },
-      sessionToken,
     })
     const result = await mutate(
       async (data) => {
@@ -132,10 +128,8 @@ export function useWorkspaceMembersActions(workspaceId) {
 
 export function useWorkspaceActions() {
   const { mutate } = useMutateData({ query: getWorkspaces })
-  const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
     const result = await executeQuery({
-      sessionToken,
       query: createMutation,
       variables: {
         data: {
@@ -155,7 +149,6 @@ export function useWorkspaceActions() {
 
   const leaveWorkspace = async (workspaceId) => {
     await executeQuery({
-      sessionToken,
       query: leaveMutation,
       variables: {
         workspaceId,
@@ -171,7 +164,6 @@ export function useWorkspaceActions() {
 
   const updateFormMetadata = async (workspaceId, input) => {
     await executeQuery({
-      sessionToken,
       query: updateFormMetadataMutation,
       variables: {
         workspaceId,

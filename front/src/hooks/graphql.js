@@ -1,8 +1,8 @@
 import { print } from 'graphql/language/printer'
-import { useSelector } from 'react-redux'
 import useSWR, { useSWRConfig } from 'swr'
 
 import { executeQuery } from '../helpers/graphQL.js'
+import { getSessionToken } from '../helpers/sessionToken.js'
 
 /**
  * @typedef {import('graphql').ASTNode} ASTNode
@@ -22,7 +22,7 @@ export default function useFetchData(
   { query: queryOrAST, variables },
   options
 ) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const sessionToken = getSessionToken()
   const query = resolveQuery(queryOrAST)
   return useSWR({ query, variables, sessionToken }, fetch, options)
 }
@@ -34,7 +34,7 @@ export default function useFetchData(
  * @returns {SWRResponse}
  */
 export function useConditionalFetchData(param, options) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const sessionToken = getSessionToken()
   const resolvedKey = resolveKey(param, sessionToken)
   return useSWR(resolvedKey, fetch, options)
 }
@@ -104,15 +104,12 @@ export function useMutateData({ query, variables }) {
  * @returns {{query: string, variables: {[key : string]: unknown}, sessionToken: string}} an SWR key
  */
 function useSWRKey({ query: queryOrAST, variables }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const sessionToken = getSessionToken()
   const query = resolveQuery(queryOrAST)
   return { query, variables, sessionToken }
 }
 
-async function fetch({ query, variables, sessionToken }) {
-  return executeQuery({
-    query,
-    variables,
-    sessionToken,
-  })
+// the session token is part of the SWR key, so that cached data is not shared between accounts
+async function fetch({ query, variables }) {
+  return executeQuery({ query, variables })
 }
