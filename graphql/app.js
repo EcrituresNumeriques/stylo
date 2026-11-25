@@ -65,6 +65,7 @@ const { populateUserFromJWT } = require('./helpers/token.js')
 const { reportExecutionErrors } = require('./helpers/errorReporting.js')
 const { requireFeature } = require('./helpers/features.js')
 const { principalFromToken } = require('./auth/principal.js')
+const { validationRules } = require('./policies/serviceAccess.js')
 
 const User = require('./models/user')
 const {
@@ -309,6 +310,7 @@ app.post(
   populateUserFromJWT({ jwtSecret }),
   createHandler({
     schema,
+    validationRules,
     /**
      * @param {express.Request} req
      * @returns {import('./helpers/token.js').RequestContext}
