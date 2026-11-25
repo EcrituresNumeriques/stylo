@@ -81,6 +81,16 @@ describe('canJoinArticleRoom', () => {
     )
   })
 
+  test('rejects a read-only token', async () => {
+    assert.equal(
+      await canJoinArticleRoom(
+        roomUrl(article.id, { admin: true, readonly: true }),
+        { jwtSecret }
+      ),
+      false
+    )
+  })
+
   test('rejects a user without access to the article', async () => {
     assert.equal(
       await canJoinArticleRoom(roomUrl(article.id, { _id: stranger.id }), {

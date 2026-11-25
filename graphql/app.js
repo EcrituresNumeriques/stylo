@@ -59,6 +59,7 @@ const {
   isArticleRoomUrl,
 } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
+const { validationRules } = require('./policies/readOnlyToken.js')
 
 const User = require('./models/user')
 const {
@@ -287,6 +288,7 @@ app.post(
   populateUserFromJWT({ jwtSecret }),
   createHandler({
     schema,
+    validationRules,
     /**
      * @param {express.Request} req
      * @returns {import('./token.js').RequestContext}
