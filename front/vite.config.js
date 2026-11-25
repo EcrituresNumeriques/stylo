@@ -169,6 +169,9 @@ export default defineConfig(async ({ mode }) => {
           {
             target: 'http://127.0.0.1:3030',
           },
+        '^/stats\\.svg$': {
+          target: 'http://127.0.0.1:3030',
+        },
         '^/(events|ws)': {
           target: 'http://127.0.0.1:3030',
           prependPath: false,
