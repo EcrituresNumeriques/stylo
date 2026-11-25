@@ -64,6 +64,7 @@ const {
 const { populateUserFromJWT } = require('./helpers/token.js')
 const { reportExecutionErrors } = require('./helpers/errorReporting.js')
 const { requireFeature } = require('./helpers/features.js')
+const { principalFromToken } = require('./auth/principal.js')
 
 const User = require('./models/user')
 const {
@@ -318,6 +319,7 @@ app.post(
       return {
         loaders: createLoaders(),
         session: req.raw.session,
+        principal: principalFromToken(token, user),
         token,
         user,
         userId: user?.id.toString() || token?._id,

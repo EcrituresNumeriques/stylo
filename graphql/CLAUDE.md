@@ -36,7 +36,7 @@ Fonctions d'accès aux ressources (privées, réutilisées dans les resolvers) :
 
 ## Contexte GraphQL
 
-Le contexte est construit dans `app.js` (`user`, `userId`, `token`, `session`, `loaders`). Les objets chargés par les DataLoaders (`loaders.js`) sont `lean` : les virtuals et les méthodes Mongoose n'y sont pas disponibles.
+Le contexte est construit dans `app.js` (`principal`, `user`, `userId`, `token`, `session`, `loaders`). `principal` (`auth/principal.js`) dit qui appelle l'API (`user`, `service` ou `anonymous`). Le nouveau code s'appuie sur lui plutôt que sur le contenu du jeton. Les objets chargés par les DataLoaders (`loaders.js`) sont `lean` : les virtuals et les méthodes Mongoose n'y sont pas disponibles.
 
 ## Authentification
 
