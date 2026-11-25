@@ -133,8 +133,6 @@ const mongooseP = mongoose
  */
 const app = express()
 
-config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
-
 /**
  * @type {import('express-session').SessionOptions}
  */
@@ -411,6 +409,9 @@ yjsUtils.setPersistence({
   },
 })
 wss.on('connection', yjsUtils.setupWSConnection)
+
+// after the routes: Express passes their errors to the error handlers declared after them
+config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
 async function runMigrations() {
   const migrateInstance = migrate.getInstance(true, { cwd: __dirname })
