@@ -72,13 +72,17 @@ describe('canJoinArticleRoom', () => {
     }
   })
 
-  test('accepts an admin token', async () => {
-    assert.equal(
-      await canJoinArticleRoom(roomUrl(article.id, { admin: true }), {
-        jwtSecret,
-      }),
-      true
-    )
+  test('rejects a service token, which can only read', async () => {
+    for (const payload of [
+      { admin: true },
+      { admin: true, roles: ['read'], readonly: true },
+      { admin: true, _id: owner.id },
+    ]) {
+      assert.equal(
+        await canJoinArticleRoom(roomUrl(article.id, payload), { jwtSecret }),
+        false
+      )
+    }
   })
 
   test('rejects a user without access to the article', async () => {

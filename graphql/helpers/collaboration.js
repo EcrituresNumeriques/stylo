@@ -36,14 +36,11 @@ async function canJoinArticleRoom(url = '', { jwtSecret }) {
     return false
   }
 
-  // required lazily to avoid loading the models and the resolvers when only the URL is checked
-  const Article = require('../models/article.js')
-  if (token.admin === true) {
-    return (await Article.exists({ _id: articleId })) !== null
-  }
-  if (!token._id) {
+  // only a user can join an editing session, a service token is refused even if it holds a user id
+  if (token.admin === true || !token._id) {
     return false
   }
+  // required lazily to avoid loading the models and the resolvers when only the URL is checked
   const { getArticleByUser } = require('../resolvers/articleResolver.js')
   try {
     await getArticleByUser(articleId, token._id)

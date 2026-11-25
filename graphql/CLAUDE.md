@@ -46,6 +46,8 @@ Le contexte est construit dans `app.js` (`principal`, `user`, `userId`, `token`,
 
 Le middleware `populateUserFromJWT()` (dans `helpers/token.js`) injecte `req.user` et `req.token` à partir du header `Authorization: Bearer <token>`.
 
+Un service (l'export) ne peut que lire. Ses requêtes sont validées par `ServiceReadOnlyRule` (`policies/serviceAccess.js`), qui liste les champs autorisés à la racine.
+
 ## Politiques d'accès
 
 - `isUser(args, context)` — vérifie que l'utilisateur authentifié accède à ses propres données (ou est admin). Retourne `{ userId }`.
