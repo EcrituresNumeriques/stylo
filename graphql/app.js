@@ -81,6 +81,9 @@ const Y = yjsUtils.Y
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
+const { getStats } = require('./resolvers/statsResolver.js')
+const { readCharts } = require('./helpers/stats/charts.js')
+const { createStatsSvgHandler, endOfDay } = require('./routes/statsSvg.js')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -126,8 +129,6 @@ const mongooseP = mongoose
  * Setup App
  */
 const app = express()
-
-config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
 /**
  * @type {import('express-session').SessionOptions}
@@ -179,6 +180,23 @@ app.get('/version', (_req, res) =>
 )
 
 app.get('/events', handleEvents)
+
+app.get(
+  '/stats.svg',
+  // kept by the browsers until the end of the day, checked on each use in development
+  (_req, res, next) => {
+    if (config.get('env') === 'dev') {
+      res.set('Cache-Control', 'no-cache')
+    } else {
+      res.set('Expires', endOfDay().toUTCString())
+    }
+    next()
+  },
+  createStatsSvgHandler({
+    getStats,
+    charts: readCharts(schema),
+  })
+)
 
 config.get('auth.enabledServices').forEach((service) => {
   // used on initial login
@@ -395,6 +413,9 @@ yjsUtils.setPersistence({
   },
 })
 wss.on('connection', yjsUtils.setupWSConnection)
+
+// after the routes: Express passes their errors to the error handlers declared after them
+config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
 async function runMigrations() {
   const migrateInstance = migrate.getInstance(true, { cwd: __dirname })

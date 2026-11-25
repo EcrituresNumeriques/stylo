@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "node --env-file-if-exists=.env ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:dev:*'",
     "dev:front": "vite ./front",
+    "predev:graphql": "npm run generate-schema --workspace graphql",
     "dev:graphql": "node --watch ./graphql/app.js",
     "start": "node --env-file-if-exists=.env ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:start:*'",
     "start:front": "vite build ./front",

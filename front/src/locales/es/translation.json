@@ -273,6 +273,8 @@
   "publication.publishedAt": "Publicado el",
   "publication.release.details": "Changelog",
   "search.placeholder": "Búsqueda",
+  "stats.error": "Las estadísticas no están disponibles por el momento.",
+  "stats.title": "Estadísticas de uso",
   "story": {
     "ux.toggle_unchecked": "Desactivado",
     "ux.toggle_checked": "Activado",

@@ -13,19 +13,49 @@ scalar ID
 scalar Int
 scalar Boolean
 
+"""
+Draws the field in the chart \`id\` of /stats.svg: the fields of a same chart are its series, in the order of the schema.
+- title: title of the chart, on one of its fields;
+- label: label of the series;
+- key, value: for a list, the fields of its items holding the key (year, month…) and the value (the item itself when omitted);
+- of: path, from InstanceUsageStats, of the total the values are a share of (their sum when omitted);
+- labels: enum whose values label the keys.
+The values of an object are its fields with a @chartLabel, shared by name between the series of a chart, in the order of the schema unless the labels give one.
+"""
+directive @chart(id: String!, type: ChartType!, title: String, label: String, key: String, value: String, of: String, labels: String) repeatable on FIELD_DEFINITION
+
+"Label of a field or an enum value in the charts of /stats.svg (in French), and position of a field among the values of its chart (the fields without one come last)."
+directive @chartLabel(text: String!, order: Int) on FIELD_DEFINITION | ENUM_VALUE
+
+"Type of a chart of /stats.svg."
+enum ChartType {
+  "Vertical bars, one per item of a list."
+  COLUMNS
+  "Horizontal bars of the share of each value, from the largest."
+  PERCENT_BARS
+  "Bars split in the shares of each value: one for an object, one per item for a list."
+  SHARES
+  "Vertical bars split in values, one per item of a list, with their total."
+  STACKED_COLUMNS
+  "Ranges from the 10th to the 90th percentile, with the median."
+  DISTRIBUTION
+  "Lines, one per list, over the keys of their items."
+  LINES
+}
+
 enum AuthType {
   oidc
   local
 }
 
 enum CorpusType {
-  neutral
+  neutral @chartLabel(text: "Neutre")
   # revue
-  journal
+  journal @chartLabel(text: "Revue")
   # thesis/mémoire
-  thesis
+  thesis @chartLabel(text: "Thèse")
   # livre
-  book
+  book @chartLabel(text: "Livre")
 }
 
 enum AuthTokenService {
@@ -250,11 +280,11 @@ type InstanceUsageStats {
   users: InstanceUserStats!
   articles: InstanceArticleStats!
   "Active users per year: users who created or wrote in an article (at least one week after their signup), contributed to an article, or are members of a workspace in which an article was created that year."
-  activity: [InstanceActivityYearlyStats!]!
+  activity: [InstanceActivityYearlyStats!]! @chart(id: "active-seniority", type: STACKED_COLUMNS, title: "Utilisateurs actifs par année selon leur ancienneté", key: "year", value: "seniority")
   "Active users (same definition) over the last 12 months, and the articles and corpora created over the last 12 months."
   lastTwelveMonths: InstanceRollingActivityStats!
   "Accounts by engagement (the deleted accounts and the ones less than a week old excluded), overall and per signup year."
-  engagement: InstanceEngagementStats!
+  engagement: InstanceEngagementStats! @chart(id: "engagement", type: SHARES, title: "Comptes selon leur engagement")
   corpora: InstanceCorpusStats!
   workspaces: InstanceWorkspaceStats!
 }
@@ -270,15 +300,15 @@ type InstanceDistribution {
 type InstanceUserStats {
   total: Int!
   "Accounts by authentication method available on the account (a linked service is counted even if it is not used to log in)."
-  authentication: InstanceAuthenticationStats!
-  years: [InstanceUserYearlyStats!]!
+  authentication: InstanceAuthenticationStats! @chart(id: "authentication", type: PERCENT_BARS, title: "Méthodes de connexion", of: "users.total")
+  years: [InstanceUserYearlyStats!]! @chart(id: "accounts-created", type: COLUMNS, title: "Comptes créés par année", key: "year", value: "created")
 }
 
 type InstanceAuthenticationStats {
-  password: Int!
-  humanid: Int!
-  zotero: Int!
-  hypothesis: Int!
+  password: Int! @chartLabel(text: "Mot de passe")
+  humanid: Int! @chartLabel(text: "HumanID")
+  zotero: Int! @chartLabel(text: "Zotero")
+  hypothesis: Int! @chartLabel(text: "Hypothesis")
   "Accounts with more than one authentication method."
   multiple: Int!
 }
@@ -295,19 +325,19 @@ type InstanceArticleStats {
   "Articles with at least one bibliographic reference."
   withBibliography: Int!
   "Number of bibliographic references per article with a bibliography."
-  bibliographyEntries: InstanceDistribution!
+  bibliographyEntries: InstanceDistribution! @chart(id: "article-details", type: DISTRIBUTION, title: "Les articles en détail", label: "Références par bibliographie")
   "Articles with authors, an abstract or keywords."
   withMetadata: Int!
   "Articles with a bibliography and a Zotero link."
   bibliographiesFromZotero: Int!
   "Articles by number of filled metadata fields: none, 1 to 4, 5 to 9, 10 or more."
-  metadataLevels: InstanceMetadataLevelStats!
+  metadataLevels: InstanceMetadataLevelStats! @chart(id: "metadata-levels", type: SHARES, title: "Champs de métadonnées remplis")
   "Number of tags per article with tags."
-  tags: InstanceDistribution!
+  tags: InstanceDistribution! @chart(id: "article-details", type: DISTRIBUTION, label: "Étiquettes par article étiqueté")
   "Articles by time between their creation and their last update."
-  writingDurations: InstanceWritingDurationStats!
+  writingDurations: InstanceWritingDurationStats! @chart(id: "writing-durations", type: SHARES, title: "Durée d’écriture")
   "Number of people (the author included) per shared article."
-  collaborators: InstanceDistribution!
+  collaborators: InstanceDistribution! @chart(id: "article-details", type: DISTRIBUTION, label: "Personnes par article partagé, auteur compris")
 }
 
 type InstanceActivityYearlyStats {
@@ -322,18 +352,18 @@ type InstanceActivityYearlyStats {
 "Active users by calendar years between their signup and the year of activity."
 type InstanceActivitySeniorityStats {
   "Signed up that year."
-  sameYear: Int!
-  oneToTwoYears: Int!
-  threeToFiveYears: Int!
-  moreThanFiveYears: Int!
+  sameYear: Int! @chartLabel(text: "Inscrits dans l’année")
+  oneToTwoYears: Int! @chartLabel(text: "Depuis 1 à 2 ans")
+  threeToFiveYears: Int! @chartLabel(text: "Depuis 3 à 5 ans")
+  moreThanFiveYears: Int! @chartLabel(text: "Depuis plus de 5 ans")
 }
 
 type InstanceCorpusStats {
   total: Int!
   "Number of articles per corpus."
-  articles: InstanceDistribution!
-  types: [InstanceCorpusTypeStats!]!
-  months: [InstanceMonthlyStats!]!
+  articles: InstanceDistribution! @chart(id: "sizes", type: DISTRIBUTION, title: "Taille des corpus et des espaces", label: "Articles par corpus")
+  types: [InstanceCorpusTypeStats!]! @chart(id: "corpus-types", type: PERCENT_BARS, title: "Types de corpus", key: "type", value: "count", labels: "CorpusType")
+  months: [InstanceMonthlyStats!]! @chart(id: "monthly-totals", type: LINES, title: "Corpus et espaces de travail, total cumulé par mois", label: "Corpus", key: "month", value: "total")
 }
 
 type InstanceCorpusTypeStats {
@@ -344,26 +374,26 @@ type InstanceCorpusTypeStats {
 type InstanceWorkspaceStats {
   total: Int!
   "Number of members per workspace."
-  members: InstanceDistribution!
+  members: InstanceDistribution! @chart(id: "sizes", type: DISTRIBUTION, label: "Membres par espace")
   "Number of articles per workspace."
-  articles: InstanceDistribution!
-  months: [InstanceMonthlyStats!]!
+  articles: InstanceDistribution! @chart(id: "sizes", type: DISTRIBUTION, label: "Articles par espace")
+  months: [InstanceMonthlyStats!]! @chart(id: "monthly-totals", type: LINES, label: "Espaces de travail", key: "month", value: "total")
 }
 
 type InstanceMetadataLevelStats {
-  none: Int!
-  few: Int!
-  several: Int!
-  many: Int!
+  none: Int! @chartLabel(text: "Aucun")
+  few: Int! @chartLabel(text: "1 à 4")
+  several: Int! @chartLabel(text: "5 à 9")
+  many: Int! @chartLabel(text: "10 et plus")
 }
 
 type InstanceWritingDurationStats {
-  underAMinute: Int!
-  underAnHour: Int!
-  underADay: Int!
-  underAMonth: Int!
-  underAYear: Int!
-  moreThanAYear: Int!
+  underAMinute: Int! @chartLabel(text: "Moins d’une minute")
+  underAnHour: Int! @chartLabel(text: "1 minute à 1 heure")
+  underADay: Int! @chartLabel(text: "1 heure à 1 jour")
+  underAMonth: Int! @chartLabel(text: "1 jour à 1 mois")
+  underAYear: Int! @chartLabel(text: "1 mois à 1 an")
+  moreThanAYear: Int! @chartLabel(text: "Plus d’un an")
 }
 
 type InstanceRollingActivityStats {
@@ -383,11 +413,11 @@ Accounts by engagement. The activities are the ones of the active users; a conne
 - ongoing: active after their first week, and over the last 12 months.
 """
 type InstanceEngagementStats {
-  idle: Int!
-  tried: Int!
-  lapsed: Int!
-  ongoing: Int!
-  years: [InstanceEngagementYearlyStats!]!
+  idle: Int! @chartLabel(text: "Aucune activité", order: 4)
+  tried: Int! @chartLabel(text: "Essai la première semaine", order: 3)
+  lapsed: Int! @chartLabel(text: "Usage arrêté", order: 2)
+  ongoing: Int! @chartLabel(text: "Actifs ces 12 derniers mois", order: 1)
+  years: [InstanceEngagementYearlyStats!]! @chart(id: "engagement", type: SHARES, label: "Par année d’inscription", key: "year")
 }
 
 type InstanceEngagementYearlyStats {

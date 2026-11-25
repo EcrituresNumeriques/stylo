@@ -274,6 +274,8 @@
   "publication.publishedAt": "Published on",
   "publication.release.details": "Changelog",
   "search.placeholder": "Search",
+  "stats.error": "The statistics are not available at the moment.",
+  "stats.title": "Usage statistics",
   "story": {
     "ux.toggle_unchecked": "Unchecked",
     "ux.toggle_checked": "Checked",
