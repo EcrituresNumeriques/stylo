@@ -13,6 +13,36 @@ scalar ID
 scalar Int
 scalar Boolean
 
+"""
+Draws the field in the chart \`id\` of /stats.svg: the fields of a same chart are its series, in the order of the schema.
+- title: title of the chart, on one of its fields;
+- label: label of the series;
+- key, value: for a list, the fields of its items holding the key (year, month…) and the value (the item itself when omitted);
+- of: path, from InstanceUsageStats, of the total the values are a share of (their sum when omitted);
+- labels: enum whose values label the keys.
+The values of an object are its fields with a @chartLabel, shared by name between the series of a chart.
+"""
+directive @chart(id: String!, type: ChartType!, title: String, label: String, key: String, value: String, of: String, labels: String) repeatable on FIELD_DEFINITION
+
+"Label of a field or an enum value in the charts of /stats.svg (in French)."
+directive @chartLabel(text: String!) on FIELD_DEFINITION | ENUM_VALUE
+
+"Type of a chart of /stats.svg."
+enum ChartType {
+  "Vertical bars, one per item of a list."
+  COLUMNS
+  "Horizontal bars of the share of each value, from the largest."
+  PERCENT_BARS
+  "Bars split in the shares of each value: one for an object, one per item for a list."
+  SHARES
+  "Vertical bars split in values, one per item of a list, with their total."
+  STACKED_COLUMNS
+  "Ranges from the 10th to the 90th percentile, with the median."
+  DISTRIBUTION
+  "Lines, one per list, over the keys of their items."
+  LINES
+}
+
 enum AuthType {
   oidc
   local
