@@ -1,4 +1,5 @@
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const indexes = await mongo.collection('users').listIndexes().toArray()
 
@@ -13,6 +14,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   await mongo.collection('users').dropIndex('email_1')
   await mongo.collection('users').createIndex({ email: 1 }, { unique: true })

@@ -2,6 +2,7 @@ const YAML = require('js-yaml')
 const { fromLegacyFormat } = require('../helpers/metadata')
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const articles = mongo.collection('articles')
   const articlesCursor = articles.find({})

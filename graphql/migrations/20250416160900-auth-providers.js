@@ -1,4 +1,5 @@
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const users = mongo.collection('users')
   await users.updateMany(
@@ -23,6 +24,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const users = mongo.collection('users')
   await users.updateMany(

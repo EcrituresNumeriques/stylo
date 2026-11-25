@@ -1,4 +1,5 @@
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const corpus = mongo.collection('corpus')
   await corpus.updateMany(
@@ -12,6 +13,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const corpus = mongo.collection('corpus')
   await corpus.updateMany(
