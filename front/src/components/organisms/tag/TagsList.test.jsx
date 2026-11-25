@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'
 
@@ -53,7 +53,8 @@ describe('TagsList', () => {
       json: () => Promise.resolve({ data: { user: { tags } } }),
     })
 
-    renderWithProviders(<Component />, { route: '/test?tag=tag-2' })
+    const loader = vi.fn().mockResolvedValue(null)
+    renderWithProviders(<Component />, { route: '/test?tag=tag-2', loader })
 
     const firstTag = await screen.findByRole('checkbox', { name: 'first tag' })
     const secondTag = screen.getByRole('checkbox', { name: 'second tag' })
@@ -67,5 +68,7 @@ describe('TagsList', () => {
     await user.click(secondTag)
     expect(firstTag).toBeChecked()
     expect(secondTag).not.toBeChecked()
+    // selecting a tag does not reload the data of the page (user profile)
+    expect(loader).toHaveBeenCalledOnce()
   })
 })

@@ -39,7 +39,8 @@ export default function TagsList({ action }) {
       : [...selectedTagIds, id]
     setSearchParams(
       { ...Object.fromEntries(searchParams), tag },
-      { replace: true }
+      // the filter is applied in the browser, there is no data to reload
+      { replace: true, defaultShouldRevalidate: false }
     )
   }
 
