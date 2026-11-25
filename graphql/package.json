@@ -10,6 +10,7 @@
   },
   "scripts": {
     "delete-user": "node bin/delete-user.mjs",
+    "generate-schema": "node bin/generate-schema.js",
     "generate-service-token": "node --env-file-if-exists=../.env bin/generate-service-token.js",
     "test": "c8 --reporter=lcov node --test '**/*.test.js'",
     "migrations": "node --env-file-if-exists=../.env ../node_modules/.bin/db-migrate up",
@@ -24,6 +25,7 @@
   "dependencies": {
     "@ggrossetie/db-migrate-mongodb": "~2.1",
     "@graphql-tools/schema": "~10.0",
+    "@graphql-tools/utils": "~11.1",
     "@sentry/node": "~10.56.0",
     "@sentry/profiling-node": "~10.56.0",
     "archiver": "^7.0.1",
