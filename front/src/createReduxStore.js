@@ -7,9 +7,6 @@ const sessionTokenName = 'sessionToken'
 // État d'une session anonyme : ne doit dépendre d'aucune donnée persistée
 const defaultState = {
   sessionToken: null,
-  activeUser: {
-    selectedTagIds: [],
-  },
 }
 
 // Définition du store Redux et de l'ensemble des actions
@@ -44,8 +41,6 @@ function createRootReducer(state) {
     LOGIN: setSessionToken,
     UPDATE_SESSION_TOKEN: setSessionToken,
     LOGOUT: logoutUser,
-
-    UPDATE_SELECTED_TAG: updateSelectedTag,
   })
 }
 
@@ -83,19 +78,6 @@ function setSessionToken(state, { token: sessionToken }) {
  */
 function logoutUser() {
   return structuredClone(defaultState)
-}
-
-function updateSelectedTag(state, { tagId }) {
-  const { selectedTagIds } = state.activeUser
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      selectedTagIds: selectedTagIds.includes(tagId)
-        ? selectedTagIds.filter((selectedTagId) => selectedTagId !== tagId)
-        : [...selectedTagIds, tagId],
-    },
-  }
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

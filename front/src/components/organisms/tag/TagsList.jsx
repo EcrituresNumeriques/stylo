@@ -1,7 +1,7 @@
 import { Settings, Tag } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router'
 
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
@@ -16,10 +16,8 @@ import styles from './TagsList.module.scss'
 
 export default function TagsList({ action }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const selectedTagIds = useSelector(
-    (state) => state.activeUser.selectedTagIds || []
-  )
+  const [searchParams, setSearchParams] = useSearchParams()
+  const selectedTagIds = searchParams.getAll('tag')
 
   const editTagModal = useModal()
   const [editedTag, setEditedTag] = useState(null)
@@ -34,13 +32,16 @@ export default function TagsList({ action }) {
   )
   const tags = data?.user?.tags || []
 
-  const handleTagSelected = useCallback(
-    (event) => {
-      const { id } = event.target.dataset
-      dispatch({ type: 'UPDATE_SELECTED_TAG', tagId: id })
-    },
-    [selectedTagIds]
-  )
+  function handleTagSelected(event) {
+    const { id } = event.target.dataset
+    const tag = selectedTagIds.includes(id)
+      ? selectedTagIds.filter((tagId) => tagId !== id)
+      : [...selectedTagIds, id]
+    setSearchParams(
+      { ...Object.fromEntries(searchParams), tag },
+      { replace: true }
+    )
+  }
 
   if (isLoading) {
     return <Loading />

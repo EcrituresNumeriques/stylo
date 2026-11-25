@@ -2,8 +2,7 @@ import { Search } from 'lucide-react'
 import { useId, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useParams, useSearchParams } from 'react-router'
 
 import etv from '../../helpers/eventTargetValue.js'
 import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
@@ -22,9 +21,8 @@ import styles from './Articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const selectedTagIds = useSelector(
-    (state) => state.activeUser.selectedTagIds || []
-  )
+  const [searchParams] = useSearchParams()
+  const selectedTagIds = searchParams.getAll('tag')
 
   const createArticleModal = useModal()
   const tagsFocusZoneRef = useFocusZone()
@@ -72,7 +70,7 @@ export default function Articles() {
           (article) =>
             article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
         ),
-    [filter, articles, selectedTagIds]
+    [filter, articles, searchParams]
   )
 
   if (isLoading) {
