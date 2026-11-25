@@ -45,6 +45,7 @@
     "express": "~5.2",
     "express-http-proxy": "~2.1",
     "express-session": "~1.19",
+    "graphql": "^16.14.2",
     "graphql-http": "^1.9.0",
     "graphql-scalars": "^1.20.1",
     "js-yaml": "^4.1.0",
