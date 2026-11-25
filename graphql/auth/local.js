@@ -8,7 +8,7 @@ const { createJWTToken } = require('../helpers/token.js')
 const { checkCredentials } = require('../resolvers/authResolver.js')
 const config = require('../config.js')
 
-const strategy = new LocalStrategy({ session: false }, verify)
+const strategy = new LocalStrategy({ passReqToCallback: true }, verify)
 
 /**
  *
@@ -60,9 +60,20 @@ function toPublicUser(user) {
   }
 }
 
-async function verify(username, password, done) {
+/**
+ * @param {Request & { loginAccount?: object | null }} req
+ * @param {string} username
+ * @param {string} password
+ * @param {Function} done
+ */
+async function verify(req, username, password, done) {
   try {
-    const user = await checkCredentials({ username, password })
+    // the account may have already been found by the login rate limit
+    const user = await checkCredentials({
+      username,
+      password,
+      account: req.loginAccount,
+    })
     return done(null, user)
   } catch (error) {
     return done(error)

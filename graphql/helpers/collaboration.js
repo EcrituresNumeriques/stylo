@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const { isReadOnlyToken } = require('../policies/readOnlyToken.js')
 
 const articleRoomRx = /^\/ws\/([a-f\d]{24})$/i
 
@@ -33,6 +34,11 @@ async function canJoinArticleRoom(url = '', { jwtSecret }) {
   try {
     token = jwt.verify(jwtToken, jwtSecret)
   } catch {
+    return false
+  }
+
+  // a read-only token must never join an editing session, since the session allows writing
+  if (isReadOnlyToken(token)) {
     return false
   }
 

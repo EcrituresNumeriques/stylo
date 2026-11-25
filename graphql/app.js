@@ -4,6 +4,7 @@ const pkg = require('./package.json')
 const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
+const { scrubEvent } = require('./helpers/sentry.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 
@@ -31,6 +32,8 @@ if (config.get('sentry.dsn')) {
     ],
     tracesSampleRate: 1.0,
     profilesSampleRate: 1.0,
+    beforeSend: scrubEvent,
+    beforeSendTransaction: scrubEvent,
   })
 }
 
@@ -59,8 +62,10 @@ const {
   isArticleRoomUrl,
 } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
+const { validationRules } = require('./policies/readOnlyToken.js')
+const { loginRateLimit } = require('./auth/rateLimit.js')
+const { findUserByIdentifier } = require('./resolvers/authResolver.js')
 
-const User = require('./models/user')
 const {
   stampAuth,
   onAuthSuccess,
@@ -154,21 +159,15 @@ passport.use('humanid', humanidAuth.strategy)
 passport.use('hypothesis', hypothesisAuth.strategy)
 passport.use(localAuth.strategy)
 
-// mandatory for passport-login/logout
-passport.serializeUser((user, next) => next(null, user.id))
-passport.deserializeUser(async (id, next) => {
-  const user = await User.findById(id)
-  next(null, user)
-})
-
-app.set('trust proxy', true)
+// Only trust the X-Forwarded-* headers added by our own reverse proxies.
+// The left-most X-Forwarded-For values are sent by the client and can be forged.
+app.set('trust proxy', config.get('security.trustProxy'))
 app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
 app.use(express.json({ limit: '50mb' }))
+// the session only serves the external authentication flows (OAuth state, pending registration, account linking)
 app.use(session(sessionOptions))
-
-app.use(passport.session(sessionOptions))
 
 app.get('/version', (_req, res) =>
   res.json({
@@ -197,7 +196,13 @@ config.get('auth.enabledServices').forEach((service) => {
 
 app.post(
   '/login/local',
-  passport.authenticate('local'),
+  loginRateLimit({
+    ...config.get('security.loginRateLimit'),
+    windowMs: config.get('security.loginRateLimit.windowMinutes') * 60 * 1000,
+    findAccount: findUserByIdentifier,
+  }),
+  // the API identifies the user with the token returned in the response, not with the session
+  passport.authenticate('local', { session: false }),
   localAuth.onSuccess,
   localAuth.onFailure
 )
@@ -287,6 +292,7 @@ app.post(
   populateUserFromJWT({ jwtSecret }),
   createHandler({
     schema,
+    validationRules,
     /**
      * @param {express.Request} req
      * @returns {import('./token.js').RequestContext}
