@@ -101,6 +101,11 @@ Les erreurs sont levées avec les classes de `helpers/errors.js` :
 
 Vérifier l'authentification avant les arguments : un utilisateur non authentifié doit recevoir `UNAUTHENTICATED`, même si un argument manque.
 
+Ces erreurs font partie du fonctionnement normal de l'API.
+Toute autre erreur d'un résolveur (une exception non prévue, une valeur `null` dans un champ non nul…) est considérée comme un défaut : elle est journalisée et envoyée à Sentry (`helpers/errorReporting.js`).
+Une erreur attendue doit donc toujours être levée avec une de ces classes, jamais avec `new Error(…)`.
+Les anciens résolveurs lèvent encore des `ExpectedError` sans code, à remplacer par ces classes.
+
 ## Documentation du schéma
 
 - Les descriptions et les raisons de dépréciation sont rédigées en anglais.

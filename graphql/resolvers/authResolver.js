@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const isUser = require('../policies/isUser')
 const { requireArgument } = require('../helpers/arguments.js')
+const { ExpectedError } = require('../helpers/errors.js')
 
 async function checkCredentials({ username, password }) {
   if (!username || username.trim().length === 0) {
@@ -47,12 +48,12 @@ module.exports = {
       // find User
       const user = await User.findOne({ _id: userId })
       if (!user) {
-        throw new Error('Could not find user')
+        throw new ExpectedError('Could not find user')
       }
 
       // check old password
       if (!(await user.comparePassword(currentPassword))) {
-        throw new Error('Old password is incorrect')
+        throw new ExpectedError('Old password is incorrect')
       }
 
       // set new password

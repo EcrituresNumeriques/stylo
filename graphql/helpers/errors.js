@@ -15,6 +15,15 @@ class ApiError extends Error {
   }
 }
 
+/**
+ * Functional error thrown by the resolvers written before the typed errors below.
+ * It is sent to the client like a plain `Error` (same message, no code), so the API responses are unchanged,
+ * but it is not reported as an unexpected error (see `helpers/errorReporting.js`).
+ *
+ * @deprecated New code must throw one of the typed errors below.
+ */
+class ExpectedError extends Error {}
+
 class BadRequestError extends GraphQLError {
   constructor(
     code = 'BAD_REQUEST',
@@ -70,6 +79,7 @@ class NotFoundError extends GraphQLError {
 module.exports = {
   ApiError,
   BadRequestError,
+  ExpectedError,
   NotAuthenticatedError,
   NotAuthorizedError,
   NotFoundError,
