@@ -1,4 +1,5 @@
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const users = mongo.collection('users')
   const usersCursor = users.find({})

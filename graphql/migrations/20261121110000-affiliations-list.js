@@ -64,6 +64,7 @@ async function migrateCollection(mongo, collectionName, metadataPath) {
 }
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   await migrateCollection(mongo, 'articles', 'workingVersion.metadata')
   await migrateCollection(mongo, 'versions', 'metadata')

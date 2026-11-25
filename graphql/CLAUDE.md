@@ -66,3 +66,15 @@ Pour lire le contenu Markdown d'un ydoc, utiliser `getTextFromYjsDoc(ydocBase64)
 ## Migrations
 
 Fichiers dans `migrations/`, nommés `YYYYMMDDHHMISS-description.js`. Chaque migration exporte `up(db)` et `down()`. Elles tournent automatiquement au `npm start`.
+
+Une migration qui utilise l'instance MongoDB brute doit commencer par la garde `if (db.internals.dryRun) return`, dans `up` et dans `down`. Le pilote ne peut pas intercepter les écritures faites sur cette instance, donc `db._getDbInstance()` lève une erreur avec `db-migrate up --dry-run`.
+
+```js
+exports.up = async function (db) {
+  if (db.internals.dryRun) return
+  const mongo = db._getDbInstance()
+  // ...
+}
+```
+
+Pour lister les migrations en attente sans les exécuter, utiliser `db-migrate check`.

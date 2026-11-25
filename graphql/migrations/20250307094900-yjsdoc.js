@@ -2,6 +2,7 @@ const config = require('../config.js')
 const Y = require('yjs')
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const articles = mongo.collection('articles')
   const articlesCursor = articles.find({})

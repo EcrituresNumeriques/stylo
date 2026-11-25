@@ -96,3 +96,30 @@ To run them manually:
 cd ~/stylo
 docker compose exec graphql-stylo node ../node_modules/db-migrate/bin/db-migrate up
 ```
+
+To list the pending migrations without running them:
+
+```bash
+cd ~/stylo
+docker compose exec graphql-stylo node ../node_modules/.bin/db-migrate check
+```
+
+#### Dry run
+
+`db-migrate up --dry-run` runs the `up` function of each pending migration and expects the driver to skip the writes.
+The driver ([`@ggrossetie/db-migrate-mongodb`](https://github.com/ggrossetie/db-migrate-mongodb)) cannot intercept operations made on the raw MongoDB instance returned by `db._getDbInstance()`, so this method throws in dry-run mode.
+
+Every migration that uses the raw instance must therefore return early in dry-run mode, in `up` and in `down`:
+
+```js
+exports.up = async function (db) {
+  if (db.internals.dryRun) return
+  const mongo = db._getDbInstance()
+  // ...
+}
+```
+
+A dry run is consequently limited to listing the migrations that would be processed, like `db-migrate check`.
+
+**NOTE**: Do not use `--dry-run` with version 2.0.0 of the driver.
+This version ignores the option, so the migrations are recorded as applied (see [ggrossetie/db-migrate-mongodb#2](https://github.com/ggrossetie/db-migrate-mongodb/issues/2)).
