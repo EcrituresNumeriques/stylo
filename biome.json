@@ -32,6 +32,7 @@
     },
     "globals": [
       "APP_VERSION",
+      "APP_RELEASE",
       "APP_ENVIRONMENT",
       "SENTRY_DSN",
       "_paq",

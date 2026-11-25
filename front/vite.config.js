@@ -21,6 +21,13 @@ export default defineConfig(async ({ mode }) => {
   const isDevelopment = Boolean(
     mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev'
   )
+  // Shared by the Sentry plugin (release, commits, deploy) and the SDK
+  // (events): both must use the same name, or Sentry ends up with two
+  // releases. On dev deployments, each commit gets its own release.
+  const sentryRelease =
+    isDevelopment && process.env.GITHUB_SHA
+      ? `stylo-front@${process.env.GITHUB_SHA}`
+      : `stylo-front@${pkg.version}`
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -85,12 +92,12 @@ export default defineConfig(async ({ mode }) => {
             filesToDeleteAfterUpload: isDevelopment ? [] : ['*.js.map'],
           },
           release: {
-            name: isDevelopment ? null : pkg.version,
+            name: sentryRelease,
             inject: true,
             create: true,
             deploy: {
               env: env.SENTRY_ENVIRONMENT,
-              name: isDevelopment ? null : pkg.version,
+              name: sentryRelease,
             },
           },
         }),
@@ -98,6 +105,7 @@ export default defineConfig(async ({ mode }) => {
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
+      APP_RELEASE: JSON.stringify(sentryRelease),
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
       SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
       __ANNOTATIONS_CANONICAL_BASE_URL__: JSON.stringify(

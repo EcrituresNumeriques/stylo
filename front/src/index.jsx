@@ -41,7 +41,7 @@ import { getUserProfile } from './helpers/user.js'
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
-    release: `stylo-front@${APP_VERSION}`,
+    release: APP_RELEASE,
     environment: APP_ENVIRONMENT,
     integrations: [
       Sentry.browserTracingIntegration(),
