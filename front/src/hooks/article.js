@@ -23,6 +23,7 @@ import useFetchData, {
   useConditionalFetchData,
   useMutateData,
 } from './graphql.js'
+import { useActiveUserId } from './user.js'
 import {
   createArticleVersion,
   getArticleVersion,
@@ -129,7 +130,7 @@ export function useArticlesActions({ activeWorkspaceId }) {
 
 export function useArticleActions({ articleId, activeWorkspaceId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUserId = useActiveUserId()
   const { mutate: mutateArticleWorkspaces } = useMutateData({
     query: getArticleWorkspaces,
     variables: { articleId },
@@ -158,7 +159,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
     const result = await executeQuery({
       query: duplicateArticle,
       variables: {
-        userId: activeUser.id,
+        userId: activeUserId,
         articleId,
       },
       sessionToken,

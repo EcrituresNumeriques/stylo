@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import * as collaborating from '../components/organisms/textEditor/collaborating.js'
 import { applicationConfig } from '../config.js'
@@ -45,22 +46,14 @@ export function useCollaboration({ articleId, onWritersChange }) {
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector(
-    (state) => ({
-      id: state.activeUser.id,
-      email: state.activeUser.email,
-      displayName: state.activeUser.displayName,
-      username: state.activeUser.username,
-    }),
-    shallowEqual
-  )
+  const { user: activeUser } = useRouteLoaderData('app')
 
   const writerInfo = useMemo(
     () => ({
-      id: activeUser.id,
-      email: activeUser.email,
-      displayName: activeUser.displayName,
-      username: activeUser.username,
+      id: activeUser?.id,
+      email: activeUser?.email,
+      displayName: activeUser?.displayName,
+      username: activeUser?.username,
       color: colors[Math.floor(Math.random() * 14)],
     }),
     [activeUser?.id]

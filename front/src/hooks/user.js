@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteLoaderData } from 'react-router'
+import { useRevalidator, useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
@@ -57,20 +57,14 @@ export function usePreferenceItem(key, namespace = 'article') {
  * @returns {{ link: React.EffectCallback, token: string | undefined, id: string | undefined, isLinked: boolean, error: string, unlink: React.EffectCallback }}
  */
 export function useSetAuthToken(service) {
-  const dispatch = useDispatch()
+  const { revalidate } = useRevalidator()
+  const { user } = useRouteLoaderData('app')
   const { query } = useGraphQLClient()
   const [error, setError] = useState('')
   const { backendEndpoint, frontendEndpoint } = applicationConfig
 
-  const token = useSelector(
-    (state) => state.activeUser.authProviders?.[service]?.token
-  )
-
-  const id = useSelector(
-    (state) => state.activeUser.authProviders?.[service]?.id
-  )
-
-  const isLinked = useMemo(() => id ?? token, [id, token])
+  const { token, id } = user?.authProviders?.[service] ?? {}
+  const isLinked = id ?? token
 
   const link = useCallback(async function handleSetAuthToken() {
     setError('')
@@ -82,17 +76,7 @@ export function useSetAuthToken(service) {
 
     async function handleClose({ data, type, source }) {
       if (source === popup && type === 'message' && data) {
-        const authProviders = JSON.parse(data ?? '')
-
-        if (authProviders) {
-          dispatch({
-            type: 'UPDATE_ACTIVE_USER_DETAILS',
-            payload: {
-              authProviders,
-            },
-          })
-        }
-
+        revalidate()
         popup.close()
       }
     }
@@ -106,12 +90,11 @@ export function useSetAuthToken(service) {
   const unlink = useCallback(async () => {
     try {
       setError('')
-      const { unsetAuthToken } = await query({
+      await query({
         query: unsetAuthTokenMutation,
         variables: { service },
       })
-
-      dispatch({ type: 'UPDATE_ACTIVE_USER_DETAILS', payload: unsetAuthToken })
+      revalidate()
     } catch (error) {
       setError(error.messages.at(0).extensions.type)
     }

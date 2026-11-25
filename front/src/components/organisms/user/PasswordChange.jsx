@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useRevalidator, useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
 import { changePassword as changePasswordQuery } from '../../../hooks/Credentials.graphql'
@@ -14,12 +14,11 @@ export default function Credentials() {
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
-  const hasExistingPassword = useSelector((state) =>
-    state.activeUser.authTypes.includes('local')
-  )
+  const { user } = useRouteLoaderData('app')
+  const hasExistingPassword = user.authTypes.includes('local')
   const { query } = useGraphQLClient()
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const { revalidate } = useRevalidator()
 
   const canSubmit = useMemo(() => {
     if (hasExistingPassword) {
@@ -29,15 +28,6 @@ export default function Credentials() {
     }
   }, [passwordO, password, passwordC, hasExistingPassword])
 
-  const updateActiveUserDetails = useCallback(
-    (payload) =>
-      dispatch({
-        type: `UPDATE_ACTIVE_USER_DETAILS`,
-        payload,
-      }),
-    []
-  )
-
   const changePassword = async (e) => {
     e.preventDefault()
     try {
@@ -46,11 +36,11 @@ export default function Credentials() {
         currentPassword: passwordO,
         newPassword: password,
       }
-      const { changePassword: details } = await query({
+      await query({
         query: changePasswordQuery,
         variables,
       })
-      updateActiveUserDetails(details)
+      revalidate()
 
       setPassword('')
       setPasswordO('')

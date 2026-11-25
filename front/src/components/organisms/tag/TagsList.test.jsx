@@ -7,10 +7,6 @@ import { renderWithProviders } from '../../../../tests/setup.js'
 import Component from './TagsList.jsx'
 
 describe('TagsList', () => {
-  const preloadedState = {
-    activeUser: { id: 'test-user-id' },
-  }
-
   const tags = [
     { id: 'tag-1', name: 'first tag', color: '#fc0', description: '' },
     { id: 'tag-2', name: 'second tag', color: '#0cf', description: '' },
@@ -26,7 +22,7 @@ describe('TagsList', () => {
       json: () => Promise.resolve({ data: { user: { tags } } }),
     })
 
-    renderWithProviders(<Component action={true} />, { preloadedState })
+    renderWithProviders(<Component action={true} />)
 
     await user.click(
       await screen.findByRole('button', { name: 'Edit tag first tag' })

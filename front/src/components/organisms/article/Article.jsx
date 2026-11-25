@@ -11,7 +11,6 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
@@ -23,7 +22,7 @@ import { useArticleActions } from '../../../hooks/article.js'
 import useFocusZone from '../../../hooks/focusZone.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
-import { useDisplayName } from '../../../hooks/user.js'
+import { useActiveUserId, useDisplayName } from '../../../hooks/user.js'
 import buttonStyles from '../../atoms/Button.module.scss'
 import { Button, Color } from '../../atoms/index.js'
 import {
@@ -49,7 +48,7 @@ import ArticleSendCopy from './sharing/ArticleSendCopy.jsx'
 export default function Article({ article, corpus, keyboardHintId }) {
   const focusZoneRef = useFocusZone()
   const displayName = useDisplayName()
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUserId = useActiveUserId()
   const articleId = useMemo(() => article.id, [article])
   const { workspaceId: activeWorkspaceId } = useParams()
   const articleActions = useArticleActions({ articleId, activeWorkspaceId })
@@ -91,7 +90,7 @@ export default function Article({ article, corpus, keyboardHintId }) {
   const deleteModal = useModal()
   const updateModal = useModal()
 
-  const isArticleOwner = activeUser.id === article.owner.id
+  const isArticleOwner = activeUserId === article.owner.id
 
   useEffect(() => {
     if (contributorsError) {

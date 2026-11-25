@@ -1,7 +1,7 @@
 import { Clipboard, Rss } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 import { toast } from 'react-toastify'
 
 import {
@@ -43,9 +43,8 @@ export default function BibliographyZoteroImport({
     articleId,
   })
   const { link: linkZoteroAccount } = useSetAuthToken('zotero')
-  const zoteroToken = useSelector(
-    (state) => state.activeUser.authProviders?.zotero?.token
-  )
+  const { user } = useRouteLoaderData('app')
+  const zoteroToken = user?.authProviders?.zotero?.token
 
   /**
    * User collections fetched from Zotero, when logged in.

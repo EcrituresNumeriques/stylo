@@ -23,10 +23,6 @@ vi.mock('../../../config.js', () => ({
 }))
 
 describe('Login', () => {
-  const preloadedState = {
-    activeUser: { id: 'test-user-id' },
-  }
-
   beforeEach(() => {
     useRouteLoaderData.mockReturnValue({ user: null })
   })
@@ -34,12 +30,9 @@ describe('Login', () => {
   test('redirects when user is already logged in', async () => {
     const redirectCalled = vi.fn()
 
-    useRouteLoaderData.mockReturnValue({
-      user: preloadedState.activeUser,
-    })
+    useRouteLoaderData.mockReturnValue({ user: { id: 'test-user-id' } })
 
     renderWithProviders(<RedirectIfAuth />, {
-      preloadedState,
       extraRoutes: [
         {
           path: '/articles',

@@ -2,7 +2,7 @@ import { Search } from 'lucide-react'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
@@ -18,7 +18,7 @@ import styles from './Workspaces.module.scss'
 export default function Workspaces() {
   const { t } = useTranslation('workspace', { useSuspense: false })
   const keyboardHintId = useId()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const { user: activeUser } = useRouteLoaderData('app')
   const [filter, setFilter] = useState('')
   const { workspaces, error, isLoading } = useWorkspaces()
   const workspaceCreateModal = useModal()

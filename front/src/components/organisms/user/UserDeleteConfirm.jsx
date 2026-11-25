@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useNavigate, useRevalidator } from 'react-router'
 import { toast } from 'react-toastify'
 
@@ -16,14 +15,13 @@ export default function UserDeleteConfirm({ onCancel }) {
   const logout = useLogout()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
-  const userId = useSelector((state) => state.activeUser.id)
   return (
     <form
       onSubmit={async (event) => {
         event.preventDefault()
         setIsDeleting(true)
         try {
-          const success = await deleteAccount({ userId })
+          const success = await deleteAccount()
           if (success === true) {
             // make sure the sessionToken is removed before navigate is called
             localStorage.removeItem('sessionToken')

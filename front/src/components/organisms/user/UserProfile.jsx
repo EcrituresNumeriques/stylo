@@ -1,7 +1,8 @@
 import { Check, Loader } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useRevalidator, useRouteLoaderData } from 'react-router'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
@@ -12,22 +13,13 @@ import { Button, Field, TimeAgo } from '../../atoms/index.js'
 import styles from './UserSection.module.scss'
 
 export default function UserProfile() {
-  const dispatch = useDispatch()
+  const { revalidate } = useRevalidator()
   const { t } = useTranslation()
   const { query } = useGraphQLClient()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const { user: activeUser } = useRouteLoaderData('app')
 
   const sessionToken = useSelector((state) => state.sessionToken)
   const [isSaving, setIsSaving] = useState(false)
-
-  const updateActiveUserDetails = useCallback(
-    (payload) =>
-      dispatch({
-        type: `UPDATE_ACTIVE_USER_DETAILS`,
-        payload,
-      }),
-    []
-  )
 
   const updateInfo = useCallback(
     async (e) => {
@@ -38,11 +30,11 @@ export default function UserProfile() {
         input: fromFormData(form),
       }
       try {
-        const { updateUser: userDetails } = await query({
+        await query({
           query: updateUser,
           variables,
         })
-        updateActiveUserDetails(userDetails)
+        revalidate()
         toast(t('user.account.updateSuccess'), { type: 'info' })
       } catch (err) {
         if (err.code === 'EMAIL_ALREADY_EXISTS') {
@@ -57,7 +49,7 @@ export default function UserProfile() {
         setIsSaving(false)
       }
     },
-    [query, updateActiveUserDetails, t, activeUser.email]
+    [query, revalidate, t, activeUser.email]
   )
 
   return (

@@ -52,10 +52,7 @@ const defaultState = {
     tagIds: [],
     text: '',
   },
-  // Active user (authenticated)
   activeUser: {
-    authTypes: [],
-    authProviders: {},
     selectedTagIds: [],
   },
   /** @type {UserPreferences} */
@@ -110,10 +107,8 @@ function createReducer(initialState, handlers) {
  */
 function createRootReducer(state) {
   return createReducer(state, {
-    PROFILE: setProfile,
-    LOGIN: loginUser,
+    LOGIN: setSessionToken,
     UPDATE_SESSION_TOKEN: setSessionToken,
-    UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
     LOGOUT: logoutUser,
 
     // user preferences reducers
@@ -174,51 +169,10 @@ function persistStateIntoLocalStorage({ getState }) {
   }
 }
 
-function setProfile(state, action) {
-  const { user } = action
-
-  if (!user) {
-    return { ...state, activeUser: structuredClone(initialState.activeUser) }
-  }
-
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      ...user,
-    },
-  }
-}
-
 function setSessionToken(state, { token: sessionToken }) {
   return {
     ...state,
     sessionToken,
-  }
-}
-
-function loginUser(state, { user, token: sessionToken }) {
-  if (sessionToken) {
-    return {
-      ...state,
-      sessionToken,
-      activeUser: {
-        ...state.activeUser,
-        ...user,
-        // dates are expected to be in timestamp string format (including milliseconds)
-        createdAt: String(new Date(user.createdAt).getTime()),
-        updatedAt: String(new Date(user.updatedAt).getTime()),
-      },
-    }
-  }
-
-  return state
-}
-
-function updateActiveUserDetails(state, action) {
-  return {
-    ...state,
-    activeUser: { ...state.activeUser, ...action.payload },
   }
 }
 
@@ -305,33 +259,13 @@ export default function createReduxStore(state = {}) {
 }
 
 /**
- * Only send non-personal state to Sentry: the active user is summarized
- * (id, authentication, counters). Names, emails, contacts, workspace names,
- * article headings (articleStructure), search text (articleFilters)
- * and auth provider tokens must not leave the browser.
+ * Only send non-personal state to Sentry: the session token and the search
+ * text (articleFilters) must not leave the browser.
  */
 function sentryStateTransformer(state) {
-  const activeUser = state.activeUser ?? {}
   return {
-    activeUser: {
-      id: activeUser.id ?? activeUser._id,
-      isLoggedIn: Boolean(state.sessionToken),
-      authTypes: activeUser.authTypes,
-      authProviders: Object.entries(activeUser.authProviders ?? {})
-        .filter(([, provider]) => provider)
-        .map(([name]) => name),
-      permissions: activeUser.permissions?.map(({ scope, roles }) => ({
-        scope,
-        roles,
-      })),
-      workspacesCount: activeUser.workspaces?.length ?? 0,
-      contactsCount:
-        (activeUser.contacts ?? activeUser.acquintances)?.length ?? 0,
-    },
-    articleWritersCount: Object.keys(state.articleWriters ?? {}).length,
+    isLoggedIn: Boolean(state.sessionToken),
     articlePreferences: state.articlePreferences,
-    articleStats: state.articleStats,
-    articleWorkingCopy: state.articleWorkingCopy,
     exportPreferences: state.exportPreferences,
     userPreferences: state.userPreferences,
   }
