@@ -242,36 +242,170 @@ type ArticleContributor {
   roles: [String]
 }
 
+"Usage statistics of the instance, computed at most once a day."
 type InstanceUsageStats {
   version: String
-  users: InstanceUserStats
-  articles: InstanceArticleStats
+  "When the statistics were computed."
+  computedAt: DateTime!
+  users: InstanceUserStats!
+  articles: InstanceArticleStats!
+  "Active users per year: users who created or wrote in an article (at least one week after their signup), contributed to an article, or are members of a workspace in which an article was created that year."
+  activity: [InstanceActivityYearlyStats!]!
+  "Active users (same definition) over the last 12 months, and the articles and corpora created over the last 12 months."
+  lastTwelveMonths: InstanceRollingActivityStats!
+  "Accounts by engagement (the deleted accounts and the ones less than a week old excluded), overall and per signup year."
+  engagement: InstanceEngagementStats!
+  corpora: InstanceCorpusStats!
+  workspaces: InstanceWorkspaceStats!
 }
 
-interface InstanceObjectUsageStats {
+"Distribution of a value: percentiles and maximum."
+type InstanceDistribution {
+  p10: Float
+  median: Float
+  p90: Float
+  max: Float
+}
+
+type InstanceUserStats {
   total: Int!
-  # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Accounts by authentication method available on the account (a linked service is counted even if it is not used to log in)."
+  authentication: InstanceAuthenticationStats!
+  years: [InstanceUserYearlyStats!]!
 }
 
-type InstanceObjectUsageYearlyStats {
-  year: Int
-  count: Int
-  # variation: Int
+type InstanceAuthenticationStats {
+  password: Int!
+  humanid: Int!
+  zotero: Int!
+  hypothesis: Int!
+  "Accounts with more than one authentication method."
+  multiple: Int!
 }
 
-type InstanceUserStats implements InstanceObjectUsageStats {
+type InstanceUserYearlyStats {
+  year: Int!
+  created: Int!
+}
+
+type InstanceArticleStats {
   total: Int!
-  # currentYear: Int!
-  local: Int
-  openid: Int
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Articles with at least one contributor."
+  shared: Int!
+  "Articles with at least one bibliographic reference."
+  withBibliography: Int!
+  "Number of bibliographic references per article with a bibliography."
+  bibliographyEntries: InstanceDistribution!
+  "Articles with authors, an abstract or keywords."
+  withMetadata: Int!
+  "Articles with a bibliography and a Zotero link."
+  bibliographiesFromZotero: Int!
+  "Articles by number of filled metadata fields: none, 1 to 4, 5 to 9, 10 or more."
+  metadataLevels: InstanceMetadataLevelStats!
+  "Number of tags per article with tags."
+  tags: InstanceDistribution!
+  "Articles by time between their creation and their last update."
+  writingDurations: InstanceWritingDurationStats!
+  "Number of people (the author included) per shared article."
+  collaborators: InstanceDistribution!
 }
 
-type InstanceArticleStats implements InstanceObjectUsageStats {
+type InstanceActivityYearlyStats {
+  year: Int!
+  activeUsers: Int!
+  "Active users of that year who are currently members of a workspace (the membership is not dated)."
+  inWorkspace: Int!
+  "Active users of that year, by years since their signup."
+  seniority: InstanceActivitySeniorityStats!
+}
+
+"Active users by calendar years between their signup and the year of activity."
+type InstanceActivitySeniorityStats {
+  "Signed up that year."
+  sameYear: Int!
+  oneToTwoYears: Int!
+  threeToFiveYears: Int!
+  moreThanFiveYears: Int!
+}
+
+type InstanceCorpusStats {
   total: Int!
-  # currentYear: Int!
-  years: [InstanceObjectUsageYearlyStats!]!
+  "Number of articles per corpus."
+  articles: InstanceDistribution!
+  types: [InstanceCorpusTypeStats!]!
+  months: [InstanceMonthlyStats!]!
+}
+
+type InstanceCorpusTypeStats {
+  type: String!
+  count: Int!
+}
+
+type InstanceWorkspaceStats {
+  total: Int!
+  "Number of members per workspace."
+  members: InstanceDistribution!
+  "Number of articles per workspace."
+  articles: InstanceDistribution!
+  months: [InstanceMonthlyStats!]!
+}
+
+type InstanceMetadataLevelStats {
+  none: Int!
+  few: Int!
+  several: Int!
+  many: Int!
+}
+
+type InstanceWritingDurationStats {
+  underAMinute: Int!
+  underAnHour: Int!
+  underADay: Int!
+  underAMonth: Int!
+  underAYear: Int!
+  moreThanAYear: Int!
+}
+
+type InstanceRollingActivityStats {
+  "Active users over the last 12 months."
+  activeUsers: Int!
+  "Articles created over the last 12 months (the example articles excluded)."
+  articlesCreated: Int!
+  "Corpora created over the last 12 months."
+  corporaCreated: Int!
+}
+
+"""
+Accounts by engagement. The activities are the ones of the active users; a connection is not one.
+- idle: did nothing;
+- tried: did something during their first week only (modified or deleted their example article, created another article, contributed to one, or was a member of a workspace in which an article was created);
+- lapsed: active after their first week, but not over the last 12 months;
+- ongoing: active after their first week, and over the last 12 months.
+"""
+type InstanceEngagementStats {
+  idle: Int!
+  tried: Int!
+  lapsed: Int!
+  ongoing: Int!
+  years: [InstanceEngagementYearlyStats!]!
+}
+
+type InstanceEngagementYearlyStats {
+  "Signup year."
+  year: Int!
+  idle: Int!
+  tried: Int!
+  lapsed: Int!
+  ongoing: Int!
+}
+
+"Creations of a month, from the first to the last month with a creation."
+type InstanceMonthlyStats {
+  "Month, as YYYY-MM (UTC)."
+  month: String!
+  created: Int!
+  "Running total at the end of the month."
+  total: Int!
 }
 
 "Deprecated: use UpdateArticleWorkingVersionInput with the input argument of updateArticleWorkingVersion instead."
@@ -551,8 +685,8 @@ type Query {
   "Fetch version info"
   version(versionId: ID, version: ID @deprecated(reason: "Use versionId instead.")): Version
 
-  "Fetch instance stats"
-  stats: InstanceUsageStats
+  "Usage statistics of the instance, computed at most once a day. Public."
+  stats: InstanceUsageStats!
 
   "Get a given workspace"
   workspace(workspaceId: ID): Workspace
