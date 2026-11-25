@@ -49,7 +49,7 @@ export default function EditorMenuContent({
         />
       )}
       {activeMenu === 'bibliography' && (
-        <ArticleBibliography articleId={articleId} />
+        <ArticleBibliography articleId={articleId} writers={writers} />
       )}
       {activeMenu === 'data' && <ArticleData articleId={articleId} />}
       {activeMenu === 'export' && (

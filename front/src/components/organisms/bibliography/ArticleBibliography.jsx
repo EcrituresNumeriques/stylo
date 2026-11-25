@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { useEditableArticle } from '../../../hooks/article.js'
 import { useModal } from '../../../hooks/modal.js'
@@ -17,16 +16,16 @@ import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
  * @param {object} props
  * @param {string} props.articleId
  * @param {string} props.versionId
+ * @param {object} props.writers personnes présentes sur l'article
  * @returns {JSX.Element}
  * @class
  */
-export default function ArticleBibliography({ articleId, versionId }) {
-  /** @type {object} */
-  const articleWriters = useSelector((state) => state.articleWriters || {})
-  const readOnly = useMemo(
-    () => Object.keys(articleWriters).length > 1,
-    [articleWriters]
-  )
+export default function ArticleBibliography({
+  articleId,
+  versionId,
+  writers = {},
+}) {
+  const readOnly = useMemo(() => Object.keys(writers).length > 1, [writers])
   const { t } = useTranslation()
   const zoteroModal = useModal()
   const addReferenceModal = useModal()
