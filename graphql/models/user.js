@@ -21,7 +21,17 @@ const AuthProviderSchema = new Schema({
     type: String,
   },
   updatedAt: Date,
+  linkedAt: Date,
 })
+
+const AccessSchema = new Schema(
+  {
+    at: Date,
+    ip: String,
+    strategy: String,
+  },
+  { _id: false }
+)
 
 const userSchema = new Schema(
   {
@@ -65,12 +75,37 @@ const userSchema = new Schema(
     firstName: String,
     lastName: String,
     institution: String,
-    connectedAt: Date,
+    lastAccesses: [AccessSchema],
     deletedAt: Date,
   },
   {
     timestamps: true,
     methods: {
+      /**
+       * Keeps the 10 most recent accesses, the newest first. Does not save.
+       *
+       * @param {{ at: Date, ip: string|null, strategy: string }} access
+       */
+      recordAccess(access) {
+        this.lastAccesses.unshift(access)
+        this.lastAccesses.splice(10)
+      },
+
+      /**
+       * Merges data into an auth provider, keeping the fields it does not override.
+       * Does not save.
+       *
+       * @param {'humanid'|'hypothesis'|'zotero'} service
+       * @param {object} data
+       */
+      mergeAuthProvider(service, data) {
+        const key = `authProviders.${service}`
+        this.set(key, {
+          ...(this.get(key)?.toObject({ flattenMaps: true }) ?? {}),
+          ...data,
+        })
+      },
+
       /**
        * Compare an existing password against a user input one.
        *

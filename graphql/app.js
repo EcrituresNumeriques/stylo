@@ -322,6 +322,7 @@ app.post(
         loaders: createLoaders(),
         session: req.raw.session,
         principal: principalFromToken(token, user),
+        ip: req.raw.ip,
         token,
         user,
         userId: user?.id.toString() || token?._id,

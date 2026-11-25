@@ -24,6 +24,7 @@ const ArticleContributorSchema = new Schema({
     ref: 'User',
   },
   roles: [String],
+  addedAt: Date,
 })
 
 const articleSchema = new Schema(
@@ -233,7 +234,11 @@ const articleSchema = new Schema(
           return
         }
 
-        this.contributors.push({ user, roles: ['read', 'write'] })
+        this.contributors.push({
+          user,
+          roles: ['read', 'write'],
+          addedAt: new Date(),
+        })
 
         return this.save({ timestamps: false })
       },

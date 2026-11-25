@@ -177,8 +177,32 @@ describe('user resolver', () => {
 
       const zotero = u.authProviders.get('zotero')
       assert.equal(zotero.token, 'abcd')
+      assert.ok(zotero.linkedAt instanceof Date)
       assert.equal(context.pendingRegistration, undefined)
       assert.equal(context.fromAccount, undefined)
+    })
+
+    test('keeps the first link date when linking again', async () => {
+      const linkedAt = new Date('2026-01-01')
+      const user = await User.create({
+        email: 'user-relink@example.com',
+        authProviders: { zotero: { id: 'relink', linkedAt } },
+      })
+      const context = {
+        user,
+        token: { admin: false, _id: user.id },
+        session: {
+          pendingRegistration: {
+            authProviders: { zotero: { id: 'relink', token: 'new-token' } },
+          },
+        },
+      }
+
+      const u = await Mutation.setAuthToken({}, { service: 'zotero' }, context)
+
+      const zotero = u.authProviders.get('zotero')
+      assert.equal(zotero.token, 'new-token')
+      assert.deepEqual(zotero.linkedAt, linkedAt)
     })
 
     test('rejects when linking with an already linked account', async () => {
@@ -371,6 +395,18 @@ describe('user resolver', () => {
       assert.equal(u.username, 'jane.doe')
       assert.equal(u.displayName, 'jane.doe')
     })
+
+    test('records a local access', async () => {
+      const u = await Mutation.createUser(
+        {},
+        { details: { email: 'access@example.com' } },
+        { ip: '192.168.1.42' }
+      )
+
+      assert.equal(u.lastAccesses.length, 1)
+      assert.equal(u.lastAccesses[0].strategy, 'local')
+      assert.equal(u.lastAccesses[0].ip, '192.168.1.0')
+    })
   })
 
   describe('updateUser', () => {
@@ -478,6 +514,9 @@ describe('user resolver', () => {
       const testProvider = u.authProviders.get('zotero')
       assert.equal(testProvider.id, 'abcd')
       assert.equal(testProvider.token, 'efgh')
+
+      assert.equal(u.lastAccesses.length, 1)
+      assert.equal(u.lastAccesses[0].strategy, 'zotero')
 
       assert.match(
         jwt,

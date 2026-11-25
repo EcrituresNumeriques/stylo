@@ -8,6 +8,7 @@ const { BadRequestError, ExpectedError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
 const { resolveFeatures } = require('../helpers/features.js')
+const { createAccess } = require('../helpers/accesses.js')
 
 const config = require('../config.js')
 
@@ -30,7 +31,7 @@ module.exports = {
       return true
     },
 
-    async createUser(_, args) {
+    async createUser(_, args, { ip } = {}) {
       const userInput = requireArgument('input', args.input, args.details)
       // check for user uniqueness
       const existingUser = await User.findOne({ email: userInput.email })
@@ -47,7 +48,7 @@ module.exports = {
         firstName: userInput.firstName || null,
         lastName: userInput.lastName || null,
         password: userInput.password,
-        connectedAt: Date.now(),
+        lastAccesses: [createAccess({ ip, strategy: 'local' })],
       })
       await newUser.createDefaultArticle()
       return newUser
@@ -63,7 +64,7 @@ module.exports = {
      * @param {RequestContext} context
      * @returns {Promise<string>}
      */
-    async createUserWithAuth(_, args, { session }) {
+    async createUserWithAuth(_, args, { session, ip }) {
       // link accounts
       if (!session?.pendingRegistration) {
         throw new BadRequestError(
@@ -82,7 +83,7 @@ module.exports = {
         firstName: details.firstName,
         lastName: details.lastName,
         institution: details.institution,
-        connectedAt: Date.now(),
+        lastAccesses: [createAccess({ ip, strategy: args.service })],
       })
 
       await user.createDefaultArticle()
@@ -152,11 +153,10 @@ module.exports = {
 
       const data = session.pendingRegistration.authProviders[service]
 
-      // workaround the absence of `merge` option for `MongooseMap.$set()`
-      user.set(authProviderKey, {
-        ...(user.get(authProviderKey)?.toObject({ flattenMaps: true }) ?? {}),
+      user.mergeAuthProvider(service, {
         ...data,
         updatedAt: Date.now(),
+        linkedAt: user.get(`${authProviderKey}.linkedAt`) ?? Date.now(),
       })
 
       // clean up transient registration/linking data

@@ -127,3 +127,57 @@ describe('searchLanguage', () => {
     assert.equal((await Article.findById(article.id)).searchLanguage, 'en')
   })
 })
+
+describe('shareWith', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
+  test('dates a new contributor', async () => {
+    const owner = await User.create({ email: 'share-owner@example.com' })
+    const contributor = await User.create({ email: 'share-with@example.com' })
+    const article = await Article.create({ title: 'Shared', owner: owner.id })
+    const before = new Date()
+
+    await article.shareWith(contributor._id)
+
+    const { addedAt } = article.contributors[0]
+    assert.ok(addedAt >= before && addedAt <= new Date())
+  })
+
+  test('keeps the date when sharing again', async () => {
+    const addedAt = new Date('2026-01-01')
+    const contributor = await User.create({ email: 'share-again@example.com' })
+    const article = await Article.create({
+      title: 'Shared again',
+      contributors: [{ user: contributor._id, addedAt }],
+    })
+
+    await article.shareWith(contributor._id)
+
+    assert.equal(article.contributors.length, 1)
+    assert.deepEqual(article.contributors[0].addedAt, addedAt)
+  })
+
+  test('does not date an existing contributor on save', async () => {
+    const contributor = await User.create({ email: 'share-legacy@example.com' })
+    const { insertedId } = await Article.collection.insertOne({
+      title: 'Legacy',
+      contributors: [{ user: contributor._id, roles: ['read', 'write'] }],
+    })
+
+    const article = await Article.findById(insertedId)
+    article.title = 'Legacy, renamed'
+    await article.save()
+
+    const { contributors } = await Article.collection.findOne({
+      _id: insertedId,
+    })
+    assert.equal(contributors[0].addedAt, undefined)
+  })
+})

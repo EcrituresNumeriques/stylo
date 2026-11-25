@@ -92,7 +92,7 @@ module.exports = {
         name: createWorkspaceInput.name,
         color: createWorkspaceInput.color,
         description: createWorkspaceInput.description,
-        members: [{ user: user._id }],
+        members: [{ user: user._id, addedAt: new Date() }],
         articles: [],
         creator: user._id,
       })
