@@ -129,14 +129,14 @@ describe('shareBar', () => {
       ],
       BOX
     )
+    // each segment from the start of the bar, over the ones after it: no seam
     assert.match(
       svg,
-      /<rect x="0" y="0" width="75" height="10" style="fill: var\(--stats-1, currentColor\)"><title>A : 75 %<\/title>/
+      /<rect x="0" y="0" width="100" height="10" style="fill: var\(--stats-2, currentColor\)"><title>B : 25 %<\/title><\/rect><rect x="0" y="0" width="75" height="10" style="fill: var\(--stats-1, currentColor\)"><title>A : 75 %<\/title>/
     )
-    assert.match(
-      svg,
-      /<rect x="75" y="0" width="25" height="10" style="fill: var\(--stats-2, currentColor\)"><title>B : 25 %<\/title>/
-    )
+    assert.deepEqual(texts(svg), ['75 %', '25 %'])
+    assert.match(svg, /<text x="37.5" [^>]*>75 %/)
+    assert.match(svg, /<text x="87.5" [^>]*>25 %/)
   })
 
   test('skips the parts without value, keeping the colors of the others', () => {
@@ -279,7 +279,7 @@ describe('STACKED_COLUMNS', () => {
     )
     assert.match(
       content,
-      /y="48" width="[^"]+" height="40" style="fill: var\(--stats-2[^>]*><title>Haut, 2025 : 10</
+      /y="48" width="[^"]+" height="160" style="fill: var\(--stats-2[^>]*><title>Haut, 2025 : 10<\/title><\/rect><rect [^>]*><title>Bas, 2025/
     )
     assert.doesNotMatch(content, /Haut, 2026/)
     assert.deepEqual(texts(content), [

@@ -165,27 +165,32 @@ function shareBar(parts, { x, y, width, height }) {
   if (total === 0) {
     return track
   }
-  let offset = x
+  let end = 0
   const segments = parts.map(({ label, value }, index) => {
     const share = value / total
-    const segmentWidth = share * width
-    const start = offset
-    offset += segmentWidth
-    if (value === 0) {
-      return ''
-    }
-    const segment = rect(
-      { x: start, y, width: segmentWidth, height },
-      colorOf(index),
-      `${label} : ${formatShare(share)}`
-    )
-    if (share < MIN_LABELLED_SHARE) {
-      return segment
-    }
-    const percentage = `<text x="${round(start + segmentWidth / 2)}" y="${round(y + height / 2)}" dominant-baseline="central" text-anchor="middle" style="fill: var(--stats-on-fill, #fff)">${formatShare(share)}</text>`
-    return segment + percentage
+    const start = end
+    end += share * width
+    return { label, value, index, share, start, end }
   })
-  return track + segments.join('')
+  const visible = segments.filter(({ value }) => value > 0)
+  // each segment goes from the start of the bar, under the ones before it:
+  // the segments overlap instead of touching, with no seam between them
+  const rects = visible
+    .toReversed()
+    .map(({ label, index, share, end }) =>
+      rect(
+        { x, y, width: end, height },
+        colorOf(index),
+        `${label} : ${formatShare(share)}`
+      )
+    )
+  const percentages = visible
+    .filter(({ share }) => share >= MIN_LABELLED_SHARE)
+    .map(
+      ({ share, start, end }) =>
+        `<text x="${round(x + (start + end) / 2)}" y="${round(y + height / 2)}" dominant-baseline="central" text-anchor="middle" style="fill: var(--stats-on-fill, #fff)">${formatShare(share)}</text>`
+    )
+  return track + rects.join('') + percentages.join('')
 }
 
 /**
@@ -294,21 +299,23 @@ function drawColumns(chart, stats, partsOfItem, labels) {
   const columns = items.map((item, index) => {
     const x = index * slot
     const barX = x + slot * 0.15
-    let bottom = top + COLUMNS_HEIGHT
+    const base = top + COLUMNS_HEIGHT
+    let bottom = base
     const segments = partsOfItem(item).map(({ label, value }, partIndex) => {
-      const height = max > 0 ? (value / max) * COLUMNS_HEIGHT : 0
-      bottom -= height
+      bottom -= max > 0 ? (value / max) * COLUMNS_HEIGHT : 0
       if (value === 0) {
         return ''
       }
+      // from the base of the column, under the segments below it:
+      // the segments overlap instead of touching, with no seam between them
       return rect(
-        { x: barX, y: bottom, width: slot * 0.7, height },
+        { x: barX, y: bottom, width: slot * 0.7, height: base - bottom },
         colorOf(partIndex),
         `${label ? `${label}, ` : ''}${item.label} : ${formatNumber(value)}`
       )
     })
     return (
-      segments.join('') +
+      segments.toReversed().join('') +
       text(
         x + slot / 2,
         bottom - ROW_HEIGHT / 2,
