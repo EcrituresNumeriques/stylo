@@ -121,5 +121,5 @@ exports.up = async function (db) {
 
 A dry run is consequently limited to listing the migrations that would be processed, like `db-migrate check`.
 
-**NOTE**: Do not use `--dry-run` with version 2.0.0 of the driver.
-This version ignores the option, so the migrations are recorded as applied (see [ggrossetie/db-migrate-mongodb#2](https://github.com/ggrossetie/db-migrate-mongodb/issues/2)).
+**NOTE**: `--dry-run` requires version 2.1.0 or later of the driver.
+Version 2.0.0 ignores the option, so the migrations are recorded as applied (see [ggrossetie/db-migrate-mongodb#2](https://github.com/ggrossetie/db-migrate-mongodb/issues/2)).
