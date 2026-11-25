@@ -60,6 +60,7 @@ const {
   isArticleRoomUrl,
 } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
+const { reportExecutionErrors } = require('./helpers/errorReporting.js')
 
 const User = require('./models/user')
 const {
@@ -302,6 +303,14 @@ app.post(
         user,
         userId: user?.id.toString() || token?._id,
       }
+    },
+    /**
+     * @param {express.Request} _req
+     * @param {import('graphql').ExecutionArgs} args
+     * @param {import('graphql').ExecutionResult} result
+     */
+    onOperation(_req, args, result) {
+      reportExecutionErrors(args, result)
     },
   })
 )

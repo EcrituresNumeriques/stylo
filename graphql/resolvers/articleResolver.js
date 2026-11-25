@@ -1,4 +1,4 @@
-const { NotFoundError } = require('../helpers/errors.js')
+const { ExpectedError, NotFoundError } = require('../helpers/errors.js')
 const YAML = require('js-yaml')
 const { Y, getTextFromYjsDoc } = require('../helpers/yjs-utils.mjs')
 
@@ -478,7 +478,7 @@ module.exports = {
       const article = await getArticleByContext(articleId, context)
       const contributorUser = await User.findById(userId)
       if (!contributorUser) {
-        throw new Error(`Unable to find user with id: ${userId}`)
+        throw new ExpectedError(`Unable to find user with id: ${userId}`)
       }
       await article.shareWith(contributorUser)
       return article
@@ -612,7 +612,7 @@ module.exports = {
     async addContributor(article, { userId }) {
       const contributorUser = await User.findById(userId)
       if (!contributorUser) {
-        throw new Error(`Unable to find user with id: ${userId}`)
+        throw new ExpectedError(`Unable to find user with id: ${userId}`)
       }
       await article.shareWith(contributorUser)
       return article

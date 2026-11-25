@@ -5,7 +5,11 @@ const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 
-const { BadRequestError, NotFoundError } = require('../helpers/errors')
+const {
+  BadRequestError,
+  ExpectedError,
+  NotFoundError,
+} = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 
 /**
@@ -29,7 +33,7 @@ module.exports = {
       const { userId } = isUser(args, context)
       const thisUser = await User.findById(userId)
       if (!thisUser) {
-        throw new Error('This user does not exist')
+        throw new ExpectedError('This user does not exist')
       }
       const input = requireArgument(
         'input',
@@ -54,7 +58,7 @@ module.exports = {
       const { userId } = isUser(args, context)
       const tag = await Tag.findOne({ _id: args.tagId, owner: userId })
       if (!tag) {
-        throw new Error('Unable to find tag')
+        throw new ExpectedError('Unable to find tag')
       }
       await tag.deleteOne()
       return tag
@@ -66,7 +70,7 @@ module.exports = {
       const input = args.input ?? deprecatedTagInput(args) ?? {}
       const thisTag = await Tag.findOne({ _id: tagId, owner: userId })
       if (!thisTag) {
-        throw new Error('Unable to find tag')
+        throw new ExpectedError('Unable to find tag')
       }
       ;['name', 'description', 'color'].forEach((field) => {
         if (Object.hasOwn(input, field)) {

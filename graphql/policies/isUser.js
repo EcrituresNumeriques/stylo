@@ -1,4 +1,5 @@
 const { format } = require('node:util')
+const { ExpectedError } = require('../helpers/errors.js')
 
 module.exports = function resolveUserIdFromContext(args, { token, user } = {}) {
   const isAdmin = token.admin || user?.admin || false
@@ -14,7 +15,7 @@ module.exports = function resolveUserIdFromContext(args, { token, user } = {}) {
   ].filter((d) => d)
 
   if (!token || (!isAdmin && !token._id)) {
-    throw new Error(format('Unauthorized [context %s]', context))
+    throw new ExpectedError(format('Unauthorized [context %s]', context))
   }
 
   // If admin, go ahead
@@ -31,8 +32,8 @@ module.exports = function resolveUserIdFromContext(args, { token, user } = {}) {
       return { userId: resolvedUserId }
     }
 
-    throw new Error(format('Forbidden [context %s]', context))
+    throw new ExpectedError(format('Forbidden [context %s]', context))
   }
 
-  throw new Error(format('Unauthorized [context %s]', context))
+  throw new ExpectedError(format('Unauthorized [context %s]', context))
 }

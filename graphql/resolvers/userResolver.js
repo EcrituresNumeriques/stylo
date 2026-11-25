@@ -4,7 +4,7 @@ const isUser = require('../policies/isUser')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Tag = require('../models/tag')
-const { BadRequestError } = require('../helpers/errors')
+const { BadRequestError, ExpectedError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
 
@@ -22,7 +22,7 @@ module.exports = {
       const { userId } = isUser({}, context)
       const user = await User.findById(userId)
       if (!user) {
-        throw new Error(`No user found with this id: ${userId}`)
+        throw new ExpectedError(`No user found with this id: ${userId}`)
       }
       console.log({ user })
       await user.softDelete()
@@ -34,7 +34,7 @@ module.exports = {
       // check for user uniqueness
       const existingUser = await User.findOne({ email: userInput.email })
       if (existingUser) {
-        throw new Error('User with this email already exists!')
+        throw new ExpectedError('User with this email already exists!')
       }
 
       // create a user
@@ -197,11 +197,11 @@ module.exports = {
       const { userId } = isUser({}, context)
 
       if (userId === contactUserId) {
-        throw new Error('You cannot add yourself as a contact!')
+        throw new ExpectedError('You cannot add yourself as a contact!')
       }
       const contact = await User.findById(contactUserId)
       if (!contact) {
-        throw new Error(`No user found with this id: ${contactUserId}`)
+        throw new ExpectedError(`No user found with this id: ${contactUserId}`)
       }
       return User.findOneAndUpdate(
         { _id: userId },
@@ -215,7 +215,7 @@ module.exports = {
 
       const contact = await User.findById(contactUserId)
       if (!contact) {
-        throw new Error(`No user found with this id: ${contactUserId}`)
+        throw new ExpectedError(`No user found with this id: ${contactUserId}`)
       }
       return User.findOneAndUpdate(
         { _id: userId },
@@ -229,16 +229,16 @@ module.exports = {
 
       const thisAcquintance = await User.findOne({ email: args.email })
       if (!thisAcquintance) {
-        throw new Error('No user found with this email')
+        throw new ExpectedError('No user found with this email')
       }
       const thisUser = await User.findById(userId)
       if (!thisUser) {
-        throw new Error('Unable to find user')
+        throw new ExpectedError('Unable to find user')
       }
 
       //Check if acquintance is the user itself
       if (thisAcquintance.id === userId) {
-        throw new Error('Can not add yourself to acquintance')
+        throw new ExpectedError('Can not add yourself to acquintance')
       }
 
       //Check if acquintance is not already in array
@@ -247,7 +247,7 @@ module.exports = {
           .map((a) => a.toString())
           .includes(thisAcquintance.id)
       ) {
-        throw new Error('Email is already an acquintance')
+        throw new ExpectedError('Email is already an acquintance')
       }
 
       //If all clear, add to acquintance
@@ -262,7 +262,7 @@ module.exports = {
 
       const thisUser = await User.findById(userId)
       if (!thisUser) {
-        throw new Error('Unable to find user')
+        throw new ExpectedError('Unable to find user')
       }
 
       // an empty email is ignored: the unique index does not allow blank values
@@ -373,11 +373,11 @@ module.exports = {
 
     async addContact(user, { userId }) {
       if (user._id === userId) {
-        throw new Error('You cannot add yourself as a contact!')
+        throw new ExpectedError('You cannot add yourself as a contact!')
       }
       const contact = await User.findById(userId)
       if (!contact) {
-        throw new Error(`No user found with this id: ${userId}`)
+        throw new ExpectedError(`No user found with this id: ${userId}`)
       }
       return User.findOneAndUpdate(
         { _id: user._id },
@@ -389,7 +389,7 @@ module.exports = {
     async removeContact(user, { userId }) {
       const contact = await User.findById(userId)
       if (!contact) {
-        throw new Error(`No user found with this id: ${userId}`)
+        throw new ExpectedError(`No user found with this id: ${userId}`)
       }
       return User.findOneAndUpdate(
         { _id: user._id },
