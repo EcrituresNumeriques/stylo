@@ -20,7 +20,9 @@ loader.config({ monaco })
 loader.init()
 
 export default function MonacoEditor({ onMount, ...props }) {
-  const { t } = useTranslation('editor')
+  // sans useSuspense: false, le composant suspend hors de la page d'édition,
+  // là où l'espace de noms "editor" n'est pas encore chargé (erreur React #426)
+  const { t } = useTranslation('editor', { useSuspense: false })
   const tRef = useRef(t)
   tRef.current = t
 
