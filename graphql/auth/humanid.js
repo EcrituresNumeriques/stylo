@@ -1,7 +1,7 @@
 const User = require('../models/user.js')
 const { registrationUrl } = require('./redirect.js')
 const config = require('../config.js')
-const { createAccess } = require('../helpers/accesses.js')
+const { updateProviderAccount } = require('./account.js')
 const OidcStrategy = require('passport-openidconnect').Strategy
 
 const strategy = new OidcStrategy(
@@ -69,10 +69,7 @@ async function verify(
   }
 
   if (user) {
-    user.mergeAuthProvider('humanid', providerInfos)
-    if (!req.session.fromAccount) {
-      user.recordAccess(createAccess({ ip: req.ip, strategy: 'humanid' }))
-    }
+    updateProviderAccount(req, user, 'humanid', providerInfos)
 
     return done(null, await user.save())
   }

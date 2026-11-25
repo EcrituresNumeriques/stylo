@@ -3,7 +3,7 @@ const { registrationUrl } = require('./redirect.js')
 
 const User = require('../models/user.js')
 const config = require('../config.js')
-const { createAccess } = require('../helpers/accesses.js')
+const { updateProviderAccount } = require('./account.js')
 
 const strategy = new OAuth2Strategy(
   {
@@ -37,7 +37,7 @@ async function getProfileFromToken(accessToken) {
 async function verify(req, accessToken, _refreshToken, _, done) {
   const { id, displayName } = await getProfileFromToken(accessToken)
 
-  let user = await User.findOne({
+  const user = await User.findOne({
     'authProviders.hypothesis.id': id,
   })
 
@@ -48,11 +48,7 @@ async function verify(req, accessToken, _refreshToken, _, done) {
 
   // update user with more up to date values
   if (user) {
-    user.mergeAuthProvider('hypothesis', providerInfos)
-    if (!req.session.fromAccount) {
-      user.recordAccess(createAccess({ ip: req.ip, strategy: 'hypothesis' }))
-    }
-    user = await user.save()
+    updateProviderAccount(req, user, 'hypothesis', providerInfos)
     return done(null, await user.save())
   }
 
