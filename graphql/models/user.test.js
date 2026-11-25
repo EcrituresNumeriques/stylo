@@ -57,6 +57,32 @@ describe('user model', () => {
     })
   })
 
+  describe('recordAccess', () => {
+    test('puts the access first', () => {
+      const user = new User({})
+      const access = { at: new Date(), ip: '192.168.1.0', strategy: 'local' }
+
+      user.recordAccess(access)
+
+      assert.deepEqual(user.lastAccesses[0].toObject(), access)
+    })
+
+    test('keeps only the 10 most recent accesses', () => {
+      const lastAccesses = Array.from({ length: 10 }, (_, i) => ({
+        at: new Date(2026, 0, 10 - i),
+        strategy: 'local',
+      }))
+      const user = new User({ lastAccesses })
+      const access = { at: new Date(2026, 0, 11), strategy: 'zotero' }
+
+      user.recordAccess(access)
+
+      assert.equal(user.lastAccesses.length, 10)
+      assert.equal(user.lastAccesses[0].strategy, 'zotero')
+      assert.deepEqual(user.lastAccesses[9].at, new Date(2026, 0, 2))
+    })
+  })
+
   describe('softDelete', () => {
     let userA, userB
 

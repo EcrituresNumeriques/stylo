@@ -3,6 +3,7 @@ const { registrationUrl } = require('./redirect.js')
 
 const config = require('../config.js')
 const User = require('../models/user.js')
+const { createAccess } = require('../helpers/accesses.js')
 
 const strategy = new OAuthStrategy(
   {
@@ -49,10 +50,10 @@ async function verify(req, token, _tokenSecret, _profile, _params, done) {
   }
 
   if (user) {
-    user.set({
-      connectedAt: Date.now(),
-      'authProviders.zotero': providerInfos,
-    })
+    user.mergeAuthProvider('zotero', providerInfos)
+    if (!req.session.fromAccount) {
+      user.recordAccess(createAccess({ ip: req.ip, strategy: 'zotero' }))
+    }
 
     return done(null, await user.save())
   }

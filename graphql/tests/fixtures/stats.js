@@ -40,7 +40,14 @@ const PEOPLE = [
   // an empty password, deleted his example article
   ['david', '2021-01-01', { password: '' }],
   // did nothing, but came back yesterday
-  ['emma', '2021-06-01', { password: 'secret', connectedAt: daysAgo(1) }],
+  [
+    'emma',
+    '2021-06-01',
+    {
+      password: 'secret',
+      lastAccesses: [{ at: daysAgo(1), strategy: 'local' }],
+    },
+  ],
   // created another article during his first week
   ['farid', '2021-01-01'],
   // contributor of an article created during her first week

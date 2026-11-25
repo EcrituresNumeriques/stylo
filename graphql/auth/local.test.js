@@ -40,4 +40,16 @@ describe('local authentication', () => {
     assert.equal(res.body.user.password, undefined)
     assert.equal(res.body.user.authProviders, undefined)
   })
+
+  test('records a local access', async () => {
+    const user = await User.create({ email: 'local-access@huma-num.fr' })
+    const res = { json() {} }
+
+    await onSuccess({ user, ip: '192.168.1.42' }, res)
+
+    const { lastAccesses } = await User.findById(user.id)
+    assert.equal(lastAccesses.length, 1)
+    assert.equal(lastAccesses[0].strategy, 'local')
+    assert.equal(lastAccesses[0].ip, '192.168.1.0')
+  })
 })

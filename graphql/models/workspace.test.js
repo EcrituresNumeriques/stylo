@@ -95,3 +95,40 @@ describe('deleteArticle', () => {
     assert.strictEqual(w2.articles[0].toString(), article.id)
   })
 })
+
+describe('inviteMember', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
+  test('dates a new member', async () => {
+    const member = await User.create({ email: 'invited@example.com' })
+    const workspace = await Workspace.create({ name: 'Invite', color: 'red' })
+    const before = new Date()
+
+    await workspace.inviteMember(member.id)
+
+    const { addedAt } = workspace.members[0]
+    assert.ok(addedAt >= before && addedAt <= new Date())
+  })
+
+  test('keeps the date when inviting again', async () => {
+    const addedAt = new Date('2026-01-01')
+    const member = await User.create({ email: 'invited-again@example.com' })
+    const workspace = await Workspace.create({
+      name: 'Invite again',
+      color: 'red',
+      members: [{ user: member._id, addedAt }],
+    })
+
+    await workspace.inviteMember(member.id)
+
+    assert.equal(workspace.members.length, 1)
+    assert.deepEqual(workspace.members[0].addedAt, addedAt)
+  })
+})

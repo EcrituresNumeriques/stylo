@@ -7,6 +7,7 @@ const WorkspaceMemberSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  addedAt: Date,
 })
 
 const workspaceSchema = new Schema(
@@ -140,7 +141,7 @@ workspaceSchema.methods.inviteMember = async function inviteMember(userId) {
   if (memberAlreadyInvited) {
     return this
   }
-  this.members.push({ user: userId })
+  this.members.push({ user: userId, addedAt: new Date() })
   return this.save()
 }
 

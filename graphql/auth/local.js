@@ -4,6 +4,7 @@
  */
 const LocalStrategy = require('passport-local').Strategy
 
+const { createAccess } = require('../helpers/accesses.js')
 const { createJWTToken } = require('../helpers/token.js')
 const { checkCredentials } = require('../resolvers/authResolver.js')
 const config = require('../config.js')
@@ -27,7 +28,7 @@ function onFailure(error, _req, res) {
  * @param {Response} res
  */
 async function onSuccess(req, res) {
-  req.user.connectedAt = Date.now()
+  req.user.recordAccess(createAccess({ ip: req.ip, strategy: 'local' }))
   await req.user.save()
 
   const token = await createJWTToken({

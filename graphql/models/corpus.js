@@ -13,6 +13,7 @@ const CorpusArticleSchema = new Schema({
     ref: 'Article',
   },
   order: Number,
+  addedAt: Date,
 })
 
 const corpusSchema = new Schema(
@@ -155,6 +156,7 @@ corpusSchema.methods.addArticles = async function addArticles(articleIds) {
     ...toAdd.map((article, index) => ({
       article,
       order: lastOrder + 1 + index,
+      addedAt: new Date(),
     }))
   )
   return this.save()

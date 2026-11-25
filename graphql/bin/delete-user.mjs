@@ -39,7 +39,7 @@ const u = await User.findOne(
     _id: true,
     displayName: true,
     articles: true,
-    connectedAt: true,
+    lastAccesses: true,
   }
 )
 

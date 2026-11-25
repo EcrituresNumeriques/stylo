@@ -30,6 +30,7 @@ describe('workspace resolver', () => {
     }
     let workspaces = await Query.workspaces({}, {}, context)
     assert.deepEqual(workspaces, [])
+    const before = new Date()
     await RootMutation.createWorkspace(
       {},
       {
@@ -53,6 +54,8 @@ describe('workspace resolver', () => {
       firstWorkspaceFound.members.map((m) => m.user.toString()),
       ['5a5b345f98f048281d88eac2']
     )
+    const { addedAt } = firstWorkspaceFound.members[0]
+    assert.ok(addedAt >= before && addedAt <= new Date())
     assert.deepEqual(firstWorkspaceFound.name, 'Workspace A')
   })
   test('add a member to an existing workspace', async () => {
