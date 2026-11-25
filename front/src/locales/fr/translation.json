@@ -70,6 +70,7 @@
   "article.versions.title": "Versions",
   "articles.page.title": "Articles - {{ workspace }}",
   "authentication.error.message": "L'identifiant de compte ou le mot de passe est incorrect.",
+  "authentication.error.tooManyAttempts": "Trop de tentatives de connexion. Merci de réessayer dans quelques minutes.",
   "authentication.externalError.message": "La connexion avec le service d'authentification a échoué. Veuillez réessayer.",
   "biblatexparser.error.cut_off_citation": "Référence tronquée ligne {{line}}",
   "biblatexparser.error.key_value_error": "Erreur de clé/valeur ligne {{line}}",

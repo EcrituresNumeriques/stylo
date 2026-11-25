@@ -2,11 +2,14 @@ const User = require('../models/user')
 const isUser = require('../policies/isUser')
 const { requireArgument } = require('../helpers/arguments.js')
 
-async function checkCredentials({ username, password }) {
-  if (!username || username.trim().length === 0) {
-    throw new Error('Username must not be empty!')
-  }
-  const user = await User.findOne({
+/**
+ * Finds the account matching a login identifier (username, email or legacy display name).
+ *
+ * @param {string} username
+ * @returns {Promise<import('mongoose').HydratedDocument<import('../models/user.js')> | null>}
+ */
+function findUserByIdentifier(username) {
+  return User.findOne({
     $or: [
       {
         // backward compatibility
@@ -16,6 +19,20 @@ async function checkCredentials({ username, password }) {
       { email: username },
     ],
   })
+}
+
+/**
+ * @param {object} credentials
+ * @param {string} credentials.username
+ * @param {string} credentials.password
+ * @param {object | null} [credentials.account] account matching the username, when it has already been looked up
+ */
+async function checkCredentials({ username, password, account }) {
+  if (!username || username.trim().length === 0) {
+    throw new Error('Username must not be empty!')
+  }
+  const user =
+    account === undefined ? await findUserByIdentifier(username) : account
 
   if (!user?.password || !(await user.comparePassword(password))) {
     const error = new Error(
@@ -30,6 +47,7 @@ async function checkCredentials({ username, password }) {
 
 module.exports = {
   checkCredentials,
+  findUserByIdentifier,
   Mutation: {
     async changePassword(_, args, context) {
       const { userId } = isUser(args, context)

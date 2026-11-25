@@ -49,6 +49,49 @@ convict.addFormat({
 })
 
 convict.addFormat({
+  name: 'positive-int',
+  coerce: (v) => Number(v),
+  validate: (val) =>
+    assert.ok(
+      Number.isInteger(val) && val > 0,
+      'must be a positive integer (greater than 0)'
+    ),
+})
+/**
+ * Value of the Express `trust proxy` setting, either a number of hops,
+ * a comma-separated list of trusted addresses, subnets or names (loopback, linklocal, uniquelocal),
+ * or false when no proxy is trusted.
+ * See https://expressjs.com/en/guide/behind-proxies.html
+ */
+convict.addFormat({
+  name: 'trust-proxy',
+  coerce(v) {
+    const value = String(v).trim()
+    if (/^\d+$/.test(value)) {
+      return Number(value)
+    }
+    if (value === 'false') {
+      return false
+    }
+    return value
+  },
+  validate(val) {
+    // `true` would trust every X-Forwarded-For value, including the ones forged by a client
+    assert.ok(
+      val !== 'true' && val !== true,
+      'must not be true (every client could forge its IP address), use a number of hops or a list of trusted addresses'
+    )
+    assert.ok(
+      val === false ||
+        (Number.isInteger(val) && val >= 0) ||
+        (typeof val === 'string' && val !== ''),
+      'must be a number of hops, a list of trusted addresses or false'
+    )
+    // Express checks the addresses and the names, an invalid value would make the server fail at startup
+    require('express')().set('trust proxy', val)
+  },
+})
+convict.addFormat({
   name: 'mongodb-url',
   coerce: (v) => v.toString(),
   validate: (val) =>
@@ -101,6 +144,14 @@ convict.addFormat({
  *    },
  *    session: {
  *      secret: string
+ *    },
+ *    trustProxy: number | string,
+ *    loginRateLimit: {
+ *      enabled: boolean,
+ *      windowMinutes: number,
+ *      maxFailuresPerIp: number,
+ *      maxFailuresPerIdentifierAndIp: number,
+ *      maxFailuresPerIdentifier: number
  *    }
  *  },
  *  sentry: {
@@ -203,6 +254,44 @@ module.exports = convict({
     default: false,
   },
   security: {
+    trustProxy: {
+      doc: 'Reverse proxies whose X-Forwarded-* headers are trusted, as a number of hops or a list of trusted addresses, subnets or names. The default trusts the loopback and private addresses (nginx on the same server, Docker network) and never the X-Forwarded-For sent by a client.',
+      format: 'trust-proxy',
+      env: 'TRUST_PROXY',
+      default: 'loopback, uniquelocal',
+    },
+    loginRateLimit: {
+      enabled: {
+        doc: 'Limits the failed login attempts.',
+        format: Boolean,
+        env: 'LOGIN_RATE_LIMIT_ENABLED',
+        default: true,
+      },
+      windowMinutes: {
+        doc: 'Duration, in minutes, of the window over which the failed attempts are counted (login and current password check).',
+        format: 'positive-int',
+        env: 'LOGIN_RATE_LIMIT_WINDOW_MINUTES',
+        default: 15,
+      },
+      maxFailuresPerIp: {
+        doc: 'Failed login attempts allowed per IP address during the window.',
+        format: 'positive-int',
+        env: 'LOGIN_MAX_FAILURES_PER_IP',
+        default: 50,
+      },
+      maxFailuresPerIdentifierAndIp: {
+        doc: 'Failed login attempts allowed per account identifier and IP address during the window. Also used for the failed checks of the current password when changing it.',
+        format: 'positive-int',
+        env: 'LOGIN_MAX_FAILURES_PER_IDENTIFIER_AND_IP',
+        default: 10,
+      },
+      maxFailuresPerIdentifier: {
+        doc: 'Failed login attempts allowed per account identifier, all IP addresses together, during the window.',
+        format: 'positive-int',
+        env: 'LOGIN_MAX_FAILURES_PER_IDENTIFIER',
+        default: 100,
+      },
+    },
     cors: {
       origin: {
         format: 'cors-origins',

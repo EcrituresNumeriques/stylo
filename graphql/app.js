@@ -60,6 +60,8 @@ const {
 } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
 const { validationRules } = require('./policies/readOnlyToken.js')
+const { loginRateLimit } = require('./auth/rateLimit.js')
+const { findUserByIdentifier } = require('./resolvers/authResolver.js')
 
 const {
   stampAuth,
@@ -154,7 +156,9 @@ passport.use('humanid', humanidAuth.strategy)
 passport.use('hypothesis', hypothesisAuth.strategy)
 passport.use(localAuth.strategy)
 
-app.set('trust proxy', true)
+// Only trust the X-Forwarded-* headers added by our own reverse proxies.
+// The left-most X-Forwarded-For values are sent by the client and can be forged.
+app.set('trust proxy', config.get('security.trustProxy'))
 app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
@@ -189,6 +193,11 @@ config.get('auth.enabledServices').forEach((service) => {
 
 app.post(
   '/login/local',
+  loginRateLimit({
+    ...config.get('security.loginRateLimit'),
+    windowMs: config.get('security.loginRateLimit.windowMinutes') * 60 * 1000,
+    findAccount: findUserByIdentifier,
+  }),
   // the API identifies the user with the token returned in the response, not with the session
   passport.authenticate('local', { session: false }),
   localAuth.onSuccess,

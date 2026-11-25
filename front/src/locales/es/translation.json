@@ -70,6 +70,7 @@
   "article.versions.title": "Versiones",
   "articles.page.title": "Artículos - {{ workspace }}",
   "authentication.error.message": "El nombre de usuario o la contraseña es incorrecto.",
+  "authentication.error.tooManyAttempts": "Demasiados intentos de inicio de sesión. Vuelva a intentarlo en unos minutos.",
   "authentication.externalError.message": "La conexión con el servicio de autenticación ha fallado. Por favor, inténtalo de nuevo.",
   "biblatexparser.error.cut_off_citation": "Referencia cortada en la línea {{line}}",
   "biblatexparser.error.key_value_error": "Error de clave-valor en la línea {{line}}",

@@ -58,9 +58,14 @@ export default function Login() {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        return response.ok
-          ? response.json()
-          : Promise.reject(new Error(t('authentication.error.message')))
+        if (response.ok) {
+          return response.json()
+        }
+        const message =
+          response.status === 429
+            ? t('authentication.error.tooManyAttempts')
+            : t('authentication.error.message')
+        return Promise.reject(new Error(message))
       })
       .then((data) => {
         dispatch({ type: 'LOGIN', ...data })
