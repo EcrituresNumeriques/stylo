@@ -13,7 +13,7 @@
   },
   "engines": {
     "node": ">=24",
-    "npm": ">=10"
+    "npm": ">=11"
   },
   "scripts": {
     "dev": "node --env-file-if-exists=.env ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:dev:*'",
