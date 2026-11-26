@@ -514,6 +514,13 @@ export function MarkdownMenu({ editor, t }) {
       _bindAction(actions.markdown.sub),
       _bindAction(actions.markdown.sup),
       _bindAction(actions.markdown.footnote),
+      // reuses Monaco's built-in toggle so that its keybinding shows up in the menu
+      {
+        id: 'editor.action.commentLine',
+        label: t('actions.infratextual-inline.comment'),
+        enabled: true,
+        run: () => editor.trigger('stylo', 'editor.action.commentLine'),
+      },
       _bindAction(actions.markdown.separator),
       new SubmenuAction(
         'stylo--markdown--headings',
