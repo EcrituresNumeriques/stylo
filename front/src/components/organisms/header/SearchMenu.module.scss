@@ -24,6 +24,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   padding: 0.375rem 0.75rem;
+  row-gap: 0.375rem;
 }
 
 // titre et date à gauche, boutons à droite, centrés sur les deux lignes
