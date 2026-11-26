@@ -35,7 +35,7 @@ const defaultPreferences = {
   /** @type {EditorPreferences} */
   editor: {
     zoomLevel: 0,
-    fontFamily: 'inter',
+    fontFamily: 'jetbrains-mono',
   },
   /** @type {ExportPreferences} */
   export: {

@@ -7,13 +7,18 @@ import '@fontsource/opendyslexic/400-italic.css'
 import '@fontsource/opendyslexic/700.css'
 
 /**
- * Polices proposées dans la palette de commandes de l'éditeur. Inter est
- * chargée par styles/general.scss ; le navigateur ne télécharge une police
+ * Polices proposées dans la palette de commandes de l'éditeur, la première par
+ * défaut. Inter est chargée par styles/general.scss ; le navigateur ne télécharge une police
  * que lorsqu'elle est utilisée.
  * @typedef {{ id: string, label: string, family: string }} EditorFont
  * @type {EditorFont[]}
  */
 export const editorFonts = [
+  {
+    id: 'jetbrains-mono',
+    label: 'JetBrains Mono',
+    family: "'JetBrains Mono Variable', monospace",
+  },
   { id: 'inter', label: 'Inter', family: 'Inter, sans-serif' },
   {
     id: 'atkinson',
@@ -26,16 +31,11 @@ export const editorFonts = [
     label: 'OpenDyslexic',
     family: 'OpenDyslexic, sans-serif',
   },
-  {
-    id: 'jetbrains-mono',
-    label: 'JetBrains Mono',
-    family: "'JetBrains Mono Variable', monospace",
-  },
 ]
 
 /**
  * @param {string} [id]
- * @returns {EditorFont} la police demandée, Inter sinon
+ * @returns {EditorFont} la police demandée, celle par défaut sinon
  */
 export const findEditorFont = (id) =>
   editorFonts.find((font) => font.id === id) ?? editorFonts[0]
