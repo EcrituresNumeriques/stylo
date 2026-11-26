@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { getPreferences, setPreference } from '../../helpers/preferences.js'
 import { editorFonts } from '../organisms/monaco/fonts.js'
-import chooseEditorFont from './monacoFont.js'
+import chooseEditorFont, { followEditorFont } from './monacoFont.js'
 
 function createFakeEditor() {
   const actions = []
@@ -95,6 +95,20 @@ describe('chooseEditorFont', () => {
     setPreference('editor', 'zoomLevel', 3)
 
     expect(editor.updateOptions).toHaveBeenCalledOnce()
+  })
+
+  test('follows the font in a diff editor, without palette commands', () => {
+    const diffEditor = { updateOptions: vi.fn() }
+    const unfollow = followEditorFont(diffEditor, api)
+
+    setPreference('editor', 'fontFamily', 'jetbrains-mono')
+    unfollow()
+    setPreference('editor', 'fontFamily', 'inter')
+
+    expect(diffEditor.updateOptions.mock.calls).toEqual([
+      [{ fontFamily: inter.family }],
+      [{ fontFamily: jetbrainsMono.family }],
+    ])
   })
 
   test('stops following the preferences once cleaned up', () => {
