@@ -1,7 +1,6 @@
 /**
  * @import { editor } from 'monaco-editor/editor'
  */
-import { editorFonts } from './fonts.js'
 
 /** @type {editor.IEditorOptions|editor.IDiffEditorOptions} */
 export default {
@@ -11,9 +10,10 @@ export default {
    * Shown with Ctrl+Enter for example
    */
   contextmenu: false,
-  // la police et la taille de Monaco changent selon le système : Inter donne le
-  // même rendu partout ; la police choisie dans la palette la remplace
-  fontFamily: editorFonts[0].family,
+  // la taille de Monaco change selon le système (12px sur macOS, 14px
+  // ailleurs). La police, Inter par défaut, vient des préférences
+  // (molecules/monacoFont.js) : ces options sont réappliquées à chaque
+  // changement et écraseraient la police choisie.
   fontSize: 14,
   // multiplie fontSize (en dessous de 8), comme les paragraphes de l'aperçu
   lineHeight: 1.6,

@@ -5,7 +5,7 @@ import { STYLO_THEME } from '../organisms/monaco/theme.js'
 import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
 import { languageConfig, loadMonaco, monaco } from './monaco.js'
-import chooseEditorFont from './monacoFont.js'
+import chooseEditorFont, { followEditorFont } from './monacoFont.js'
 import leaveEditor from './monacoLeaveEditor.js'
 
 /**
@@ -131,8 +131,17 @@ export default function MonacoEditor({
 }
 
 /** @param {{ language: string|LanguageConfig }} props */
-export function MonacoDiffEditor({ language, ...props }) {
+export function MonacoDiffEditor({ language, onMount, ...props }) {
   const isLoaded = useMonaco({ language })
+
+  // même police que les autres éditeurs, sans les commandes de la palette
+  const handleMount = useCallback(
+    (diffEditor, api) => {
+      diffEditor.onDidDispose(followEditorFont(diffEditor, api))
+      onMount?.(diffEditor, api)
+    },
+    [onMount]
+  )
 
   if (!isLoaded) {
     return <Placeholder {...props} />
@@ -145,6 +154,7 @@ export function MonacoDiffEditor({ language, ...props }) {
       theme={STYLO_THEME}
       {...props}
       language={languageConfig(language)?.id}
+      onMount={handleMount}
     />
   )
 }
