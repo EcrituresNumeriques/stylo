@@ -30,7 +30,7 @@ import styles from './SearchMenu.module.scss'
  * @param {() => void} props.onSelect called when leaving the results
  */
 export function ArticleResult({ article, onSelect }) {
-  const { t } = useTranslation('article')
+  const { t } = useTranslation('article', { useSuspense: false })
   const sharingModal = useModal()
   // contributors are only needed to share
   const { data } = useConditionalFetchData(
@@ -103,7 +103,7 @@ export function ArticleResult({ article, onSelect }) {
  * @param {() => void} props.onSelect called when leaving the results
  */
 export function CorpusResult({ corpus, onSelect }) {
-  const { t } = useTranslation('corpus')
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const exportModal = useModal()
 
   return (
