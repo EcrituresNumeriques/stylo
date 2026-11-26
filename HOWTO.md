@@ -18,7 +18,7 @@ cd stylo
 ## Run with Docker Compose
 
 Every Stylo service runs in a Docker container: MongoDB, the GraphQL API, the front-end (served by NGINX), the export service and the Pandoc API.
-You need [Docker](https://docs.docker.com/engine/install/) with the Compose plugin, and Node.js (see [`.nvmrc`](.nvmrc)) to build the front-end.
+You need [Docker](https://docs.docker.com/engine/install/) with the Compose plugin, and Node.js (see [`.node-version`](.node-version)) to build the front-end.
 
 Copy the configuration file:
 

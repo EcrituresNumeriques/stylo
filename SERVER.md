@@ -18,7 +18,7 @@ The [`deploy-tag`](.github/workflows/deploy-tag.yml) workflow shows how we run i
 ## Prerequisites
 
 - An Ubuntu server reachable through SSH, with NGINX, certbot and a `stylo` user allowed to use `sudo`
-- On your machine: Node.js (see [`.nvmrc`](.nvmrc)) and Ansible (see the versions in [`deploy-requirements.txt`](.github/workflows/deploy-requirements.txt))
+- On your machine: Node.js (see [`.node-version`](.node-version)) and Ansible (see the versions in [`deploy-requirements.txt`](.github/workflows/deploy-requirements.txt))
 
 ## Configure your instance
 
