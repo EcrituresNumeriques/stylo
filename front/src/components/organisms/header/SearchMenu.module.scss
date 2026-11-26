@@ -85,7 +85,7 @@ $spacing: 0.375rem;
   grid-column: 1;
 }
 
+// pastille, nom et tiret espacés par le gap de .metadata
 .workspace {
-  align-items: center;
-  display: inline-flex;
+  display: contents;
 }

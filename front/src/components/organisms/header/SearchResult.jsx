@@ -207,7 +207,8 @@ function ResultMetadata({ updatedAt, workspaces }) {
             className={headerStyles.chip}
             style={{ backgroundColor: color }}
           />
-          {name} ·
+          {name}
+          <span>—</span>
         </span>
       ))}
       <span title={t('common.updatedAt.label')}>
