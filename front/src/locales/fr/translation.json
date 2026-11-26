@@ -234,10 +234,13 @@
     "label": "Navigation secondaire"
   },
   "header.search": {
+    "all_one": "{{count}} résultat, articles et corpus confondus",
+    "all_other": "{{count}} résultats, articles et corpus confondus",
+    "best": "Les {{count}} meilleurs résultats sur {{total, number}}, articles et corpus confondus",
     "label": "Rechercher dans mes articles et corpus",
+    "noResults": "Aucun article ni corpus ne correspond à cette recherche.",
     "placeholder": "Rechercher…",
-    "title": "Résultats pour « {{ query }} »",
-    "noResults": "Aucun article ni corpus ne correspond à cette recherche."
+    "title": "Résultats pour « {{ query }} »"
   },
   "header.userMenu": {
     "backupLink": "Sauvegarder mes données",

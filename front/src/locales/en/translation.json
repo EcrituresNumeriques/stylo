@@ -234,10 +234,13 @@
     "label": "Secondary navigation"
   },
   "header.search": {
+    "all_one": "{{count}} result, articles and corpora together",
+    "all_other": "{{count}} results, articles and corpora together",
+    "best": "The {{count}} best results out of {{total, number}}, articles and corpora together",
     "label": "Search my articles and corpora",
+    "noResults": "No article or corpus matches this search.",
     "placeholder": "Search…",
-    "title": "Results for “{{ query }}”",
-    "noResults": "No article or corpus matches this search."
+    "title": "Results for “{{ query }}”"
   },
   "header.userMenu": {
     "backupLink": "Backup my data",

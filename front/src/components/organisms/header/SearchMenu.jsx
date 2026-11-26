@@ -21,6 +21,7 @@ export default function SearchMenu() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const modal = useModal()
+  const search = useSearch(query)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: on page load only
   useEffect(() => {
@@ -70,8 +71,9 @@ export default function SearchMenu() {
           {...modal.bindings}
           cancel={closeSearch}
           title={t('header.search.title', { query })}
+          subtitle={search.results.length > 0 && <SearchSummary {...search} />}
         >
-          <SearchResults query={query} onSelect={closeSearch} />
+          <SearchResults {...search} onSelect={closeSearch} />
         </Modal>,
         document.body
       )}
@@ -79,9 +81,18 @@ export default function SearchMenu() {
   )
 }
 
-function SearchResults({ query, onSelect }) {
+/**
+ * How many results are shown, out of how many were found.
+ */
+function SearchSummary({ results, total }) {
   const { t } = useTranslation()
-  const { results, error, isLoading } = useSearch(query)
+  return total > results.length
+    ? t('header.search.best', { count: results.length, total })
+    : t('header.search.all', { count: total })
+}
+
+function SearchResults({ results, error, isLoading, onSelect }) {
+  const { t } = useTranslation()
 
   if (isLoading) return <Loading />
   if (error) return <Alert message={error.message} />

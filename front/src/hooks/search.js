@@ -14,9 +14,9 @@ export function useSearch(query) {
     query ? { query: searchQuery, variables: { query } } : null,
     { revalidateOnFocus: false }
   )
-  const { articles = [], corpora = [] } = data?.search ?? {}
+  const { articles = [], corpora = [], total = 0 } = data?.search ?? {}
   const results = [...articles, ...corpora]
     .sort((a, b) => b.score - a.score)
     .slice(0, MAX_RESULTS)
-  return { results, error, isLoading }
+  return { results, total, error, isLoading }
 }

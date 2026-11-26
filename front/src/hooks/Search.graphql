@@ -27,5 +27,6 @@ query search($query: String!) {
       }
       score
     }
+    total
   }
 }
