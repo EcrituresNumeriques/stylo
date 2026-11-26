@@ -70,7 +70,11 @@ convict.addFormat({
  *  env: 'dev' | 'prod',
  *  export: {
  *    baseUrl: string,
- *    urlEndpoint: string
+ *    urlEndpoint: string,
+ *    version: string | null
+ *  },
+ *  pandocApi: {
+ *    version: string | null
  *  },
  *  features: {
  *    file: string
@@ -145,6 +149,22 @@ module.exports = convict({
       format: 'url',
       env: 'PANDOC_EXPORT_ENDPOINT',
       default: 'http://127.0.0.1:3080',
+    },
+    // version du service d'export déployé avec l'instance, à titre informatif
+    version: {
+      format: String,
+      env: 'STYLO_EXPORT_VERSION',
+      default: null,
+      nullable: true,
+    },
+  },
+  pandocApi: {
+    // version de pandoc-api déployée avec l'instance, à titre informatif
+    version: {
+      format: String,
+      env: 'PANDOC_API_VERSION',
+      default: null,
+      nullable: true,
     },
   },
   features: {

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router'
 
 import styles from './Footer.module.scss'
+import InstanceVersions from './InstanceVersions.jsx'
 
 export default function Footer() {
   const { t } = useTranslation()
@@ -18,6 +19,7 @@ export default function Footer() {
           >
             Stylo {APP_VERSION}
           </a>
+          <InstanceVersions />
         </li>
         <li>
           <NavLink to="/privacy">{t('footer.privacy.link')}</NavLink>
