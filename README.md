@@ -20,7 +20,11 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 - Node.js 24 LTS (la version exacte est indiquée dans [`.node-version`](.node-version))
 - MongoDB 7
 
-Pour installer Node.js, vous pouvez utiliser un gestionnaire de versions qui prend en compte le fichier `.node-version`, comme [proto](https://moonrepo.dev/proto) ou [mise](https://mise.jdx.dev/). [nvm](https://github.com/nvm-sh/nvm) ne lit pas ce fichier, il faut donc lui passer la version avec `nvm install "$(cat .node-version)"`.
+Pour installer Node.js, vous pouvez utiliser un gestionnaire de versions qui prend en compte le fichier `.node-version` :
+
+- [proto](https://moonrepo.dev/proto) le lit sans configuration.
+- [mise](https://mise.jdx.dev/lang/node.html#version-files) le lit une fois l'option activée avec `mise settings add idiomatic_version_file_enable_tools node`.
+- [nvm](https://github.com/nvm-sh/nvm) ne le lit pas, il faut donc lui passer la version avec `nvm install "$(cat .node-version)"`.
 
 ## Sous MacOS
 
