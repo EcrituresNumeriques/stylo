@@ -47,8 +47,13 @@ import {
  * @param {(api: {validate: () => Promise<void>, clearDiagnostics: () => void, diagnostics: Array, isValidating: boolean}) => void} [props.onValidatorReady]
  * @returns {Element}
  */
-// typing in the diff would not be saved
-const diffOptions = { ...defaultEditorOptions, readOnly: true }
+const diffOptions = {
+  ...defaultEditorOptions,
+  // typing in the diff would not be saved
+  readOnly: true,
+  // the version on the left, even in a narrow editor (< 900 px)
+  useInlineViewWhenSpaceIsLimited: false,
+}
 
 export default function CollaborativeTextEditor({
   articleId,
