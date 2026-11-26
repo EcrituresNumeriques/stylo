@@ -5,8 +5,8 @@ import { STYLO_THEME } from '../organisms/monaco/theme.js'
 import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
 import { languageConfig, loadMonaco, monaco } from './monaco.js'
-import chooseEditorFont, { followEditorFont } from './monacoFont.js'
 import leaveEditor from './monacoLeaveEditor.js'
+import readingPreferences, { followEditorFont } from './monacoReading.js'
 
 /**
  * @typedef {import('monaco-editor/editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
@@ -106,8 +106,12 @@ export default function MonacoEditor({
           hint: () => tRef.current('keyboard.leave.hint'),
           hintClassName: styles.leaveHint,
         }),
-        chooseEditorFont({
-          action: (font) => tRef.current('font.action', { font }),
+        readingPreferences({
+          fontAction: (font) => tRef.current('font.action', { font }),
+          lineWidthAction: (lineWidth) =>
+            lineWidth
+              ? tRef.current('lineWidth.action', { count: lineWidth })
+              : tRef.current('lineWidth.full'),
         }),
         ...pluginsRef.current,
       ])

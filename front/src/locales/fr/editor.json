@@ -60,6 +60,11 @@
       "hint": "Appuyez sur Tab ou Maj+Tab pour quitter l'éditeur"
     }
   },
+  "lineWidth": {
+    "action_one": "Largeur des lignes : {{count}} caractère",
+    "action_other": "Largeur des lignes : {{count}} caractères",
+    "full": "Largeur des lignes : toute la largeur"
+  },
   "stylo": {
     "markdown": {
       "headings": "Titres",

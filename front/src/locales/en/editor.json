@@ -60,6 +60,11 @@
       "hint": "Press Tab or Shift+Tab to leave the editor"
     }
   },
+  "lineWidth": {
+    "action_one": "Line width: {{count}} character",
+    "action_other": "Line width: {{count}} characters",
+    "full": "Line width: full width"
+  },
   "stylo": {
     "markdown": {
       "headings": "Titles",

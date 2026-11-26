@@ -19,6 +19,7 @@
  * @typedef {object} EditorPreferences
  * @property {number} zoomLevel niveau de zoom de la police de Monaco
  * @property {string} fontFamily identifiant de la police, dans organisms/monaco/fonts.js
+ * @property {number|null} lineWidth caractères par ligne, null pour toute la largeur
  */
 
 /**
@@ -36,6 +37,7 @@ const defaultPreferences = {
   editor: {
     zoomLevel: 0,
     fontFamily: 'jetbrains-mono',
+    lineWidth: 80,
   },
   /** @type {ExportPreferences} */
   export: {
