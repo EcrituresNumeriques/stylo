@@ -16,7 +16,7 @@ vi.mock('../../../hooks/article.js', () => ({
 }))
 vi.mock('../../../hooks/collaboration.js', () => ({
   useCollaboration: () => ({
-    yText: { toString: () => '', observe: vi.fn() },
+    yText: { toString: () => '# Working copy', observe: vi.fn() },
     awareness: {},
     websocketStatus: 'connected',
     isSynced: true,
@@ -63,5 +63,46 @@ describe('CollaborativeTextEditor', () => {
 
     await waitFor(() => expect(onStatsChange).toHaveBeenCalledWith('# Title'))
     expect(onStructureChange).toHaveBeenCalledWith('# Title')
+  })
+
+  test('ignores the working copy on a version', async () => {
+    const onStructureChange = vi.fn()
+    useArticleVersion.mockReturnValue({
+      version: { md: '# Version' },
+      isLoading: false,
+    })
+
+    renderWithProviders(
+      <CollaborativeTextEditor
+        articleId="a1"
+        versionId="v1"
+        mode="write"
+        onStructureChange={onStructureChange}
+      />
+    )
+    await waitFor(() =>
+      expect(onStructureChange).toHaveBeenCalledWith('# Version')
+    )
+    // the working copy updates are throttled
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
+    expect(onStructureChange).not.toHaveBeenCalledWith('# Working copy')
+  })
+
+  test('follows the working copy without a version', async () => {
+    const onStructureChange = vi.fn()
+    useArticleVersion.mockReturnValue({ version: {}, isLoading: false })
+
+    renderWithProviders(
+      <CollaborativeTextEditor
+        articleId="a1"
+        mode="write"
+        onStructureChange={onStructureChange}
+      />
+    )
+
+    await waitFor(() =>
+      expect(onStructureChange).toHaveBeenCalledWith('# Working copy')
+    )
   })
 })

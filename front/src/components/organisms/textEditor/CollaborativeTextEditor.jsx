@@ -178,7 +178,12 @@ export default function CollaborativeTextEditor({
   let timeoutId
   useEffect(() => {
     if (yText) {
-      updateArticleStructureAndStats({ text: yText.toString() })
+      // on a version, the structure and the stats are those of the version,
+      // not of the working copy
+      const updateFromWorkingCopy = () =>
+        versionId || updateArticleStructureAndStats({ text: yText.toString() })
+
+      updateFromWorkingCopy()
       yText.observe(() => {
         onWorkingCopyStatusChange?.('syncing')
         if (timeoutId) {
@@ -188,7 +193,7 @@ export default function CollaborativeTextEditor({
           onWorkingCopyStatusChange?.('synced')
         }, 4000)
 
-        updateArticleStructureAndStats({ text: yText.toString() })
+        updateFromWorkingCopy()
       })
     }
   }, [articleId, versionId, yText])
