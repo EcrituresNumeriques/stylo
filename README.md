@@ -17,18 +17,18 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 # Pré-requis
 
-- Node.js v24+
+- Node.js 24 LTS (la version exacte est indiquée dans [`.node-version`](.node-version))
 - MongoDB 7
+
+Le fichier `.node-version` est lu par la plupart des gestionnaires de versions ([proto](https://moonrepo.dev/proto), [fnm](https://github.com/Schniz/fnm), [mise](https://mise.jdx.dev/), [asdf](https://asdf-vm.com/), [nodenv](https://github.com/nodenv/nodenv)…). [Volta](https://volta.sh/) utilise la clé `volta` du `package.json`, qui épingle la même version. Avec nvm, lancez `nvm install "$(cat .node-version)"`.
 
 ## Sous MacOS
 
 ```bash
 brew tap mongodb/brew
 
-brew install mongodb-community nvm
+brew install mongodb-community
 brew install --cask docker
-
-nvm install v24 --default
 ```
 
 # Développement local

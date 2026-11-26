@@ -5,7 +5,7 @@
   "main": "app.js",
   "private": true,
   "engines": {
-    "node": ">=22.9",
+    "node": ">=24",
     "npm": ">=10"
   },
   "scripts": {
@@ -71,7 +71,6 @@
     "testcontainers": "~11.14"
   },
   "volta": {
-    "node": "24.16.0",
-    "npm": "11.16.0"
+    "extends": "../package.json"
   }
 }
