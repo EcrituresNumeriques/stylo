@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 import styles from '../../../layout.module.scss'
 import buttonStyles from '../../atoms/Button.module.scss'
-import homeStyles from '../../pages/Home.module.scss'
+
+import publicationStyles from './publications.module.scss'
 
 export default function Publication({ entry }) {
   const { t, i18n } = useTranslation()
@@ -56,7 +57,7 @@ export default function Publication({ entry }) {
         href={link}
         target="_blank"
         rel="noreferrer noopener"
-        className={clsx(buttonStyles.linkSecondary, homeStyles.moreLink)}
+        className={clsx(buttonStyles.linkSecondary, publicationStyles.moreLink)}
         aria-label={t('more.about.accessibleLabel', {
           about: title,
         })}

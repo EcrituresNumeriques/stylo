@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import styles from '../../../layout.module.scss'
 import buttonStyles from '../../atoms/Button.module.scss'
-import homeStyles from '../../pages/Home.module.scss'
+
+import publicationStyles from './publications.module.scss'
 
 export default function Release({ entry }) {
   const { t, i18n } = useTranslation()
@@ -44,7 +45,7 @@ export default function Release({ entry }) {
         </li>
       </ul>
 
-      <details className={homeStyles.changelog}>
+      <details className={publicationStyles.changelog}>
         <summary className={buttonStyles.secondary}>
           {t('publication.release.details')}
         </summary>
@@ -60,7 +61,10 @@ export default function Release({ entry }) {
           href={link}
           target="_blank"
           rel="noreferrer noopener"
-          className={clsx(buttonStyles.linkSecondary, homeStyles.moreLink)}
+          className={clsx(
+            buttonStyles.linkSecondary,
+            publicationStyles.moreLink
+          )}
           aria-label={t('more.about.accessibleLabel', {
             about: title,
           })}
