@@ -67,6 +67,7 @@ function createTextIndex(collection, fields, metadataPrefix) {
 }
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   const articles = mongo.collection('articles')
   const corpus = mongo.collection('corpus')
@@ -86,6 +87,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
+  if (db.internals.dryRun) return
   await db.removeIndex('articles', 'search_text')
   await db.removeIndex('corpus', 'search_text')
   const mongo = db._getDbInstance()

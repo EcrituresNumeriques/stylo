@@ -16,6 +16,7 @@ const indexes = [
 ]
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   for (const [collection, keys] of indexes) {
     await mongo.collection(collection).createIndex(keys, { unique: false })
@@ -23,6 +24,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
+  if (db.internals.dryRun) return
   const mongo = db._getDbInstance()
   for (const [collection, keys] of indexes) {
     await mongo.collection(collection).dropIndex(keys)
