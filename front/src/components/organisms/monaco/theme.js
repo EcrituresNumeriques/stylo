@@ -19,9 +19,9 @@ const theme = {
     // correspondance courante : $text-highlight-color, sans bordure
     'editor.findMatchBackground': '#fedc2a',
     'editor.findMatchBorder': '#00000000',
-    // autres correspondances : $muted-background-color, bordure $muted-color
+    // autres correspondances : $muted-background-color, sans bordure
     'editor.findMatchHighlightBackground': '#ececec',
-    'editor.findMatchHighlightBorder': '#797676',
+    'editor.findMatchHighlightBorder': '#00000000',
     // Monaco surligne toute la ligne de la correspondance courante, soit tout
     // le paragraphe avec wordWrap : le mot recherché n'en ressortait plus
     'editor.rangeHighlightBackground': '#00000000',
