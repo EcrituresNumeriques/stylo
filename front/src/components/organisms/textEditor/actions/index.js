@@ -16,7 +16,7 @@ import createInlineBlockCommand, {
 
 export { Separator, SubmenuAction } from '../../../molecules/monaco.js'
 
-const actionTypes = {
+export const actionTypes = {
   BLOCK: 'block',
   DELIMITED_BLOCK: 'delimited-block',
   INLINE: 'inline',
@@ -317,6 +317,25 @@ export function knownClasses(namespace) {
   }
 
   return { blocks, inlines }
+}
+
+/**
+ * Lists the actions of a namespace as completion snippets, bound to an editor.
+ * @param {string} namespace
+ * @param {ICodeEditor} editor
+ * @param {TFunction} t
+ * @param {object} options
+ * @param {string[]} options.types - Action types to keep (see `actionTypes`)
+ * @returns {import('../completion/snippets.js').SnippetItem[]}
+ */
+export function snippetItems(namespace, editor, t, { types }) {
+  return Object.entries(actions[namespace])
+    .filter(([key]) => types.includes(actionsSchema[namespace][key].type))
+    .map(([key, { id, label }]) => ({
+      label: key,
+      detail: t(label),
+      commandId: `${editor.getId()}:${id}`,
+    }))
 }
 
 /** @type {Record<string, Record<string, IActionDescriptor>>} */

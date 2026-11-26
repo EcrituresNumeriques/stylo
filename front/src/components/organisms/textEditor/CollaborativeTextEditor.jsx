@@ -22,6 +22,7 @@ import {
   MonacoEditor,
 } from '../../molecules/index.js'
 import defaultEditorOptions from '../monaco/options.js'
+import { actionTypes } from './actions/index.js'
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import styles from './CollaborativeTextEditor.module.scss'
@@ -30,6 +31,7 @@ import {
   contextActions,
   imageDrop,
   realtime,
+  snippetCompletionProvider,
 } from './plugins/index.js'
 
 /**
@@ -166,6 +168,11 @@ export default function CollaborativeTextEditor({
         : [
             contextActions({ t, onSave: () => setActiveMenu('versions') }),
             bibliographyCompletion(bibliographyCompletionProvider),
+            snippetCompletionProvider({
+              t,
+              namespace: 'metopes',
+              types: [actionTypes.DELIMITED_BLOCK],
+            }),
             imageDrop(),
             ...(yText && awareness ? [realtime({ yText, awareness })] : []),
           ],
