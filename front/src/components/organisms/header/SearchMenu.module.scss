@@ -1,0 +1,35 @@
+@use "../../../styles/variables" as *;
+
+.search {
+  flex: 1;
+  max-width: 20rem;
+
+  :global(.control-field) {
+    margin: 0;
+  }
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+
+  h2 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  li {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+  }
+
+  span {
+    color: $muted-color;
+    font-size: 0.875em;
+  }
+}

@@ -233,6 +233,12 @@
   "header.secondaryMenu": {
     "label": "Navigation secondaire"
   },
+  "header.search": {
+    "label": "Rechercher dans mes articles et corpus",
+    "placeholder": "Rechercher…",
+    "title": "Résultats pour « {{ query }} »",
+    "noResults": "Aucun article ni corpus ne correspond à cette recherche."
+  },
   "header.userMenu": {
     "backupLink": "Sauvegarder mes données",
     "displayNameLabel": "Connecté·e en tant que {{ user.displayName }}",

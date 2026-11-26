@@ -7,11 +7,13 @@ import { NavLink, useRouteLoaderData } from 'react-router'
 import logoContent from '/images/logo.svg?inline'
 
 import useComponentVisible from '../../../hooks/componentVisible.js'
+import { useFeature } from '../../../hooks/features.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
 import HelpMenu from './HelpMenu.jsx'
 import styles from './header.module.scss'
 import LanguagesMenu from './LanguagesMenu.jsx'
+import SearchMenu from './SearchMenu.jsx'
 import UserMenu, {
   LoginItem,
   LogoutItem,
@@ -33,6 +35,7 @@ export default function Header() {
   const activeWorkspaceId = useActiveWorkspaceId()
   const { user } = useRouteLoaderData('app')
   const userId = user?.id
+  const enableSearch = useFeature('search')
   const baseUrl = useMemo(
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
     [activeWorkspaceId]
@@ -102,6 +105,8 @@ export default function Header() {
             </li>
           </ul>
         </nav>
+
+        {userId && enableSearch && <SearchMenu />}
 
         <nav
           id="secondary-navigation"

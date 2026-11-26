@@ -233,6 +233,12 @@
   "header.secondaryMenu": {
     "label": "Secondary navigation"
   },
+  "header.search": {
+    "label": "Search my articles and corpora",
+    "placeholder": "Search…",
+    "title": "Results for “{{ query }}”",
+    "noResults": "No article or corpus matches this search."
+  },
   "header.userMenu": {
     "backupLink": "Backup my data",
     "displayNameLabel": "Connected as {{ user.displayName }}",

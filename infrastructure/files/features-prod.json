@@ -4,6 +4,7 @@
   },
   "flags": {
     "nakala": { "state": "opt-in", "groups": ["ecrinum/labo"] },
-    "webdav": { "state": "opt-in", "groups": ["ecrinum/labo"] }
+    "webdav": { "state": "opt-in", "groups": ["ecrinum/labo"] },
+    "search": { "state": "opt-in", "groups": ["ecrinum/labo"] }
   }
 }
