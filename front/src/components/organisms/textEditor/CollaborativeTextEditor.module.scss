@@ -17,6 +17,12 @@
 
     /* Monaco dessine la correspondance à la largeur exacte du mot : on la fait
        déborder, sans décaler le texte, pour qu'elle se repère mieux. */
+    /* le thème ne borde pas le champ de recherche : seule son ombre le
+       détachait du texte */
+    .monaco-editor .find-widget {
+      border: 1px solid $main-color;
+    }
+
     .monaco-editor .findMatch {
       box-shadow: 0 0 0 2px $muted-background-color;
     }
