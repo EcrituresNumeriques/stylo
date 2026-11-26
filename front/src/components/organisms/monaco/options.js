@@ -37,6 +37,8 @@ export default {
     ambiguousCharacters: false,
     invisibleCharacters: true,
   },
-  wordWrap: 'on',
+  // revient à la ligne à 80 caractères, ou avant si l'éditeur est plus étroit
+  wordWrap: 'bounded',
+  wordWrapColumn: 80,
   wrappingIndent: 'none',
 }
