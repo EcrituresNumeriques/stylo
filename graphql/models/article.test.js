@@ -108,4 +108,22 @@ describe('searchLanguage', () => {
     })
     assert.equal((await Article.findById(article.id)).searchLanguage, 'en')
   })
+
+  test('is computed when an article language is updated', async () => {
+    const article = await Article.create({ title: 'Langue' })
+    await Article.updateOne(
+      { _id: article.id },
+      { $set: { 'workingVersion.metadata.lang': 'en' } }
+    )
+    assert.equal((await Article.findById(article.id)).searchLanguage, 'en')
+  })
+
+  test('is left as is by an update of another field', async () => {
+    const article = await Article.create({
+      title: 'Langue',
+      workingVersion: { metadata: { lang: 'en' } },
+    })
+    await Article.updateOne({ _id: article.id }, { title: 'Language' })
+    assert.equal((await Article.findById(article.id)).searchLanguage, 'en')
+  })
 })

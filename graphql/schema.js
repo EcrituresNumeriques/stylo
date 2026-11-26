@@ -731,7 +731,7 @@ type Query {
 
   """
   Search the titles, contents and metadata of the articles and corpora the authenticated user has access to.
-  Results contain at least one of the words (or the exact phrase when quoted), sorted by relevance, at most 20 per type by default.
+  Results contain at least one of the words (or the exact phrase when quoted), sorted by relevance, at most 20 per type.
   Words are stemmed and stop words ignored (by MongoDB), case and diacritics too.
   The content searched is the Markdown of the working copy stored in the database (workingVersion.md).
   Requires authentication (and membership of the workspace when filtering by workspace).
@@ -741,7 +741,7 @@ type Query {
     filter: SearchFilterInput
     "Language of the documents to search (ISO 639-1 code, such as fr or en): query words are stemmed in this language, so documents in other languages may not match, and results in this language rank higher. French when omitted; a language unknown to MongoDB is an error."
     documentLanguage: String
-    "Maximum number of results per type (20 by default)"
+    "Maximum number of results per type (20 by default, and at most)"
     limit: Int
   ): SearchResults!
 }

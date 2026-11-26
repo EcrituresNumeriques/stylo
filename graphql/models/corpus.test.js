@@ -21,4 +21,13 @@ describe('searchLanguage', () => {
     })
     assert.equal((await Corpus.findById(corpus.id)).searchLanguage, 'en')
   })
+
+  test('is computed when a corpus metadata is updated', async () => {
+    const corpus = await Corpus.create({ name: 'Langue' })
+    await Corpus.findOneAndUpdate(
+      { _id: corpus.id },
+      { metadata: { lang: 'grc' } }
+    )
+    assert.equal((await Corpus.findById(corpus.id)).searchLanguage, 'none')
+  })
 })

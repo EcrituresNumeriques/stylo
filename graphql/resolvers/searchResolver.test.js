@@ -232,4 +232,11 @@ describe('search', () => {
     const { articles } = await search(fixtures.user, 'incunable', { limit: 3 })
     assert.equal(articles.length, 3)
   })
+
+  test('returns at most 20 results whatever the limit', async () => {
+    const { articles } = await search(fixtures.user, 'incunable', {
+      limit: 100000,
+    })
+    assert.equal(articles.length, 20)
+  })
 })
