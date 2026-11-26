@@ -17,6 +17,6 @@ on:
 
 jobs:
   build:
-    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@master
+    uses: ./.github/workflows/node.yml
     with:
       app-dir: graphql
