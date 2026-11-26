@@ -321,6 +321,7 @@ export function knownClasses(namespace) {
 
 /**
  * Lists the actions of a namespace as completion snippets, bound to an editor.
+ * Only inline actions are suggested in the middle of a line.
  * @param {string} namespace
  * @param {ICodeEditor} editor
  * @param {TFunction} t
@@ -335,6 +336,7 @@ export function snippetItems(namespace, editor, t, { types }) {
       label: key,
       detail: t(label),
       commandId: `${editor.getId()}:${id}`,
+      lineStart: actionsSchema[namespace][key].type !== actionTypes.INLINE,
     }))
 }
 

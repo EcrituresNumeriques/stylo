@@ -171,7 +171,7 @@ export default function CollaborativeTextEditor({
             snippetCompletionProvider({
               t,
               namespace: 'metopes',
-              types: [actionTypes.DELIMITED_BLOCK],
+              types: [actionTypes.DELIMITED_BLOCK, actionTypes.INLINE],
             }),
             imageDrop(),
             ...(yText && awareness ? [realtime({ yText, awareness })] : []),

@@ -10,8 +10,14 @@ const monaco = {
 }
 
 const items = [
-  { label: 'ack', detail: 'Remerciements', commandId: 'editor:ack' },
-  { label: 'prenote-aut', commandId: 'editor:prenote-aut' },
+  {
+    label: 'ack',
+    detail: 'Remerciements',
+    commandId: 'editor:ack',
+    lineStart: true,
+  },
+  { label: 'prenote-aut', commandId: 'editor:prenote-aut', lineStart: true },
+  { label: 'smallcaps', commandId: 'editor:smallcaps' },
 ]
 
 /**
@@ -43,7 +49,7 @@ describe('SnippetCompletionProvider', () => {
       monaco.languages.registerCompletionItemProvider.mock.lastCall[1]
     const model = { getValueInRange: () => '::' }
     const result = provideCompletionItems(model, { lineNumber: 1, column: 3 })
-    expect(result.suggestions).toHaveLength(2)
+    expect(result.suggestions).toHaveLength(3)
   })
 
   test('suggests every item after the prefix at the beginning of a line', () => {
@@ -66,6 +72,7 @@ describe('SnippetCompletionProvider', () => {
         label: 'prenote-aut',
         command: { id: 'editor:prenote-aut', title: 'prenote-aut' },
       }),
+      expect.objectContaining({ label: 'smallcaps' }),
     ])
   })
 
@@ -76,11 +83,20 @@ describe('SnippetCompletionProvider', () => {
 
   test.each([
     ['a single colon', ':'],
-    ['a prefix in the middle of a line', 'texte ::'],
+    ['a prefix glued to a word', 'texte::'],
     ['a fenced div delimiter', ':::'],
     ['a keyword followed by a space', '::ack '],
   ])('suggests nothing after %s', (_, line) => {
     expect(complete(line)).toEqual([])
+  })
+
+  test('suggests only the inline items in the middle of a line', () => {
+    const suggestions = complete('texte ::sm')
+    expect(suggestions.map(({ label }) => label)).toEqual(['smallcaps'])
+    expect(suggestions[0].range).toMatchObject({
+      startColumn: 7,
+      endColumn: 11,
+    })
   })
 
   test('suggests nothing without items', () => {

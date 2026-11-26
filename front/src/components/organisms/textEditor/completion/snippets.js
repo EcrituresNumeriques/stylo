@@ -3,11 +3,12 @@
  * @property {string} label - Suggested keyword, also used for filtering
  * @property {string} [detail] - Human readable description
  * @property {string} commandId - Monaco command run once the item is accepted
+ * @property {boolean} [lineStart] - Only suggested at the beginning of a line
  */
 
 /**
- * Suggests snippets after a prefix typed at the beginning of a line.
- * Accepting an item removes what was typed and runs its command.
+ * Suggests snippets after a prefix, typed at the beginning of a line or after
+ * a space. Accepting an item removes what was typed and runs its command.
  */
 export class SnippetCompletionProvider {
   /**
@@ -47,22 +48,26 @@ export class SnippetCompletionProvider {
       endColumn: column,
     })
 
-    if (
-      !typed.startsWith(this.prefix) ||
-      !/^[\w-]*$/.test(typed.slice(this.prefix.length))
-    ) {
+    const start = typed.lastIndexOf(this.prefix)
+    const before = typed.slice(0, Math.max(start, 0))
+    const keyword = typed.slice(start + this.prefix.length)
+
+    if (start === -1 || /\S$/.test(before) || !/^[\w-]*$/.test(keyword)) {
       return { suggestions: [] }
     }
 
     const range = {
       startLineNumber: lineNumber,
       endLineNumber: lineNumber,
-      startColumn: 1,
+      startColumn: start + 1,
       endColumn: column,
     }
+    const items = before
+      ? this.items.filter(({ lineStart }) => !lineStart)
+      : this.items
 
     return {
-      suggestions: this.items.map(({ label, detail, commandId }) => ({
+      suggestions: items.map(({ label, detail, commandId }) => ({
         label,
         detail,
         kind: monaco.languages.CompletionItemKind.Snippet,
