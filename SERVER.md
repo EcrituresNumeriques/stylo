@@ -30,7 +30,7 @@ From the `infrastructure` folder:
    ansible-vault create vault-<my-instance>.yml
    ```
 3. Add your NGINX configuration files in `files/`: `<site>.conf`, `export.<site>.conf` and `pandoc-api.<site>.conf`, based on the `stylo.huma-num.fr` ones.
-   Add a `<env>-nagios-nrpe-local.cfg` file as well, matching the `env` variable of your inventory.
+   Add `<env>-nagios-nrpe-local.cfg` and `features-<env>.json` files as well, matching the `env` variable of your inventory (see [Feature flags](#feature-flags)).
 
 ## Build the front-end and deploy
 
@@ -56,6 +56,28 @@ ansible-playbook -i inventories/<my-instance> \
 ```
 
 Run the same command again to upgrade to a new version.
+
+## Feature flags
+
+Features under development are hidden until enabled in `files/features-<env>.json`, matching the `env` variable of your inventory.
+The playbook copies it to `~/stylo/features.json`, read by the API when it starts; the front-end receives the features enabled for the logged-in user.
+
+```json
+{
+  "groups": { "ecrinum/labo": ["thom4", "ggrossetie"] },
+  "flags": {
+    "webdav": { "state": "on" },
+    "nakala": { "state": "opt-in", "groups": ["ecrinum/labo"], "users": [] },
+    "search": { "state": "off" }
+  }
+}
+```
+
+- `state` is `off` (nobody), `on` (everybody) or `opt-in` (listed users only); an unknown flag is off.
+- With `opt-in`, a user is listed by `username`, directly (`users`) or through a group (`groups`). Accounts without a `username` only get the `on` flags.
+- Group names match `[a-z0-9_/-]+` and must be declared under `groups`. The API refuses to start with an invalid file.
+- To change who gets a feature, edit the file and run the playbook again.
+- Locally, `FEATURES_FILE` points to a JSON file with the same structure, relative to the root of the repository (see [`features.example.json`](features.example.json)); everything is off without it.
 
 # Operations
 

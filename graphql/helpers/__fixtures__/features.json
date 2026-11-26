@@ -1,0 +1,14 @@
+{
+  "groups": { "ecrinum/labo": ["thom4", "ggrossetie"] },
+  "flags": {
+    "nakala": { "state": "on" },
+    "webdav": { "state": "on" },
+    "closed": {
+      "state": "off",
+      "users": ["thom4"],
+      "groups": ["ecrinum/labo"]
+    },
+    "byUser": { "state": "opt-in", "users": ["thom4"] },
+    "byGroup": { "state": "opt-in", "groups": ["ecrinum/labo"] }
+  }
+}

@@ -100,6 +100,11 @@
         - { src: "./.env", dest: "~/stylo/.env" }
         - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
+    - name: Copy feature flags
+      ansible.builtin.copy:
+        src: ./features-{{ env }}.json
+        dest: ~/stylo/features.json
+
     - name: Copy backup files
       ansible.builtin.template:
         src: "./backup.sh"

@@ -12,7 +12,8 @@ const User = require('../models/user.js')
 const Tag = require('../models/tag.js')
 const Corpus = require('../models/corpus.js')
 const { createLoaders } = require('../loaders.js')
-const { NotFoundError } = require('../helpers/errors.js')
+const { NotAuthorizedError, NotFoundError } = require('../helpers/errors.js')
+const { loadFeatures } = require('../helpers/features.js')
 
 const { after, before, beforeEach, describe, test } = require('node:test')
 const assert = require('node:assert')
@@ -456,7 +457,10 @@ describe('article resolver', () => {
     before(async () => {
       context.user = user5
       context.userId = user5._id
+      loadFeatures(`${__dirname}/../helpers/__fixtures__/features.json`)
     })
+
+    after(() => loadFeatures(''))
 
     test('renameArticle returns the updated article', async () => {
       const article = await Article.create({
@@ -506,6 +510,25 @@ describe('article resolver', () => {
 
       assert.equal(result._id.toString(), article._id.toString())
       assert.equal(result.nakalaLink, 'https://nakala.fr/10.34847/nkl.1')
+    })
+
+    test('Nakala links are refused without the nakala feature', async () => {
+      loadFeatures('')
+      const article = await Article.create({ owner: [context.userId] })
+      const nakala = 'https://nakala.fr/1'
+
+      await assert.rejects(
+        ArticleMutation.setArticleNakalaLink(
+          {},
+          { articleId: article._id, nakala },
+          context
+        ),
+        NotAuthorizedError
+      )
+      await assert.rejects(
+        ArticleResolver.setNakalaLink(article, { nakala }, context),
+        NotAuthorizedError
+      )
     })
 
     test('deprecated Article.rename still returns a boolean', async () => {

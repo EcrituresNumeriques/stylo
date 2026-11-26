@@ -33,6 +33,9 @@ services:
       - .env
     environment:
       - DATABASE_URL=mongodb://mongodb-stylo:27017/stylo-dev
+      - FEATURES_FILE=/data/features.json
+    volumes:
+      - ./features.example.json:/data/features.json:ro
     ports:
       - 127.0.0.1:3030:3030
 

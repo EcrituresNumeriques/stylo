@@ -6,6 +6,8 @@
  */
 import useSWR from 'swr'
 
+import { getSessionToken } from '../helpers/sessionToken.js'
+
 /**
  * JSON fetcher for Nakala API requests.
  * @param {object} params - Request parameters.
@@ -14,6 +16,7 @@ import useSWR from 'swr'
  * @returns {Promise<object>} The JSON response from the API.
  */
 function jsonFetcher({ url, payload }) {
+  const sessionToken = getSessionToken()
   return fetch(url, {
     method: payload ? 'POST' : 'GET',
     cache: 'no-cache',
@@ -21,6 +24,7 @@ function jsonFetcher({ url, payload }) {
       'Cache-Control': 'no-cache',
       accept: 'application/json',
       'Content-Type': 'application/json',
+      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
     },
   }).then((response) => response.json())
 }

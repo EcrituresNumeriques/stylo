@@ -7,6 +7,7 @@ const Tag = require('../models/tag')
 const { BadRequestError, ExpectedError } = require('../helpers/errors')
 const { requireArgument } = require('../helpers/arguments.js')
 const { createJWTToken } = require('../helpers/token.js')
+const { resolveFeatures } = require('../helpers/features.js')
 
 const config = require('../config.js')
 
@@ -333,6 +334,10 @@ module.exports = {
       )
       // a contact may have been deleted
       return contacts.filter(Boolean)
+    },
+
+    features(user) {
+      return resolveFeatures(user)
     },
 
     authProviders(user, _args, context) {

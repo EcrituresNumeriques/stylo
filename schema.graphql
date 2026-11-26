@@ -713,6 +713,9 @@ type User {
   deletedAt: DateTime
   displayName: String
   email: EmailAddress
+
+  "Features enabled for this user on this instance"
+  features: [String!]!
   firstName: String
   id: ID!
   institution: String

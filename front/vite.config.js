@@ -182,6 +182,8 @@ export default defineConfig(async ({ mode }) => {
       coverage: {
         provider: 'v8',
         reporter: ['text', 'html', 'lcovonly'],
+        // every source file counts, even when no test loads it
+        include: ['src/**'],
         extension: ['.js', '.jsx'],
         exclude: [
           ...coverageConfigDefaults.exclude,

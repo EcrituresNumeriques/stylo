@@ -1,0 +1,7 @@
+{
+  "groups": {},
+  "flags": {
+    "nakala": { "state": "on" },
+    "webdav": { "state": "on" }
+  }
+}

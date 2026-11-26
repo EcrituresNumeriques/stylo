@@ -9,6 +9,8 @@ const migrate = require('db-migrate')
 const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
+// refuses to start with an invalid features file
+require('./helpers/features.js').loadFeatures()
 
 if (config.get('sentry.dsn')) {
   Sentry.init({
@@ -61,6 +63,7 @@ const {
 } = require('./helpers/collaboration.js')
 const { populateUserFromJWT } = require('./helpers/token.js')
 const { reportExecutionErrors } = require('./helpers/errorReporting.js')
+const { requireFeature } = require('./helpers/features.js')
 
 const User = require('./models/user')
 const {
@@ -270,7 +273,20 @@ app.use(
 )
 
 /* Nakala */
-app.use('/nakala', proxy(config.get('nakala.apiUrl')))
+app.use(
+  '/nakala',
+  populateUserFromJWT({ jwtSecret }),
+  requireFeature('nakala'),
+  proxy(config.get('nakala.apiUrl'), {
+    // the Stylo token is not meant for Nakala
+    proxyReqOptDecorator({
+      headers: { authorization: _, ...headers },
+      ...options
+    }) {
+      return { ...options, headers }
+    },
+  })
+)
 
 /* Backup */
 app.post(

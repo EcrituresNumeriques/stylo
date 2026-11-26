@@ -85,6 +85,8 @@ type User {
   createdAt: DateTime
   updatedAt: DateTime
   deletedAt: DateTime
+  "Features enabled for this user on this instance"
+  features: [String!]!
   addContact(userId: ID!): User @deprecated(reason: "Use addContact mutation at the root instead.")
   removeContact(userId: ID!): User @deprecated(reason: "Use removeContact mutation at the root instead.")
 

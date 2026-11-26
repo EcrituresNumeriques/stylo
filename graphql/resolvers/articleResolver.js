@@ -10,6 +10,7 @@ const Version = require('../models/version.js')
 
 const isUser = require('../policies/isUser.js')
 const { requireArgument } = require('../helpers/arguments.js')
+const { assertFeature } = require('../helpers/features.js')
 const { getWorkspace } = require('./workspaceResolver.js')
 const { reformat } = require('../helpers/metadata.js')
 const {
@@ -446,6 +447,7 @@ module.exports = {
     },
 
     async setArticleNakalaLink(_root, { articleId, nakala }, context) {
+      assertFeature('nakala', context)
       const article = await getArticleByContext(articleId, context)
       return article.setNakalaLink(nakala)
     },
@@ -653,7 +655,8 @@ module.exports = {
     },
 
     /** @deprecated Use setArticleNakalaLink root mutation instead. */
-    async setNakalaLink(article, { nakala }) {
+    async setNakalaLink(article, { nakala }, context) {
+      assertFeature('nakala', context)
       await article.setNakalaLink(nakala)
       return true
     },
