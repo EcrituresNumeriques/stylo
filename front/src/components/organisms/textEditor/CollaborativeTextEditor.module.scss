@@ -20,8 +20,6 @@
     .monaco-editor .currentFindMatch {
       border: none;
       box-shadow: 0 0 0 2px $text-highlight-color;
-      outline: 2px solid $main-color;
-      outline-offset: 2px;
     }
 
     /* Monaco étire les décorations de lignes sur toute la zone (lineDecorationsWidth

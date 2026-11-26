@@ -16,9 +16,9 @@ const theme = {
   inherit: true,
   rules: [],
   colors: {
-    // correspondance courante : $text-highlight-color, bordure $main-color
+    // correspondance courante : $text-highlight-color, sans bordure
     'editor.findMatchBackground': '#fedc2a',
-    'editor.findMatchBorder': '#202020',
+    'editor.findMatchBorder': '#00000000',
     // autres correspondances : $muted-background-color, bordure $muted-color
     'editor.findMatchHighlightBackground': '#ececec',
     'editor.findMatchHighlightBorder': '#797676',
