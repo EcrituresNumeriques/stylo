@@ -1,27 +1,36 @@
-import Editor, { loader } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor/editor'
-import editorWorker from 'monaco-editor/editor/editor.worker?worker'
-import 'monaco-editor/features/register.all.js'
-
-import 'monaco-editor/languages/definitions/markdown/register.js'
-import 'monaco-editor/languages/definitions/yaml/register.js'
-import { useCallback, useRef } from 'react'
+import Editor, { DiffEditor } from '@monaco-editor/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
+import { loadMonaco, monaco } from './monaco.js'
 import { registerLeaveEditor } from './monacoLeaveEditor.js'
 
-// Use monaco-editor as a npm package;
-// import it from node_modules and include monaco sources into your bundle (instead of using CDN).
-// Reference: https://github.com/suren-atoyan/monaco-react#use-monaco-editor-as-an-npm-package
-self.MonacoEnvironment = {
-  getWorker() {
-    // noinspection JSPotentiallyInvalidConstructorUsage
-    return new editorWorker()
-  },
-}
+/**
+ * Renders `children` once Monaco is loaded, in the interface language.
+ * @param {object} props
+ * @param {string} [props.className] - also given to the placeholder
+ * @param {React.ReactNode} props.children
+ */
+function WhenMonacoLoaded({ className, children }) {
+  const { i18n } = useTranslation('editor', { useSuspense: false })
+  const [isLoaded, setIsLoaded] = useState(Boolean(monaco))
 
-loader.config({ monaco })
-loader.init()
+  useEffect(() => {
+    let isMounted = true
+    loadMonaco(i18n.resolvedLanguage).then(() => isMounted && setIsLoaded(true))
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  if (!isLoaded) {
+    return <Loading className={className} />
+  }
+
+  return children
+}
 
 export default function MonacoEditor({ onMount, ...props }) {
   // sans useSuspense: false, le composant suspend hors de la page d'édition,
@@ -43,5 +52,17 @@ export default function MonacoEditor({ onMount, ...props }) {
     [onMount]
   )
 
-  return <Editor {...props} onMount={handleMount} />
+  return (
+    <WhenMonacoLoaded className={props.className}>
+      <Editor {...props} onMount={handleMount} />
+    </WhenMonacoLoaded>
+  )
+}
+
+export function MonacoDiffEditor(props) {
+  return (
+    <WhenMonacoLoaded className={props.className}>
+      <DiffEditor {...props} />
+    </WhenMonacoLoaded>
+  )
 }

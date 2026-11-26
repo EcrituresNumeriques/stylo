@@ -1,10 +1,10 @@
-import { SubmenuAction } from 'monaco-editor/base/common/actions'
 import {
-  editor as _editor,
   KeyCode,
   KeyMod,
+  monaco,
   Selection,
-} from 'monaco-editor/editor'
+  SubmenuAction,
+} from '../../../molecules/monaco.js'
 
 import createDelimitedBlockCommand, {
   createBlockCommand,
@@ -14,7 +14,7 @@ import createInlineBlockCommand, {
   createHyperlinkCommand,
 } from './inline-block.js'
 
-export { Separator, SubmenuAction } from 'monaco-editor/base/common/actions'
+export { Separator, SubmenuAction } from '../../../molecules/monaco.js'
 
 const actionTypes = {
   BLOCK: 'block',
@@ -385,12 +385,12 @@ export function registerActions(
     if (palette) {
       editor.addAction(bindAction(editor, t, action))
     } else {
-      _editor.addCommand(bindAction(editor, t, action))
+      monaco.editor.addCommand(bindAction(editor, t, action))
     }
 
     // adding the keybinding for the context menu
     if (shortcuts && action.keybindings?.at(0)) {
-      _editor.addKeybindingRule({
+      monaco.editor.addKeybindingRule({
         keybinding: action.keybindings.at(0),
         command: palette ? `${editor.getId()}:${action.id}` : action.id,
       })

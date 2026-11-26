@@ -1,4 +1,4 @@
-import { KeyCode, KeyMod, Selection } from 'monaco-editor/editor'
+import { KeyCode, KeyMod, Selection } from '../../../molecules/monaco.js'
 
 import { blockAttributes } from './index.js'
 

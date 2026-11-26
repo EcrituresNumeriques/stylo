@@ -1,6 +1,5 @@
-import { Range } from 'monaco-editor/editor'
-
 import { applicationConfig } from '../../../config.js'
+import { Range } from '../../molecules/monaco.js'
 
 export class BibliographyCompletionProvider {
   constructor(bibTeXEntries) {

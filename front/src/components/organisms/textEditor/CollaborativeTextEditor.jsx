@@ -1,11 +1,8 @@
-import { DiffEditor } from '@monaco-editor/react'
 import clsx from 'clsx'
 import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import 'monaco-editor/features/codicon/register.js'
-import { MonacoBinding } from 'y-monaco'
 
 import { isFocusLost } from '../../../helpers/focus.js'
 import {
@@ -18,7 +15,12 @@ import { useCollaboration } from '../../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../../hooks/stylo-export.js'
 import { useMarkdownValidator } from '../../../hooks/useMarkdownValidator.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
-import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
+import {
+  Alert,
+  Loading,
+  MonacoDiffEditor,
+  MonacoEditor,
+} from '../../molecules/index.js'
 import { onDropIntoEditor } from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
 import {
@@ -196,7 +198,10 @@ export default function CollaborativeTextEditor({
       // https://github.com/yjs/y-monaco/issues/27
       model.setEOL(monaco.editor.EndOfLineSequence.LF)
       if (yText && awareness) {
-        new MonacoBinding(yText, model, new Set([editor]), awareness)
+        // y-monaco imports Monaco: it is loaded once Monaco is
+        import('y-monaco').then(({ MonacoBinding }) => {
+          new MonacoBinding(yText, model, new Set([editor]), awareness)
+        })
       }
 
       setIsEditorMounted(true)
@@ -335,7 +340,7 @@ export default function CollaborativeTextEditor({
 
       {mode === 'compare' && (
         <div className={styles.collaborativeEditor}>
-          <DiffEditor
+          <MonacoDiffEditor
             className={styles.editor}
             width={'100%'}
             height={'auto'}

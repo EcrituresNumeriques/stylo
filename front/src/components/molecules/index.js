@@ -5,7 +5,10 @@ export { default as DropdownMenu } from './DropdownMenu.jsx'
 export { default as FormActions } from './FormActions.jsx'
 export { default as Loading } from './Loading.jsx'
 export { default as Modal } from './Modal.jsx'
-export { default as MonacoEditor } from './MonacoEditor.jsx'
+export {
+  default as MonacoEditor,
+  MonacoDiffEditor,
+} from './MonacoEditor.jsx'
 export { default as ObjectMetadataLabel } from './ObjectMetadataLabel.jsx'
 export { default as Combobox } from './SelectCombobox.jsx'
 export { default as Toggle } from './Toggle.jsx'
