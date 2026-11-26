@@ -11,6 +11,7 @@ export const STYLO_THEME = 'stylo'
  */
 const palette = {
   background: '#ffffff', // $extra-background-color
+  pageBackground: '#f8f9fa', // $main-background-color
   main: '#202020', // $main-color
   lighter: '#4d4d4d', // $main-lighter-color
   muted: '#797676', // $muted-color
@@ -75,6 +76,8 @@ const theme = {
     'editorError.foreground': palette.error,
     'editorWarning.foreground': palette.warn,
     'editorInfo.foreground': palette.info,
+    // la gouttière se détache du texte, comme le fond des pages de Stylo
+    'editorGutter.background': palette.pageBackground,
     'editorLineNumber.foreground': palette.muted,
     'editorLineNumber.activeForeground': palette.main,
     // champ de recherche, suggestions, survols et menus : blanc encadré de noir
