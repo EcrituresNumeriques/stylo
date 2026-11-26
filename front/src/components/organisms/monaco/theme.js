@@ -18,8 +18,8 @@ const theme = {
   colors: {
     // sélection : $info-color, transparent pour que le texte et le surlignage
     // restent visibles dessous
-    'editor.selectionBackground': '#326feb59',
-    'editor.inactiveSelectionBackground': '#326feb26',
+    'editor.selectionBackground': '#326feb33',
+    'editor.inactiveSelectionBackground': '#326feb1a',
     // correspondance courante : $text-highlight-color, sans bordure
     'editor.findMatchBackground': '#fedc2a',
     'editor.findMatchBorder': '#00000000',
