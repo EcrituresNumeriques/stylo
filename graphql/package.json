@@ -4,10 +4,6 @@
   "description": "",
   "main": "app.js",
   "private": true,
-  "engines": {
-    "node": ">=24",
-    "npm": ">=10"
-  },
   "scripts": {
     "delete-user": "node bin/delete-user.mjs",
     "generate-service-token": "node --env-file-if-exists=../.env bin/generate-service-token.js",
@@ -69,8 +65,5 @@
   "devDependencies": {
     "c8": "~10.1",
     "testcontainers": "~11.14"
-  },
-  "volta": {
-    "extends": "../package.json"
   }
 }

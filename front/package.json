@@ -12,10 +12,6 @@
     "not dead",
     "> 0.2%"
   ],
-  "engines": {
-    "node": ">=24",
-    "npm": ">=10"
-  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -97,8 +93,5 @@
     "mongodb": "^6.17.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "vitest": "~4.1"
-  },
-  "volta": {
-    "extends": "../package.json"
   }
 }
