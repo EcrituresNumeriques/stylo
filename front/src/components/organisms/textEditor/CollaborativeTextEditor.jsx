@@ -193,12 +193,13 @@ export default function CollaborativeTextEditor({
     }
   }, [articleId, versionId, yText])
 
+  // the version is empty until it is received from the server
   useEffect(() => {
-    if (versionId) {
+    if (versionId && version.md !== undefined) {
       onStatsChange?.(version.md)
       onStructureChange?.(version.md)
     }
-  }, [versionId])
+  }, [versionId, version.md])
 
   useEffect(() => {
     if (bibliography) {
