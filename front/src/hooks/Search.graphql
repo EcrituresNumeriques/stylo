@@ -5,6 +5,11 @@ query search($query: String!) {
         id
         title
         updatedAt
+        workspaces {
+          id
+          name
+          color
+        }
         owner {
           id
           displayName

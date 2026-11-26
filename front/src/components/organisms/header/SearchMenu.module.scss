@@ -70,8 +70,22 @@ $spacing: 0.375rem;
   }
 }
 
+// liseré à la couleur de l'espace de travail
+.inWorkspace {
+  border-left: 5px solid var(--workspace-color);
+}
+
 .metadata {
+  align-items: center;
   color: $main-lighter-color;
+  display: flex;
+  flex-wrap: wrap;
   font-size: 0.85em;
+  gap: 0.25em;
   grid-column: 1;
+}
+
+.workspace {
+  align-items: center;
+  display: inline-flex;
 }

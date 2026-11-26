@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import {
   Book,
   FileDownIcon,
@@ -14,12 +15,14 @@ import { getArticleContributors } from '../../../hooks/Article.graphql'
 import { useConditionalFetchData } from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useActiveUserId, useDisplayName } from '../../../hooks/user.js'
+import { useWorkspaces } from '../../../hooks/workspace.js'
 import buttonStyles from '../../atoms/Button.module.scss'
 import { Button, UpdatedAtLabel } from '../../atoms/index.js'
 import { Modal, ObjectMetadataLabel } from '../../molecules/index.js'
 import ArticleContributors from '../article/sharing/ArticleContributors.jsx'
 import Export from '../export/Export.jsx'
 
+import headerStyles from './header.module.scss'
 import styles from './SearchMenu.module.scss'
 
 /**
@@ -44,7 +47,7 @@ export function ArticleResult({ article, onSelect }) {
   )
 
   return (
-    <li className={styles.item}>
+    <ResultItem workspaces={article.workspaces}>
       <header className={styles.header}>
         <h3 className={styles.title}>
           <FileText aria-hidden size={18} /> {article.title}
@@ -78,7 +81,11 @@ export function ArticleResult({ article, onSelect }) {
           </Link>
         </div>
       </header>
-      <ResultMetadata updatedAt={article.updatedAt} author={article.owner} />
+      <ResultMetadata
+        updatedAt={article.updatedAt}
+        author={article.owner}
+        workspaces={article.workspaces}
+      />
 
       <Modal
         {...sharingModal.bindings}
@@ -91,7 +98,7 @@ export function ArticleResult({ article, onSelect }) {
       >
         <ArticleContributors article={article} contributors={contributors} />
       </Modal>
-    </li>
+    </ResultItem>
   )
 }
 
@@ -105,9 +112,13 @@ export function ArticleResult({ article, onSelect }) {
 export function CorpusResult({ corpus, onSelect }) {
   const { t } = useTranslation('corpus', { useSuspense: false })
   const exportModal = useModal()
+  const { workspaces: userWorkspaces } = useWorkspaces()
+  const workspaces = (userWorkspaces ?? []).filter(
+    ({ id }) => id === corpus.workspaceId
+  )
 
   return (
-    <li className={styles.item}>
+    <ResultItem workspaces={workspaces}>
       <header className={styles.header}>
         <h3 className={styles.title}>
           <Book aria-hidden size={18} /> {corpus.name}
@@ -141,7 +152,11 @@ export function CorpusResult({ corpus, onSelect }) {
           </Link>
         </div>
       </header>
-      <ResultMetadata updatedAt={corpus.updatedAt} author={corpus.creator} />
+      <ResultMetadata
+        updatedAt={corpus.updatedAt}
+        author={corpus.creator}
+        workspaces={workspaces}
+      />
 
       <Modal
         {...exportModal.bindings}
@@ -157,29 +172,61 @@ export function CorpusResult({ corpus, onSelect }) {
           onCancel={() => exportModal.close()}
         />
       </Modal>
+    </ResultItem>
+  )
+}
+
+/**
+ * Card of a result, edged with the color of its workspace (none for the
+ * personal space).
+ *
+ * @param {object} props
+ * @param {{color: string}[]} props.workspaces
+ * @param {React.ReactNode} props.children
+ */
+function ResultItem({ workspaces, children }) {
+  const color = workspaces[0]?.color
+  return (
+    <li
+      className={clsx(styles.item, color && styles.inWorkspace)}
+      style={color && { '--workspace-color': color }}
+    >
+      {children}
     </li>
   )
 }
 
 /**
- * Last update, and the author when it is someone else.
+ * Workspaces (not the personal space), last update, and the author when it
+ * is someone else.
  *
  * @param {object} props
  * @param {string} props.updatedAt
  * @param {{id: string}} props.author
+ * @param {{id: string, name: string, color: string}[]} props.workspaces
  */
-function ResultMetadata({ updatedAt, author }) {
+function ResultMetadata({ updatedAt, author, workspaces }) {
   const activeUserId = useActiveUserId()
   const displayName = useDisplayName()
-  return author?.id === activeUserId ? (
+  return (
     <div className={styles.metadata}>
-      <UpdatedAtLabel date={updatedAt} />
+      {workspaces.map(({ id, name, color }) => (
+        <span key={id} className={styles.workspace}>
+          <span
+            className={headerStyles.chip}
+            style={{ backgroundColor: color }}
+          />
+          {name} ·
+        </span>
+      ))}
+      {author?.id === activeUserId ? (
+        <UpdatedAtLabel date={updatedAt} />
+      ) : (
+        <ObjectMetadataLabel
+          updatedAtDate={updatedAt}
+          creatorName={displayName(author)}
+        />
+      )}
     </div>
-  ) : (
-    <ObjectMetadataLabel
-      className={styles.metadata}
-      updatedAtDate={updatedAt}
-      creatorName={displayName(author)}
-    />
   )
 }
