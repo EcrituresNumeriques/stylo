@@ -3,10 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { ArticleSchemas } from '../../../schemas/schemas.js'
 import { Select } from '../../atoms/index.js'
-
-import Form from '../../molecules/Form.jsx'
-
 import styles from './ArticleEditorMetadataForm.module.scss'
+import MetadataForm from './MetadataForm.jsx'
 
 /**
  * @param {object} props properties
@@ -105,9 +103,9 @@ export default function ArticleEditorMetadataForm({
           ))}
         </Select>
       </div>
-      <Form
+      <MetadataForm
         readOnly={readOnly}
-        formData={metadata}
+        data={metadata}
         schema={schemaMerged}
         uiSchema={uiSchema}
         onChange={handleChange}

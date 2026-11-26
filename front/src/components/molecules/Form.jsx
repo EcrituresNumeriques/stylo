@@ -8,10 +8,6 @@ import { Translation } from 'react-i18next'
 
 import { Button } from '../atoms/index.js'
 
-import CorpusArticleMetadataSelector from '../organisms/corpus/CorpusArticleMetadataSelector.jsx'
-import isidoreAuthorSearch from '../organisms/metadata/isidoreAuthor.jsx'
-import IsidoreAuthorAPIAutocompleteField from '../organisms/metadata/isidoreAuthor.jsx'
-import isidoreKeywordSearch from '../organisms/metadata/isidoreKeyword.jsx'
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 import styles from './form.module.scss'
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
@@ -230,93 +226,83 @@ function FieldTemplate(properties) {
 
 /**
  * @param {ObjectFieldTemplateProps} properties
- * @param {Record<string, unknown>} context
+ * @param {object} extensions
+ * @param {Record<string, React.ComponentType>} extensions.fields custom fields
+ * @param {RenderGroupAction} [extensions.renderGroupAction]
  * @returns {JSX.Element|undefined}
  */
-function ObjectFieldTemplate(properties, context) {
+function ObjectFieldTemplate(
+  properties,
+  { fields: customFields, renderGroupAction }
+) {
   if (properties.uiSchema['ui:groups']) {
     const groups = properties.uiSchema['ui:groups']
-    const groupedElements = groups.map(
-      ({ fields, title, importFromArticle }) => {
-        const elements = fields
-          .filter(
-            (field) => properties.uiSchema[field]?.['ui:widget'] !== 'hidden'
+    const groupedElements = groups.map((group) => {
+      const { fields, title } = group
+      const elements = fields
+        .filter(
+          (field) => properties.uiSchema[field]?.['ui:widget'] !== 'hidden'
+        )
+        .map((field) => {
+          const element = properties.properties.find(
+            (element) => element.name === field
           )
-          .map((field) => {
-            const element = properties.properties.find(
-              (element) => element.name === field
+
+          if (!element) {
+            console.error(
+              'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
+              field,
+              title || '',
+              fields
             )
+          }
 
-            if (!element) {
-              console.error(
-                'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
-                field,
-                title || '',
-                fields
+          return [field, element]
+        })
+
+      if (elements && elements.length > 0) {
+        return (
+          <fieldset className={styles.fieldset} key={fields.join('-')}>
+            {title && (
+              <legend className={styles.legend}>
+                <Translation ns="form" useSuspense={false}>
+                  {(t) => <>{t(title)}</>}
+                </Translation>
+                {renderGroupAction?.(group, {
+                  update: (value) =>
+                    properties.formContext.partialUpdate({
+                      id: properties.idSchema.$id,
+                      value,
+                    }),
+                })}
+              </legend>
+            )}
+            {elements.map(([field, element]) => {
+              return element ? (
+                <Fragment key={field}>{element.content}</Fragment>
+              ) : (
+                <p key={field} className={styles.fieldHasNoElementError}>
+                  Field <code>{field}</code> defined in <code>ui:groups</code>{' '}
+                  is not an entry of <code>data-schema.json[properties]</code>{' '}
+                  object.
+                </p>
               )
-            }
-
-            return [field, element]
-          })
-
-        if (elements && elements.length > 0) {
-          return (
-            <fieldset className={styles.fieldset} key={fields.join('-')}>
-              {title && (
-                <legend className={styles.legend}>
-                  <Translation ns="form" useSuspense={false}>
-                    {(t) => <>{t(title)}</>}
-                  </Translation>
-                  {importFromArticle && (
-                    <CorpusArticleMetadataSelector
-                      corpusId={context.corpusId}
-                      onSelectedItem={(item) => {
-                        const { $id: id } = properties.idSchema
-                        const partialMetadata = Object.keys(
-                          item.workingVersion.metadata
-                        )
-                          .filter((key) => fields.includes(key))
-                          .reduce((obj, key) => {
-                            obj[key] = item.workingVersion.metadata[key]
-                            return obj
-                          }, {})
-                        properties.formContext.partialUpdate({
-                          id,
-                          value: partialMetadata,
-                        })
-                      }}
-                    />
-                  )}
-                </legend>
-              )}
-              {elements.map(([field, element]) => {
-                return element ? (
-                  <Fragment key={field}>{element.content}</Fragment>
-                ) : (
-                  <p key={field} className={styles.fieldHasNoElementError}>
-                    Field <code>{field}</code> defined in <code>ui:groups</code>{' '}
-                    is not an entry of <code>data-schema.json[properties]</code>{' '}
-                    object.
-                  </p>
-                )
-              })}
-            </fieldset>
-          )
-        }
+            })}
+          </fieldset>
+        )
       }
-    )
+    })
 
     return <>{groupedElements}</>
   }
 
   if (properties) {
-    const autocomplete = properties.uiSchema['ui:autocomplete']
+    const AutocompleteField =
+      customFields[properties.uiSchema['ui:autocomplete']]
     return (
       <Fragment key={properties.key}>
         {properties.description}
-        {autocomplete === 'IsidoreAuthorSearch' && (
-          <IsidoreAuthorAPIAutocompleteField {...properties} />
-        )}
+        {AutocompleteField && <AutocompleteField {...properties} />}
         {properties.properties.map((element) => (
           <Fragment key={element.name}>{element.content}</Fragment>
         ))}
@@ -325,27 +311,35 @@ function ObjectFieldTemplate(properties, context) {
   }
 }
 
-const customFields = {
-  IsidoreKeywordSearch: isidoreKeywordSearch,
-  IsidoreAuthorSearch: isidoreAuthorSearch,
-}
-
 const customWidgets = {
   SelectWidget: CustomSelectWidget,
   CheckboxesWidget: CustomCheckboxesWidget,
   toggle: ToggleWidget,
 }
 
-const EMPTY_CONTEXT = {}
+const EMPTY_FIELDS = {}
 
 /**
+ * Renders an extra element (button, menu…) next to the title of a group of fields.
+ * @callback RenderGroupAction
+ * @param {{fields: string[], title?: string, [key: string]: unknown}} group entry of `ui:groups`
+ * @param {{update: (value: Record<string, unknown>) => void}} actions `update` sets the value of the object that holds the group
+ * @returns {React.ReactNode}
+ */
+
+/**
+ * Form generated from a JSON schema.
+ *
+ * This component knows nothing about the application domains: domain-specific
+ * fields and actions are provided by the caller (`fields`, `renderGroupAction`).
  * @param {object} props properties
  * @param {Record<string, unknown>} props.formData
  * @param {boolean} props.readOnly
  * @param {Record<string, unknown>} props.schema
  * @param {Record<string, unknown>} props.uiSchema
  * @param {(formData: Record<string, unknown>) => void} props.onChange
- * @param {Record<string, unknown>} props.context
+ * @param {Record<string, React.ComponentType>} props.fields custom fields, referenced by name in the UI schema (`ui:field` or `ui:autocomplete`)
+ * @param {RenderGroupAction} props.renderGroupAction
  * @returns {Element}
  */
 export default function SchemaForm({
@@ -354,7 +348,8 @@ export default function SchemaForm({
   schema,
   uiSchema,
   onChange = () => {},
-  context = EMPTY_CONTEXT,
+  fields = EMPTY_FIELDS,
+  renderGroupAction,
 }) {
   const [formData, setFormData] = useState(initialFormData)
   const [, setErrors] = useState({})
@@ -375,12 +370,12 @@ export default function SchemaForm({
   const customTemplates = useMemo(
     () => ({
       ObjectFieldTemplate: (properties) =>
-        ObjectFieldTemplate(properties, context),
+        ObjectFieldTemplate(properties, { fields, renderGroupAction }),
       FieldTemplate,
       BaseInputTemplate,
       ArrayFieldTemplate,
     }),
-    [context]
+    [fields, renderGroupAction]
   )
 
   const handleUpdate = useCallback(
@@ -402,7 +397,7 @@ export default function SchemaForm({
       name="Metadata"
       templates={customTemplates}
       widgets={customWidgets}
-      fields={customFields}
+      fields={fields}
       uiSchema={uiSchema}
       formData={formData}
       onChange={handleUpdate}
