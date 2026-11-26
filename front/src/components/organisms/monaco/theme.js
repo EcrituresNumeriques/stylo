@@ -15,7 +15,6 @@ const palette = {
   main: '#202020', // $main-color
   lighter: '#4d4d4d', // $main-lighter-color
   muted: '#797676', // $muted-color
-  mutedBackground: '#ececec', // $muted-background-color
   links: '#1565c0', // $main-color-links
   highlight: '#fedc2a', // $text-highlight-color
   error: '#cc2b19', // $error-color
@@ -67,7 +66,7 @@ const theme = {
     // correspondances de la recherche, sans bordure
     'editor.findMatchBackground': palette.highlight,
     'editor.findMatchBorder': transparent,
-    'editor.findMatchHighlightBackground': palette.mutedBackground,
+    'editor.findMatchHighlightBackground': `${palette.highlight}66`,
     'editor.findMatchHighlightBorder': transparent,
     // Monaco surligne toute la ligne de la correspondance courante, soit tout
     // le paragraphe avec wordWrap : le mot recherché n'en ressortait plus

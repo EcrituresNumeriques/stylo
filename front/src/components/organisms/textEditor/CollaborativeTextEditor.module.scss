@@ -24,7 +24,7 @@
     }
 
     .monaco-editor .findMatch {
-      box-shadow: 0 0 0 2px $muted-background-color;
+      box-shadow: 0 0 0 2px rgba($text-highlight-color, 0.4);
     }
 
     .monaco-editor .currentFindMatch {
