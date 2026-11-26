@@ -12,8 +12,6 @@ query search($query: String!) {
         }
         owner {
           id
-          displayName
-          username
         }
       }
       score
@@ -24,11 +22,6 @@ query search($query: String!) {
         name
         updatedAt
         workspaceId
-        creator {
-          id
-          displayName
-          username
-        }
       }
       score
     }

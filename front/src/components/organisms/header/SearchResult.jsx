@@ -14,11 +14,10 @@ import { Link } from 'react-router'
 import { getArticleContributors } from '../../../hooks/Article.graphql'
 import { useConditionalFetchData } from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
-import { useActiveUserId, useDisplayName } from '../../../hooks/user.js'
 import { useWorkspaces } from '../../../hooks/workspace.js'
 import buttonStyles from '../../atoms/Button.module.scss'
-import { Button, UpdatedAtLabel } from '../../atoms/index.js'
-import { Modal, ObjectMetadataLabel } from '../../molecules/index.js'
+import { Button, TimeAgo } from '../../atoms/index.js'
+import { Modal } from '../../molecules/index.js'
 import ArticleContributors from '../article/sharing/ArticleContributors.jsx'
 import Export from '../export/Export.jsx'
 
@@ -83,7 +82,6 @@ export function ArticleResult({ article, onSelect }) {
       </header>
       <ResultMetadata
         updatedAt={article.updatedAt}
-        author={article.owner}
         workspaces={article.workspaces}
       />
 
@@ -106,7 +104,7 @@ export function ArticleResult({ article, onSelect }) {
  * Compact corpus card, with its main actions.
  *
  * @param {object} props
- * @param {{id: string, name: string, updatedAt: string, workspaceId: string|null, creator: {id: string}}} props.corpus
+ * @param {{id: string, name: string, updatedAt: string, workspaceId: string|null}} props.corpus
  * @param {() => void} props.onSelect called when leaving the results
  */
 export function CorpusResult({ corpus, onSelect }) {
@@ -152,11 +150,7 @@ export function CorpusResult({ corpus, onSelect }) {
           </Link>
         </div>
       </header>
-      <ResultMetadata
-        updatedAt={corpus.updatedAt}
-        author={corpus.creator}
-        workspaces={workspaces}
-      />
+      <ResultMetadata updatedAt={corpus.updatedAt} workspaces={workspaces} />
 
       <Modal
         {...exportModal.bindings}
@@ -197,17 +191,14 @@ function ResultItem({ workspaces, children }) {
 }
 
 /**
- * Workspaces (not the personal space), last update, and the author when it
- * is someone else.
+ * Workspaces (not the personal space) and how long ago it was updated.
  *
  * @param {object} props
  * @param {string} props.updatedAt
- * @param {{id: string}} props.author
  * @param {{id: string, name: string, color: string}[]} props.workspaces
  */
-function ResultMetadata({ updatedAt, author, workspaces }) {
-  const activeUserId = useActiveUserId()
-  const displayName = useDisplayName()
+function ResultMetadata({ updatedAt, workspaces }) {
+  const { t } = useTranslation()
   return (
     <div className={styles.metadata}>
       {workspaces.map(({ id, name, color }) => (
@@ -219,14 +210,9 @@ function ResultMetadata({ updatedAt, author, workspaces }) {
           {name} ·
         </span>
       ))}
-      {author?.id === activeUserId ? (
-        <UpdatedAtLabel date={updatedAt} />
-      ) : (
-        <ObjectMetadataLabel
-          updatedAtDate={updatedAt}
-          creatorName={displayName(author)}
-        />
-      )}
+      <span title={t('common.updatedAt.label')}>
+        <TimeAgo date={updatedAt} />
+      </span>
     </div>
   )
 }
