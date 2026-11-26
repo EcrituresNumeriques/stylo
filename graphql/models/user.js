@@ -159,6 +159,7 @@ const userSchema = new Schema(
           email,
           firstName: '',
           institution: null,
+          lastAccesses: [],
           lastName: '',
           password: null,
         })

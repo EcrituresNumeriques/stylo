@@ -507,4 +507,29 @@ describe('corpus resolver', () => {
   test('refuse to list personal corpora when not authenticated', async () => {
     await assert.rejects(Query.corpora({}, {}, {}), NotAuthenticatedError)
   })
+
+  test('setCorpusArticles dates added articles and keeps the others', async () => {
+    const alice = await User.create({ email: 'alice.set@huma-num.fr' })
+    const kept = await Article.create({ title: 'Kept', owner: alice.id })
+    const added = await Article.create({ title: 'Added', owner: alice.id })
+    const addedAt = new Date('2026-01-01')
+    const corpus = await Corpus.create({
+      name: 'Set',
+      articles: [{ article: kept._id, order: 0, addedAt }],
+      creator: alice.id,
+    })
+    const before = new Date()
+
+    await Mutation.setCorpusArticles(
+      {},
+      { corpusId: corpus.id, input: { articleIds: [kept.id, added.id] } },
+      { user: alice, userId: alice.id }
+    )
+
+    const { articles } = await Corpus.findById(corpus.id)
+    const dateOf = (article) =>
+      articles.find((a) => a.article.equals(article._id)).addedAt
+    assert.deepEqual(dateOf(kept), addedAt)
+    assert.ok(dateOf(added) >= before && dateOf(added) <= new Date())
+  })
 })

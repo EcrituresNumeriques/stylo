@@ -105,6 +105,17 @@ const corpusSchema = new Schema(
           { timestamps: true }
         )
       },
+
+      /**
+       * Builds a corpus entry for an article added now.
+       *
+       * @param {import('mongoose').Types.ObjectId | string} articleId
+       * @param {number} [order]
+       * @returns {{ article: { _id: import('mongoose').Types.ObjectId | string }, order: number, addedAt: Date }}
+       */
+      newArticleEntry(articleId, order = 0) {
+        return { article: { _id: articleId }, order, addedAt: new Date() }
+      },
     },
   }
 )
@@ -153,11 +164,9 @@ corpusSchema.methods.addArticles = async function addArticles(articleIds) {
     ...this.articles.map(({ order }) => order ?? -1)
   )
   this.articles.push(
-    ...toAdd.map((article, index) => ({
-      article,
-      order: lastOrder + 1 + index,
-      addedAt: new Date(),
-    }))
+    ...toAdd.map((articleId, index) =>
+      this.constructor.newArticleEntry(articleId, lastOrder + 1 + index)
+    )
   )
   return this.save()
 }
@@ -209,13 +218,9 @@ corpusSchema.methods.updateArticlesOrder = async function updateArticlesOrder(
     acc[item.articleId] = item.order
     return acc
   }, {})
-  this.articles = this.articles.map((corpusArticle) => {
-    const order = articlesOrderMap[corpusArticle.article._id]
-    return {
-      article: corpusArticle.article,
-      order,
-    }
-  })
+  for (const corpusArticle of this.articles) {
+    corpusArticle.order = articlesOrderMap[corpusArticle.article._id]
+  }
   return this.save()
 }
 
