@@ -10,9 +10,10 @@ export default {
    * Shown with Ctrl+Enter for example
    */
   contextmenu: false,
-  // Monaco écrit en 12px sur macOS et 14px ailleurs : 15px, soit environ 2pt
-  // de plus sur macOS, et la même taille partout
-  fontSize: 15,
+  // la police et la taille de Monaco changent selon le système : Inter, déjà
+  // chargée par Stylo, donne le même rendu partout
+  fontFamily: 'Inter, sans-serif',
+  fontSize: 14,
   // multiplie fontSize (en dessous de 8), comme les paragraphes de l'aperçu
   lineHeight: 1.6,
   hideCursorInOverviewRuler: true,

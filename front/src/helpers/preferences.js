@@ -16,7 +16,12 @@
  */
 
 /**
- * @typedef {'article' | 'corpus' | 'export' | 'user'} PreferencesNamespace
+ * @typedef {object} EditorPreferences
+ * @property {number} zoomLevel niveau de zoom de la police de Monaco
+ */
+
+/**
+ * @typedef {'article' | 'corpus' | 'editor' | 'export' | 'user'} PreferencesNamespace
  */
 
 const defaultPreferences = {
@@ -26,6 +31,10 @@ const defaultPreferences = {
     metadataFormMode: 'basic',
   },
   corpus: {},
+  /** @type {EditorPreferences} */
+  editor: {
+    zoomLevel: 0,
+  },
   /** @type {ExportPreferences} */
   export: {
     bibliography_style: 'chicagomodified',
@@ -95,7 +104,8 @@ export function setPreference(namespace, key, value) {
 
 /**
  * Oublie les préférences liées au compte (dont l'espace de travail actif).
- * Les préférences d'export ne sont pas liées au compte et sont conservées.
+ * Les préférences d'éditeur et d'export ne sont pas liées au compte et sont
+ * conservées.
  */
 export function forgetAccountPreferences() {
   for (const namespace of ['article', 'corpus', 'user']) {
