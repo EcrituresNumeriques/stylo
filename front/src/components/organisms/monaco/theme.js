@@ -16,6 +16,9 @@ const theme = {
   inherit: true,
   rules: [],
   colors: {
+    // sélection : $striped-row-border-color, $hover-background hors focus
+    'editor.selectionBackground': '#a8adb2',
+    'editor.inactiveSelectionBackground': '#d1d1d1',
     // correspondance courante : $text-highlight-color, sans bordure
     'editor.findMatchBackground': '#fedc2a',
     'editor.findMatchBorder': '#00000000',
