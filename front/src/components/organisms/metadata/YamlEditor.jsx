@@ -29,7 +29,7 @@ export default function MonacoYamlEditor({
       className={styles.editor}
       height={height}
       defaultValue={text}
-      defaultLanguage="yaml"
+      language="yaml"
       onChange={onTextUpdate}
       options={options}
     />

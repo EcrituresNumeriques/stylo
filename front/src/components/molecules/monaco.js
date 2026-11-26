@@ -23,44 +23,97 @@ export {
   OverlayWidgetPositionPreference,
 } from 'monaco-editor/editor/common/standalone/standaloneEnums.js'
 
+/**
+ * @typedef {import('monaco-editor/editor')} Monaco
+ * @typedef {object} LanguageConfig
+ * @property {string} id
+ * @property {(monaco: Monaco) => unknown} load - registers the language
+ */
+
 /** @type {Record<string, () => Promise<unknown>>} */
 const translations = {
   fr: () => import('monaco-editor/nls/lang/fr.js'),
   es: () => import('monaco-editor/nls/lang/es.js'),
 }
 
+/** @type {Record<string, LanguageConfig>} */
+const languages = {
+  markdown: {
+    id: 'markdown',
+    load: () =>
+      import('monaco-editor/languages/definitions/markdown/register.js'),
+  },
+  yaml: {
+    id: 'yaml',
+    load: () => import('monaco-editor/languages/definitions/yaml/register.js'),
+  },
+}
+
 /**
  * Monaco API, once loaded by `loadMonaco()`
- * @type {import('monaco-editor/editor') | undefined}
+ * @type {Monaco | undefined}
  */
 export let monaco
 
-let loading
+/** @type {Map<string, Promise<unknown>>} */
+const loaded = new Map()
 
 /**
- * Loads Monaco once, translated in `language` (English by default).
- * Changing the language afterwards requires a page reload.
- * @param {string} [language]
- * @returns {Promise<import('monaco-editor/editor')>}
+ * @param {string} key
+ * @param {() => Promise<unknown>} load
  */
-export function loadMonaco(language) {
-  loading ??= (async () => {
-    await translations[language]?.()
+function once(key, load) {
+  if (!loaded.has(key)) {
+    loaded.set(key, load())
+  }
+  return loaded.get(key)
+}
 
-    const [api, { default: EditorWorker }] = await Promise.all([
-      import('monaco-editor/editor'),
-      import('monaco-editor/editor/editor.worker?worker'),
-      import('monaco-editor/features/register.all.js'),
-      import('monaco-editor/languages/definitions/markdown/register.js'),
-      import('monaco-editor/languages/definitions/yaml/register.js'),
-    ])
+/**
+ * @param {string} [locale]
+ * @returns {Promise<Monaco>}
+ */
+async function loadCore(locale) {
+  await translations[locale]?.()
 
-    self.MonacoEnvironment = { getWorker: () => new EditorWorker() }
-    // otherwise @monaco-editor/react loads Monaco from a CDN
-    loader.config({ monaco: api })
-    monaco = api
-    return api
-  })()
+  const [api, { default: EditorWorker }] = await Promise.all([
+    import('monaco-editor/editor'),
+    import('monaco-editor/editor/editor.worker?worker'),
+    // splitting the features would only save ~90 KB gzip, for many chunks
+    import('monaco-editor/features/register.all.js'),
+  ])
 
-  return loading
+  self.MonacoEnvironment = { getWorker: () => new EditorWorker() }
+  // otherwise @monaco-editor/react loads Monaco from a CDN
+  loader.config({ monaco: api })
+  monaco = api
+  return api
+}
+
+/**
+ * @param {string|LanguageConfig} [language] - a Monaco language id, or ours
+ * @returns {LanguageConfig|undefined}
+ */
+export function languageConfig(language) {
+  return typeof language === 'string' ? languages[language] : language
+}
+
+/**
+ * Loads Monaco, then a language: each of them only once.
+ * The translation (`locale`, English by default) is the one of the first
+ * call: changing it requires a page reload.
+ * @param {object} [options]
+ * @param {string} [options.locale]
+ * @param {string|LanguageConfig} [options.language]
+ * @returns {Promise<Monaco>}
+ */
+export async function loadMonaco({ locale, language } = {}) {
+  const api = await once('core', () => loadCore(locale))
+  const config = languageConfig(language)
+
+  if (config) {
+    await once(`language:${config.id}`, async () => config.load(api))
+  }
+
+  return api
 }
