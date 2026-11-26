@@ -54,6 +54,10 @@
     "importFromArticle": {
       "title": "Import from an article"
     },
+    "manage": {
+      "label": "Manage",
+      "title": "Manage the corpus"
+    },
     "menu": {
       "title": "More actions on corpus"
     },

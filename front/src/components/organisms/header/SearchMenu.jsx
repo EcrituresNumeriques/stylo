@@ -68,7 +68,7 @@ function SearchResults({ query, onSelect }) {
             onSelect={onSelect}
           />
         ) : (
-          <CorpusResult key={corpus.id} corpus={corpus} />
+          <CorpusResult key={corpus.id} corpus={corpus} onSelect={onSelect} />
         )
       )}
     </ul>

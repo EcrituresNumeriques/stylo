@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import {
   Book,
   FileDownIcon,
   FileText,
   MessageSquareShare,
   Pencil,
+  Settings,
   UserPlus,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -13,9 +13,9 @@ import { Link } from 'react-router'
 import { getArticleContributors } from '../../../hooks/Article.graphql'
 import { useConditionalFetchData } from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
-import { useDisplayName } from '../../../hooks/user.js'
+import { useActiveUserId, useDisplayName } from '../../../hooks/user.js'
 import buttonStyles from '../../atoms/Button.module.scss'
-import { Button } from '../../atoms/index.js'
+import { Button, UpdatedAtLabel } from '../../atoms/index.js'
 import { Modal, ObjectMetadataLabel } from '../../molecules/index.js'
 import ArticleContributors from '../article/sharing/ArticleContributors.jsx'
 import Export from '../export/Export.jsx'
@@ -31,7 +31,6 @@ import styles from './SearchMenu.module.scss'
  */
 export function ArticleResult({ article, onSelect }) {
   const { t } = useTranslation('article')
-  const displayName = useDisplayName()
   const sharingModal = useModal()
   // contributors are only needed to share
   const { data } = useConditionalFetchData(
@@ -70,7 +69,7 @@ export function ArticleResult({ article, onSelect }) {
           </Link>
           <Link
             role="menuitem"
-            className={clsx(buttonStyles.primary, styles.primaryAction)}
+            className={buttonStyles.primary}
             to={`/article/${article.id}`}
             onClick={onSelect}
             title={t('actions.edit.title')}
@@ -79,11 +78,7 @@ export function ArticleResult({ article, onSelect }) {
           </Link>
         </div>
       </header>
-      <ObjectMetadataLabel
-        className={styles.metadata}
-        updatedAtDate={article.updatedAt}
-        creatorName={displayName(article.owner)}
-      />
+      <ResultMetadata updatedAt={article.updatedAt} author={article.owner} />
 
       <Modal
         {...sharingModal.bindings}
@@ -104,11 +99,11 @@ export function ArticleResult({ article, onSelect }) {
  * Compact corpus card, with its main actions.
  *
  * @param {object} props
- * @param {{id: string, name: string, updatedAt: string, creator: object}} props.corpus
+ * @param {{id: string, name: string, updatedAt: string, workspaceId: string|null, creator: {id: string}}} props.corpus
+ * @param {() => void} props.onSelect called when leaving the results
  */
-export function CorpusResult({ corpus }) {
+export function CorpusResult({ corpus, onSelect }) {
   const { t } = useTranslation('corpus')
-  const displayName = useDisplayName()
   const exportModal = useModal()
 
   return (
@@ -118,6 +113,15 @@ export function CorpusResult({ corpus }) {
           <Book aria-hidden size={18} /> {corpus.name}
         </h3>
         <div role="menu" className={styles.actions}>
+          <Link
+            role="menuitem"
+            className={buttonStyles.icon}
+            to={`${corpus.workspaceId ? `/workspaces/${corpus.workspaceId}` : ''}/corpus#corpus-${corpus.id}`}
+            onClick={onSelect}
+            title={t('actions.manage.title')}
+          >
+            <Settings aria-label={t('actions.manage.label')} />
+          </Link>
           <Link
             role="menuitem"
             target="_blank"
@@ -131,7 +135,7 @@ export function CorpusResult({ corpus }) {
             role="menuitem"
             icon={true}
             primary={true}
-            className={clsx(buttonStyles.primary, styles.primaryAction)}
+            className={buttonStyles.primary}
             onClick={() => exportModal.show()}
             title={t('actions.export.title')}
           >
@@ -139,11 +143,7 @@ export function CorpusResult({ corpus }) {
           </Button>
         </div>
       </header>
-      <ObjectMetadataLabel
-        className={styles.metadata}
-        updatedAtDate={corpus.updatedAt}
-        creatorName={displayName(corpus.creator)}
-      />
+      <ResultMetadata updatedAt={corpus.updatedAt} author={corpus.creator} />
 
       <Modal
         {...exportModal.bindings}
@@ -160,5 +160,28 @@ export function CorpusResult({ corpus }) {
         />
       </Modal>
     </li>
+  )
+}
+
+/**
+ * Last update, and the author when it is someone else.
+ *
+ * @param {object} props
+ * @param {string} props.updatedAt
+ * @param {{id: string}} props.author
+ */
+function ResultMetadata({ updatedAt, author }) {
+  const activeUserId = useActiveUserId()
+  const displayName = useDisplayName()
+  return author?.id === activeUserId ? (
+    <div className={styles.metadata}>
+      <UpdatedAtLabel date={updatedAt} />
+    </div>
+  ) : (
+    <ObjectMetadataLabel
+      className={styles.metadata}
+      updatedAtDate={updatedAt}
+      creatorName={displayName(author)}
+    />
   )
 }

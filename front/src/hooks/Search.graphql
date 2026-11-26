@@ -18,7 +18,9 @@ query search($query: String!) {
         id
         name
         updatedAt
+        workspaceId
         creator {
+          id
           displayName
           username
         }
