@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'
@@ -16,7 +16,11 @@ vi.mock('../../../hooks/article.js', () => ({
 }))
 vi.mock('../../../hooks/collaboration.js', () => ({
   useCollaboration: () => ({
-    yText: { toString: () => '# Working copy', observe: vi.fn() },
+    yText: {
+      toString: () => '# Working copy',
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+    },
     awareness: {},
     websocketStatus: 'connected',
     isSynced: true,
@@ -31,7 +35,11 @@ vi.mock('./CollaborativeEditorArticleHeader.jsx', () => ({
 }))
 vi.mock('../../molecules/MonacoEditor.jsx', () => ({
   default: () => null,
-  MonacoDiffEditor: () => null,
+  MonacoDiffEditor: ({ original, modified, options }) => (
+    <pre data-testid="diff" data-read-only={options.readOnly}>
+      {original} → {modified}
+    </pre>
+  ),
 }))
 
 describe('CollaborativeTextEditor', () => {
@@ -104,5 +112,23 @@ describe('CollaborativeTextEditor', () => {
     await waitFor(() =>
       expect(onStructureChange).toHaveBeenCalledWith('# Working copy')
     )
+  })
+
+  test('compares the version with the shared working copy, read only', async () => {
+    useArticleVersion.mockReturnValue({
+      version: { md: '# Version' },
+      isLoading: false,
+    })
+
+    renderWithProviders(
+      <CollaborativeTextEditor articleId="a1" versionId="v1" mode="compare" />
+    )
+
+    const diff = await screen.findByTestId('diff')
+    // not the working copy saved in the database (empty here)
+    await waitFor(() =>
+      expect(diff).toHaveTextContent('# Version → # Working copy')
+    )
+    expect(diff).toHaveAttribute('data-read-only', 'true')
   })
 })

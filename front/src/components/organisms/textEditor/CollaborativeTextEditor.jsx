@@ -47,6 +47,9 @@ import {
  * @param {(api: {validate: () => Promise<void>, clearDiagnostics: () => void, diagnostics: Array, isValidating: boolean}) => void} [props.onValidatorReady]
  * @returns {Element}
  */
+// typing in the diff would not be saved
+const diffOptions = { ...defaultEditorOptions, readOnly: true }
+
 export default function CollaborativeTextEditor({
   articleId,
   versionId,
@@ -198,6 +201,21 @@ export default function CollaborativeTextEditor({
     }
   }, [articleId, versionId, yText])
 
+  // the working copy, compared with the version, follows the shared document
+  const [workingCopy, setWorkingCopy] = useState()
+  useEffect(() => {
+    if (mode !== 'compare' || !yText) {
+      return
+    }
+    const update = throttle(() => setWorkingCopy(yText.toString()), 250)
+    update()
+    yText.observe(update)
+    return () => {
+      yText.unobserve(update)
+      update.cancel()
+    }
+  }, [mode, yText])
+
   // the version is empty until it is received from the server
   useEffect(() => {
     if (versionId && version.md !== undefined) {
@@ -309,10 +327,11 @@ export default function CollaborativeTextEditor({
             className={styles.editor}
             width={'100%'}
             height={'auto'}
-            modified={article.workingVersion?.md}
+            // the shared document is empty until it is synchronised
+            modified={isSynced ? workingCopy : article.workingVersion?.md}
             original={version.md}
             language="markdown"
-            options={defaultEditorOptions}
+            options={diffOptions}
           />
         </div>
       )}
