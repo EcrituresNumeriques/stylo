@@ -39,6 +39,16 @@ describe('snippetItems', () => {
       label: 'ack',
       detail: 't(actions.infratextual-block.ack)',
       commandId: 'vs.editor.ICodeEditor:1:stylo--metopes--delimited-block--ack',
+      lineStart: true,
+    })
+  })
+
+  test('suggests the inline actions in the middle of a line', () => {
+    const items = snippetItems('metopes', editor, t, {
+      types: [actionTypes.INLINE],
+    })
+    expect(items.find(({ label }) => label === 'smallcaps')).toMatchObject({
+      lineStart: false,
     })
   })
 
