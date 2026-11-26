@@ -9,6 +9,8 @@ const migrate = require('db-migrate')
 const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
+// refuses to start with an invalid features file
+require('./helpers/features.js').loadFeatures()
 
 if (config.get('sentry.dsn')) {
   Sentry.init({

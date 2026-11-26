@@ -5,6 +5,7 @@ const User = require('../models/user.js')
 const { before, beforeEach, after, describe, test } = require('node:test')
 const assert = require('node:assert')
 const { setup, teardown } = require('../tests/harness')
+const { loadFeatures } = require('../helpers/features.js')
 
 describe('user resolver', () => {
   let container
@@ -635,6 +636,15 @@ describe('user resolver', () => {
       const result = await Mutation.logout({}, {}, { token: {}, session })
       assert.equal(result, null)
       assert.equal(destroyed, true)
+    })
+  })
+
+  describe('features', () => {
+    test('User.features lists the features enabled for the user', async () => {
+      loadFeatures(`${__dirname}/../helpers/__fixtures__/features.json`)
+      const user = await User.create({ email: 'user@example.com' })
+      assert.deepEqual(UserResolver.features(user), ['nakala', 'webdav'])
+      loadFeatures('')
     })
   })
 })

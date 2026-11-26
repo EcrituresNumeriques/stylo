@@ -72,6 +72,9 @@ convict.addFormat({
  *    baseUrl: string,
  *    urlEndpoint: string
  *  },
+ *  features: {
+ *    file: string
+ *  },
  *  hypothesis: {
  *    auth: {
  *      callbackUrl: string,
@@ -142,6 +145,14 @@ module.exports = convict({
       format: 'url',
       env: 'PANDOC_EXPORT_ENDPOINT',
       default: 'http://127.0.0.1:3080',
+    },
+  },
+  features: {
+    // JSON file copied by Ansible from infrastructure/files, everything is off without it
+    file: {
+      format: String,
+      env: 'FEATURES_FILE',
+      default: '',
     },
   },
   mongo: {
