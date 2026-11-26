@@ -3,9 +3,10 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 // records the order in which the Monaco modules are evaluated
 const evaluated = []
 const api = {
-  editor: { defineTheme: vi.fn() },
+  editor: { defineTheme: vi.fn(), remeasureFonts: vi.fn() },
   languages: { register: () => {} },
 }
+const editorZoom = { setZoomLevel: vi.fn(), onDidChangeZoomLevel: vi.fn() }
 
 /** vi.doMock, after vi.resetModules(), evaluates the mocked modules again */
 function mockMonaco() {
@@ -17,6 +18,9 @@ function mockMonaco() {
   vi.doMock('monaco-editor/nls/lang/fr.js', () => record('fr'))
   vi.doMock('monaco-editor/nls/lang/es.js', () => record('es'))
   vi.doMock('monaco-editor/editor', () => record('editor', api))
+  vi.doMock('monaco-editor/editor/common/config/editorZoom.js', () => ({
+    EditorZoom: editorZoom,
+  }))
   vi.doMock('monaco-editor/editor/editor.worker?worker', () => ({
     default: class {},
   }))
@@ -31,6 +35,8 @@ describe('loadMonaco', () => {
 
   beforeEach(async () => {
     vi.resetModules()
+    vi.clearAllMocks()
+    localStorage.clear()
     evaluated.length = 0
     mockMonaco()
     monaco = await import('./monaco.js')
@@ -57,6 +63,35 @@ describe('loadMonaco', () => {
       STYLO_THEME,
       expect.objectContaining({ base: 'vs' })
     )
+  })
+
+  test('applies the saved font zoom, and saves its changes', async () => {
+    const { getPreferences, setPreference } = await import(
+      '../../helpers/preferences.js'
+    )
+    setPreference('editor', 'zoomLevel', 2)
+
+    await monaco.loadMonaco()
+    expect(editorZoom.setZoomLevel).toHaveBeenCalledWith(2)
+
+    const onZoomChange = editorZoom.onDidChangeZoomLevel.mock.lastCall[0]
+    onZoomChange(-1)
+    expect(getPreferences('editor').zoomLevel).toBe(-1)
+  })
+
+  test('remeasures the fonts once the editor font is loaded', async () => {
+    const load = vi.fn(() => Promise.resolve())
+    Object.defineProperty(document, 'fonts', {
+      value: { load },
+      configurable: true,
+    })
+
+    await monaco.loadMonaco()
+    await Promise.resolve()
+
+    expect(load).toHaveBeenCalledWith('14px Inter, sans-serif')
+    expect(api.editor.remeasureFonts).toHaveBeenCalledOnce()
+    delete document.fonts
   })
 
   test('loads no translation in English', async () => {

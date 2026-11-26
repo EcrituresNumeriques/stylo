@@ -4,7 +4,10 @@
  * The values exported below only translate when called.
  */
 import { loader } from '@monaco-editor/react'
+import { EditorZoom } from 'monaco-editor/editor/common/config/editorZoom.js'
 
+import { getPreferences, setPreference } from '../../helpers/preferences.js'
+import defaultEditorOptions from '../organisms/monaco/options.js'
 import { defineStyloTheme } from '../organisms/monaco/theme.js'
 
 export {
@@ -52,6 +55,31 @@ const once = (key, load) => {
   return loaded.get(key)
 }
 
+/**
+ * Monaco oublie au rechargement le zoom choisi dans la palette de commandes
+ * (« Augmenter la taille de police de l'éditeur ») : on le garde dans les
+ * préférences du navigateur.
+ */
+function rememberEditorZoom() {
+  EditorZoom.setZoomLevel(getPreferences('editor').zoomLevel)
+  EditorZoom.onDidChangeZoomLevel((zoomLevel) =>
+    setPreference('editor', 'zoomLevel', zoomLevel)
+  )
+}
+
+/**
+ * Monaco mesure la police à la création de l'éditeur : si Inter arrive après,
+ * curseurs et sélections sont décalés jusqu'à une nouvelle mesure.
+ * @param {Monaco} api
+ */
+function remeasureWhenFontLoaded(api) {
+  document.fonts
+    ?.load(
+      `${defaultEditorOptions.fontSize}px ${defaultEditorOptions.fontFamily}`
+    )
+    .then(() => api.editor.remeasureFonts())
+}
+
 async function loadCore(locale) {
   await translations[locale]?.()
 
@@ -66,6 +94,8 @@ async function loadCore(locale) {
   // otherwise @monaco-editor/react loads Monaco from a CDN
   loader.config({ monaco })
   defineStyloTheme(monaco)
+  rememberEditorZoom()
+  remeasureWhenFontLoaded(monaco)
 
   return monaco
 }
