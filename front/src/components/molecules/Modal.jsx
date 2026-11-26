@@ -30,7 +30,8 @@ export default forwardRef(function Modal(
       className={styles.modal}
       id={modalId}
       ref={forwardedRef}
-      onClose={cancel}
+      // React propagates the close event of a nested modal: ignore it
+      onClose={(event) => event.target === event.currentTarget && cancel()}
       aria-labelledby="modal-title"
       aria-describedby={subtitle ? 'modal-description' : null}
     >
