@@ -134,6 +134,16 @@ describe('search', () => {
     await Corpus.create({ name: 'Marginalia perso', creator: user })
     fixtures.foreignWorkspace = await createWorkspace([other])
 
+    // recency: chronique, same relevance
+    ;[fixtures.older, fixtures.newer] = await createArticles(user, [
+      'Chronique ancienne',
+      'Chronique récente',
+    ])
+    await Article.collection.updateOne(
+      { _id: fixtures.older._id },
+      { $set: { updatedAt: new Date('2020-01-01') } }
+    )
+
     // limit: incunable
     await createArticles(
       user,
@@ -192,6 +202,14 @@ describe('search', () => {
     assert.deepEqual(ids(inEnglish.articles, 'article'), [
       fixtures.english.id,
       fixtures.french.id,
+    ])
+  })
+
+  test('ranks the recently updated documents first', async () => {
+    const { articles } = await search(fixtures.user, 'chronique')
+    assert.deepEqual(ids(articles, 'article'), [
+      fixtures.newer.id,
+      fixtures.older.id,
     ])
   })
 
