@@ -11,7 +11,7 @@ export default {
    */
   contextmenu: false,
   // la taille de Monaco change selon le système (12px sur macOS, 14px
-  // ailleurs). La police, Inter par défaut, vient des préférences
+  // ailleurs). La police, JetBrains Mono par défaut, vient des préférences
   // (molecules/monacoFont.js) : ces options sont réappliquées à chaque
   // changement et écraseraient la police choisie.
   fontSize: 14,

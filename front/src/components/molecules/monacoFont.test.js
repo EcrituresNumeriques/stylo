@@ -19,7 +19,8 @@ function createFakeEditor() {
 
 const api = { editor: { remeasureFonts: vi.fn() } }
 const plugin = chooseEditorFont({ action: (font) => `Police : ${font}` })
-const [inter, , , , jetbrainsMono] = editorFonts
+const [jetbrainsMono] = editorFonts
+const inter = editorFonts.find(({ id }) => id === 'inter')
 
 describe('chooseEditorFont', () => {
   let load
@@ -39,27 +40,26 @@ describe('chooseEditorFont', () => {
   })
 
   test('applies the saved font, then remeasures it once loaded', async () => {
-    setPreference('editor', 'fontFamily', 'jetbrains-mono')
     const editor = createFakeEditor()
 
     plugin.setup(editor, api)
     await Promise.resolve()
 
     expect(editor.updateOptions).toHaveBeenCalledWith({
-      fontFamily: jetbrainsMono.family,
+      fontFamily: inter.family,
     })
-    expect(load).toHaveBeenCalledWith(`1em ${jetbrainsMono.family}`)
+    expect(load).toHaveBeenCalledWith(`1em ${inter.family}`)
     expect(api.editor.remeasureFonts).toHaveBeenCalledOnce()
   })
 
-  test('falls back to Inter for an unknown font', () => {
+  test('falls back to JetBrains Mono for an unknown font', () => {
     setPreference('editor', 'fontFamily', 'comic-sans')
     const editor = createFakeEditor()
 
     plugin.setup(editor, api)
 
     expect(editor.updateOptions).toHaveBeenCalledWith({
-      fontFamily: inter.family,
+      fontFamily: jetbrainsMono.family,
     })
   })
 
@@ -81,7 +81,7 @@ describe('chooseEditorFont', () => {
       editorFonts.map(({ label }) => `Police : ${label}`)
     )
 
-    editor.actions.at(-1).run()
+    editor.actions[0].run()
     expect(getPreferences('editor').fontFamily).toBe('jetbrains-mono')
     expect(editor.updateOptions).toHaveBeenLastCalledWith({
       fontFamily: jetbrainsMono.family,
