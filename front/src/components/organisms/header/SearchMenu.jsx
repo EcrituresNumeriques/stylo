@@ -68,11 +68,15 @@ function SearchResults({ query, onSelect }) {
           <h2>{t('header.mainMenu.articles')}</h2>
           <ul>
             {articles.map(({ article }) => (
-              <li key={article.id}>
+              <li key={article.id} className={styles.item}>
                 <Link to={`/article/${article.id}`} onClick={onSelect}>
                   {article.title}
                 </Link>
-                {article.owner && <span>{article.owner.displayName}</span>}
+                {article.owner && (
+                  <span className={styles.owner}>
+                    {article.owner.displayName}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
@@ -84,7 +88,7 @@ function SearchResults({ query, onSelect }) {
           <h2>{t('header.mainMenu.corpus')}</h2>
           <ul>
             {corpora.map(({ corpus }) => (
-              <li key={corpus.id}>
+              <li key={corpus.id} className={styles.item}>
                 <Link to={`/corpus/${corpus.id}/annotate`} onClick={onSelect}>
                   {corpus.name}
                 </Link>

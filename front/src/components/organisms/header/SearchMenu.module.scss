@@ -20,16 +20,27 @@
     font-weight: 600;
     margin-bottom: 0.5rem;
   }
+}
 
-  li {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: space-between;
-    padding: 0.25rem 0;
+// comme la liste des contacts du partage, avec l'alternance des grandes listes
+.item {
+  border: 1px solid $main-lighter-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
+
+  &:not(:first-child) {
+    border-top: none;
   }
 
-  span {
-    color: $muted-color;
-    font-size: 0.875em;
+  &:nth-of-type(2n + 1) {
+    background-color: $striped-row-color;
   }
+}
+
+.owner {
+  color: $muted-color;
+  font-size: 0.875em;
 }
