@@ -1,0 +1,102 @@
+# Exemples de requêtes pour la recherche (index de texte MongoDB).
+#
+# Point d'accès en local : http://localhost:3030/graphql
+# En-tête HTTP : { "Authorization": "Bearer VOTRE_CLÉ_API" }
+# (clé API : menu de votre nom > votre adresse courriel)
+#
+# Avec curl, par exemple :
+#   curl http://localhost:3030/graphql \
+#     -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer $STYLO_TOKEN" \
+#     -d '{"query": "{ search(query: \"édition\") { articles { article { title } score } } }"}'
+#
+# Le contenu cherché est workingVersion.md (copié depuis Y.js par la migration
+# 20261120100000-copy-ydoc-to-md) : il n'est pas mis à jour par l'édition.
+# Chaque recherche écrit dans les logs de l'API une ligne "action":"search"
+# avec la langue, le nombre de résultats et la durée (fetchMs).
+
+fragment SearchResultFields on SearchResults {
+  articles {
+    article {
+      id
+      title
+      updatedAt
+    }
+    score
+  }
+  corpora {
+    corpus {
+      id
+      name
+    }
+    score
+  }
+}
+
+# Un mot. La casse et les accents sont ignorés : "Edition", "édition" et
+# "EDITION" donnent les mêmes résultats.
+query UnMot {
+  search(query: "édition") {
+    ...SearchResultFields
+  }
+}
+
+# Racinisation : "relier" trouve aussi "reliés", "relie"…
+query Racinisation {
+  search(query: "relier") {
+    ...SearchResultFields
+  }
+}
+
+# Plusieurs mots : un résultat contient au moins l'un des mots ; ceux qui
+# en contiennent plusieurs ont un meilleur score. Seulement les 3 premiers.
+query PlusieursMots {
+  search(query: "édition numérique", limit: 3) {
+    ...SearchResultFields
+  }
+}
+
+# Une phrase exacte : les mots doivent se suivre.
+# À comparer avec PlusieursMots.
+query PhraseExacte {
+  search(query: "\"édition numérique\"") {
+    ...SearchResultFields
+  }
+}
+
+# Une phrase et un mot ensemble.
+query PhraseEtMot {
+  search(query: "\"édition numérique\" revue") {
+    ...SearchResultFields
+  }
+}
+
+# Grec ancien saisi sans accents ni esprits : trouve "λόγος".
+query GrecSansAccents {
+  search(query: "λογος") {
+    ...SearchResultFields
+  }
+}
+
+# Un nom d'auteur présent seulement dans les métadonnées.
+query Metadonnees {
+  search(query: "Marcello Vitali") {
+    ...SearchResultFields
+  }
+}
+
+# Langue des documents : la requête est racinisée en anglais et les
+# documents en anglais sont classés en premier ; des documents en français
+# peuvent ne plus être trouvés.
+query DocumentsEnAnglais {
+  search(query: "editing", documentLanguage: "en") {
+    ...SearchResultFields
+  }
+}
+
+# Limitée à un espace de travail (remplacer l'identifiant).
+query DansUnEspaceDeTravail {
+  search(query: "édition", filter: { workspaceId: "IDENTIFIANT_ESPACE" }) {
+    ...SearchResultFields
+  }
+}

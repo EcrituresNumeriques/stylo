@@ -13,6 +13,10 @@ const {
   computeMinorVersion,
 } = require('../helpers/versions.js')
 const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
+const { searchable } = require('../plugins/search.js')
+
+/** @typedef {import('mongoose').FilterQuery<import('./article')>} ArticleFilter */
+/** @typedef {import('../loaders').Loaders} Loaders */
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -95,10 +99,34 @@ const articleSchema = new Schema(
     minimize: false,
     statics: {
       /**
+       * Filter of the articles a user has access to: owned, shared with them
+       * or in one of the workspaces; only the latter without user.
+       *
+       * @param {{ articles: import('mongoose').Types.ObjectId[] }[]} workspaces
+       * @param {import('./user')} [user]
+       * @returns {ArticleFilter}
+       */
+      accessFilter(workspaces, user) {
+        const inWorkspaces = {
+          _id: { $in: workspaces.flatMap(({ articles }) => articles) },
+        }
+        if (!user) {
+          return inWorkspaces
+        }
+        return {
+          $or: [
+            { owner: user._id },
+            { contributors: { $elemMatch: { user: user._id } } },
+            inWorkspaces,
+          ],
+        }
+      },
+
+      /**
        * Load associated data on a list of articles using data loaders.
        *
        * @param {Record<string, any>[]} articles a list of lean articles
-       * @param {import('../loaders').Loaders} loaders
+       * @param {Loaders} loaders
        * @returns {Promise<Record<string, any>[]>} the same articles with their relations populated
        */
       async complete(articles, loaders) {
@@ -123,9 +151,9 @@ const articleSchema = new Schema(
        * Get populated articles.
        *
        * @param {object} context
-       * @param {import('mongoose').FilterQuery<import('./article')>} context.filter
+       * @param {ArticleFilter} context.filter
        * @param {import('mongoose').QueryOptions} [context.options]
-       * @param {import('../loaders').Loaders} context.loaders
+       * @param {Loaders} context.loaders
        * @returns {Promise<Record<string, any>[]>} lean articles with their relations populated
        */
       async getArticles({ filter, options = {}, loaders }) {
@@ -247,6 +275,8 @@ const articleSchema = new Schema(
     },
   }
 )
+
+articleSchema.plugin(searchable, { langPath: 'workingVersion.metadata.lang' })
 
 articleSchema.pre(
   'deleteOne',

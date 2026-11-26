@@ -27,6 +27,7 @@ const {
 } = require('./corpusResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
 const { Query: StatsQuery } = require('./statsResolver')
+const { Query: SearchQuery } = require('./searchResolver')
 const {
   EmailAddressResolver,
   JWTResolver,
@@ -73,6 +74,7 @@ module.exports = {
     ...StatsQuery,
     ...WorkspaceQuery,
     ...CorpusQuery,
+    ...SearchQuery,
   },
   Mutation: {
     ...UserMutation,
