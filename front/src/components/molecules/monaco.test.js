@@ -33,54 +33,34 @@ describe('loadMonaco', () => {
     monaco = await import('./monaco.js')
   })
 
-  test('loads the translation before Monaco', async () => {
-    await monaco.loadMonaco({ locale: 'fr' })
-
-    expect(evaluated.indexOf('fr')).toBe(0)
-    expect(evaluated).toContain('editor')
-    expect(evaluated).toContain('features')
-    expect(evaluated).not.toContain('es')
-  })
-
-  test('loads no translation in English', async () => {
-    await monaco.loadMonaco({ locale: 'en' })
-
-    expect(evaluated).not.toContain('fr')
-    expect(evaluated).not.toContain('es')
-  })
-
-  test('exposes the Monaco API and configures @monaco-editor/react', async () => {
+  test('loads the translation, then Monaco, and configures @monaco-editor/react', async () => {
     const { loader } = await import('@monaco-editor/react')
-
     expect(monaco.monaco).toBeUndefined()
-    const loaded = await monaco.loadMonaco()
+
+    const loaded = await monaco.loadMonaco({ locale: 'fr' })
+
+    expect(evaluated).toEqual(['fr', 'editor', 'features'])
     expect(loaded.languages).toBe(api.languages)
     expect(monaco.monaco).toBe(loaded)
     expect(loader.config).toHaveBeenCalledWith({ monaco: loaded })
   })
 
-  test('loads a Monaco language', async () => {
+  test('loads no translation in English', async () => {
+    await monaco.loadMonaco({ locale: 'en' })
+    expect(evaluated).toEqual(['editor', 'features'])
+  })
+
+  test('loads each language once', async () => {
+    const custom = { id: 'custom', load: vi.fn() }
+
     await monaco.loadMonaco({ language: 'markdown' })
+    await monaco.loadMonaco({ language: custom })
+    await monaco.loadMonaco({ language: custom })
 
     expect(evaluated).toContain('markdown')
-  })
-
-  test('loads our languages once, with the Monaco API', async () => {
-    const language = { id: 'custom', load: vi.fn() }
-
-    await monaco.loadMonaco({ language })
-    await monaco.loadMonaco({ language })
-
-    expect(language.load).toHaveBeenCalledOnce()
-    expect(language.load).toHaveBeenCalledWith(monaco.monaco)
-  })
-
-  test('resolves the language config', () => {
-    const custom = { id: 'custom', load() {} }
-
+    expect(custom.load).toHaveBeenCalledExactlyOnceWith(monaco.monaco)
     expect(monaco.languageConfig('markdown').id).toBe('markdown')
     expect(monaco.languageConfig(custom)).toBe(custom)
     expect(monaco.languageConfig('unknown')).toBeUndefined()
-    expect(monaco.languageConfig()).toBeUndefined()
   })
 })

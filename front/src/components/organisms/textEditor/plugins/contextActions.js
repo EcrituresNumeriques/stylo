@@ -7,11 +7,8 @@ import {
 } from '../actions/index.js'
 
 /**
- * Stylo actions: Métopes and Markdown submenus in the context menu, and in
- * the command palette.
- * @param {object} options
- * @param {import('i18next').TFunction} options.t
- * @param {() => void} options.onSave - "save a version" shortcut
+ * Stylo actions, in the context menu and the command palette.
+ * @param {{ t: import('i18next').TFunction, onSave: () => void }} options
  * @returns {import('../../../molecules/MonacoEditor.jsx').EditorPlugin}
  */
 export default function contextActions({ t, onSave }) {
