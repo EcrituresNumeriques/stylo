@@ -51,6 +51,9 @@
     },
     "save-version": "Enregistrer une nouvelle version"
   },
+  "font": {
+    "action": "Police de l'éditeur : {{font}}"
+  },
   "keyboard": {
     "leave": {
       "action": "Quitter l'éditeur (Échap puis Tab)",

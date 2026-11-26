@@ -24,6 +24,10 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/lexend": "^5.3.0",
+    "@fontsource/opendyslexic": "^5.3.0",
     "@monaco-editor/react": "^4.7.0",
     "@rjsf/core": "^5.24.3",
     "@rjsf/validator-ajv8": "^5.24.3",

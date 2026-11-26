@@ -51,6 +51,9 @@
     },
     "save-version": "Save new version"
   },
+  "font": {
+    "action": "Editor font: {{font}}"
+  },
   "keyboard": {
     "leave": {
       "action": "Leave the editor (Escape then Tab)",
