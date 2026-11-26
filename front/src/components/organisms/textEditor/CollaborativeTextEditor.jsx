@@ -53,6 +53,8 @@ const diffOptions = {
   readOnly: true,
   // the version on the left, even in a narrow editor (< 900 px)
   useInlineViewWhenSpaceIsLimited: false,
+  // both sides wrap the same way
+  diffWordWrap: 'on',
 }
 
 export default function CollaborativeTextEditor({
