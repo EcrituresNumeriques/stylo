@@ -18,11 +18,15 @@ export const findLineWidth = (lineWidth) =>
 
 /**
  * Revient à la ligne à `lineWidth` caractères, ou avant si l'éditeur est plus
- * étroit.
+ * étroit ; ↩ marque alors les lignes repliées. Sur toute la largeur, rien.
  * @param {number|null} lineWidth
  * @returns {editor.IEditorOptions}
  */
 export const wordWrapOptions = (lineWidth) =>
   lineWidth
-    ? { wordWrap: 'bounded', wordWrapColumn: lineWidth }
-    : { wordWrap: 'on' }
+    ? {
+        wordWrap: 'bounded',
+        wordWrapColumn: lineWidth,
+        wordWrapIndicator: true,
+      }
+    : { wordWrap: 'on', wordWrapIndicator: false }

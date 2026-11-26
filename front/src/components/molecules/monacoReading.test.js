@@ -91,8 +91,8 @@ describe('readingPreferences', () => {
     setPreference('editor', 'lineWidth', null)
 
     expect(optionsWith(editor, 'wordWrap')).toEqual([
-      { wordWrap: 'bounded', wordWrapColumn: 80 },
-      { wordWrap: 'on' },
+      { wordWrap: 'bounded', wordWrapColumn: 80, wordWrapIndicator: true },
+      { wordWrap: 'on', wordWrapIndicator: false },
     ])
   })
 
@@ -103,7 +103,7 @@ describe('readingPreferences', () => {
     plugin.setup(editor, api)
 
     expect(optionsWith(editor, 'wordWrap')).toEqual([
-      { wordWrap: 'bounded', wordWrapColumn: 80 },
+      { wordWrap: 'bounded', wordWrapColumn: 80, wordWrapIndicator: true },
     ])
   })
 
@@ -130,6 +130,7 @@ describe('readingPreferences', () => {
     expect(editor.updateOptions).toHaveBeenLastCalledWith({
       wordWrap: 'bounded',
       wordWrapColumn: 120,
+      wordWrapIndicator: true,
     })
   })
 
