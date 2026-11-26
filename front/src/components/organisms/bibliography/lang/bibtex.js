@@ -1,8 +1,4 @@
-/**
- * BibTeX, for the Monaco editor. The grammar is loaded on demand, like the
- * Monaco languages.
- * @type {import('../../../molecules/monaco.js').LanguageConfig}
- */
+/** @type {import('../../../molecules/monaco.js').LanguageConfig} */
 export default {
   id: 'bibtex',
   load(monaco) {

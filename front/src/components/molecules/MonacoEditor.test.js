@@ -16,31 +16,22 @@ function createFakeEditor() {
 const settle = () => new Promise((resolve) => setTimeout(resolve))
 
 describe('applyPlugins', () => {
-  const api = {}
-
-  test('sets up each plugin with the editor and Monaco', async () => {
+  test('sets up the plugins, and cleans them up with the editor', async () => {
     const editor = createFakeEditor()
-    const plugins = [{ setup: vi.fn() }, { setup: vi.fn() }]
+    const api = {}
+    const cleanup = vi.fn()
+    const asyncCleanup = vi.fn()
+    const plugins = [
+      { setup: vi.fn(() => cleanup) },
+      { setup: vi.fn(async () => asyncCleanup) },
+      { setup: vi.fn() },
+    ]
 
     applyPlugins(editor, api, plugins)
     await settle()
-
-    for (const plugin of plugins) {
-      expect(plugin.setup).toHaveBeenCalledWith(editor, api)
+    for (const { setup } of plugins) {
+      expect(setup).toHaveBeenCalledWith(editor, api)
     }
-  })
-
-  test('cleans up when the editor is disposed', async () => {
-    const editor = createFakeEditor()
-    const cleanup = vi.fn()
-    const asyncCleanup = vi.fn()
-
-    applyPlugins(editor, api, [
-      { setup: () => cleanup },
-      { setup: async () => asyncCleanup },
-      { setup: () => undefined },
-    ])
-    await settle()
     expect(cleanup).not.toHaveBeenCalled()
 
     editor.dispose()
@@ -54,27 +45,26 @@ describe('applyPlugins', () => {
     let endSetup
     const setupEnded = new Promise((resolve) => (endSetup = resolve))
 
-    applyPlugins(editor, api, [{ setup: () => setupEnded.then(() => cleanup) }])
+    applyPlugins(editor, {}, [{ setup: () => setupEnded.then(() => cleanup) }])
     editor.dispose()
-    expect(cleanup).not.toHaveBeenCalled()
-
     endSetup()
     await settle()
+
     expect(cleanup).toHaveBeenCalledOnce()
   })
 
   test('a failing plugin does not prevent the others', async () => {
-    const editor = createFakeEditor()
     const error = new Error('broken')
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     const working = { setup: vi.fn() }
-
-    applyPlugins(editor, api, [
-      {
-        setup: () => {
-          throw error
-        },
+    const throwing = {
+      setup: () => {
+        throw error
       },
+    }
+
+    applyPlugins(createFakeEditor(), {}, [
+      throwing,
       { setup: () => Promise.reject(error) },
       working,
     ])

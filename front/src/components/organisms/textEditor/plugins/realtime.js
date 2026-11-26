@@ -1,16 +1,13 @@
 /**
- * Binds the editor to the shared document, with the cursors of the other
- * writers.
- * @param {object} options
- * @param {import('yjs').Text} options.yText
- * @param {import('y-protocols/awareness').Awareness} options.awareness
+ * Binds the editor to the shared document, with the others' cursors.
+ * @param {{ yText: import('yjs').Text, awareness: import('y-protocols/awareness').Awareness }} options
  * @returns {import('../../../molecules/MonacoEditor.jsx').EditorPlugin}
  */
 export default function realtime({ yText, awareness }) {
   return {
     async setup(editor, monaco) {
       const model = editor.getModel()
-      // Set EOL to LF otherwise it causes synchronization issues due to inconsistent EOL between Windows and Linux.
+      // LF everywhere, or Windows and Linux writers desynchronise
       // https://github.com/yjs/y-monaco/issues/27
       model.setEOL(monaco.editor.EndOfLineSequence.LF)
 

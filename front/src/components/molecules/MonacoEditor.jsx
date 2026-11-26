@@ -9,19 +9,15 @@ import leaveEditor from './monacoLeaveEditor.js'
 
 /**
  * @typedef {import('monaco-editor/editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
- * @typedef {import('./monaco.js').Monaco} Monaco
  * @typedef {import('./monaco.js').LanguageConfig} LanguageConfig
- *
- * Adds something to an editor once it is mounted.
- * @typedef {object} EditorPlugin
- * @property {(editor: IStandaloneCodeEditor, monaco: Monaco) => (void | (() => void) | Promise<void | (() => void)>)} setup
- *   returns an optional cleanup, called when the editor is disposed
+ * Adds something to a mounted editor, and returns an optional cleanup.
+ * @typedef {{ setup: (editor: IStandaloneCodeEditor, monaco: import('./monaco.js').Monaco) => unknown }} EditorPlugin
  */
 
 /**
  * Sets up each plugin; a failing plugin doesn't prevent the others.
  * @param {IStandaloneCodeEditor} editor
- * @param {Monaco} api
+ * @param {import('./monaco.js').Monaco} api
  * @param {EditorPlugin[]} plugins
  */
 export function applyPlugins(editor, api, plugins) {
@@ -60,12 +56,7 @@ function Placeholder({ className, width = '100%', height = '100%' }) {
   )
 }
 
-/**
- * Loads Monaco and the language once, then returns true.
- * @param {object} options
- * @param {string|LanguageConfig} [options.language]
- * @returns {boolean}
- */
+/** @returns {boolean} true once Monaco and the language are loaded */
 function useMonaco({ language }) {
   const { i18n } = useTranslation('editor', { useSuspense: false })
   const [isLoaded, setIsLoaded] = useState(false)
@@ -85,9 +76,8 @@ function useMonaco({ language }) {
 }
 
 /**
- * @param {object} props
- * @param {string|LanguageConfig} props.language - a Monaco language id, or ours
- * @param {EditorPlugin[]} [props.plugins] - set up once, when the editor is mounted
+ * @param {{ language: string|LanguageConfig, plugins?: EditorPlugin[] }} props
+ *   the plugins are set up once, when the editor is mounted
  */
 export default function MonacoEditor({
   language,
@@ -135,10 +125,7 @@ export default function MonacoEditor({
   )
 }
 
-/**
- * @param {object} props
- * @param {string|LanguageConfig} props.language
- */
+/** @param {{ language: string|LanguageConfig }} props */
 export function MonacoDiffEditor({ language, ...props }) {
   const isLoaded = useMonaco({ language })
 

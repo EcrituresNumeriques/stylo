@@ -1,12 +1,7 @@
 /**
- * Only gateway to monaco-editor.
- *
- * Monaco computes the labels of its menus and commands when its modules are
- * evaluated: the translation must be set before. Monaco is therefore loaded
- * on demand, after the translation of the interface language.
- *
- * The values below come from Monaco modules that only translate when called:
- * they can be imported at any time.
+ * Only gateway to monaco-editor. Monaco translates its menus when its modules
+ * are evaluated: it is loaded on demand, after the translation.
+ * The values exported below only translate when called.
  */
 import { loader } from '@monaco-editor/react'
 
@@ -25,12 +20,9 @@ export {
 
 /**
  * @typedef {import('monaco-editor/editor')} Monaco
- * @typedef {object} LanguageConfig
- * @property {string} id
- * @property {(monaco: Monaco) => unknown} load - registers the language
+ * @typedef {{ id: string, load: (monaco: Monaco) => unknown }} LanguageConfig
  */
 
-/** @type {Record<string, () => Promise<unknown>>} */
 const translations = {
   fr: () => import('monaco-editor/nls/lang/fr.js'),
   es: () => import('monaco-editor/nls/lang/es.js'),
@@ -49,30 +41,15 @@ const languages = {
   },
 }
 
-/**
- * Monaco API, once loaded by `loadMonaco()`
- * @type {Monaco | undefined}
- */
+/** @type {Monaco | undefined} set by `loadMonaco()` */
 export let monaco
 
-/** @type {Map<string, Promise<unknown>>} */
 const loaded = new Map()
-
-/**
- * @param {string} key
- * @param {() => Promise<unknown>} load
- */
-function once(key, load) {
-  if (!loaded.has(key)) {
-    loaded.set(key, load())
-  }
+const once = (key, load) => {
+  if (!loaded.has(key)) loaded.set(key, load())
   return loaded.get(key)
 }
 
-/**
- * @param {string} [locale]
- * @returns {Promise<Monaco>}
- */
 async function loadCore(locale) {
   await translations[locale]?.()
 
@@ -99,21 +76,16 @@ export function languageConfig(language) {
 }
 
 /**
- * Loads Monaco, then a language: each of them only once.
- * The translation (`locale`, English by default) is the one of the first
- * call: changing it requires a page reload.
- * @param {object} [options]
- * @param {string} [options.locale]
- * @param {string|LanguageConfig} [options.language]
+ * Loads Monaco, then the language, once each. The translation is the one of
+ * the first call: changing it requires a page reload.
+ * @param {{ locale?: string, language?: string|LanguageConfig }} [options]
  * @returns {Promise<Monaco>}
  */
 export async function loadMonaco({ locale, language } = {}) {
   const api = await once('core', () => loadCore(locale))
   const config = languageConfig(language)
-
   if (config) {
     await once(`language:${config.id}`, async () => config.load(api))
   }
-
   return api
 }

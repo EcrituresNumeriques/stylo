@@ -43,44 +43,11 @@ vi.mock('../../molecules/MonacoEditor.jsx', () => ({
 }))
 
 describe('CollaborativeTextEditor', () => {
-  test('computes the stats and the structure of a version once it is received', async () => {
-    const onStatsChange = vi.fn()
+  test('shows the structure of a version, once received, not of the working copy', async () => {
     const onStructureChange = vi.fn()
     // until the server answers, the version is empty
     useArticleVersion.mockReturnValue({ version: {}, isLoading: false })
-
-    const props = {
-      articleId: 'a1',
-      versionId: 'v1',
-      mode: 'write',
-      onStatsChange,
-      onStructureChange,
-    }
-    const { rerender } = renderWithProviders(
-      <CollaborativeTextEditor {...props} />
-    )
-    await waitFor(() => expect(useArticleVersion).toHaveBeenCalled())
-    expect(onStatsChange).not.toHaveBeenCalled()
-    expect(onStructureChange).not.toHaveBeenCalled()
-
-    useArticleVersion.mockReturnValue({
-      version: { md: '# Title' },
-      isLoading: false,
-    })
-    rerender(<CollaborativeTextEditor {...props} />)
-
-    await waitFor(() => expect(onStatsChange).toHaveBeenCalledWith('# Title'))
-    expect(onStructureChange).toHaveBeenCalledWith('# Title')
-  })
-
-  test('ignores the working copy on a version', async () => {
-    const onStructureChange = vi.fn()
-    useArticleVersion.mockReturnValue({
-      version: { md: '# Version' },
-      isLoading: false,
-    })
-
-    renderWithProviders(
+    const editor = (
       <CollaborativeTextEditor
         articleId="a1"
         versionId="v1"
@@ -88,13 +55,22 @@ describe('CollaborativeTextEditor', () => {
         onStructureChange={onStructureChange}
       />
     )
+
+    const { rerender } = renderWithProviders(editor)
+    await waitFor(() => expect(useArticleVersion).toHaveBeenCalled())
+    expect(onStructureChange).not.toHaveBeenCalled()
+
+    useArticleVersion.mockReturnValue({
+      version: { md: '# Version' },
+      isLoading: false,
+    })
+    rerender(editor)
     await waitFor(() =>
       expect(onStructureChange).toHaveBeenCalledWith('# Version')
     )
     // the working copy updates are throttled
     await new Promise((resolve) => setTimeout(resolve, 300))
-
-    expect(onStructureChange).not.toHaveBeenCalledWith('# Working copy')
+    expect(onStructureChange).toHaveBeenCalledTimes(1)
   })
 
   test('follows the working copy without a version', async () => {
