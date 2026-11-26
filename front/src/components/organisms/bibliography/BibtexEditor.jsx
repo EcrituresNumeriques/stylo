@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import fieldStyles from '../../atoms/Field.module.scss'
 
 import { MonacoEditor } from '../../molecules/index.js'
 import defaultEditorOptions from '../monaco/options.js'
 import styles from './BibtexEditor.module.scss'
+import bibtex from './lang/bibtex.js'
 
 export default function MonacoBibtexEditor({
   text,
@@ -32,25 +33,14 @@ export default function MonacoBibtexEditor({
     [fontSize, readOnly, wordWrap, wordWrapColumn, wrappingIndent]
   )
 
-  const registerLanguage = useCallback((monaco) => {
-    monaco.languages.register({ id: 'bibtex' })
-    // loaded on demand, like Monaco languages
-    // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
-    monaco.languages.setMonarchTokensProvider(
-      'bibtex',
-      import('./lang/bibtex.json').then((module) => module.default)
-    )
-  }, [])
-
   return (
     <MonacoEditor
       height={height}
       value={text}
       className={clsx(fieldStyles.textEditor, styles.editor)}
-      defaultLanguage="bibtex"
+      language={bibtex}
       onChange={onTextUpdate}
       options={options}
-      beforeMount={registerLanguage}
       onMount={onMount}
     />
   )

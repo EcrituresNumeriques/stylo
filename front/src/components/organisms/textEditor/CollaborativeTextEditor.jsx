@@ -363,7 +363,7 @@ export default function CollaborativeTextEditor({
           height={'auto'}
           options={options}
           className={styles.editor}
-          defaultLanguage="markdown"
+          language="markdown"
           {...(hasVersion
             ? { value: version.md, onMount: handleEditorDidMount }
             : { onMount: handleCollaborativeEditorDidMount })}
