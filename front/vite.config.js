@@ -101,6 +101,14 @@ export default defineConfig(async ({ mode }) => {
       },
     },
 
+    resolve: {
+      alias: {
+        // y-monaco imports a path hidden by the monaco-editor@0.56+ exports
+        'monaco-editor/esm/vs/editor/editor.api.js':
+          'monaco-editor/editor/editor.api.js',
+      },
+    },
+
     plugins: [
       graphql(),
       react({
