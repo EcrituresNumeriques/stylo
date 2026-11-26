@@ -1,16 +1,20 @@
 import throttle from 'lodash.throttle'
-import * as monaco from 'monaco-editor/editor'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import {
+  MarkerSeverity,
+  monaco,
+  Range,
+} from '../components/molecules/monaco.js'
 import { compareDiagnostics, VALIDATORS } from '../helpers/validator/index.js'
 import i18n from '../i18n.js'
 
 const MARKER_OWNER = 'stylo-validator'
 
 const MONACO_SEVERITIES = {
-  error: monaco.MarkerSeverity.Error,
-  warning: monaco.MarkerSeverity.Warning,
-  info: monaco.MarkerSeverity.Info,
+  error: MarkerSeverity.Error,
+  warning: MarkerSeverity.Warning,
+  info: MarkerSeverity.Info,
 }
 
 /**
@@ -18,7 +22,7 @@ const MONACO_SEVERITIES = {
  * @returns {number}
  */
 function toMonacoSeverity(severity) {
-  return MONACO_SEVERITIES[severity] ?? monaco.MarkerSeverity.Warning
+  return MONACO_SEVERITIES[severity] ?? MarkerSeverity.Warning
 }
 
 /**
@@ -97,7 +101,7 @@ export function useMarkdownValidator(
       }
       decorationsRef.current = editor.createDecorationsCollection(
         textResults.map((d) => ({
-          range: new monaco.Range(d.line, 1, d.endLine || d.line, 1),
+          range: new Range(d.line, 1, d.endLine || d.line, 1),
           options: {
             linesDecorationsTooltip: translateMessage(d),
             linesDecorationsClassName: `validator-${d.severity}`,

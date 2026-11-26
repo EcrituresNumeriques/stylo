@@ -1,5 +1,5 @@
-import { Selection } from 'monaco-editor/editor'
 import { describe, expect, test } from 'vitest'
+import { Selection } from '../../../molecules/monaco.js'
 
 import { createDelimitedBlockEdit } from './delimited-block.js'
 

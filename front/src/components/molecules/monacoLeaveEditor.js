@@ -1,7 +1,7 @@
 /**
  * @import { editor } from 'monaco-editor/editor'
  */
-import { KeyCode, editor as monacoEditor } from 'monaco-editor/editor'
+import { KeyCode, OverlayWidgetPositionPreference } from './monaco.js'
 
 /**
  * Escape is only handled when Monaco has nothing to dismiss: otherwise it
@@ -41,7 +41,7 @@ export function registerLeaveEditor(editor, { action, hint, hintClassName }) {
     getId: () => 'stylo.leaveEditor.hint',
     getDomNode: () => hintNode,
     getPosition: () => ({
-      preference: monacoEditor.OverlayWidgetPositionPreference.TOP_RIGHT_CORNER,
+      preference: OverlayWidgetPositionPreference.TOP_RIGHT_CORNER,
     }),
   }
   editor.addOverlayWidget(hintWidget)

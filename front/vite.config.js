@@ -82,7 +82,9 @@ export default defineConfig(async ({ mode }) => {
               },
               {
                 name: 'textEditor',
-                test: /node_modules\/(monaco-editor|monaco-.+|@monaco-editor\/.+|yjs|y-.+)/,
+                // Monaco is left out: it is loaded on demand, after its
+                // translation (see components/molecules/monaco.js)
+                test: /node_modules\/(@monaco-editor\/.+|yjs|y-(?!monaco).+)/,
                 priority: 5,
               },
               // {

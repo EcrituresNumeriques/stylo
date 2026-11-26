@@ -1,15 +1,9 @@
-import { loader } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor/editor'
 import { useMemo } from 'react'
-
-import 'monaco-editor/languages/definitions/yaml/register.js'
 
 import { MonacoEditor } from '../../molecules/index.js'
 import defaultEditorOptions from '../monaco/options.js'
 
 import styles from './YamlEditor.module.scss'
-
-loader.config({ monaco })
 
 export default function MonacoYamlEditor({
   text,

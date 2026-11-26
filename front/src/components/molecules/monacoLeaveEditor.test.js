@@ -1,12 +1,7 @@
-import { KeyCode } from 'monaco-editor/editor'
 import { describe, expect, test, vi } from 'vitest'
+import { KeyCode } from './monaco.js'
 
 import { registerLeaveEditor } from './monacoLeaveEditor.js'
-
-vi.mock('monaco-editor', () => ({
-  KeyCode: { Tab: 2, Shift: 4, Escape: 9, KeyA: 31 },
-  editor: { OverlayWidgetPositionPreference: { TOP_RIGHT_CORNER: 0 } },
-}))
 
 function createFakeEditor() {
   const listeners = { keyDown: [], blur: [], dispose: [] }

@@ -99,6 +99,19 @@
       "performance": {
         "noAccumulatingSpread": "warn"
       },
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "patterns": [
+              {
+                "group": ["monaco-editor", "monaco-editor/**"],
+                "message": "Monaco doit être chargé après sa traduction : importer depuis front/src/components/molecules/monaco.js."
+              }
+            ]
+          }
+        }
+      },
       "security": {
         "noDangerouslySetInnerHtml": "warn"
       },
@@ -110,6 +123,12 @@
       }
     }
   },
+  "overrides": [
+    {
+      "includes": ["**/components/molecules/monaco.js"],
+      "linter": { "rules": { "style": { "noRestrictedImports": "off" } } }
+    }
+  ],
   "assist": {
     "enabled": true,
     "actions": {
