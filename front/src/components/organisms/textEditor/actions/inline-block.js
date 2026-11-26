@@ -183,7 +183,7 @@ export function createInlineBlockEdit({
   contentAfter = ']',
 }) {
   const attributes = blockAttributes({ classNames: [className], attrs })
-  const hasSelectionText = selectionText.length > 1
+  const hasSelectionText = selectionText.length > 0
 
   const endLineNumber = selection.endLineNumber
   let endPositionColumn = selection.startColumn + contentBefore.length

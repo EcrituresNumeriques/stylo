@@ -87,6 +87,16 @@ describe('createInlineBlockEdit()', () => {
     expect(endCursorState).toMatchObject({ startColumn: 25 })
   })
 
+  test('a single selected character: cursor placed after the span', () => {
+    const { text, endCursorState } = createInlineBlockEdit({
+      selection: sel(1, 1, 1, 2),
+      selectionText: 'x',
+      className: 'smallcaps',
+    })
+    expect(text).toBe('[x]{.smallcaps}')
+    expect(endCursorState).toMatchObject({ startColumn: 16 })
+  })
+
   test('empty selection: cursor placed inside brackets', () => {
     const { text, endCursorState } = createInlineBlockEdit({
       selection: sel(1, 1, 1, 1),
