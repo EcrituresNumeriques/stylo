@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { useEffect, useId } from 'react'
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
@@ -21,7 +21,6 @@ export default function SearchMenu() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const modal = useModal()
-  const fieldId = useId()
   const search = useSearch(query)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: on page load only
@@ -56,11 +55,9 @@ export default function SearchMenu() {
   return (
     <search className={styles.search} aria-label={t('header.search.label')}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label htmlFor={fieldId} className="visually-hidden">
-          {t('header.search.label')}
-        </label>
         <Field
-          id={fieldId}
+          label={t('header.search.label')}
+          hideLabel
           type="search"
           name="query"
           icon={<Search />}

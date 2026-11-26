@@ -11,6 +11,7 @@ export default forwardRef(function Field(
     children,
     mandatory = false,
     label,
+    hideLabel = false,
     id = useId(),
     type = 'text',
     autoFocus = false,
@@ -39,7 +40,13 @@ export default forwardRef(function Field(
   return (
     <div className={classNames}>
       {label && (
-        <label htmlFor={id} aria-label={`${label} (${t('field.mandatory')})`}>
+        <label
+          htmlFor={id}
+          className={clsx(hideLabel && 'visually-hidden')}
+          aria-label={
+            mandatory ? `${label} (${t('field.mandatory')})` : undefined
+          }
+        >
           {label}
           {mandatory && (
             <span className={styles.mandatoryHelper} aria-hidden="true">

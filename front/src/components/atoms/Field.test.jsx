@@ -56,6 +56,15 @@ describe('Field', () => {
     expect(onChangeHandler).toHaveBeenCalled(5) /* 'Rouge'.length */
   })
 
+  test('renders with a visually hidden label', () => {
+    const { getByLabelText, getByText } = render(
+      <Component label="Rechercher" hideLabel />
+    )
+
+    expect(getByLabelText('Rechercher')).toBeInTheDocument()
+    expect(getByText('Rechercher')).toHaveClass('visually-hidden')
+  })
+
   test('renders with a mandatory accessible description', () => {
     const { getByRole, getByText } = render(
       <Component label="Haricot" mandatory />
