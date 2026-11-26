@@ -99,19 +99,16 @@ function searchable(schema, { langPath }) {
    * @param {string} query
    * @param {{ filter: object, documentLanguage?: string | null, limit?: number | null }} options
    *   documentLanguage: French when empty; limit: see resultsLimit
-   * @returns {Promise<Record<string, any>[]>} lean documents with a score
+   * @returns {Promise<{ results: Record<string, any>[], total: number }>}
+   *   the most relevant lean documents, with a score, and the number of
+   *   matching documents
    */
   schema.statics.search = function (
     query,
     { filter, documentLanguage, limit }
   ) {
     const language = documentLanguage || DEFAULT_LANGUAGE
-    return this.aggregate([
-      {
-        $match: {
-          $and: [{ $text: { $search: query, $language: language } }, filter],
-        },
-      },
+    const scoreAndLimit = [
       {
         $addFields: {
           score: {
@@ -130,7 +127,19 @@ function searchable(schema, { langPath }) {
       },
       { $sort: { score: -1 } },
       { $limit: resultsLimit(limit) },
-    ])
+    ]
+    // counting costs nothing more: sorting already goes through every match
+    return this.aggregate([
+      {
+        $match: {
+          $and: [{ $text: { $search: query, $language: language } }, filter],
+        },
+      },
+      { $facet: { results: scoreAndLimit, total: [{ $count: 'count' }] } },
+    ]).then(([{ results, total }]) => ({
+      results,
+      total: total[0]?.count ?? 0,
+    }))
   }
 }
 

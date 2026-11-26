@@ -171,6 +171,7 @@ describe('search', () => {
     assert.deepEqual(await search(fixtures.user, 'palimpseste'), {
       articles: [],
       corpora: [],
+      total: 0,
     })
   })
 
@@ -226,6 +227,11 @@ describe('search', () => {
   test('returns at most 20 results by default', async () => {
     const { articles } = await search(fixtures.user, 'incunable')
     assert.equal(articles.length, 20)
+  })
+
+  test('counts the results beyond the limit', async () => {
+    const { total } = await search(fixtures.user, 'incunable', { limit: 3 })
+    assert.equal(total, 21)
   })
 
   test('returns at most limit results', async () => {
