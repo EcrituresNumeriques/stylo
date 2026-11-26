@@ -5,6 +5,8 @@ Frontend for the site hosted at https://stylo.huma-num.fr
 This folder is an npm workspace of the Stylo repository.
 The commands below are run from the **root of the repository**: see the [main `README.md`](../README.md) for the prerequisites and the configuration (`.env` file, which is also read by the frontend).
 
+The file layout and the principles to follow when writing code (atomic design, state, styles, translations, tests) are described in [`CONTRIBUTING.md`](CONTRIBUTING.md) (in French).
+
 ## Install
 
 ```bash
