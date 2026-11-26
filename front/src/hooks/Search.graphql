@@ -4,16 +4,26 @@ query search($query: String!) {
       article {
         id
         title
+        updatedAt
         owner {
+          id
           displayName
+          username
         }
       }
+      score
     }
     corpora {
       corpus {
         id
         name
+        updatedAt
+        creator {
+          displayName
+          username
+        }
       }
+      score
     }
   }
 }

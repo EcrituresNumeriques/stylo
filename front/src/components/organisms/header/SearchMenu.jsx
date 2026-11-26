@@ -2,14 +2,13 @@ import { Search } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
 
 import { useModal } from '../../../hooks/modal.js'
 import { useSearch } from '../../../hooks/search.js'
 import { Field } from '../../atoms/index.js'
 import { Alert, Loading, Modal } from '../../molecules/index.js'
-
 import styles from './SearchMenu.module.scss'
+import { ArticleResult, CorpusResult } from './SearchResult.jsx'
 
 /**
  * Search field of the header: results open in a modal.
@@ -53,50 +52,25 @@ export default function SearchMenu() {
 
 function SearchResults({ query, onSelect }) {
   const { t } = useTranslation()
-  const { articles, corpora, error, isLoading } = useSearch(query)
+  const { results, error, isLoading } = useSearch(query)
 
   if (isLoading) return <Loading />
   if (error) return <Alert message={error.message} />
-  if (!articles.length && !corpora.length) {
-    return <p>{t('header.search.noResults')}</p>
-  }
+  if (!results.length) return <p>{t('header.search.noResults')}</p>
 
   return (
-    <div className={styles.results}>
-      {articles.length > 0 && (
-        <section>
-          <h2>{t('header.mainMenu.articles')}</h2>
-          <ul>
-            {articles.map(({ article }) => (
-              <li key={article.id} className={styles.item}>
-                <Link to={`/article/${article.id}`} onClick={onSelect}>
-                  {article.title}
-                </Link>
-                {article.owner && (
-                  <span className={styles.owner}>
-                    {article.owner.displayName}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
+    <ul className={styles.results}>
+      {results.map(({ article, corpus }) =>
+        article ? (
+          <ArticleResult
+            key={article.id}
+            article={article}
+            onSelect={onSelect}
+          />
+        ) : (
+          <CorpusResult key={corpus.id} corpus={corpus} />
+        )
       )}
-
-      {corpora.length > 0 && (
-        <section>
-          <h2>{t('header.mainMenu.corpus')}</h2>
-          <ul>
-            {corpora.map(({ corpus }) => (
-              <li key={corpus.id} className={styles.item}>
-                <Link to={`/corpus/${corpus.id}/annotate`} onClick={onSelect}>
-                  {corpus.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
+    </ul>
   )
 }
