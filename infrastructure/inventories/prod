@@ -35,7 +35,7 @@ mongo_backup_path='/home/stylo/stylo/backup'
 se_domain_preview='stylo.huma-num.fr'
 nakala_api_url=https://api.nakala.fr
 #
-stylo_export_version=4.1.1
+stylo_export_version=4.1.2
 pandoc_api_version=4.1.1
 
 # Flags dispo sur https://www.ssllabs.com/ssltest/analyze.html?d=humanid.huma-num.fr
