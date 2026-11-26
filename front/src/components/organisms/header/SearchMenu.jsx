@@ -63,7 +63,7 @@ export default function SearchMenu() {
           placeholder={t('header.search.placeholder')}
           aria-label={t('header.search.label')}
         />
-        <Button type="submit" icon={true} title={t('header.search.submit')}>
+        <Button type="submit" title={t('header.search.submit')}>
           <ArrowRight aria-hidden />
           <span className="visually-hidden">{t('header.search.submit')}</span>
         </Button>
