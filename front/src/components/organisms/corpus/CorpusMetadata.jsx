@@ -16,6 +16,7 @@ import MetadataForm from '../metadata/MetadataForm.jsx'
 import MonacoYamlEditor from '../metadata/YamlEditor.jsx'
 import { toYaml } from '../metadata/yaml.js'
 
+import CorpusArticleMetadataSelector from './CorpusArticleMetadataSelector.jsx'
 import styles from './CorpusMetadata.module.scss'
 
 export default function CorpusMetadata({
@@ -40,7 +41,26 @@ export default function CorpusMetadata({
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]
   )
-  const metadataContext = useMemo(() => ({ corpusId }), [corpusId])
+  // "import from article" menu, on the groups of fields flagged as such in the UI schema
+  const renderGroupAction = useCallback(
+    ({ fields, importFromArticle }, { update }) =>
+      importFromArticle && (
+        <CorpusArticleMetadataSelector
+          corpusId={corpusId}
+          onSelectedItem={(article) => {
+            const articleMetadata = article.workingVersion.metadata
+            update(
+              Object.fromEntries(
+                Object.entries(articleMetadata).filter(([key]) =>
+                  fields.includes(key)
+                )
+              )
+            )
+          }}
+        />
+      ),
+    [corpusId]
+  )
   const corpusBookMetadataSchemaMerged = useMemo(
     () => merge(corpusBookMetadataSchema),
     [corpusBookMetadataSchema]
@@ -151,7 +171,7 @@ export default function CorpusMetadata({
           schema={corpusMetadataSchema}
           uiSchema={corpusUiSchema}
           onChange={handleMetadataUpdated}
-          context={metadataContext}
+          renderGroupAction={renderGroupAction}
         />
       )}
       <FormActions
