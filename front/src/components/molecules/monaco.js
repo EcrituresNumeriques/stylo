@@ -53,18 +53,18 @@ const once = (key, load) => {
 async function loadCore(locale) {
   await translations[locale]?.()
 
-  const [api, { default: EditorWorker }] = await Promise.all([
+  let EditorWorker
+  ;[monaco, { default: EditorWorker }] = await Promise.all([
     import('monaco-editor/editor'),
     import('monaco-editor/editor/editor.worker?worker'),
-    // splitting the features would only save ~90 KB gzip, for many chunks
     import('monaco-editor/features/register.all.js'),
   ])
 
   self.MonacoEnvironment = { getWorker: () => new EditorWorker() }
   // otherwise @monaco-editor/react loads Monaco from a CDN
-  loader.config({ monaco: api })
-  monaco = api
-  return api
+  loader.config({ monaco })
+
+  return monaco
 }
 
 /**
@@ -82,10 +82,10 @@ export function languageConfig(language) {
  * @returns {Promise<Monaco>}
  */
 export async function loadMonaco({ locale, language } = {}) {
-  const api = await once('core', () => loadCore(locale))
+  await once('core', () => loadCore(locale))
   const config = languageConfig(language)
   if (config) {
-    await once(`language:${config.id}`, async () => config.load(api))
+    await once(`language:${config.id}`, async () => config.load(monaco))
   }
-  return api
+  return monaco
 }
