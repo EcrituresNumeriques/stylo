@@ -60,6 +60,11 @@
       "hint": "Pulse Tab o Mayús+Tab para salir del editor"
     }
   },
+  "lineWidth": {
+    "action_one": "Ancho de línea: {{count}} carácter",
+    "action_other": "Ancho de línea: {{count}} caracteres",
+    "full": "Ancho de línea: todo el ancho"
+  },
   "stylo": {
     "markdown": {
       "headings": "Títulos",

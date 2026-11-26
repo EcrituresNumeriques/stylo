@@ -11,9 +11,9 @@ export default {
    */
   contextmenu: false,
   // la taille de Monaco change selon le système (12px sur macOS, 14px
-  // ailleurs). La police, JetBrains Mono par défaut, vient des préférences
-  // (molecules/monacoFont.js) : ces options sont réappliquées à chaque
-  // changement et écraseraient la police choisie.
+  // ailleurs). La police et le retour à la ligne viennent des préférences
+  // (molecules/monacoReading.js) : ces options sont réappliquées à chaque
+  // changement et écraseraient les choix de la palette.
   fontSize: 14,
   // multiplie fontSize (en dessous de 8), comme les paragraphes de l'aperçu
   lineHeight: 1.6,
@@ -37,8 +37,5 @@ export default {
     ambiguousCharacters: false,
     invisibleCharacters: true,
   },
-  // revient à la ligne à 80 caractères, ou avant si l'éditeur est plus étroit
-  wordWrap: 'bounded',
-  wordWrapColumn: 80,
   wrappingIndent: 'none',
 }
