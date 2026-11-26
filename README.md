@@ -20,7 +20,7 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 - Node.js 24 LTS (la version exacte est indiquée dans [`.node-version`](.node-version))
 - MongoDB 7
 
-Le fichier `.node-version` est lu par la plupart des gestionnaires de versions ([proto](https://moonrepo.dev/proto), [fnm](https://github.com/Schniz/fnm), [mise](https://mise.jdx.dev/), [asdf](https://asdf-vm.com/), [nodenv](https://github.com/nodenv/nodenv)…). [Volta](https://volta.sh/) utilise la clé `volta` du `package.json`, qui épingle la même version. Avec nvm, lancez `nvm install "$(cat .node-version)"`.
+Le fichier `.node-version` est lu par la plupart des gestionnaires de versions ([proto](https://moonrepo.dev/proto), [fnm](https://github.com/Schniz/fnm), [asdf](https://asdf-vm.com/), [nodenv](https://github.com/nodenv/nodenv)…). Avec fnm, ajoutez l'option `--version-file-strategy=recursive` pour que la version soit aussi détectée depuis les dossiers `front` et `graphql`. Avec nvm, lancez `nvm install "$(cat .node-version)"`.
 
 ## Sous MacOS
 
