@@ -90,9 +90,8 @@ select.select {
 .button {
   @include actionField;
 
-  > svg {
-    margin-right: 0.3em;
-  }
+  // espace entre l'icône et le libellé, aucun pour une icône seule
+  gap: 0.3em;
 }
 
 .button:disabled {
