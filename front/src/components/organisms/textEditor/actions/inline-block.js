@@ -1,6 +1,6 @@
 import { KeyCode, KeyMod, Selection } from '../../../molecules/monaco.js'
 
-import { blockAttributes } from './index.js'
+import { blockAttributes } from './attributes.js'
 
 /**
  * @typedef {import('monaco-editor/editor').editor.IActionDescriptor} IActionDescriptor
