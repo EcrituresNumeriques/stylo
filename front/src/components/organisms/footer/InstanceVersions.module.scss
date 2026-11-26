@@ -1,0 +1,58 @@
+@use '../../../styles/variables' as *;
+
+.container {
+  position: relative;
+  display: inline-flex;
+  margin-inline-start: 0.25rem;
+  vertical-align: middle;
+}
+
+.button {
+  all: unset;
+  display: inline-flex;
+  cursor: pointer;
+  color: $muted-color;
+  border-radius: 50%;
+
+  &:hover,
+  &[aria-expanded='true'] {
+    color: $main-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+}
+
+.versions {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 10;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background-color: $extra-background-color;
+  border: 1px solid $main-color;
+  white-space: nowrap;
+  text-align: start;
+
+  &[hidden] {
+    display: none;
+  }
+
+  > div {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  dt {
+    color: $main-lighter-color;
+  }
+
+  dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+}

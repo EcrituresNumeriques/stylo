@@ -176,6 +176,9 @@ app.get('/version', (_req, res) =>
   res.json({
     name: pkg.name,
     version: pkg.version,
+    // `null` quand la version n'est pas renseignée (développement local)
+    exportVersion: config.get('export.version') || null,
+    pandocApiVersion: config.get('pandocApi.version') || null,
   })
 )
 
