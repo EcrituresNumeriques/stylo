@@ -17,6 +17,10 @@
 
     /* Monaco dessine la correspondance à la largeur exacte du mot : on la fait
        déborder, sans décaler le texte, pour qu'elle se repère mieux. */
+    .monaco-editor .findMatch {
+      box-shadow: 0 0 0 2px $muted-background-color;
+    }
+
     .monaco-editor .currentFindMatch {
       border: none;
       box-shadow: 0 0 0 2px $text-highlight-color;
