@@ -5,6 +5,8 @@
  */
 import { loader } from '@monaco-editor/react'
 
+import { defineStyloTheme } from '../organisms/monaco/theme.js'
+
 export {
   Separator,
   SubmenuAction,
@@ -63,6 +65,7 @@ async function loadCore(locale) {
   self.MonacoEnvironment = { getWorker: () => new EditorWorker() }
   // otherwise @monaco-editor/react loads Monaco from a CDN
   loader.config({ monaco })
+  defineStyloTheme(monaco)
 
   return monaco
 }

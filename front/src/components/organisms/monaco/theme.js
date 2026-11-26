@@ -1,0 +1,34 @@
+/**
+ * @import { editor } from 'monaco-editor/editor'
+ * @typedef {import('../../molecules/monaco.js').Monaco} Monaco
+ */
+
+export const STYLO_THEME = 'stylo'
+
+/**
+ * Monaco attend des couleurs hexadécimales : les valeurs reprennent celles de
+ * styles/variables.scss.
+ *
+ * @type {editor.IStandaloneThemeData}
+ */
+const theme = {
+  base: 'vs',
+  inherit: true,
+  rules: [],
+  colors: {
+    // correspondance courante : $text-highlight-color, bordure $main-color
+    'editor.findMatchBackground': '#fedc2a',
+    'editor.findMatchBorder': '#202020',
+    // autres correspondances : $muted-background-color, bordure $muted-color
+    'editor.findMatchHighlightBackground': '#ececec',
+    'editor.findMatchHighlightBorder': '#797676',
+    // Monaco surligne toute la ligne de la correspondance courante, soit tout
+    // le paragraphe avec wordWrap : le mot recherché n'en ressortait plus
+    'editor.rangeHighlightBackground': '#00000000',
+  },
+}
+
+/** @param {Monaco} monacoInstance */
+export function defineStyloTheme(monacoInstance) {
+  monacoInstance.editor.defineTheme(STYLO_THEME, theme)
+}

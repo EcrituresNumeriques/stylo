@@ -1,7 +1,7 @@
 import Editor, { DiffEditor } from '@monaco-editor/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { STYLO_THEME } from '../organisms/monaco/theme.js'
 import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
 import { languageConfig, loadMonaco, monaco } from './monaco.js'
@@ -118,6 +118,7 @@ export default function MonacoEditor({
 
   return (
     <Editor
+      theme={STYLO_THEME}
       {...props}
       defaultLanguage={languageConfig(language)?.id}
       onMount={handleMount}
@@ -133,5 +134,13 @@ export function MonacoDiffEditor({ language, ...props }) {
     return <Placeholder {...props} />
   }
 
-  return <DiffEditor {...props} language={languageConfig(language)?.id} />
+  // le thème Monaco est global : sans lui, le thème par défaut de DiffEditor
+  // s'appliquerait aussi aux autres éditeurs
+  return (
+    <DiffEditor
+      theme={STYLO_THEME}
+      {...props}
+      language={languageConfig(language)?.id}
+    />
+  )
 }
