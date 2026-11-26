@@ -21,25 +21,16 @@ import {
   MonacoDiffEditor,
   MonacoEditor,
 } from '../../molecules/index.js'
-import { onDropIntoEditor } from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
-import {
-  actions,
-  MarkdownMenu,
-  MetopesMenu,
-  registerActions,
-  Separator,
-} from './actions/index.js'
-
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
-
 import styles from './CollaborativeTextEditor.module.scss'
-
-/**
- * @typedef {import('monaco-editor/editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
- * @typedef {import('monaco-editor/editor')} monaco
- */
+import {
+  bibliographyCompletion,
+  contextActions,
+  imageDrop,
+  realtime,
+} from './plugins/index.js'
 
 /**
  * @param {object} props
@@ -157,57 +148,25 @@ export default function CollaborativeTextEditor({
     []
   )
 
-  const handleCollaborativeEditorDidMount = useCallback(
-    (
-      /** @type {IStandaloneCodeEditor} */ editor,
-      /** @type {monaco} */ monaco
-    ) => {
-      editorRef.current = editor
-
-      editor.onDropIntoEditor(onDropIntoEditor(editor))
-
-      const contextMenu = editor.getContribution('editor.contrib.contextmenu')
-      const originalMenuActions = contextMenu._getMenuActions(
-        editor.getModel(),
-        editor.contextMenuId
-      )
-
-      contextMenu._getMenuActions = function _getStyloCustomMenuActions() {
-        return [
-          ...originalMenuActions,
-          new Separator(),
-          MetopesMenu({ editor, t }),
-          MarkdownMenu({ editor, t }),
-        ]
-      }
-
-      // Command Palette commands
-      registerActions(editor, t, actions.metopes)
-      registerActions(editor, t, actions.markdown)
-      registerActions(
-        editor,
-        t,
-        actions.saveShortcut(() => setActiveMenu('versions'))
-      )
-
-      const completionProvider = bibliographyCompletionProvider.register(monaco)
-      editor.onDidDispose(() => completionProvider.dispose())
-
-      const model = editor.getModel()
-      // Set EOL to LF otherwise it causes synchronization issues due to inconsistent EOL between Windows and Linux.
-      // https://github.com/yjs/y-monaco/issues/27
-      model.setEOL(monaco.editor.EndOfLineSequence.LF)
-      if (yText && awareness) {
-        // y-monaco imports Monaco: it is loaded once Monaco is
-        import('y-monaco').then(({ MonacoBinding }) => {
-          new MonacoBinding(yText, model, new Set([editor]), awareness)
-        })
-      }
-
-      setIsEditorMounted(true)
-      onEditorReadyRef.current?.()
-    },
-    [yText, awareness]
+  // a version is read only: no actions, nor real time
+  const plugins = useMemo(
+    () =>
+      hasVersion
+        ? []
+        : [
+            contextActions({ t, onSave: () => setActiveMenu('versions') }),
+            bibliographyCompletion(bibliographyCompletionProvider),
+            imageDrop(),
+            ...(yText && awareness ? [realtime({ yText, awareness })] : []),
+          ],
+    [
+      hasVersion,
+      yText,
+      awareness,
+      t,
+      setActiveMenu,
+      bibliographyCompletionProvider,
+    ]
   )
 
   const handleEditorDidMount = useCallback((editor) => {
@@ -364,9 +323,9 @@ export default function CollaborativeTextEditor({
           options={options}
           className={styles.editor}
           language="markdown"
-          {...(hasVersion
-            ? { value: version.md, onMount: handleEditorDidMount }
-            : { onMount: handleCollaborativeEditorDidMount })}
+          plugins={plugins}
+          onMount={handleEditorDidMount}
+          {...(hasVersion ? { value: version.md } : {})}
         />
       </div>
     </>
