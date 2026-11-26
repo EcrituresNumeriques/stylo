@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
 import { languageConfig, loadMonaco, monaco } from './monaco.js'
-import { registerLeaveEditor } from './monacoLeaveEditor.js'
+import leaveEditor from './monacoLeaveEditor.js'
 
 /**
  * @typedef {import('monaco-editor/editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
@@ -108,12 +108,15 @@ export default function MonacoEditor({
   // @monaco-editor/react only calls the onMount it received on the first render
   const handleMount = useCallback(
     (editor, api) => {
-      registerLeaveEditor(editor, {
-        action: () => tRef.current('keyboard.leave.action'),
-        hint: () => tRef.current('keyboard.leave.hint'),
-        hintClassName: styles.leaveHint,
-      })
-      applyPlugins(editor, api, pluginsRef.current)
+      applyPlugins(editor, api, [
+        // keyboard users can always leave the editor
+        leaveEditor({
+          action: () => tRef.current('keyboard.leave.action'),
+          hint: () => tRef.current('keyboard.leave.hint'),
+          hintClassName: styles.leaveHint,
+        }),
+        ...pluginsRef.current,
+      ])
       onMount?.(editor, api)
     },
     [onMount]

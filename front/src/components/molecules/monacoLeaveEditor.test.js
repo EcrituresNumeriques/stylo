@@ -1,30 +1,35 @@
 import { describe, expect, test, vi } from 'vitest'
 import { KeyCode } from './monaco.js'
 
-import { registerLeaveEditor } from './monacoLeaveEditor.js'
+import leaveEditor from './monacoLeaveEditor.js'
 
 function createFakeEditor() {
-  const listeners = { keyDown: [], blur: [], dispose: [] }
+  const listeners = { keyDown: [], blur: [] }
   const editor = {
     options: {},
     action: null,
     widget: null,
     addOverlayWidget: (widget) => (editor.widget = widget),
     removeOverlayWidget: vi.fn(),
+    disposables: [],
+    disposable: () => {
+      const disposable = { dispose: vi.fn() }
+      editor.disposables.push(disposable)
+      return disposable
+    },
     updateOptions: (options) => Object.assign(editor.options, options),
     addAction: (action) => {
       editor.action = action
-      return { dispose: vi.fn() }
+      return editor.disposable()
     },
     onKeyDown: (listener) => {
       listeners.keyDown.push(listener)
-      return { dispose: vi.fn() }
+      return editor.disposable()
     },
     onDidBlurEditorText: (listener) => {
       listeners.blur.push(listener)
-      return { dispose: vi.fn() }
+      return editor.disposable()
     },
-    onDidDispose: (listener) => listeners.dispose.push(listener),
     keyDown: (keyCode) => {
       for (const listener of listeners.keyDown) listener({ keyCode })
     },
@@ -33,14 +38,14 @@ function createFakeEditor() {
     },
     hint: () => editor.widget.getDomNode().textContent,
   }
-  registerLeaveEditor(editor, {
+  editor.cleanup = leaveEditor({
     action: () => 'Leave',
     hint: () => 'Press Tab to leave',
-  })
+  }).setup(editor)
   return editor
 }
 
-describe('registerLeaveEditor', () => {
+describe('leaveEditor', () => {
   test('binds Escape only when Monaco has nothing to dismiss', () => {
     const editor = createFakeEditor()
 
@@ -74,5 +79,18 @@ describe('registerLeaveEditor', () => {
     editor.keyDown(KeyCode.KeyA)
     expect(editor.options.tabFocusMode).toBe(false)
     expect(editor.hint()).toBe('')
+  })
+
+  test('cleans up the action, the listeners and the hint', () => {
+    const editor = createFakeEditor()
+    const hintWidget = editor.widget
+
+    editor.cleanup()
+
+    expect(editor.disposables).toHaveLength(3)
+    for (const disposable of editor.disposables) {
+      expect(disposable.dispose).toHaveBeenCalledOnce()
+    }
+    expect(editor.removeOverlayWidget).toHaveBeenCalledWith(hintWidget)
   })
 })
