@@ -514,6 +514,7 @@ describe('user resolver', () => {
       const testProvider = u.authProviders.get('zotero')
       assert.equal(testProvider.id, 'abcd')
       assert.equal(testProvider.token, 'efgh')
+      assert.ok(testProvider.linkedAt instanceof Date)
 
       assert.equal(u.lastAccesses.length, 1)
       assert.equal(u.lastAccesses[0].strategy, 'zotero')

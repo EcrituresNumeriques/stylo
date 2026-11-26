@@ -73,13 +73,20 @@ module.exports = {
         )
       }
       const details = requireArgument('input', args.input, args.details)
+      const { authProviders, ...registration } = session.pendingRegistration
+      const linkedAt = new Date()
 
       const user = await User.create({
-        // will unwrap 'email, 'authProviders' and possibly 'displayName'
-        ...session.pendingRegistration,
+        // will unwrap 'email' and possibly 'displayName'
+        ...registration,
+        authProviders: Object.fromEntries(
+          Object.entries(authProviders).map(([service, provider]) => [
+            service,
+            { ...provider, linkedAt },
+          ])
+        ),
         // we want to keep the user defined choice if any
-        displayName:
-          details.displayName || session.pendingRegistration.displayName,
+        displayName: details.displayName || registration.displayName,
         firstName: details.firstName,
         lastName: details.lastName,
         institution: details.institution,

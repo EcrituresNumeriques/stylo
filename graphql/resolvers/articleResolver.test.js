@@ -350,6 +350,7 @@ describe('article resolver', () => {
         creator: context.userId,
       })
 
+      const before = new Date()
       await ArticleMutation.duplicateArticle(
         {},
         { article: article._id, to: context.userId },
@@ -361,6 +362,9 @@ describe('article resolver', () => {
 
       assert.equal(updatedCorpus.articles.length, 2)
       assert.equal(updatedWorkspace.articles.length, 2)
+
+      const { addedAt } = updatedCorpus.articles[1]
+      assert.ok(addedAt >= before && addedAt <= new Date())
     })
   })
 

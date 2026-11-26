@@ -90,6 +90,7 @@ describe('user model', () => {
       // given
       userA = await User.create({
         email: 'a@example.com',
+        lastAccesses: [{ at: new Date(), ip: '192.0.2.0', strategy: 'local' }],
       })
 
       userB = await User.create({
@@ -187,6 +188,7 @@ describe('user model', () => {
       assert.notEqual(user.deletedAt, null)
       assert.equal(user.password, null)
       assert.match(user.email, /^deleted-user-[a-f0-9-]+@example.com$/)
+      assert.deepEqual(user.lastAccesses, [])
 
       // user is soft deleted (i.e., still present in the database)
       const users = await User.find({})

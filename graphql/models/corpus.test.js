@@ -68,3 +68,29 @@ describe('addArticles', () => {
     assert.deepEqual(corpus.articles[0].addedAt, addedAt)
   })
 })
+
+describe('updateArticlesOrder', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
+  test('keeps the date when reordering', async () => {
+    const addedAt = new Date('2026-01-01')
+    const article = await Article.create({ title: 'Chapter' })
+    const corpus = await Corpus.create({
+      name: 'Corpus',
+      articles: [{ article: article._id, order: 0, addedAt }],
+    })
+
+    await corpus.updateArticlesOrder([{ articleId: article.id, order: 3 }])
+
+    const [entry] = (await Corpus.findById(corpus.id)).articles
+    assert.equal(entry.order, 3)
+    assert.deepEqual(entry.addedAt, addedAt)
+  })
+})

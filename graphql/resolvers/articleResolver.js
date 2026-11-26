@@ -339,7 +339,7 @@ module.exports = {
       // Maintain links
       await Corpus.updateMany(
         { 'articles.article': article._id },
-        { $push: { articles: { article: newArticle._id } } }
+        { $push: { articles: Corpus.newArticleEntry(newArticle._id) } }
       )
 
       await Workspace.updateMany(
