@@ -58,7 +58,7 @@ describe('Field', () => {
 
   test('renders with a visually hidden label', () => {
     const { getByLabelText, getByText } = render(
-      <Component label="Rechercher" hideLabel />
+      <Component label="Rechercher" labelClassName="visually-hidden" />
     )
 
     expect(getByLabelText('Rechercher')).toBeInTheDocument()

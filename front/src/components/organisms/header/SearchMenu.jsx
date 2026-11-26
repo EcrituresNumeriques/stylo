@@ -57,7 +57,8 @@ export default function SearchMenu() {
       <form className={styles.form} onSubmit={handleSubmit}>
         <Field
           label={t('header.search.label')}
-          hideLabel
+          labelClassName="visually-hidden"
+          mandatory
           type="search"
           name="query"
           icon={<Search />}
