@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
@@ -63,7 +63,10 @@ export default function SearchMenu() {
           placeholder={t('header.search.placeholder')}
           aria-label={t('header.search.label')}
         />
-        <Button type="submit">{t('header.search.submit')}</Button>
+        <Button type="submit" icon={true} title={t('header.search.submit')}>
+          <ArrowRight aria-hidden />
+          <span className="visually-hidden">{t('header.search.submit')}</span>
+        </Button>
       </form>
 
       {/* outside of the header, so that its styles do not apply */}
