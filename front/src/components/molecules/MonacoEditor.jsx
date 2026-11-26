@@ -5,6 +5,7 @@ import { STYLO_THEME } from '../organisms/monaco/theme.js'
 import Loading from './Loading.jsx'
 import styles from './MonacoEditor.module.scss'
 import { languageConfig, loadMonaco, monaco } from './monaco.js'
+import chooseEditorFont from './monacoFont.js'
 import leaveEditor from './monacoLeaveEditor.js'
 
 /**
@@ -104,6 +105,9 @@ export default function MonacoEditor({
           action: () => tRef.current('keyboard.leave.action'),
           hint: () => tRef.current('keyboard.leave.hint'),
           hintClassName: styles.leaveHint,
+        }),
+        chooseEditorFont({
+          action: (font) => tRef.current('font.action', { font }),
         }),
         ...pluginsRef.current,
       ])

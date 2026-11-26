@@ -18,6 +18,7 @@
 /**
  * @typedef {object} EditorPreferences
  * @property {number} zoomLevel niveau de zoom de la police de Monaco
+ * @property {string} fontFamily identifiant de la police, dans organisms/monaco/fonts.js
  */
 
 /**
@@ -34,6 +35,7 @@ const defaultPreferences = {
   /** @type {EditorPreferences} */
   editor: {
     zoomLevel: 0,
+    fontFamily: 'inter',
   },
   /** @type {ExportPreferences} */
   export: {

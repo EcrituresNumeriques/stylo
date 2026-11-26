@@ -7,7 +7,6 @@ import { loader } from '@monaco-editor/react'
 import { EditorZoom } from 'monaco-editor/editor/common/config/editorZoom.js'
 
 import { getPreferences, setPreference } from '../../helpers/preferences.js'
-import defaultEditorOptions from '../organisms/monaco/options.js'
 import { defineStyloTheme } from '../organisms/monaco/theme.js'
 
 export {
@@ -67,19 +66,6 @@ function rememberEditorZoom() {
   )
 }
 
-/**
- * Monaco mesure la police à la création de l'éditeur : si Inter arrive après,
- * curseurs et sélections sont décalés jusqu'à une nouvelle mesure.
- * @param {Monaco} api
- */
-function remeasureWhenFontLoaded(api) {
-  document.fonts
-    ?.load(
-      `${defaultEditorOptions.fontSize}px ${defaultEditorOptions.fontFamily}`
-    )
-    .then(() => api.editor.remeasureFonts())
-}
-
 async function loadCore(locale) {
   await translations[locale]?.()
 
@@ -95,7 +81,6 @@ async function loadCore(locale) {
   loader.config({ monaco })
   defineStyloTheme(monaco)
   rememberEditorZoom()
-  remeasureWhenFontLoaded(monaco)
 
   return monaco
 }

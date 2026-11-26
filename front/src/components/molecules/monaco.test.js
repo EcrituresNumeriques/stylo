@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 // records the order in which the Monaco modules are evaluated
 const evaluated = []
 const api = {
-  editor: { defineTheme: vi.fn(), remeasureFonts: vi.fn() },
+  editor: { defineTheme: vi.fn() },
   languages: { register: () => {} },
 }
 const editorZoom = { setZoomLevel: vi.fn(), onDidChangeZoomLevel: vi.fn() }
@@ -77,21 +77,6 @@ describe('loadMonaco', () => {
     const onZoomChange = editorZoom.onDidChangeZoomLevel.mock.lastCall[0]
     onZoomChange(-1)
     expect(getPreferences('editor').zoomLevel).toBe(-1)
-  })
-
-  test('remeasures the fonts once the editor font is loaded', async () => {
-    const load = vi.fn(() => Promise.resolve())
-    Object.defineProperty(document, 'fonts', {
-      value: { load },
-      configurable: true,
-    })
-
-    await monaco.loadMonaco()
-    await Promise.resolve()
-
-    expect(load).toHaveBeenCalledWith('14px Inter, sans-serif')
-    expect(api.editor.remeasureFonts).toHaveBeenCalledOnce()
-    delete document.fonts
   })
 
   test('loads no translation in English', async () => {
