@@ -13,6 +13,8 @@ export default {
   // Monaco écrit en 12px sur macOS et 14px ailleurs : 15px, soit environ 2pt
   // de plus sur macOS, et la même taille partout
   fontSize: 15,
+  // multiplie fontSize (en dessous de 8), comme les paragraphes de l'aperçu
+  lineHeight: 1.6,
   hideCursorInOverviewRuler: true,
   lineNumbers: true,
   // Monaco réserve par défaut la largeur de 5 caractères pour les numéros de
