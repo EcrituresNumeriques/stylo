@@ -6,6 +6,7 @@ const { getTextFromYjsDoc } = require('../helpers/yjs-utils.mjs')
 const BATCH_SIZE = 500
 
 exports.up = async function (db) {
+  if (db.internals.dryRun) return
   const articles = db._getDbInstance().collection('articles')
   const cursor = articles.find(
     { 'workingVersion.ydoc': { $type: 'string', $ne: '' } },
