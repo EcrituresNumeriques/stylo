@@ -6,6 +6,7 @@ import {
   contextActions,
   imageDrop,
   realtime,
+  snippetCompletionProvider,
 } from './index.js'
 
 vi.mock('../../../molecules/monaco.js', async (importOriginal) => ({
@@ -79,6 +80,29 @@ describe('plugins', () => {
     const cleanup = create(disposable).setup(editor, {})
     cleanup()
 
+    expect(disposable.dispose).toHaveBeenCalledOnce()
+  })
+
+  test('snippetCompletionProvider suggests the actions of a namespace until disposed', () => {
+    const disposable = { dispose: vi.fn() }
+    const monaco = {
+      languages: { registerCompletionItemProvider: vi.fn(() => disposable) },
+    }
+    const editor = { getId: () => 'editor-1' }
+
+    const cleanup = snippetCompletionProvider({
+      t: (key) => key,
+      namespace: 'metopes',
+      types: ['delimited-block'],
+    }).setup(editor, monaco)
+
+    expect(
+      monaco.languages.registerCompletionItemProvider
+    ).toHaveBeenCalledWith(
+      'markdown',
+      expect.objectContaining({ triggerCharacters: [':'] })
+    )
+    cleanup()
     expect(disposable.dispose).toHaveBeenCalledOnce()
   })
 })
