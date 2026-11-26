@@ -113,15 +113,14 @@ export function CorpusResult({ corpus, onSelect }) {
           <Book aria-hidden size={18} /> {corpus.name}
         </h3>
         <div role="menu" className={styles.actions}>
-          <Link
+          <Button
             role="menuitem"
-            className={buttonStyles.icon}
-            to={`${corpus.workspaceId ? `/workspaces/${corpus.workspaceId}` : ''}/corpus#corpus-${corpus.id}`}
-            onClick={onSelect}
-            title={t('actions.manage.title')}
+            icon={true}
+            onClick={() => exportModal.show()}
+            title={t('actions.export.title')}
           >
-            <Settings aria-label={t('actions.manage.label')} />
-          </Link>
+            <FileDownIcon aria-label={t('actions.export.label')} />
+          </Button>
           <Link
             role="menuitem"
             target="_blank"
@@ -131,16 +130,15 @@ export function CorpusResult({ corpus, onSelect }) {
           >
             <MessageSquareShare aria-label={t('actions.annotate.button')} />
           </Link>
-          <Button
+          <Link
             role="menuitem"
-            icon={true}
-            primary={true}
             className={buttonStyles.primary}
-            onClick={() => exportModal.show()}
-            title={t('actions.export.title')}
+            to={`${corpus.workspaceId ? `/workspaces/${corpus.workspaceId}` : ''}/corpus#corpus-${corpus.id}`}
+            onClick={onSelect}
+            title={t('actions.manage.title')}
           >
-            <FileDownIcon aria-label={t('actions.export.label')} />
-          </Button>
+            <Settings aria-label={t('actions.manage.label')} />
+          </Link>
         </div>
       </header>
       <ResultMetadata updatedAt={corpus.updatedAt} author={corpus.creator} />
