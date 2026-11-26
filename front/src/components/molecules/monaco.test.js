@@ -2,7 +2,10 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 // records the order in which the Monaco modules are evaluated
 const evaluated = []
-const api = { languages: { register: () => {} } }
+const api = {
+  editor: { defineTheme: vi.fn() },
+  languages: { register: () => {} },
+}
 
 /** vi.doMock, after vi.resetModules(), evaluates the mocked modules again */
 function mockMonaco() {
@@ -43,6 +46,17 @@ describe('loadMonaco', () => {
     expect(loaded.languages).toBe(api.languages)
     expect(monaco.monaco).toBe(loaded)
     expect(loader.config).toHaveBeenCalledWith({ monaco: loaded })
+  })
+
+  test('defines the stylo theme', async () => {
+    const { STYLO_THEME } = await import('../organisms/monaco/theme.js')
+
+    await monaco.loadMonaco()
+
+    expect(api.editor.defineTheme).toHaveBeenCalledWith(
+      STYLO_THEME,
+      expect.objectContaining({ base: 'vs' })
+    )
   })
 
   test('loads no translation in English', async () => {
