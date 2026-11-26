@@ -15,6 +15,15 @@
       text-decoration: none;
     }
 
+    /* Monaco dessine la correspondance à la largeur exacte du mot : on la fait
+       déborder, sans décaler le texte, pour qu'elle se repère mieux. */
+    .monaco-editor .currentFindMatch {
+      border: none;
+      box-shadow: 0 0 0 2px $text-highlight-color;
+      outline: 2px solid $main-color;
+      outline-offset: 2px;
+    }
+
     /* Monaco étire les décorations de lignes sur toute la zone (lineDecorationsWidth
        + 16px réservés aux contrôles de pliage) : on dessine une pastille ronde
        dans un pseudo-élément, légèrement décalée du numéro de ligne. */
