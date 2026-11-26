@@ -239,6 +239,7 @@
     "label": "Buscar en mis artículos y corpus",
     "noResults": "Ningún artículo ni corpus corresponde a esta búsqueda.",
     "placeholder": "Buscar…",
+    "submit": "Buscar",
     "title": "Resultados para « {{ query }} »"
   },
   "header.userMenu": {

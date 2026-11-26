@@ -240,6 +240,7 @@
     "label": "Rechercher dans mes articles et corpus",
     "noResults": "Aucun article ni corpus ne correspond à cette recherche.",
     "placeholder": "Rechercher…",
+    "submit": "Lancer la recherche",
     "title": "Résultats pour « {{ query }} »"
   },
   "header.userMenu": {

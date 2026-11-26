@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router'
 
 import { useModal } from '../../../hooks/modal.js'
 import { useSearch } from '../../../hooks/search.js'
-import { Field } from '../../atoms/index.js'
+import { Button, Field } from '../../atoms/index.js'
 import { Alert, Loading, Modal } from '../../molecules/index.js'
 import styles from './SearchMenu.module.scss'
 import { ArticleResult, CorpusResult } from './SearchResult.jsx'
@@ -54,7 +54,7 @@ export default function SearchMenu() {
 
   return (
     <search className={styles.search} aria-label={t('header.search.label')}>
-      <form onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Field
           type="search"
           name="query"
@@ -63,6 +63,7 @@ export default function SearchMenu() {
           placeholder={t('header.search.placeholder')}
           aria-label={t('header.search.label')}
         />
+        <Button type="submit">{t('header.search.submit')}</Button>
       </form>
 
       {/* outside of the header, so that its styles do not apply */}

@@ -240,6 +240,7 @@
     "label": "Search my articles and corpora",
     "noResults": "No article or corpus matches this search.",
     "placeholder": "Search…",
+    "submit": "Search",
     "title": "Results for “{{ query }}”"
   },
   "header.userMenu": {
