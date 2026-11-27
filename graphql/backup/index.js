@@ -7,6 +7,7 @@ const { createLoaders } = require('../loaders')
 const Workspace = require('../models/workspace')
 const Version = require('../models/version')
 const { WorkingVersion } = require('../resolvers/articleResolver')
+const { getWorkspace } = require('../resolvers/workspaceResolver')
 
 /**
  * Error thrown when the backup request contains invalid parameters.
@@ -48,18 +49,28 @@ async function requestHandler(req, res) {
   }
   const config = req.body
   const isAdmin = req.token.admin ?? false
-  if (!isAdmin && typeof config.userId === 'string' && config.userId !== '') {
+  // reject any `userId` key for a non-admin, whatever its type: a non-string value
+  // (e.g. a MongoDB operator such as `{ "$ne": null }`) must not reach the query below
+  if (!isAdmin && Object.hasOwn(config, 'userId')) {
     return res.status(403).json({
       status: 403,
       error: 'FORBIDDEN',
       message: 'Only administrators can request a backup for a specific user.',
     })
   }
+  const userId =
+    isAdmin && typeof config.userId === 'string' && config.userId !== ''
+      ? config.userId
+      : user._id
   try {
     const format = validateFormat(config)
     const articles = await getArticles({
-      userId: user._id,
-      ...config,
+      scope: config.scope,
+      versions: config.versions,
+      workspaceId: config.workspaceId,
+      userId,
+      token: req.token,
+      user,
     })
     if (format === 'json') {
       const body = JSON.stringify(json(articles))
@@ -79,12 +90,18 @@ async function requestHandler(req, res) {
       res.send(buffer)
     }
   } catch (error) {
-    const status = error instanceof BackupValidationError ? 400 : 500
-    const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
+    const status =
+      error instanceof BackupValidationError
+        ? 400
+        : error?.extensions?.http?.status ?? 500
+    const code =
+      status === 500
+        ? 'INTERNAL_SERVER_ERROR'
+        : error?.extensions?.code ?? 'BAD_REQUEST'
     const message =
-      status === 400
-        ? error.message
-        : 'An unexpected error occurred while processing the backup request.'
+      status === 500
+        ? 'An unexpected error occurred while processing the backup request.'
+        : error.message
     res.status(status).json({
       status,
       error: code,
@@ -177,11 +194,13 @@ async function retrieveVersions(articles, versions) {
  * @param {string} [config.workspaceId] - Required when scope is `"workspace"`
  * @param {'latest' | 'all'} [config.versions='latest'] - Version retrieval strategy:
  *   `"latest"` returns an empty `versions` object; `"all"` populates it with the full version history.
+ * @param {object} config.token - decoded JWT of the requesting user, used to authorize scope `"workspace"`
+ * @param {object} config.user - the requesting user document, used to authorize scope `"workspace"`
  * @returns {Promise<Array<{id: string, info: object, latest: object, versions: object}>>} Structured article list
  * @throws {BackupValidationError} If scope or versions value is invalid, or `workspaceId` is missing for scope `"workspace"`
  */
 async function getArticles(config) {
-  const { scope = 'mine', userId, versions = 'latest' } = config
+  const { scope = 'mine', userId, versions = 'latest', token, user } = config
   const loaders = createLoaders()
   let articles
   if (scope === 'mine') {
@@ -201,7 +220,9 @@ async function getArticles(config) {
         `A workspace identifier is required when scope is "workspace".`
       )
     }
-    const workspace = await Workspace.findById(workspaceId, 'articles').lean()
+    // throws NotFoundError/NotAuthenticatedError if the requesting user is not
+    // an admin and not a member of this workspace
+    const workspace = await getWorkspace(workspaceId, token, user)
     articles = await Article.getArticles({
       filter: {
         _id: { $in: [...workspace.articles] },
