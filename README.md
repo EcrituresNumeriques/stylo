@@ -90,7 +90,8 @@ npm install <paquet> -w graphql
 
 ### Contribuer
 
-Les conventions de contribution (messages de commit, titres de pull request, formatage et tests) sont décrites dans le fichier [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Le fichier [`CONTRIBUTING.md`](CONTRIBUTING.md) explique où trouver de l'aide, comment signaler un bug ou proposer une évolution, et comment les demandes sont traitées jusqu'à leur mise en production.
+Il décrit aussi les conventions de contribution (messages de commit, titres de pull request, formatage et tests).
 Chaque application a aussi son propre guide : [`front/CONTRIBUTING.md`](front/CONTRIBUTING.md) et [`graphql/CONTRIBUTING.md`](graphql/CONTRIBUTING.md).
 
 ## Installation
