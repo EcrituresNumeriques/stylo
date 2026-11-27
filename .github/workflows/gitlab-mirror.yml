@@ -1,0 +1,39 @@
+# Synchronise le dépôt GitHub (source de vérité) vers le miroir en lecture seule
+# sur GitLab Huma-Num : https://gitlab.huma-num.fr/ecrinum/stylo/stylo-miroir
+#
+# Le secret GITLAB_MIRROR_TOKEN est un Project Access Token du projet GitLab
+# (rôle Maintainer, scope write_repository). Il expire : penser à le renouveler.
+name: Miroir GitLab
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+  delete:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gitlab-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    if: github.repository == 'EcrituresNumeriques/stylo'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pousse les branches et les tags vers GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_REPOSITORY: gitlab.huma-num.fr/ecrinum/stylo/stylo-miroir.git
+        run: |
+          git clone --bare "https://github.com/${GITHUB_REPOSITORY}.git" repo
+          cd repo
+          # On ne pousse pas avec --mirror car il inclurait les refs/pull/*,
+          # que GitLab refuse.
+          git push --prune \
+            "https://oauth2:${GITLAB_TOKEN}@${GITLAB_REPOSITORY}" \
+            '+refs/heads/*:refs/heads/*' \
+            '+refs/tags/*:refs/tags/*'
