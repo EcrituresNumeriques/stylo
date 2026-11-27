@@ -88,7 +88,7 @@
   "bibliography.importZotero.collections": {
     "error": "No pudimos recuperar tus colecciones de Zotero. Inténtalo más tarde o importa la colección desde su URL.",
     "leaf": "{{ name }} ({{ count }} elementos)",
-    "loading": "Cargando las colecciones de Zotero…",
+    "loading": "Cargando las colecciones…",
     "section": "{{ name }} ({{ type }})"
   },
   "bibliography.importZotero.error": {
