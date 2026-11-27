@@ -164,17 +164,10 @@ module.exports = {
         a.article._id.toString()
       )
       const { toAdd, toDelete } = diff(initialArticleIds, articleIds)
-      if (toAdd.size > 0 || toDelete.size > 0) {
-        corpus.articles = [
-          ...corpus.articles.filter((a) => !toDelete.has(a.article.toString())),
-          ...Array.from(toAdd).map((addition) => ({
-            article: { _id: addition },
-            order: 0,
-          })),
-        ]
-        return corpus.save()
-      }
-      return corpus
+      corpus.articles = corpus.articles.filter(
+        (a) => !toDelete.has(a.article.toString())
+      )
+      return corpus.addArticles([...toAdd])
     },
 
     async deleteCorpus(_, { corpusId }, context) {
@@ -206,7 +199,7 @@ module.exports = {
 
     async addCorpusArticle(_, { corpusId, articleId }, context) {
       const corpus = await getCorpusByContext(corpusId, context)
-      return corpus.addArticleById(articleId)
+      return corpus.addArticles([articleId])
     },
 
     async removeCorpusArticle(_, { corpusId, articleId }, context) {
@@ -321,7 +314,7 @@ module.exports = {
             .filter((a) => a)
         )
       ).filter((a) => a)
-      articles.sort((a, b) => (a.order < b.order ? -1 : 1))
+      articles.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
       return articles
     },
 
@@ -343,8 +336,8 @@ module.exports = {
     },
 
     /** @deprecated Use addCorpusArticle root mutation instead. */
-    async addArticle(corpus, { articleId, order }) {
-      return corpus.addArticleById(articleId, order)
+    async addArticle(corpus, { articleId }) {
+      return corpus.addArticles([articleId])
     },
 
     /** @deprecated Use deleteCorpus root mutation instead. */
