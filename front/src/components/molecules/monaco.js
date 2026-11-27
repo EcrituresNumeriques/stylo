@@ -7,6 +7,10 @@ import { loader } from '@monaco-editor/react'
 import { EditorZoom } from 'monaco-editor/editor/common/config/editorZoom.js'
 
 import { getPreferences, setPreference } from '../../helpers/preferences.js'
+import {
+  isWorkerLoadError,
+  reloadForMissingFile,
+} from '../../helpers/staleRelease.js'
 import { defineStyloTheme } from '../organisms/monaco/theme.js'
 
 export {
@@ -76,7 +80,19 @@ async function loadCore(locale) {
     import('monaco-editor/features/register.all.js'),
   ])
 
-  self.MonacoEnvironment = { getWorker: () => new EditorWorker() }
+  self.MonacoEnvironment = {
+    getWorker: () => {
+      const worker = new EditorWorker()
+      // a worker is not loaded with import(): Vite does not emit vite:preloadError
+      // when its file no longer exists (tab opened on a previous release)
+      worker.addEventListener('error', (event) => {
+        if (isWorkerLoadError(event)) {
+          reloadForMissingFile()
+        }
+      })
+      return worker
+    },
+  }
   // otherwise @monaco-editor/react loads Monaco from a CDN
   loader.config({ monaco })
   defineStyloTheme(monaco)
