@@ -3,7 +3,7 @@
 query getWorkspaceArticles(
   $workspaceId: ID
   $isPersonalWorkspace: Boolean!
-  $filter: FilterCorpusInput
+  $filter: ArticleFilterInput
 ) {
   tags {
     id

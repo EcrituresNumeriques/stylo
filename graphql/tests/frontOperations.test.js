@@ -17,13 +17,7 @@ const frontSourceDir = path.join(__dirname, '..', '..', 'front', 'src')
  * Deprecated fields that the front is still allowed to use, with the issue that will remove them.
  * Each message is the one reported by NoDeprecatedCustomRule.
  */
-const allowedDeprecations = [
-  {
-    // corpus(corpusId) returning a single corpus is a breaking change, planned for the next major version
-    issue: '#2130',
-    message: /^The field Query\.corpus is deprecated\./,
-  },
-]
+const allowedDeprecations = []
 
 function findGraphQLFiles(dir) {
   return fs

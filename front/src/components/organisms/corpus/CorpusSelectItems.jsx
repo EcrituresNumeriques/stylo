@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { getCorpus } from '../../../hooks/Corpus.graphql'
+import { getCorpora } from '../../../hooks/Corpus.graphql'
 import useFetchData from '../../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 import { Loading } from '../../molecules/index.js'
@@ -21,7 +21,7 @@ export default function CorpusSelectItems({ articleId }) {
   )
 
   const { data, isLoading, mutate } = useFetchData(
-    { query: getCorpus, variables },
+    { query: getCorpora, variables },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -38,7 +38,7 @@ export default function CorpusSelectItems({ articleId }) {
 
   return (
     <>
-      {data?.corpus
+      {data?.corpora
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((c) => (
           <CorpusSelectItem
