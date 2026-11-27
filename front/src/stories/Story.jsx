@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import buttonStyles from '../components/atoms/Button.module.scss'
 
 import {
@@ -15,6 +17,7 @@ import {
   Modal,
   Version,
 } from '../components/molecules/index.js'
+import BibliographyZoteroCollections from '../components/organisms/bibliography/BibliographyZoteroCollections.jsx'
 import CollaborativeEditorWebSocketStatus from '../components/organisms/textEditor/CollaborativeEditorWebSocketStatus.jsx'
 import { useModal } from '../hooks/modal.js'
 import i18n from '../i18n.js'
@@ -27,7 +30,7 @@ export default function Story() {
   const modalText = useModal()
   const modalForm = useModal()
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, storyStyles.story)}>
       <section aria-label="Typographie">
         <PageTitle title="Titre de la page" />
         <h1>Titre 1</h1>
@@ -204,6 +207,43 @@ export default function Story() {
         <CollaborativeEditorWebSocketStatus
           status={'disconnected'}
           state={'started'}
+        />
+      </section>
+
+      <section className={storyStyles.zotero} aria-label="Collections Zotero">
+        <h4>Collections Zotero</h4>
+        <h5>Chargement</h5>
+        <BibliographyZoteroCollections
+          items={[]}
+          value=""
+          onChange={() => {}}
+          isLoading={true}
+        />
+        <h5>Erreur</h5>
+        <BibliographyZoteroCollections
+          items={[]}
+          value=""
+          onChange={() => {}}
+          hasError={true}
+        />
+        <h5>Chargées</h5>
+        <BibliographyZoteroCollections
+          items={[
+            {
+              key: 'https://api.zotero.org/users/1/collections/A',
+              name: 'Thèse (42 références)',
+              section: 'Ma bibliothèque (user)',
+              index: 0,
+            },
+            {
+              key: 'https://api.zotero.org/groups/2/collections/B',
+              name: 'Écritures numériques (128 références)',
+              section: 'Chaire (group)',
+              index: 1,
+            },
+          ]}
+          value=""
+          onChange={() => {}}
         />
       </section>
 
