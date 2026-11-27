@@ -11,10 +11,10 @@ Pour rappel, l'ensemble des changements qui arrivent sur la branche principale (
 
 ## Créer une nouvelle release
 
-- Aller sur la page https://github.com/EcrituresNumeriques/stylo/actions/workflows/release.yml et cliquer sur le bouton "Run workflow".
-- Une fenêtre s'ouvre et propose de renseigner une branche, un numéro de version et s'il faut déployer en production à la suite (case « Trigger deploy? », cochée par défaut) :
+- Aller sur la page https://github.com/EcrituresNumeriques/stylo/actions/workflows/release.yml et cliquer sur le bouton "Run workflow", en haut à droite :
   ![projet/release-run-workflow.png](projet/release-run-workflow.png)
 
+- Une fenêtre s'ouvre et propose de renseigner une branche, un numéro de version et s'il faut déployer en production à la suite (case « Trigger deploy? », cochée par défaut).
 - Laisser la branche principale (i.e., `master`) sélectionnée et renseigner une version (sans suffixe).
   Par exemple : `3.4.5`.
 - Décocher « Trigger deploy? » si vous ne souhaitez pas déployer cette version en production tout de suite.
@@ -55,13 +55,13 @@ Une fois la version des images disponibles sur ghcr.io, vous pouvez lancer le wo
 De la même façon que pour le workflow de release, cliquer sur le bouton "Run workflow".  
 Laisser la branche principale (i.e., `master`) sélectionnée et renseigner la version à déployer (sans suffixe). Par exemple : `3.4.5`.  
 
-Une nouvelle ligne va s'afficher dans la liste. Vous pouvez voir le détail en cliquant sur la ligne : 
-
 ![projet/deploy.png](projet/deploy.png)
 
+Une nouvelle ligne va s'afficher dans la liste. Vous pouvez voir le détail en cliquant sur la ligne.
+
 Une fois le déploiement terminé en succès, vous pouvez vous rendre sur https://stylo.huma-num.fr/ afin de vérifier que la version est bien déployée.
-Le numéro de version s'affiche dans le pied de page :
+Le numéro de version s'affiche dans le pied de page, et l'icône d'information à sa droite affiche les versions du service d'export et de l'API Pandoc :
 
 ![projet/stylo-home.png](projet/stylo-home.png)
 
-Ici, la version déployée est la version 3.1.5.
+Ici, la version déployée est la version 3.13.2.
