@@ -156,7 +156,7 @@ export function useMarkdownValidator(
     const editor = editorRef.current
     const model = editor?.getModel()
     if (model) {
-      editor.setModelMarkers(model, MARKER_OWNER, [])
+      monaco.editor.setModelMarkers(model, MARKER_OWNER, [])
     }
     if (decorationsRef.current) {
       decorationsRef.current.clear()
