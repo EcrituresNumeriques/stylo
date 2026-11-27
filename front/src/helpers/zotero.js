@@ -281,13 +281,13 @@ export async function toApiUrl(plainUrl, token) {
   // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}
   // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}/items/{itemId}/collection
   const GROUP_RE =
-    /zotero.org\/(groups\/(?<groupId>\d+)(\/[^/]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?$/
+    /zotero.org\/(groups\/(?<groupId>\d+)(\/[^/]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?\/?$/
 
   // https://api.zotero.org/users/{userId}[/items]?
   // https://api.zotero.org/users/{userId}/collections/{collectionId}[/items]?
   // https://api.zotero.org/groups/{groupId}[/items]?
   const API_RE =
-    /api.zotero.org\/(users\/(?<userId>\d+)|groups\/(?<groupId>\d+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/(?<action>items\/top|items\/trash|items))?$/
+    /api.zotero.org\/(users\/(?<userId>\d+)|groups\/(?<groupId>\d+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/(?<action>items\/top|items\/trash|items))?\/?$/
 
   if (isApiUrl(plainUrl)) {
     strategy = 'API'
@@ -309,6 +309,10 @@ export async function toApiUrl(plainUrl, token) {
   }
 
   const result = plainUrl.match(strategy === 'WEB' ? GROUP_RE : API_RE)
+  if (!result) {
+    // a Zotero address that is neither a library nor a collection
+    throw new ZoteroUrlError('invalidUrl', 'This is not a Zotero URL')
+  }
 
   let {
     username,

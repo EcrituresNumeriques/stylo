@@ -191,6 +191,28 @@ describe('toApiUrl', () => {
     ).resolves.toBe('https://api.zotero.org/groups/1612889/items')
   })
 
+  test('accepte un slash final', async () => {
+    await expect(
+      toApiUrl('https://www.zotero.org/groups/3822124/articlesamroute/library/')
+    ).resolves.toBe('https://api.zotero.org/groups/3822124/items')
+
+    await expect(
+      toApiUrl('https://www.zotero.org/groups/1612889/ethnocomptabilites/')
+    ).resolves.toBe('https://api.zotero.org/groups/1612889/items')
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/2373533/article_durassavoie-bernard/collections/FYFFI3VG/'
+      )
+    ).resolves.toBe(
+      'https://api.zotero.org/groups/2373533/collections/FYFFI3VG/items'
+    )
+
+    await expect(
+      toApiUrl('https://api.zotero.org/groups/3822124/items/')
+    ).resolves.toBe('https://api.zotero.org/groups/3822124/items')
+  })
+
   test('(sous)-collection dans un groupe', async () => {
     await expect(
       toApiUrl(
@@ -287,6 +309,18 @@ describe('toApiUrl', () => {
     )
     expect(error).toBeInstanceOf(ZoteroUrlError)
     expect(error.code).toBe('invalidUrl')
+  })
+
+  test('throws a ZoteroUrlError for a Zotero URL that is not a library or a collection', async () => {
+    for (const url of [
+      'https://www.zotero.org/groups/2373533/article_durassavoie-bernard/items',
+      'https://www.zotero.org/groups/2373533/article_durassavoie-bernard/collections/FYFFI3VG/items/V4H7CRG5/reader',
+      'https://api.zotero.org/groups/2373533/searches',
+    ]) {
+      const error = await toApiUrl(url).catch((err) => err)
+      expect(error).toBeInstanceOf(ZoteroUrlError)
+      expect(error.code).toBe('invalidUrl')
+    }
   })
 })
 
