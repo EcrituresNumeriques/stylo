@@ -9,6 +9,10 @@
   gap: 0.5rem;
 }
 
+.zotero {
+  max-width: 375px;
+}
+
 .yearGroup {
   text-transform: capitalize;
   font-size: 0.9rem;
@@ -22,5 +26,47 @@
     .content {
       padding: 1rem;
     }
+  }
+}
+
+.story {
+  padding: 2rem;
+
+  > section {
+    display: flow-root;
+    margin-bottom: 2rem;
+  }
+
+  > section:not(:last-child) {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  // the listbox of a combobox leaves the flow when it opens,
+  // a margin on it would make the layout move
+  p,
+  ul:not([role='listbox'], [role='listbox'] ul),
+  ol,
+  table,
+  fieldset,
+  details {
+    margin-bottom: 1rem;
+  }
+
+  fieldset {
+    padding: 1rem;
+  }
+
+  > section > button + button {
+    margin-left: 0.5rem;
   }
 }
