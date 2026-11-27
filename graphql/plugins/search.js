@@ -25,6 +25,9 @@ const RESULTS_LIMIT = 20
 const MAX_RESULTS_LIMIT = 20
 // score multiplier of the results in the document language
 const LANGUAGE_BOOST = 1.5
+// score bonus of the recently updated results: +50 % today, halved every 90 days
+const RECENCY_BOOST = 0.5
+const RECENCY_HALF_LIFE_MS = 90 * 24 * 60 * 60 * 1000
 
 /**
  * Language a document is stemmed in by the text index (language_override):
@@ -95,23 +98,47 @@ function searchable(schema, { langPath }) {
 
   /**
    * Text search sorted by score, boosting the documents indexed in the
-   * document language.
+   * document language and the recently updated ones.
    * @param {string} query
    * @param {{ filter: object, documentLanguage?: string | null, limit?: number | null }} options
    *   documentLanguage: French when empty; limit: see resultsLimit
-   * @returns {Promise<Record<string, any>[]>} lean documents with a score
+   * @returns {Promise<{ results: Record<string, any>[], total: number }>}
+   *   the most relevant lean documents, with a score, and the number of
+   *   matching documents
    */
   schema.statics.search = function (
     query,
     { filter, documentLanguage, limit }
   ) {
     const language = documentLanguage || DEFAULT_LANGUAGE
-    return this.aggregate([
-      {
-        $match: {
-          $and: [{ $text: { $search: query, $language: language } }, filter],
+    // 1 + RECENCY_BOOST × 2^(−age / RECENCY_HALF_LIFE_MS)
+    const recencyFactor = {
+      $add: [
+        1,
+        {
+          $multiply: [
+            RECENCY_BOOST,
+            {
+              $pow: [
+                2,
+                {
+                  $divide: [
+                    {
+                      $subtract: [
+                        { $ifNull: ['$updatedAt', new Date(0)] },
+                        '$$NOW',
+                      ],
+                    },
+                    RECENCY_HALF_LIFE_MS,
+                  ],
+                },
+              ],
+            },
+          ],
         },
-      },
+      ],
+    }
+    const scoreAndLimit = [
       {
         $addFields: {
           score: {
@@ -124,13 +151,26 @@ function searchable(schema, { langPath }) {
                   1,
                 ],
               },
+              recencyFactor,
             ],
           },
         },
       },
       { $sort: { score: -1 } },
       { $limit: resultsLimit(limit) },
-    ])
+    ]
+    // counting costs nothing more: sorting already goes through every match
+    return this.aggregate([
+      {
+        $match: {
+          $and: [{ $text: { $search: query, $language: language } }, filter],
+        },
+      },
+      { $facet: { results: scoreAndLimit, total: [{ $count: 'count' }] } },
+    ]).then(([{ results, total }]) => ({
+      results,
+      total: total[0]?.count ?? 0,
+    }))
   }
 }
 

@@ -4,11 +4,11 @@ const { DEFAULT_LANGUAGE, TEXT_LANGUAGES } = require('../plugins/search.js')
 
 // weight of each metadata field (content: 1)
 const METADATA_WEIGHTS = {
-  title: 10,
-  'localizedContent.title': 10,
-  keywords: 8,
-  'localizedContent.keywords': 8,
-  'controlledKeywords.label': 8,
+  title: 5,
+  'localizedContent.title': 5,
+  keywords: 5,
+  'localizedContent.keywords': 5,
+  'controlledKeywords.label': 5,
   subtitle: 5,
   'localizedContent.subtitle': 5,
   'authors.forename': 5,
@@ -80,10 +80,10 @@ exports.up = async function (db) {
 
   await createTextIndex(
     articles,
-    { title: 10, 'workingVersion.md': 1 },
+    { title: 5, 'workingVersion.md': 1 },
     'workingVersion.metadata'
   )
-  await createTextIndex(corpus, { name: 10, description: 3 }, 'metadata')
+  await createTextIndex(corpus, { name: 5, description: 3 }, 'metadata')
 }
 
 exports.down = async function (db) {

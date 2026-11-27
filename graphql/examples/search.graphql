@@ -16,6 +16,7 @@
 # avec la langue, le nombre de résultats et la durée (fetchMs).
 
 fragment SearchResultFields on SearchResults {
+  total
   articles {
     article {
       id

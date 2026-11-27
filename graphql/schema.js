@@ -676,6 +676,8 @@ type SearchResults {
   articles: [ArticleSearchResult!]!
   "Matching corpora, most relevant first (see limit)"
   corpora: [CorpusSearchResult!]!
+  "Number of matching articles and corpora, including those beyond limit"
+  total: Int!
 }
 
 input ImportArticleInput {

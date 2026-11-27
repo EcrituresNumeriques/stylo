@@ -21,18 +21,26 @@ module.exports = {
         Article.search(query, {
           filter: Article.accessFilter(workspaces, owner),
           ...options,
-        }).then((articles) => Article.complete(articles, context.loaders)),
+        }),
         Corpus.search(query, {
           filter: Corpus.accessFilter(workspaces, owner),
           ...options,
-        }).then((corpora) => Corpus.populate(corpora, { path: 'creator' })),
+        }),
+      ])
+      const [completedArticles, populatedCorpora] = await Promise.all([
+        Article.complete(articles.results, context.loaders),
+        Corpus.populate(corpora.results, { path: 'creator' }),
       ])
       return {
-        articles: articles.map((article) => ({
+        articles: completedArticles.map((article) => ({
           article,
           score: article.score,
         })),
-        corpora: corpora.map((corpus) => ({ corpus, score: corpus.score })),
+        corpora: populatedCorpora.map((corpus) => ({
+          corpus,
+          score: corpus.score,
+        })),
+        total: articles.total + corpora.total,
       }
     },
   },

@@ -1,0 +1,99 @@
+@use "../../../styles/mixins" as *;
+@use "../../../styles/variables" as *;
+
+// espacement commun : bordure, titre et date, boutons
+$spacing: 0.375rem;
+
+.search {
+  flex: 1;
+  max-width: 20rem;
+
+  :global(.control-field) {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+// le bouton à droite du champ, pour lancer la recherche sans la touche Entrée
+.form {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.results {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+// cartouche d'article de la liste des articles, en plus compact
+.item {
+  @include striped-item(0.5rem);
+
+  align-items: center;
+  column-gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: $spacing 0.75rem;
+  row-gap: $spacing;
+}
+
+// titre et date à gauche, boutons à droite, centrés sur les deux lignes
+.header {
+  display: contents;
+}
+
+.title {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1em;
+  font-weight: 600;
+  gap: 0.5rem;
+  grid-column: 1;
+  margin: 0;
+  text-wrap: balance;
+
+  // l'icône garde sa taille quand le titre passe sur plusieurs lignes
+  > svg {
+    flex-shrink: 0;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $spacing;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+
+  // boutons plus petits, pour un cartouche moins haut
+  > a,
+  > button {
+    height: auto;
+    padding: 0.25rem;
+  }
+
+  svg {
+    height: 1.125rem;
+    width: 1.125rem;
+  }
+}
+
+// liseré à la couleur de l'espace de travail
+.inWorkspace {
+  border-left: 5px solid var(--workspace-color);
+}
+
+.metadata {
+  align-items: center;
+  color: $main-lighter-color;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.85em;
+  gap: 0.25em;
+  grid-column: 1;
+}
+
+// pastille, nom et tiret espacés par le gap de .metadata
+.workspace {
+  display: contents;
+}

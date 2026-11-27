@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 import { FileDownIcon, MessageSquareShare, Settings, Trash } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
@@ -66,6 +66,17 @@ export default function CorpusItem({ corpus, keyboardHintId }) {
 
   const { deleteCorpus } = useCorpusActions()
   const corpusId = useMemo(() => corpus.id, [corpus])
+  const { hash } = useLocation()
+  const anchor = `corpus-${corpusId}`
+
+  // reached from a link to #corpus-<id> (e.g. a search result)
+  useEffect(() => {
+    if (hash === `#${anchor}`) {
+      const element = document.getElementById(anchor)
+      element?.scrollIntoView({ block: 'center' })
+      element?.focus({ preventScroll: true })
+    }
+  }, [hash, anchor])
 
   const handleDeleteCorpus = useCallback(async () => {
     try {
@@ -86,6 +97,7 @@ export default function CorpusItem({ corpus, keyboardHintId }) {
 
   return (
     <article
+      id={anchor}
       ref={focusZoneRef}
       // biome-ignore lint/a11y/noNoninteractiveTabindex: focus zone, Enter gives access to its content
       tabIndex={0}

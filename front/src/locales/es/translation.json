@@ -232,6 +232,16 @@
   "header.secondaryMenu": {
     "label": "Navegación secundaria"
   },
+  "header.search": {
+    "all_one": "{{count}} resultado, artículos y corpus juntos",
+    "all_other": "{{count}} resultados, artículos y corpus juntos",
+    "best": "Los {{count}} mejores resultados de {{total, number}}, artículos y corpus juntos",
+    "label": "Buscar en mis artículos y corpus",
+    "noResults": "Ningún artículo ni corpus corresponde a esta búsqueda.",
+    "placeholder": "Buscar…",
+    "submit": "Buscar",
+    "title": "Resultados para « {{ query }} »"
+  },
   "header.userMenu": {
     "backupLink": "Hacer copia de seguridad de mis datos",
     "displayNameLabel": "Conectado como {{ user.displayName }}",
