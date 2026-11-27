@@ -11,6 +11,10 @@ jobs:
   build:
     # libcrypto.so.1.1 is missing in ubuntu-24.04
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      # downloads the coverage of the base branch
+      actions: read
 
     steps:
       - uses: actions/checkout@v6
@@ -28,24 +32,50 @@ jobs:
           cp ../stylo-example.env ../.env
           npm test
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
+      # the coverage of a branch is kept so that pull requests can compare to it
+      - name: Upload coverage summary
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
         with:
-          base-path: ${{ inputs.app-dir }}
-          parallel: true
-          flag-name: run-${{ inputs.app-dir }}
+          name: coverage-${{ inputs.app-dir }}
+          path: ${{ inputs.app-dir }}/coverage/coverage-summary.json
+          retention-days: 90
+
+      # without a base coverage (expired artifact, no successful run yet), the
+      # report is published without comparison
+      - name: Download base coverage summary
+        id: base-coverage
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP_DIR: ${{ inputs.app-dir }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          run_id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "node-$APP_DIR.yml" \
+            --branch "$BASE_REF" --event push --status success --limit 1 \
+            --json databaseId --jq '.[0].databaseId // empty')
+          if [ -n "$run_id" ] && gh run download "$run_id" --repo "$GITHUB_REPOSITORY" \
+            --name "coverage-$APP_DIR" --dir "$APP_DIR/coverage-base"; then
+            echo "path=coverage-base/coverage-summary.json" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::No coverage found for $BASE_REF, the report has no comparison"
+          fi
+
+      - name: Coverage report
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: ${{ inputs.app-dir }}
+          working-directory: ${{ inputs.app-dir }}
+          json-summary-compare-path: ${{ steps.base-coverage.outputs.path }}
+          # lists the files whose coverage moved, which requires a base coverage
+          file-coverage-mode: ${{ steps.base-coverage.outputs.path && 'changes-affected' || 'none' }}
+          # the action reads coverage thresholds from a vite config and warns
+          # when there is none, so it is given another file to read instead
+          vite-config-path: ${{ hashFiles(format('{0}/vite.config.js', inputs.app-dir)) == '' && 'package.json' || '' }}
+          # the report only goes to the job summary, because pull requests
+          # coming from a fork have a read-only token and cannot be commented
+          comment-on: none
 
       - name: Build (if necessary)
         working-directory: ${{ inputs.app-dir }}
         run: npm run build --if-present
-
-  publish-coverage-report:
-    needs: build
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@v2
-        with:
-          parallel-finished: true
-          carryforward: 'run-front,run-graphql'
