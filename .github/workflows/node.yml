@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: read
-      # lists the files changed by the pull request
-      pull-requests: read
       # downloads the coverage of the base branch
       actions: read
 
@@ -69,9 +67,11 @@ jobs:
           name: ${{ inputs.app-dir }}
           working-directory: ${{ inputs.app-dir }}
           json-summary-compare-path: ${{ steps.base-coverage.outputs.path }}
-          # with a base coverage, also lists the unchanged files whose coverage
-          # moved
-          file-coverage-mode: ${{ steps.base-coverage.outputs.path && 'changes-affected' || 'changes' }}
+          # lists the files whose coverage moved, which requires a base coverage
+          file-coverage-mode: ${{ steps.base-coverage.outputs.path && 'changes-affected' || 'none' }}
+          # the action reads coverage thresholds from a vite config and warns
+          # when there is none, so it is given another file to read instead
+          vite-config-path: ${{ hashFiles(format('{0}/vite.config.js', inputs.app-dir)) == '' && 'package.json' || '' }}
           # the report only goes to the job summary, because pull requests
           # coming from a fork have a read-only token and cannot be commented
           comment-on: none
