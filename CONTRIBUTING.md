@@ -4,6 +4,7 @@ Merci de votre intérêt pour Stylo !
 Ce document décrit les conventions à suivre pour proposer une modification du code.
 Pour installer le projet et le lancer en local, consultez la section « Développement local » du fichier [`README.md`](README.md).
 L'organisation des fichiers et les principes propres au frontend sont décrits dans le fichier [`front/CONTRIBUTING.md`](front/CONTRIBUTING.md).
+Ceux du backend sont décrits dans le fichier [`graphql/CONTRIBUTING.md`](graphql/CONTRIBUTING.md).
 
 ## Messages de commit
 
