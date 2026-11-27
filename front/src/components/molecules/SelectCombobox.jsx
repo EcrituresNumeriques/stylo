@@ -22,6 +22,7 @@ import { groupItems } from './SelectCombobox.js'
  * @param {string} props.label
  * @param {ComboboxItem[]} props.items
  * @param {boolean} [props.isLoading]
+ * @param {string} [props.loadingLabel] translation label displayed in the field while loading
  * @param {(string) => void} props.onChange
  * @param {string} props.value
  * @param {string} [props.className]
@@ -33,6 +34,7 @@ export default function Combobox({
   items,
   value: selectedItem,
   isLoading = false,
+  loadingLabel,
   className,
   onChange,
 }) {
@@ -132,7 +134,14 @@ export default function Combobox({
             onFocus: handleOnFocus,
           })}
           isLoading={isLoading}
-          icon={isLoading && <Loading />}
+          icon={
+            isLoading && (
+              <Loading
+                label={loadingLabel}
+                className={styles.comboboxLoading}
+              />
+            )
+          }
           onClick={handleOnFocus}
           name={id}
           className={styles.autocompleteField}
@@ -149,7 +158,7 @@ export default function Combobox({
           </button>
           <button
             type="button"
-            {...getToggleButtonProps()}
+            {...getToggleButtonProps({ disabled: isLoading })}
             className={buttonStyles.icon}
             aria-label="toggle menu"
           >

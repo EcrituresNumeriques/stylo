@@ -16,6 +16,7 @@ describe('SelectCombobox', () => {
     )
     const combobox = getByRole('combobox')
     expect(combobox).toBeDisabled()
+    expect(getByRole('button', { name: 'toggle menu' })).toBeDisabled()
     // loading icon
     const icon = container.querySelector('svg')
     expect(icon).toBeVisible()

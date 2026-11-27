@@ -62,6 +62,13 @@
     height: auto;
   }
 
+  // the border is kept so that the field does not change size
+  input:disabled,
+  textarea:disabled {
+    background-color: $muted-background-color;
+    cursor: not-allowed;
+  }
+
   input[type='color'] {
     height: 2.5em;
   }
@@ -158,6 +165,29 @@
   white-space: nowrap;
 }
 
+/* the loading message must not run under the action buttons */
+.comboboxController :global(.icon) {
+  right: 6.25rem;
+  // the global .icon rule sets a fixed width, sized for a single icon
+  width: auto;
+  margin-right: 0;
+  justify-content: flex-start;
+}
+
+.comboboxLoading {
+  min-width: 0;
+
+  > svg {
+    flex-shrink: 0;
+  }
+
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .comboboxControllerActions {
   position: absolute;
   right: 0;
@@ -199,7 +229,8 @@
   padding: 0;
   position: absolute;
   width: 100%;
-  z-index: 900;
+  // above the sticky footer of a modal (FormActions, z-index: 1000)
+  z-index: 1100;
   // not sure why but cqh is equals to 0 in the bibliography modal
   //max-height: min(30cqh, 20rem);
   max-height: 15rem;

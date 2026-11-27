@@ -28,7 +28,7 @@ export default function Loading({
       hidden={hidden}
     >
       <Loader className={styles.icon} aria-hidden />
-      {label}
+      <span>{label}</span>
     </div>
   )
 }

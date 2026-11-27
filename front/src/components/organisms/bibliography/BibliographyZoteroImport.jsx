@@ -17,9 +17,7 @@ import { useEditableArticle } from '../../../hooks/article.js'
 import { useSetAuthToken } from '../../../hooks/user.js'
 import { Button, Field } from '../../atoms/index.js'
 
-import Alert from '../../molecules/Alert.jsx'
-import Loading from '../../molecules/Loading.jsx'
-import Combobox from '../../molecules/SelectCombobox.jsx'
+import BibliographyZoteroCollections from './BibliographyZoteroCollections.jsx'
 
 import styles from './BibliographyZoteroImport.module.scss'
 
@@ -205,20 +203,13 @@ export default function BibliographyZoteroImport({
           {t('zoteroPanel.titleImportCollection.text')}
         </h3>
 
-        {zoteroToken && isLoadingCollections && (
-          <div role="status">
-            <Loading label="bibliography.importZotero.collections.loading" />
-          </div>
-        )}
-        {zoteroToken && hasCollectionsError && (
-          <Alert message={t('bibliography.importZotero.collections.error')} />
-        )}
-        {zoteroToken && !isLoadingCollections && !hasCollectionsError && (
-          <Combobox
-            label=""
+        {zoteroToken && (
+          <BibliographyZoteroCollections
             items={groupedZoteroCollections}
             value={collectionUrl}
             onChange={handleCollectionUrlChange}
+            isLoading={isLoadingCollections}
+            hasError={hasCollectionsError}
           />
         )}
         {zoteroToken && !hasCollectionsError && (
