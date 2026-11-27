@@ -70,6 +70,12 @@ Le nouveau code s'appuie sur `principal` plutôt que sur le contenu du jeton.
 
 L'utilisateur·ice qui fait la requête vient toujours du contexte, jamais d'un argument (voir la section « Utilisateur » de [`CONVENTIONS.md`](CONVENTIONS.md)).
 
+## Authentification
+
+- Les stratégies [Passport](https://www.passportjs.org/) sont dans le dossier `auth` : compte local (adresse électronique et mot de passe, haché avec bcrypt), HumanID (OpenID Connect), Zotero (OAuth 1) et Hypothesis (OAuth 2).
+- Une connexion réussie produit un jeton JWT signé avec `JWT_SECRET_SESSION_COOKIE` (`createJWTToken`, `helpers/token.js`), que le front renvoie dans l'entête `Authorization`.
+- Les comptes externes liés à un compte Stylo sont enregistrés dans `user.authProviders`.
+
 ## Schéma
 
 Tout le schéma est défini dans `schema.js`, sous la forme d'une seule chaîne de définitions de types assemblée aux résolveurs avec `makeExecutableSchema`.
@@ -109,8 +115,9 @@ Une ressource à laquelle la personne n'a pas accès est signalée par `NotFound
 
 ### Fonctionnalités activables
 
-Une fonctionnalité peut être réservée à certaines personnes avec un drapeau (`helpers/features.js`), déclaré dans le fichier JSON désigné par la variable `FEATURES_FILE`.
-Un résolveur vérifie le drapeau avec `assertFeature('<nom>', context)`, et une route Express avec le middleware `requireFeature('<nom>')`.
+Une fonctionnalité en cours de développement peut être désactivée ou réservée à certaines personnes (`helpers/features.js`).
+Les fonctionnalités sont déclarées dans le fichier JSON désigné par la variable `FEATURES_FILE`, dont le format est décrit dans la section « Fonctionnalités activables » du fichier [`SERVER.md`](../SERVER.md).
+Un résolveur vérifie qu'une fonctionnalité est activée avec `assertFeature('<nom>', context)`, et une route Express avec le middleware `requireFeature('<nom>')`.
 
 ### Erreurs
 
@@ -136,7 +143,7 @@ Toute modification de la structure des données ou des index passe par une migra
 
 - Le fichier est créé dans `migrations/` et nommé `AAAAMMJJHHMMSS-description.js`.
 - Il exporte une fonction `up(db)` et une fonction `down()`.
-- Une migration qui utilise l'instance MongoDB brute (`db._getDbInstance()`) commence par la garde `if (db.internals.dryRun) return`, sans quoi `db-migrate up --dry-run` échoue.
+- Une fonction `up` ou `down` qui utilise l'instance MongoDB brute (`db._getDbInstance()`) commence par la garde `if (db.internals.dryRun) return`, sans quoi `db-migrate up --dry-run` échoue (voir la section « Exécution à blanc » du fichier [`SERVER.md`](../SERVER.md)).
 - La logique de transformation peut être exportée pour être testée sans base de données (voir `tests/affiliationsListMigration.test.js`).
 
 ```js

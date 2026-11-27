@@ -4,7 +4,7 @@ Merci de votre intérêt pour Stylo !
 Ce document décrit les conventions à suivre pour proposer une modification du code.
 Pour installer le projet et le lancer en local, consultez la section « Développement local » du fichier [`README.md`](README.md).
 L'organisation des fichiers et les principes propres au frontend sont décrits dans le fichier [`front/CONTRIBUTING.md`](front/CONTRIBUTING.md).
-Ceux du backend sont décrits dans le fichier [`graphql/CONTRIBUTING.md`](graphql/CONTRIBUTING.md).
+Ceux du backend sont décrits dans le fichier [`graphql/CONTRIBUTING.md`](graphql/CONTRIBUTING.md), et les règles d'évolution de l'API dans le fichier [`graphql/CONVENTIONS.md`](graphql/CONVENTIONS.md).
 
 ## Messages de commit
 
@@ -22,7 +22,7 @@ Les types les plus utilisés sont :
 - `test` pour l'ajout ou la modification de tests
 - `docs` pour la documentation
 - `ci` pour les workflows GitHub Actions
-- `maint` pour le reste (outillage, configuration, dépendances, etc.)
+- `chore` pour le reste (outillage, configuration, dépendances, etc.)
 
 La portée est facultative et précise le domaine concerné, par exemple `front`, `graphql`, `editor`, `export`, `infra` ou `deps`.
 Un changement non rétrocompatible est signalé par un `!` après le type ou la portée (par exemple `feat(graphql)!: …`).
@@ -102,7 +102,7 @@ npm test -w front
 ```
 
 Les tests de bout en bout utilisent [Playwright](https://playwright.dev/).
-Ils nécessitent que l'application soit démarrée (voir le fichier [`README.md`](README.md)) :
+Ils nécessitent que MongoDB et l'application soient démarrés (`npm run dev`, voir le fichier [`README.md`](README.md)) :
 
 ```bash
 npx playwright install chromium # la première fois

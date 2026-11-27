@@ -107,6 +107,12 @@ Une modification du schéma ou d'une requête doit donc être vérifiée avec `n
 - L'utilisateur·ice connecté·e est chargé·e par le `loader` de la route `app` et se lit avec `useRouteLoaderData('app')` ou avec les hooks de `hooks/user.js`.
 - Les routes qui demandent une authentification sont enfants de `RequireAuth` (`pages/PrivateRoute.jsx`).
 
+### Fonctionnalités activables
+
+Une fonctionnalité en cours de développement peut être désactivée ou réservée à certaines personnes.
+L'API renvoie les fonctionnalités activées pour la personne connectée, et un composant le vérifie avec le hook `useFeature('<nom>')` (`hooks/features.js`).
+Le format du fichier qui les déclare est décrit dans la section « Fonctionnalités activables » du fichier [`SERVER.md`](../SERVER.md).
+
 ### Préférences et état local
 
 - Les préférences conservées d'une visite à l'autre (panneau ouvert, options d'export, espace de travail actif) sont enregistrées dans le `localStorage` et se lisent avec le hook `usePreferenceItem` (`hooks/user.js`).

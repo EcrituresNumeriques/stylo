@@ -1,66 +1,66 @@
-# Server installation and operations
+# Installation sur un serveur et exploitation
 
-This page explains how to install Stylo on a server and how to run day-to-day operations on it.
-To release and deploy a new version of Stylo on `stylo.huma-num.fr` and `stylo-dev.huma-num.fr`, read [`RELEASE.md`](RELEASE.md).
+Cette page explique comment installer Stylo sur un serveur et comment y réaliser les opérations courantes.
+Pour publier une nouvelle version de Stylo et la déployer sur `stylo.huma-num.fr` et `stylo-dev.huma-num.fr`, lisez le fichier [`RELEASE.md`](RELEASE.md).
 
-# Install on a server
+## Installer sur un serveur
 
-Stylo servers are provisioned and deployed with the Ansible playbook located in the [`infrastructure`](infrastructure) folder.
-This playbook is the reference installation: it installs Docker, generates the `.env` and `docker-compose.yaml` files from [`infrastructure/templates`](infrastructure/templates), and runs Stylo as a systemd service (`docker-compose-stylo`).
-The [`deploy-tag`](.github/workflows/deploy-tag.yml) workflow shows how we run it in production.
+Les serveurs de Stylo sont provisionnés et déployés avec le playbook Ansible du dossier [`infrastructure`](infrastructure).
+Ce playbook est l'installation de référence. Il installe Docker, génère les fichiers `.env` et `docker-compose.yaml` à partir de [`infrastructure/templates`](infrastructure/templates), et lance Stylo comme un service systemd (`docker-compose-stylo`).
+Le workflow [`deploy-tag`](.github/workflows/deploy-tag.yml) montre comment nous le lançons en production.
 
 > [!WARNING]
-> The playbook is written for the Huma-Num servers and makes a few assumptions you will need to meet or adapt:
-> - the remote user is `stylo` (with `/home/stylo` as home directory);
-> - NGINX and certbot are already installed and configured on the server, the playbook only copies the NGINX configuration files;
-> - a Nagios configuration is copied to `/etc/nagios/nrpe_local.cfg`.
+> Le playbook est écrit pour les serveurs d'Huma-Num et repose sur quelques hypothèses, à respecter ou à adapter :
+> - l'utilisateur distant est `stylo` (avec `/home/stylo` comme dossier personnel) ;
+> - NGINX et certbot sont déjà installés et configurés sur le serveur, le playbook ne copie que les fichiers de configuration NGINX ;
+> - une configuration Nagios est copiée dans `/etc/nagios/nrpe_local.cfg`.
 
-## Prerequisites
+### Prérequis
 
-- An Ubuntu server reachable through SSH, with NGINX, certbot and a `stylo` user allowed to use `sudo`
-- On your machine: Node.js (see [`.node-version`](.node-version)) and Ansible (see the versions in [`deploy-requirements.txt`](.github/workflows/deploy-requirements.txt))
+- Un serveur Ubuntu accessible en SSH, avec NGINX, certbot et un utilisateur `stylo` autorisé à utiliser `sudo`
+- Sur votre machine : Node.js (voir [`.node-version`](.node-version)) et Ansible (voir les versions dans [`deploy-requirements.txt`](.github/workflows/deploy-requirements.txt))
 
-## Configure your instance
+### Configurer votre instance
 
-From the `infrastructure` folder:
+Depuis le dossier `infrastructure` :
 
-1. Copy `inventories/prod` to `inventories/<my-instance>` and edit it: the server host (`[stylo]` section), the domain (`site`), the database name, the callback and endpoint URLs.
-2. Create an encrypted vault with the secrets referenced by the inventory and the templates (`stylo_become_pass`, `jwt_secret_*`, `session_secret`, `humanid_*`, `hypothesis_client_key`, `zotero_auth_*`, `sentry_*_dsn`, `imgur_client_id`, `se_circe_*`):
+1. Copiez `inventories/prod` vers `inventories/<mon-instance>` et modifiez-le : l'hôte du serveur (section `[stylo]`), le domaine (`site`), le nom de la base de données, les URL de retour et des services.
+2. Créez un coffre chiffré avec les secrets référencés par l'inventaire et les modèles (`stylo_become_pass`, `jwt_secret_*`, `session_secret`, `humanid_*`, `hypothesis_client_key`, `zotero_auth_*`, `sentry_graphql_dsn`, `imgur_client_id`, `se_circe_*`) :
    ```bash
-   ansible-vault create vault-<my-instance>.yml
+   ansible-vault create vault-<mon-instance>.yml
    ```
-3. Add your NGINX configuration files in `files/`: `<site>.conf`, `export.<site>.conf` and `pandoc-api.<site>.conf`, based on the `stylo.huma-num.fr` ones.
-   Add `<env>-nagios-nrpe-local.cfg` and `features-<env>.json` files as well, matching the `env` variable of your inventory (see [Feature flags](#feature-flags)).
+3. Ajoutez vos fichiers de configuration NGINX dans `files/` : `<site>.conf`, `export.<site>.conf` et `pandoc-api.<site>.conf`, sur le modèle de ceux de `stylo.huma-num.fr`.
+   Ajoutez aussi les fichiers `<env>-nagios-nrpe-local.cfg` et `features-<env>.json`, qui correspondent à la variable `env` de votre inventaire (voir [Fonctionnalités activables](#fonctionnalités-activables)).
 
-## Build the front-end and deploy
+### Construire l'interface web et déployer
 
-The front-end assets are built on your machine and copied to the server by the playbook.
-From the root of the repository, set the `FRONT_*`, `PANDOC_EXPORT_ENDPOINT` and `ANNOTATIONS_CANONICAL_BASE_URL` variables of your instance (for instance in `.env`, see [`stylo-example.env`](stylo-example.env)).
-The former `SNOWPACK_*` names are still read, with a deprecation warning, but will be removed in a future version.
-Then build:
+Les fichiers de l'interface web sont construits sur votre machine et copiés sur le serveur par le playbook.
+Depuis la racine du dépôt, définissez les variables `FRONT_*`, `PANDOC_EXPORT_ENDPOINT` et `ANNOTATIONS_CANONICAL_BASE_URL` de votre instance (par exemple dans `.env`, voir [`stylo-example.env`](stylo-example.env)).
+Les anciens noms `SNOWPACK_*` sont encore lus, avec un avertissement, mais seront supprimés dans une prochaine version.
+Lancez ensuite le build :
 
 ```bash
 npm clean-install
 npm run build -w front
 ```
 
-Then run the playbook from the `infrastructure` folder, using a released version of Stylo (the matching Docker images are pulled from ghcr.io):
+Lancez enfin le playbook depuis le dossier `infrastructure`, avec une version publiée de Stylo (les images Docker correspondantes sont téléchargées depuis ghcr.io) :
 
 ```bash
-ansible-playbook -i inventories/<my-instance> \
-  --extra-vars "@vault-<my-instance>.yml" \
+ansible-playbook -i inventories/<mon-instance> \
+  --extra-vars "@vault-<mon-instance>.yml" \
   --extra-vars "app_version=X.Y.Z" \
   --extra-vars "assets_path=../front/build/" \
   --ask-vault-pass \
   playbook.yml
 ```
 
-Run the same command again to upgrade to a new version.
+Relancez la même commande pour passer à une nouvelle version.
 
-## Feature flags
+### Fonctionnalités activables
 
-Features under development are hidden until enabled in `files/features-<env>.json`, matching the `env` variable of your inventory.
-The playbook copies it to `~/stylo/features.json`, read by the API when it starts; the front-end receives the features enabled for the logged-in user.
+Les fonctionnalités en cours de développement sont masquées tant qu'elles ne sont pas activées dans le fichier `files/features-<env>.json`, qui correspond à la variable `env` de votre inventaire.
+Le playbook le copie vers `~/stylo/features.json`, que l'API lit à son démarrage. L'interface web reçoit les fonctionnalités activées pour la personne connectée.
 
 ```json
 {
@@ -73,26 +73,24 @@ The playbook copies it to `~/stylo/features.json`, read by the API when it start
 }
 ```
 
-- `state` is `off` (nobody), `on` (everybody) or `opt-in` (listed users only); an unknown flag is off.
-- With `opt-in`, a user is listed by `username`, directly (`users`) or through a group (`groups`). Accounts without a `username` only get the `on` flags.
-- Group names match `[a-z0-9_/-]+` and must be declared under `groups`. The API refuses to start with an invalid file.
-- To change who gets a feature, edit the file and run the playbook again.
-- Locally, `FEATURES_FILE` points to a JSON file with the same structure, relative to the root of the repository (see [`features.example.json`](features.example.json)); everything is off without it.
+- `state` vaut `off` (personne), `on` (tout le monde) ou `opt-in` (uniquement les personnes listées). Une fonctionnalité inconnue est désactivée.
+- Avec `opt-in`, une personne est désignée par son `username`, directement (`users`) ou à travers un groupe (`groups`). Les comptes sans `username` n'ont accès qu'aux fonctionnalités `on`.
+- Les noms de groupes respectent le format `[a-z0-9_/-]+` et doivent être déclarés dans `groups`. L'API refuse de démarrer si le fichier est invalide.
+- Pour changer qui a accès à une fonctionnalité, modifiez le fichier et relancez le playbook.
+- En local, la variable `FEATURES_FILE` désigne un fichier JSON de même structure, par un chemin relatif à la racine du dépôt (voir [`features.example.json`](features.example.json)). Sans ce fichier, tout est désactivé.
 
-# Operations
+## Exploitation
 
-On the servers, the Docker Compose project lives in `~/stylo`.
-The commands below use the production database name (`stylo-prod`); use `stylo-dev` on the dev server.
+Sur les serveurs, le projet Docker Compose se trouve dans `~/stylo`.
+Les commandes ci-dessous utilisent le nom de la base de données de production (`stylo-prod`). Utilisez `stylo-dev` sur le serveur de développement.
 
-## Database operations
-
-### Backup
+### Sauvegarder la base de données
 
 ```bash
 docker exec mongodb-stylo sh -c 'mongodump --archive --db stylo-prod' > stylo-prod.dump
 ```
 
-### Restore
+### Restaurer la base de données
 
 ```bash
 docker exec -i mongodb-stylo sh -c 'mongorestore --archive' < stylo-prod.dump
@@ -100,38 +98,39 @@ docker exec mongodb-stylo mongosh --quiet --eval "db.adminCommand({listDatabases
 # ['admin', 'config', 'local', 'stylo-prod']
 ```
 
-**NOTE**: If you need to rename the database during the import, you can use `--nsFrom` and `--nsTo`.
-For instance, if we want to rename the database from `stylo` to `stylo-prod`, we can use:
-
-```bash
-docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
-```
+> [!NOTE]
+> Pour renommer la base de données pendant l'import, utilisez `--nsFrom` et `--nsTo`.
+> Par exemple, pour renommer la base `stylo` en `stylo-prod` :
+>
+> ```bash
+> docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
+> ```
 
 ### Migrations
 
-Database migrations are [`db-migrate`](https://db-migrate.readthedocs.io/) scripts located in [`graphql/migrations`](graphql/migrations).
-They run automatically each time the `graphql-stylo` container starts.
+Les migrations de la base de données sont des scripts [`db-migrate`](https://db-migrate.readthedocs.io/) situés dans le dossier [`graphql/migrations`](graphql/migrations).
+Elles sont appliquées automatiquement à chaque démarrage du conteneur `graphql-stylo`.
 
-To run them manually:
+Pour les lancer à la main :
 
 ```bash
 cd ~/stylo
-docker compose exec graphql-stylo node ../node_modules/db-migrate/bin/db-migrate up
+docker compose exec graphql-stylo node ../node_modules/.bin/db-migrate up
 ```
 
-To list the pending migrations without running them:
+Pour lister les migrations en attente sans les exécuter :
 
 ```bash
 cd ~/stylo
 docker compose exec graphql-stylo node ../node_modules/.bin/db-migrate check
 ```
 
-#### Dry run
+#### Exécution à blanc
 
-`db-migrate up --dry-run` runs the `up` function of each pending migration and expects the driver to skip the writes.
-The driver ([`@ggrossetie/db-migrate-mongodb`](https://github.com/ggrossetie/db-migrate-mongodb)) cannot intercept operations made on the raw MongoDB instance returned by `db._getDbInstance()`, so this method throws in dry-run mode.
+`db-migrate up --dry-run` exécute la fonction `up` de chaque migration en attente et compte sur le pilote pour ignorer les écritures.
+Le pilote ([`@ggrossetie/db-migrate-mongodb`](https://github.com/ggrossetie/db-migrate-mongodb)) ne peut pas intercepter les opérations faites sur l'instance MongoDB brute renvoyée par `db._getDbInstance()`, donc cette méthode lève une erreur dans ce mode.
 
-Every migration that uses the raw instance must therefore return early in dry-run mode, in `up` and in `down`:
+Toute migration qui utilise l'instance brute doit donc s'interrompre dès le début dans ce mode, dans `up` et dans `down` :
 
 ```js
 exports.up = async function (db) {
@@ -141,7 +140,8 @@ exports.up = async function (db) {
 }
 ```
 
-A dry run is consequently limited to listing the migrations that would be processed, like `db-migrate check`.
+Une exécution à blanc se limite par conséquent à lister les migrations qui seraient traitées, comme `db-migrate check`.
 
-**NOTE**: `--dry-run` requires version 2.1.0 or later of the driver.
-Version 2.0.0 ignores the option, so the migrations are recorded as applied (see [ggrossetie/db-migrate-mongodb#2](https://github.com/ggrossetie/db-migrate-mongodb/issues/2)).
+> [!NOTE]
+> `--dry-run` demande la version 2.1.0 ou une version ultérieure du pilote.
+> La version 2.0.0 ignore l'option, donc les migrations sont enregistrées comme appliquées (voir [ggrossetie/db-migrate-mongodb#2](https://github.com/ggrossetie/db-migrate-mongodb/issues/2)).

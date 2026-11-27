@@ -1,66 +1,67 @@
-# How to install Stylo
+# Installer Stylo
 
-Depending on your needs, you may want to install Stylo in different ways:
+Selon vos besoins, Stylo s'installe de différentes façons :
 
-- To work on Stylo's code, follow the local development instructions in the [`README.md`](README.md) file.
-- To run a complete Stylo instance on your machine, [use Docker Compose](#run-with-docker-compose).
-- To install Stylo on a server, use the Ansible playbook as described in the [`SERVER.md`](SERVER.md) file.
+- Pour travailler sur le code de Stylo, suivez les instructions de développement local du fichier [`README.md`](README.md).
+- Pour lancer une instance complète de Stylo sur votre machine, [utilisez Docker Compose](#lancer-stylo-avec-docker-compose).
+- Pour installer Stylo sur un serveur, utilisez le playbook Ansible décrit dans le fichier [`SERVER.md`](SERVER.md).
 
-## Clone git project
+## Cloner le dépôt Git
 
-First step is to clone the project, you can use either the HTTPS or SSH version of the repository URL:
+La première étape consiste à cloner le projet, avec l'URL HTTPS ou SSH du dépôt :
 
 ```bash
 git clone git@github.com:EcrituresNumeriques/stylo.git
 cd stylo
 ```
 
-## Run with Docker Compose
+## Lancer Stylo avec Docker Compose
 
-Every Stylo service runs in a Docker container: MongoDB, the GraphQL API, the front-end (served by NGINX), the export service and the Pandoc API.
-You need [Docker](https://docs.docker.com/engine/install/) with the Compose plugin, and Node.js (see [`.node-version`](.node-version)) to build the front-end.
+Chaque service de Stylo tourne dans un conteneur Docker : MongoDB, l'API GraphQL, l'interface web (servie par NGINX), le service d'export et l'API Pandoc.
+Vous avez besoin de [Docker](https://docs.docker.com/engine/install/) avec le plugin Compose, et de Node.js (voir [`.node-version`](.node-version)) pour construire l'interface web.
 
-Copy the configuration file:
+Copiez le fichier de configuration :
 
 ```bash
 cp stylo-example.env .env
 ```
 
-Edit `.env`: the `FRONT_*_ENDPOINT`, `PANDOC_EXPORT_ENDPOINT` and `ANNOTATIONS_CANONICAL_BASE_URL` variables and the callback URLs must use the public URL of your instance (see [Expose Stylo](#expose-stylo)).
-Then build the front-end assets, which are served by the `front-stylo` container from the `front/build` folder:
+Modifiez ensuite le fichier `.env`.
+Les variables `FRONT_*_ENDPOINT`, `PANDOC_EXPORT_ENDPOINT` et `ANNOTATIONS_CANONICAL_BASE_URL` ainsi que les URL de retour (`*_CALLBACK_URL`) doivent utiliser l'URL publique de votre instance (voir [Exposer Stylo](#exposer-stylo)).
+Construisez ensuite les fichiers de l'interface web, que le conteneur `front-stylo` sert depuis le dossier `front/build` :
 
 ```bash
 npm clean-install
 npm run build -w front
 ```
 
-Before the first start, set the `SE_GRAPHQL_TOKEN` variable in `.env` with the value produced by this command:
+Avant le premier lancement, renseignez la variable `SE_GRAPHQL_TOKEN` dans `.env` avec la valeur produite par cette commande :
 
 ```bash
 docker compose run --rm --no-deps graphql-stylo node bin/generate-service-token.js
 ```
 
-Then start Stylo:
+Puis démarrez Stylo :
 
 ```bash
 docker compose up -d
 ```
 
-By default, the `latest` images are pulled from ghcr.io.
-To run a released version, set the `TAG` variable (for instance `TAG=3.13.1 docker compose up -d`), or use `docker compose up -d --build` to build the images from your working copy.
+Par défaut, les images `latest` sont téléchargées depuis ghcr.io.
+Pour lancer une version publiée, définissez la variable `TAG` (par exemple `TAG=3.13.1 docker compose up -d`). Pour construire les images à partir de votre copie de travail, utilisez `docker compose up -d --build`.
 
-The services then listen on `127.0.0.1`:
+Les services écoutent alors sur `127.0.0.1` :
 
-- Front-end: port 3000
-- GraphQL API: port 3030
-- Export service: port 3080
-- Pandoc API: port 3090
+- interface web : port 3000
+- API GraphQL : port 3030
+- service d'export : port 3080
+- API Pandoc : port 3090
 
-## Expose Stylo
+## Exposer Stylo
 
-The `front-stylo` container only serves static files: a reverse proxy must route the API paths (`/graphql`, `/login`, `/events`, etc.) to the GraphQL API, and the other requests to the front-end.
-The NGINX configuration files in [`infrastructure/files`](infrastructure/files) are working examples: `stylo.huma-num.fr.conf` for the application, `export.stylo.huma-num.fr.conf` and `pandoc-api.stylo.huma-num.fr.conf` for the export services.
+Le conteneur `front-stylo` ne sert que des fichiers statiques. Un serveur mandataire inverse (_reverse proxy_) doit donc diriger les chemins de l'API (`/graphql`, `/login`, `/events`, etc.) vers l'API GraphQL, et les autres requêtes vers l'interface web.
+Les fichiers de configuration NGINX du dossier [`infrastructure/files`](infrastructure/files) sont des exemples fonctionnels : `stylo.huma-num.fr.conf` pour l'application, `export.stylo.huma-num.fr.conf` et `pandoc-api.stylo.huma-num.fr.conf` pour les services d'export.
 
-## Next steps
+## Étapes suivantes
 
-Once you have an up and running Stylo instance, read the [`SERVER.md` file](SERVER.md) to run daily and maintenance operations, such as database backups and migrations.
+Une fois votre instance de Stylo démarrée, lisez le fichier [`SERVER.md`](SERVER.md) pour les opérations courantes et de maintenance, comme les sauvegardes et les migrations de la base de données.
