@@ -1,9 +1,9 @@
-# Release
+# Publier et déployer une version
 
 Cette page explique comment créer une nouvelle release de Stylo et comment la déployer sur https://stylo.huma-num.fr/.
 Pour rappel, l'ensemble des changements qui arrivent sur la branche principale (i.e., `master`) sont déployés automatiquement sur https://stylo-dev.huma-num.fr/.
 
-# Pré-requis
+## Prérequis
 
 - Avoir un compte GitHub
 - Avoir les droits d'écriture sur le projet GitHub [EcrituresNumeriques/stylo](https://github.com/EcrituresNumeriques/stylo)
@@ -25,6 +25,7 @@ Une nouvelle ligne va s'afficher dans la liste. Vous pouvez voir le détail en c
 ![projet/release-workflow-success.png](projet/release-workflow-success.png)
 
 Le workflow se compose de trois étapes :
+
 - release
   - modifie la version dans les fichiers `package.json` de la racine et des workspaces `front` et `graphql`
   - met à jour le fichier `package-lock.json` (unique, à la racine du dépôt)
@@ -36,6 +37,7 @@ Le workflow se compose de trois étapes :
     - https://github.com/EcrituresNumeriques/stylo/pkgs/container/stylo-front
 - call-deploy-prod (uniquement si « Trigger deploy? » est cochée)
   - déploie la version sur https://stylo.huma-num.fr/ (voir [Déployer une version en production](#déployer-une-version-en-production))
+  - ferme les issues « Validé » du projet « Backlog Stylo » dont les pull requests font partie de la version déployée
 
 > [!NOTE]
 > Les deux dernières étapes peuvent être lancées manuellement puisqu'elles reposent sur les workflows [docker](https://github.com/EcrituresNumeriques/stylo/actions/workflows/docker.yml) et [deploy](https://github.com/EcrituresNumeriques/stylo/actions/workflows/deploy-tag.yml).

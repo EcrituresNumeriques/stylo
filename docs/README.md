@@ -9,7 +9,7 @@ Les pages de cette documentation sont générées avec [Eleventy](https://www.11
 ## Pour contribuer à la documentation
 
 Les contenus sont rédigés dans des fichiers markdown dans `src/`;
-la documentation de chaque langue se trouve dans le sous-dossier respectif (`fr/`, `en/`).
+la documentation de chaque langue se trouve dans le sous-dossier respectif (`fr/`, `en/`, `es/`).
 
 ```
 ├── _site/               # fichiers du site construit (auto-générés)
@@ -19,6 +19,8 @@ la documentation de chaque langue se trouve dans le sous-dossier respectif (`fr/
 │   ├── _includes  # fichiers modèles (HTML, CSS, dispositions, composants ...)
 │   ├── en/
 │   ├── en_EN/     # redirection vers /en
+│   ├── es/
+│   ├── es_ES/     # redirection vers /es
 │   ├── fr/
 │   ├── fr_FR/     # redirection vers /fr
 │   ├── index.html # redirection vers /fr (par défaut)
@@ -179,5 +181,5 @@ npm start
 Pour construire le site dans le dossier `_site` :
 
 ```shell
-npm build
+npm run build
 ```

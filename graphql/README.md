@@ -1,53 +1,53 @@
-# GraphQL backend
+# Backend GraphQL de Stylo
 
-This folder is an npm workspace of the Stylo repository.
-The commands below are run from the **root of the repository**: see the [main `README.md`](../README.md) for the prerequisites and the configuration (`.env` file at the root of the repository).
+Ce dossier est un workspace npm du dépôt Stylo.
+Les commandes ci-dessous se lancent depuis la **racine du dépôt**. Les prérequis et la configuration (fichier `.env` à la racine du dépôt) sont décrits dans le [fichier `README.md` principal](../README.md).
 
-The file layout and the principles to follow when writing code (resolvers, access rights, errors, migrations, tests) are described in [`CONTRIBUTING.md`](CONTRIBUTING.md) (in French).
-Before changing the GraphQL schema, read the [API conventions](CONVENTIONS.md) (in French).
+L'organisation des fichiers et les principes à suivre pour écrire du code (résolveurs, droits d'accès, erreurs, migrations, tests) sont décrits dans le fichier [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Avant de modifier le schéma GraphQL, lisez les [conventions de l'API](CONVENTIONS.md).
 
-## Install
+## Installer
 
 ```bash
 npm clean-install
 ```
 
-All the workspaces dependencies are installed at once, with a single `package-lock.json` at the root of the repository.
-To add a dependency to the GraphQL backend:
+Les dépendances de tous les workspaces sont installées en une seule fois, avec un seul fichier `package-lock.json` à la racine du dépôt.
+Pour ajouter une dépendance au backend GraphQL :
 
 ```bash
-npm install <package> -w graphql
+npm install <paquet> -w graphql
 ```
 
-## Usage (dev)
+## Développer
 
-Run the server (MongoDB must be running):
+Lancez le serveur (MongoDB doit être démarré) :
 
 ```bash
 npm start -w graphql
 ```
 
-Database migrations ([`migrations`](migrations) folder) are applied before the server starts.
-You can then start querying at [`localhost:3030/graphql`](http://localhost:3030/graphql).
+Les migrations de la base de données (dossier [`migrations`](migrations)) sont appliquées avant le démarrage du serveur.
+L'API répond ensuite sur [`localhost:3030/graphql`](http://localhost:3030/graphql).
 
-To start both the GraphQL backend and the frontend, run `npm run dev`.
+Pour démarrer à la fois le backend GraphQL et l'interface web, utilisez `npm run dev`.
 
-## Test
+## Tester
 
-Tests start a MongoDB container with [Testcontainers](https://testcontainers.com/), so Docker must be running:
+Les tests démarrent un conteneur MongoDB avec [Testcontainers](https://testcontainers.com/), donc Docker doit être démarré :
 
 ```bash
 npm test -w graphql
 ```
 
-## Generate a service token
+## Générer un jeton de service
 
-A service token is used to communicate securely between applications.
+Un jeton de service permet à une autre application (le service d'export) de lire les données de l'API.
 
 ```bash
 npm run -w graphql generate-service-token --silent
 ```
 
 > [!WARNING]
-> It requires the `JWT_SECRET_SESSION_COOKIE` environment variable to be set, and to be the same value as the running GraphQL server.
-> The variable is read from the environment, or from the `.env` file at the root of the repository.
+> La commande a besoin de la variable d'environnement `JWT_SECRET_SESSION_COOKIE`, avec la même valeur que celle du serveur GraphQL en cours d'exécution.
+> La variable est lue dans l'environnement, ou dans le fichier `.env` à la racine du dépôt.
