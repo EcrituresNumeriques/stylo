@@ -11,6 +11,10 @@ jobs:
   build:
     # libcrypto.so.1.1 is missing in ubuntu-24.04
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      # lists the files changed by the pull request
+      pull-requests: read
 
     steps:
       - uses: actions/checkout@v6
@@ -28,24 +32,15 @@ jobs:
           cp ../stylo-example.env ../.env
           npm test
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
+      - name: Coverage report
+        uses: davelosert/vitest-coverage-report-action@v2
         with:
-          base-path: ${{ inputs.app-dir }}
-          parallel: true
-          flag-name: run-${{ inputs.app-dir }}
+          name: ${{ inputs.app-dir }}
+          working-directory: ${{ inputs.app-dir }}
+          # the report only goes to the job summary, because pull requests
+          # coming from a fork have a read-only token and cannot be commented
+          comment-on: none
 
       - name: Build (if necessary)
         working-directory: ${{ inputs.app-dir }}
         run: npm run build --if-present
-
-  publish-coverage-report:
-    needs: build
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@v2
-        with:
-          parallel-finished: true
-          carryforward: 'run-front,run-graphql'

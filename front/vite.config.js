@@ -181,7 +181,8 @@ export default defineConfig(async ({ mode }) => {
       exclude: [...configDefaults.exclude, '**/e2e/*'],
       coverage: {
         provider: 'v8',
-        reporter: ['text', 'html', 'lcovonly'],
+        // json-summary and json feed the coverage report of the CI
+        reporter: ['text', 'html', 'json-summary', 'json'],
         // every source file counts, even when no test loads it
         include: ['src/**'],
         extension: ['.js', '.jsx'],
