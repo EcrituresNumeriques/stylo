@@ -18,37 +18,9 @@
         update_cache: true
         cache_valid_time: 3600
 
-    - name: Create apt keyrings directory
-      become: yes
-      ansible.builtin.file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: "0755"
-
-    # apt-key n'existe plus à partir d'Ubuntu 26.04 : la clé est déposée
-    # dans /etc/apt/keyrings et référencée via signed-by.
-    - name: Add Docker GPG apt Key
-      become: yes
-      ansible.builtin.get_url:
-        url: https://download.docker.com/linux/{{ansible_distribution|lower}}/gpg
-        dest: /etc/apt/keyrings/docker.asc
-        mode: "0644"
-
-    # L'ancienne entrée sans signed-by entrerait en conflit avec la nouvelle
-    # ("Conflicting values set for option Signed-By").
-    - name: Remove legacy Docker Repository
-      become: yes
-      ansible.builtin.apt_repository:
-        repo: deb https://download.docker.com/linux/{{ansible_distribution|lower}} {{ansible_distribution_release}} stable
-        state: absent
-        update_cache: false
-
-    - name: Add Docker Repository
-      become: yes
-      ansible.builtin.apt_repository:
-        repo: deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ansible_distribution|lower}} {{ansible_distribution_release}} stable
-        filename: docker
-        state: present
+    # Dépôt deb822 avec Signed-By : apt-key n'existe plus à partir d'Ubuntu 25.04
+    - name: Add Docker repository
+      ansible.builtin.include_tasks: tasks/docker-apt-repository.yml
 
     - name: Update apt and install docker-ce
       become: yes
@@ -58,6 +30,12 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
+        state: present
+
+    - name: Install NGINX
+      become: yes
+      ansible.builtin.apt:
+        name: nginx
         state: present
 
     - name: Update NGINX settings
@@ -100,11 +78,6 @@
         - { src: "./.env", dest: "~/stylo/.env" }
         - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
-    - name: Copy feature flags
-      ansible.builtin.copy:
-        src: ./features-{{ env }}.json
-        dest: ~/stylo/features.json
-
     - name: Copy backup files
       ansible.builtin.template:
         src: "./backup.sh"
@@ -128,18 +101,6 @@
         job: "/home/stylo/stylo/backup.sh >> /var/log/backup.log 2>&1"
       when: site == "stylo.huma-num.fr"
 
-    - name: Give the graphql-stylo container user (node, uid 1000) write access to the collaboration data directories
-      become: yes
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/stylo/data/{{ item }}"
-        state: directory
-        owner: "1000"
-        group: "1000"
-        recurse: yes
-      loop:
-        - ydata
-        - yeditingsession
-
     - name: Pull Docker containers
       ansible.builtin.shell:
         cmd: "docker compose pull"
@@ -148,7 +109,7 @@
     - name: Generate Shared GraphQL Token
       register: graphql_token
       ansible.builtin.shell:
-        cmd: "docker compose run --no-deps --rm graphql-stylo node bin/generate-service-token.js"
+        cmd: "docker compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
       run_once: true
       no_log: true
