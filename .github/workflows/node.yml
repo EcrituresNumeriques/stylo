@@ -69,8 +69,9 @@ jobs:
           name: ${{ inputs.app-dir }}
           working-directory: ${{ inputs.app-dir }}
           json-summary-compare-path: ${{ steps.base-coverage.outputs.path }}
-          # also lists the unchanged files whose coverage moved
-          file-coverage-mode: changes-affected
+          # with a base coverage, also lists the unchanged files whose coverage
+          # moved
+          file-coverage-mode: ${{ steps.base-coverage.outputs.path && 'changes-affected' || 'changes' }}
           # the report only goes to the job summary, because pull requests
           # coming from a fork have a read-only token and cannot be commented
           comment-on: none
