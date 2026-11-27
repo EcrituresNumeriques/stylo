@@ -22,7 +22,7 @@ function mockMonaco() {
     EditorZoom: editorZoom,
   }))
   vi.doMock('monaco-editor/editor/editor.worker?worker', () => ({
-    default: class {},
+    default: class extends EventTarget {},
   }))
   vi.doMock('monaco-editor/features/register.all.js', () => record('features'))
   vi.doMock('monaco-editor/languages/definitions/markdown/register.js', () =>
@@ -52,6 +52,30 @@ describe('loadMonaco', () => {
     expect(loaded.languages).toBe(api.languages)
     expect(monaco.monaco).toBe(loaded)
     expect(loader.config).toHaveBeenCalledWith({ monaco: loaded })
+  })
+
+  test('reloads the page when the worker file can not be loaded', async () => {
+    vi.doMock('../../helpers/staleRelease.js', async (importOriginal) => ({
+      ...(await importOriginal()),
+      reloadForMissingFile: vi.fn(),
+    }))
+    vi.resetModules()
+    monaco = await import('./monaco.js')
+    const { reloadForMissingFile } = await import(
+      '../../helpers/staleRelease.js'
+    )
+    await monaco.loadMonaco()
+
+    const worker = self.MonacoEnvironment.getWorker()
+    const runtimeError = new Event('error')
+    runtimeError.message = 'Uncaught TypeError: x is not a function'
+    worker.dispatchEvent(runtimeError)
+    expect(reloadForMissingFile).not.toHaveBeenCalled()
+
+    // file of a previous release: not found
+    worker.dispatchEvent(new Event('error'))
+    expect(reloadForMissingFile).toHaveBeenCalledTimes(1)
+    vi.doUnmock('../../helpers/staleRelease.js')
   })
 
   test('defines the stylo theme', async () => {

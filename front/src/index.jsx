@@ -20,6 +20,8 @@ import {
   useNavigationType,
 } from 'react-router'
 
+import { reloadForMissingFile } from './helpers/staleRelease.js'
+
 import './i18n.js'
 import './styles/general.scss'
 
@@ -74,20 +76,9 @@ if (SENTRY_DSN) {
 // that no longer exist: reload the page to get the new release.
 // https://vite.dev/guide/build#load-error-handling
 window.addEventListener('vite:preloadError', (event) => {
-  const key = 'stylo:preloadErrorReloadedAt'
-  try {
-    const reloadedAt = Number(sessionStorage.getItem(key))
-    // avoid a reload loop if the chunk is really missing
-    if (reloadedAt && Date.now() - reloadedAt < 10_000) {
-      return
-    }
-    sessionStorage.setItem(key, String(Date.now()))
-  } catch {
-    // sessionStorage unavailable: we can't prevent a reload loop
-    return
+  if (reloadForMissingFile()) {
+    event.preventDefault()
   }
-  event.preventDefault()
-  window.location.reload()
 })
 
 // lazy loaded routes
