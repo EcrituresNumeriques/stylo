@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/react'
 import { Clipboard, Rss } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +17,8 @@ import { useEditableArticle } from '../../../hooks/article.js'
 import { useSetAuthToken } from '../../../hooks/user.js'
 import { Button, Field } from '../../atoms/index.js'
 
+import Alert from '../../molecules/Alert.jsx'
+import Loading from '../../molecules/Loading.jsx'
 import Combobox from '../../molecules/SelectCombobox.jsx'
 
 import styles from './BibliographyZoteroImport.module.scss'
@@ -80,7 +83,11 @@ export default function BibliographyZoteroImport({
   )
 
   const [isSaving, setSaving] = useState(false)
-  const [isLoadingCollections, setLoadingCollections] = useState(false)
+  // collections are fetched as soon as the component is mounted with a token
+  const [isLoadingCollections, setLoadingCollections] = useState(
+    Boolean(zoteroToken)
+  )
+  const [hasCollectionsError, setCollectionsError] = useState(false)
 
   /*
    * Collection URL
@@ -175,8 +182,13 @@ export default function BibliographyZoteroImport({
   useEffect(() => {
     if (zoteroToken) {
       setLoadingCollections(true)
+      setCollectionsError(false)
       fetchUserCollections(zoteroToken)
         .then(setZoteroCollections)
+        .catch((err) => {
+          captureException(err)
+          setCollectionsError(true)
+        })
         .finally(() => setLoadingCollections(false))
     }
   }, [zoteroToken])
@@ -193,7 +205,15 @@ export default function BibliographyZoteroImport({
           {t('zoteroPanel.titleImportCollection.text')}
         </h3>
 
-        {zoteroToken && (
+        {zoteroToken && isLoadingCollections && (
+          <div role="status">
+            <Loading label="bibliography.importZotero.collections.loading" />
+          </div>
+        )}
+        {zoteroToken && hasCollectionsError && (
+          <Alert message={t('bibliography.importZotero.collections.error')} />
+        )}
+        {zoteroToken && !isLoadingCollections && !hasCollectionsError && (
           <Combobox
             label=""
             items={groupedZoteroCollections}
@@ -201,7 +221,7 @@ export default function BibliographyZoteroImport({
             onChange={handleCollectionUrlChange}
           />
         )}
-        {zoteroToken && (
+        {zoteroToken && !hasCollectionsError && (
           <Button
             type="submit"
             primary

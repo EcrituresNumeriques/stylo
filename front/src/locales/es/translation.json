@@ -86,7 +86,9 @@
   "bibliography.errors_other": "Hay {{count}} errores de sintaxis en tu BibTeX. <1>No se puede guardar.</1>",
   "bibliography.importZotero.button": "Importar desde Zotero",
   "bibliography.importZotero.collections": {
+    "error": "No pudimos recuperar tus colecciones de Zotero. Inténtalo más tarde o importa la colección desde su URL.",
     "leaf": "{{ name }} ({{ count }} elementos)",
+    "loading": "Cargando las colecciones de Zotero…",
     "section": "{{ name }} ({{ type }})"
   },
   "bibliography.importZotero.error": {
