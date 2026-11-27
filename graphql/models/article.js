@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const attachable = require('./plugins/attachable.js')
 const Schema = mongoose.Schema
 
 /*
@@ -315,5 +316,7 @@ articleSchema.pre(
     }
   }
 )
+
+articleSchema.plugin(attachable)
 
 module.exports = mongoose.model('Article', articleSchema)

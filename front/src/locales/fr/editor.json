@@ -151,5 +151,9 @@
     "title": "Validation",
     "warningSummary_one": "{{count}} avertissement",
     "warningSummary_other": "{{count}} avertissements"
+  },
+  "attachments": {
+    "noStorage": "Pour déposer des images, connectez un stockage WebDAV dans votre profil.",
+    "uploadError": "Le dépôt de {{ name }} a échoué."
   }
 }
