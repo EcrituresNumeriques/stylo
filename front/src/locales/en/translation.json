@@ -86,7 +86,9 @@
   "bibliography.errors_other": "There are {{count}} syntax errors in your BibTeX. <1>Unable to save.</1>",
   "bibliography.importZotero.button": "Import via Zotero",
   "bibliography.importZotero.collections": {
+    "error": "We could not fetch your Zotero collections. Please try again later or import the collection from its URL.",
     "leaf": "{{ name }} ({{ count }} items)",
+    "loading": "Loading Zotero collections…",
     "section": "{{ name }} ({{ type }})"
   },
   "bibliography.importZotero.error": {
