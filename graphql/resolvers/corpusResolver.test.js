@@ -307,6 +307,125 @@ describe('corpus resolver', () => {
     })
   })
 
+  describe('adding articles', () => {
+    async function createCorpus(...titles) {
+      const user = await User.create({
+        email: `append-${Date.now()}-${Math.random()}@huma-num.fr`,
+      })
+      const articles = await Promise.all(
+        titles.map((title) => Article.create({ title, owner: user.id }))
+      )
+      const corpus = await Corpus.create({ name: 'Corpus', creator: user.id })
+      const context = { user, userId: user.id, token: {} }
+      return { corpus, articles, context }
+    }
+
+    const setArticles = (corpus, articles, context) =>
+      Mutation.setCorpusArticles(
+        {},
+        {
+          corpusId: corpus.id,
+          input: { articleIds: articles.map((a) => a.id) },
+        },
+        context
+      )
+
+    const orders = (corpus, articles) =>
+      articles.map(
+        (article) =>
+          corpus.articles.find((a) => a.article.equals(article._id))?.order
+      )
+
+    test('appends the selected articles in the selection order, even after a reordering', async () => {
+      const { corpus, articles, context } = await createCorpus(
+        '1',
+        '2',
+        '3',
+        '4',
+        '5'
+      )
+      const [one, two, three, four, five] = articles
+      const added = await setArticles(corpus, [two, one, three], context)
+      assert.deepEqual(orders(added, [two, one, three]), [0, 1, 2])
+      await Mutation.updateCorpusArticlesOrder(
+        {},
+        {
+          corpusId: corpus.id,
+          input: {
+            articles: [
+              { articleId: three.id, order: 0 },
+              { articleId: one.id, order: 1 },
+              { articleId: two.id, order: 2 },
+            ],
+          },
+        },
+        context
+      )
+
+      const updated = await setArticles(
+        corpus,
+        [one, two, three, five, four],
+        context
+      )
+
+      assert.deepEqual(
+        orders(updated, [three, one, two, five, four]),
+        [0, 1, 2, 3, 4]
+      )
+    })
+
+    test('removes the unselected articles', async () => {
+      const { corpus, articles, context } = await createCorpus('1', '2')
+      const [one, two] = articles
+      await setArticles(corpus, [one, two], context)
+
+      const updated = await setArticles(corpus, [two], context)
+
+      assert.deepEqual(orders(updated, [one, two]), [undefined, 1])
+    })
+
+    test('appends an article added from the article page, once', async () => {
+      const { corpus, articles, context } = await createCorpus('1', '2')
+      const [one, two] = articles
+      await setArticles(corpus, [one], context)
+      const addFromArticlePage = (article) =>
+        Mutation.addCorpusArticle(
+          {},
+          { corpusId: corpus.id, articleId: article.id },
+          context
+        )
+
+      await addFromArticlePage(two)
+      const updated = await addFromArticlePage(one)
+
+      assert.deepEqual(orders(updated, [one, two]), [0, 1])
+      assert.equal(updated.articles.length, 2)
+    })
+
+    test('appends after and sorts articles stored without order', async () => {
+      const { corpus, articles } = await createCorpus('1', '2', '3', '4')
+      const [one, two, three, four] = articles
+      corpus.articles = [
+        { article: one._id, order: 0 },
+        { article: two._id, order: 1 },
+        { article: three._id },
+      ]
+      await corpus.save()
+
+      const updated = await corpus.addArticles([four.id])
+      const context = {
+        loaders: { articles: { load: async (_id) => ({ _id }) } },
+      }
+      const sorted = await CorpusMutation.articles(updated, {}, context)
+
+      assert.deepEqual(orders(updated, [four]), [2])
+      assert.deepEqual(
+        sorted.map((a) => a.article._id.toString()),
+        [one, three, two, four].map((a) => a.id)
+      )
+    })
+  })
+
   test('list the personal corpora of the authenticated user', async () => {
     const alice = await User.create({ email: 'alice@huma-num.fr' })
     const bob = await User.create({ email: 'bob@huma-num.fr' })

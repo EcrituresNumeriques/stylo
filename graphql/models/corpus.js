@@ -136,17 +136,27 @@ corpusSchema.methods.update = async function update(updateCorpusInput) {
   return this.save()
 }
 
-corpusSchema.methods.addArticleById = async function addArticleById(
-  articleId,
-  order
-) {
-  const articleAlreadyAdded = this.articles.find(
-    ({ article }) => article.id === articleId
+/**
+ * Appends articles at the end of the corpus, in the given order.
+ * Articles already in the corpus are ignored.
+ *
+ * @param {string[]} articleIds
+ */
+corpusSchema.methods.addArticles = async function addArticles(articleIds) {
+  const present = new Set(
+    this.articles.map(({ article }) => article.toString())
   )
-  if (articleAlreadyAdded) {
-    return this
-  }
-  this.articles.push({ article: { _id: articleId }, order })
+  const toAdd = [...new Set(articleIds)].filter((id) => !present.has(id))
+  const lastOrder = Math.max(
+    -1,
+    ...this.articles.map(({ order }) => order ?? -1)
+  )
+  this.articles.push(
+    ...toAdd.map((article, index) => ({
+      article,
+      order: lastOrder + 1 + index,
+    }))
+  )
   return this.save()
 }
 
